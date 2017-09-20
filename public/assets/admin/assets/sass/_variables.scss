@@ -1,0 +1,143 @@
+//
+// Variables
+// --------------------------------------------------
+
+//== Typography
+//
+//## Font, line-height, and color for body text, headings, and more.
+
+$font-family-base: 'Roboto', sans-serif !default;
+$font-family-headings: 'Source Sans Pro', sans-serif !default;
+$font-family-secondary: 'Droid Serif', serif !default;
+$font-family-code: 'Source Code Pro', monospace !default;
+$font-awesome: 'FontAwesome' !default;
+$font-ionicons: 'Ionicons' !default;
+
+$font-size-base: 14px !default;
+$font-size-large: 24px !default;
+$font-size-medium: 16px !default;
+$font-size-small: 12px !default;
+$font-size-extra-small: 10px !default;
+
+$font-size-h1: 48px !default;
+$font-size-h2: 34px !default;
+$font-size-h3: 26px !default;
+$font-size-h4: 18px !default;
+$font-size-h5: 14px !default;
+$font-size-h6: 12px !default;
+
+$line-height-base: 25px !default;
+$line-height-headings-single: 1.1 !default;
+$line-height-h1: (48 + 12) / 48 !default;
+$line-height-h2: (34 + 12) / 34 !default;
+$line-height-h3: (26 + 12) / 26 !default;
+$line-height-h4: (18 + 12) / 18 !default;
+$line-height-h5: (14 + 10) / 14 !default;
+$line-height-h6: (12 + 10) / 12 !default;
+
+$headings-font-family: $font-family-headings !default;
+$headings-font-weight: 600 !default;
+$headings-color: #37474f !default;
+
+//
+//== Colors
+//--------------------------------------------------
+
+$black: #23282d !default;
+$blue: #00b9eb !default;
+$blue-bg: #0073aa !default;
+$blue-content: $blue-bg !default;
+$blue-content-hover: #00a0d2 !default;
+$gray-base: #000 !default;
+$menu-default: #eee !default;
+$border-color: #eee !default;
+
+$brand-primary: #0085ba !default;
+$brand-primary-dark: #006799 !default;
+$brand-secondary: #f7f7f7 !default;
+
+$custom: #5fbeaa;
+
+// Color variables
+$white: #ffffff;
+$danger: #f05050;
+$success: #81c868;
+$warning: #ffbd4a;
+$primary: #5d9cec;
+$lightdark5: #555555;
+$info: #34d3eb;
+$purple: #7266ba;
+$pink: #fb6d9d;
+$inverse: #4c5667;
+$muted: #b4b9be;
+$light: #eeeeee;
+$lightdark3: #333333;
+$lightdark4: #444444;
+$light5: #ebeff2;
+$light3: #f3f3f3;
+$light9: #f9f9f9;
+$light-alt: #fafafa;
+$lightdark7: #797979;
+$lightdark-alt: #cccccc;
+$lightdark: #f4f8fb;
+$lightgray: #7a8c9a;
+$dark: #36404a;
+
+// Width variables
+$width: 100%;
+
+// Height variables
+$height: 100%;
+
+
+//
+//== Hover
+//--------------------------------------------------
+$hover-secondary: #bf1b13 !default;
+
+
+/* Share Color
+------------------------------------------------------ */
+$facebook-color: #3b5998 !default;
+$twitter-color: #1da1f2 !default;
+$google-color: #e3411f !default;
+$youtube-color: #ca3737 !default;
+$linkedin-color: #0077b5 !default;
+
+/* 
+ * Article Variable
+ * --------------------------------------------------- */
+$font-size-article: 17px !default;
+$letter-spacing-base: -0.01em !default;
+$line-height-article: 1.67 !default;
+
+/* 
+ * Media queries breakpoints
+ * --------------------------------------------------- */
+
+// Extra small screen / phone
+$screen-xs:                  480px !default;
+$screen-xs-max:              479px !default;
+$screen-xs-min:              $screen-xs !default;
+$screen-phone:               $screen-xs-min !default;
+
+// Small screen / tablet
+$screen-sm:                  768px !default;
+$screen-sm-min:              $screen-sm !default;
+$screen-sm-max:              767px !default;
+$screen-tablet:              $screen-sm-min !default;
+
+// Medium screen / desktop
+$screen-md:                  992px !default;
+$screen-md-min:              $screen-md !default;
+$screen-md-max:              991px !default;
+$screen-desktop:             $screen-md-min !default;
+
+// Large screen / wide desktop
+$screen-lg:                  1200px !default;
+$screen-lg-min:              $screen-lg !default;
+$screen-lg-max:              1199px !default;
+$screen-lg-desktop:          $screen-lg-min !default;
+
+// Super Large screen
+$screen-hero:				 1400px !default;

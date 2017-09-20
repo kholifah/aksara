@@ -1,0 +1,71 @@
+/* - dataTable Reset
+----------------------------------------------- */
+#datatable-editable .actions a {
+  padding: 5px;
+}
+#datatable-editable .form-control {
+  background-color: #ffffff;
+  width: 100%;
+}
+#datatable-editable .fa-trash-o {
+  color: #f05050;
+}
+#datatable-editable .fa-times {
+  color: #f05050;
+}
+#datatable-editable .fa-pencil {
+  color: #29b6f6;
+}
+#datatable-editable .fa-save {
+  color: #33b86c;
+}
+#datatable td {
+  font-weight: normal;
+}
+div.dataTables_paginate ul.pagination {
+  margin-top: 30px;
+}
+div.dataTables_info {
+  padding-top: 38px;
+}
+.dt-buttons {
+  float: left;
+}
+div#datatable-buttons_info {
+  float: left;
+}
+table.dataTable thead th {
+  position: relative;
+  background-image: none !important;
+}
+table.dataTable thead th.sorting:after,
+table.dataTable thead th.sorting_asc:after,
+table.dataTable thead th.sorting_desc:after {
+  position: absolute;
+  top: 7px;
+  right: 8px;
+  display: block;
+  font-family: FontAwesome;
+}
+table.dataTable thead th.sorting:after {
+  content: "\f0dc";
+  padding-top: 0.12em;
+}
+table.dataTable thead th.sorting_asc:after {
+  content: "\f0de";
+}
+table.dataTable thead th.sorting_desc:after {
+  content: "\f0dd";
+}
+
+table.dataTable.hover tbody tr.even:hover, 
+table.dataTable.display tbody tr.even:hover {
+	background-color: #fff;
+}
+table.dataTable.hover tbody tr.odd:hover, 
+table.dataTable.display tbody tr.odd:hover {
+	background-color: #f9f9f9;
+}
+table.dataTable.no-footer {
+	border-bottom: 0;
+}

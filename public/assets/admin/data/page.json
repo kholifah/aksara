@@ -1,0 +1,34 @@
+[
+	{
+		"id": "1",
+		"thumb": "dist/images/gallery/1.jpg",
+		"post_title": "Profil",
+		"slug": "profil",
+		"post_content": "<p>Lorem ipsum dolor sit amet, eam quas aliquam conceptam ne. His in amet dicunt elaboraret, in quando diceret corpora nec. Ferri propriae intellegebat mea an, quas perpetua vis in. Ne decore maiorum nec. Diam tractatos sententiae duo ea. Dicam fabellas maiestatis ut quo, laoreet qualisque eum ei. Magna tincidunt in vis, at per nibh probo quando.</p><p>Vix probatus abhorreant ei, ex dicunt quaerendum mediocritatem duo. Vix ad noster nemore vocibus, choro ullamcorper necessitatibus sea at, illum nominati ea eos. Quaeque feugait temporibus vim at. Mea ea sonet vocent volumus.</p><p>Eu veri lobortis salutatus nec. Vis reque recteque intellegat ei. Ut urbanitas conceptam est. Duo meis prima soluta at, odio duis etiam eum ea, sit et laoreet facilisis conclusionemque.</p><p>Ad illud aliquando vim. Ad vel unum affert exerci, te natum timeam ius. Sint iisque tincidunt ea eam. Suas invidunt praesent pro no, eam eu congue aeterno deseruisse, at homero mentitum vis. Ea habeo discere probatus eam, per ea dico mucius putant, ut eirmod docendi concludaturque mei. Eleifend recteque salutandi eum ea, officiis inimicus tincidunt et duo. Iusto prompta eripuit sit an, ponderum petentium voluptatibus nam te, nonumy debitis imperdiet ea pro.</p><p>Ea eam fabellas pertinacia moderatius, solum eruditi ad vel. Pro tation intellegebat ad. Id abhorreant repudiandae has. Sea magna dolor repudiare et. Quot luptatum scripserit et pri, te fierent delectus pri, mei ei posse delicata mediocrem.</p>",
+		"status": "Published"
+	},
+	{
+		"id": "2",
+		"thumb": "dist/images/gallery/1.jpg",
+		"post_title": "Tentang Kami",
+		"slug": "tentang-kami",
+		"post_content": "<p>Lorem ipsum dolor sit amet, eam quas aliquam conceptam ne. His in amet dicunt elaboraret, in quando diceret corpora nec. Ferri propriae intellegebat mea an, quas perpetua vis in. Ne decore maiorum nec. Diam tractatos sententiae duo ea. Dicam fabellas maiestatis ut quo, laoreet qualisque eum ei. Magna tincidunt in vis, at per nibh probo quando.</p><p>Vix probatus abhorreant ei, ex dicunt quaerendum mediocritatem duo. Vix ad noster nemore vocibus, choro ullamcorper necessitatibus sea at, illum nominati ea eos. Quaeque feugait temporibus vim at. Mea ea sonet vocent volumus.</p><p>Eu veri lobortis salutatus nec. Vis reque recteque intellegat ei. Ut urbanitas conceptam est. Duo meis prima soluta at, odio duis etiam eum ea, sit et laoreet facilisis conclusionemque.</p><p>Ad illud aliquando vim. Ad vel unum affert exerci, te natum timeam ius. Sint iisque tincidunt ea eam. Suas invidunt praesent pro no, eam eu congue aeterno deseruisse, at homero mentitum vis. Ea habeo discere probatus eam, per ea dico mucius putant, ut eirmod docendi concludaturque mei. Eleifend recteque salutandi eum ea, officiis inimicus tincidunt et duo. Iusto prompta eripuit sit an, ponderum petentium voluptatibus nam te, nonumy debitis imperdiet ea pro.</p><p>Ea eam fabellas pertinacia moderatius, solum eruditi ad vel. Pro tation intellegebat ad. Id abhorreant repudiandae has. Sea magna dolor repudiare et. Quot luptatum scripserit et pri, te fierent delectus pri, mei ei posse delicata mediocrem.</p>",
+		"status": "Published"
+	},
+	{
+		"id": "3",
+		"thumb": "dist/images/gallery/1.jpg",
+		"post_title": "FAQ",
+		"slug": "faq",
+		"post_content": "<p>Lorem ipsum dolor sit amet, eam quas aliquam conceptam ne. His in amet dicunt elaboraret, in quando diceret corpora nec. Ferri propriae intellegebat mea an, quas perpetua vis in. Ne decore maiorum nec. Diam tractatos sententiae duo ea. Dicam fabellas maiestatis ut quo, laoreet qualisque eum ei. Magna tincidunt in vis, at per nibh probo quando.</p><p>Vix probatus abhorreant ei, ex dicunt quaerendum mediocritatem duo. Vix ad noster nemore vocibus, choro ullamcorper necessitatibus sea at, illum nominati ea eos. Quaeque feugait temporibus vim at. Mea ea sonet vocent volumus.</p><p>Eu veri lobortis salutatus nec. Vis reque recteque intellegat ei. Ut urbanitas conceptam est. Duo meis prima soluta at, odio duis etiam eum ea, sit et laoreet facilisis conclusionemque.</p><p>Ad illud aliquando vim. Ad vel unum affert exerci, te natum timeam ius. Sint iisque tincidunt ea eam. Suas invidunt praesent pro no, eam eu congue aeterno deseruisse, at homero mentitum vis. Ea habeo discere probatus eam, per ea dico mucius putant, ut eirmod docendi concludaturque mei. Eleifend recteque salutandi eum ea, officiis inimicus tincidunt et duo. Iusto prompta eripuit sit an, ponderum petentium voluptatibus nam te, nonumy debitis imperdiet ea pro.</p><p>Ea eam fabellas pertinacia moderatius, solum eruditi ad vel. Pro tation intellegebat ad. Id abhorreant repudiandae has. Sea magna dolor repudiare et. Quot luptatum scripserit et pri, te fierent delectus pri, mei ei posse delicata mediocrem.</p>",
+		"status": "Draft"
+	},
+	{
+		"id": "4",
+		"thumb": "dist/images/gallery/1.jpg",
+		"post_title": "Hubungi Kami",
+		"slug": "hubungi-kami",
+		"post_content": "<p>Lorem ipsum dolor sit amet, eam quas aliquam conceptam ne. His in amet dicunt elaboraret, in quando diceret corpora nec. Ferri propriae intellegebat mea an, quas perpetua vis in. Ne decore maiorum nec. Diam tractatos sententiae duo ea. Dicam fabellas maiestatis ut quo, laoreet qualisque eum ei. Magna tincidunt in vis, at per nibh probo quando.</p><p>Vix probatus abhorreant ei, ex dicunt quaerendum mediocritatem duo. Vix ad noster nemore vocibus, choro ullamcorper necessitatibus sea at, illum nominati ea eos. Quaeque feugait temporibus vim at. Mea ea sonet vocent volumus.</p><p>Eu veri lobortis salutatus nec. Vis reque recteque intellegat ei. Ut urbanitas conceptam est. Duo meis prima soluta at, odio duis etiam eum ea, sit et laoreet facilisis conclusionemque.</p><p>Ad illud aliquando vim. Ad vel unum affert exerci, te natum timeam ius. Sint iisque tincidunt ea eam. Suas invidunt praesent pro no, eam eu congue aeterno deseruisse, at homero mentitum vis. Ea habeo discere probatus eam, per ea dico mucius putant, ut eirmod docendi concludaturque mei. Eleifend recteque salutandi eum ea, officiis inimicus tincidunt et duo. Iusto prompta eripuit sit an, ponderum petentium voluptatibus nam te, nonumy debitis imperdiet ea pro.</p><p>Ea eam fabellas pertinacia moderatius, solum eruditi ad vel. Pro tation intellegebat ad. Id abhorreant repudiandae has. Sea magna dolor repudiare et. Quot luptatum scripserit et pri, te fierent delectus pri, mei ei posse delicata mediocrem.</p>",
+		"status": "Trash"
+	}
+]

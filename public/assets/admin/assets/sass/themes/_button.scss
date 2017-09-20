@@ -1,0 +1,68 @@
+/* - Button
+------------------------------------------- */
+.btn {	
+	display: inline-block;
+    text-decoration: none;
+    font-size: 13px;
+    line-height: 26px;
+    height: 28px;
+    margin: 0;
+    padding: 0 10px 1px;
+    cursor: pointer;
+    border-width: 1px;
+    border-style: solid;
+    -webkit-appearance: none;
+    border-radius: 3px;
+    white-space: nowrap;
+    vertical-align: top;
+    @include box-sizing(border-box);
+
+	&-secondary {
+		color: #555;
+		border-color: #ccc;
+		background: #f7f7f7;
+		box-shadow: 0 1px 0 #ccc;		
+		
+		&:focus,
+		&:active {
+			color: #555;
+			border-color: #ccc;
+			background: #f7f7f7;
+			box-shadow: 0 1px 0 #ccc;
+		}
+		&:hover {
+			border-color: #555;
+		}
+	}
+	&-primary {
+		color: #fff;
+		background-color: $brand-primary;
+		border-color: darken($brand-primary, 2%) $brand-primary-dark $brand-primary-dark;
+	    box-shadow: 0 1px 0 $brand-primary-dark;
+	    text-shadow: 0 -1px 1px $brand-primary-dark, 1px 0 1px $brand-primary-dark, 0 1px 1px $brand-primary-dark, -1px 0 1px $brand-primary-dark;
+		
+		&:focus {
+			background-color: $brand-primary;
+			border-color: darken($brand-primary, 2%) $brand-primary-dark $brand-primary-dark;
+			box-shadow: 0 1px 0 $brand-primary-dark;
+		}
+	    &:hover {
+	    	background-color: lighten($brand-primary, 2%)
+	    }
+	    &:active,
+	    &:active:focus {
+			background: darken($brand-primary, 2%);
+			border-color: $brand-primary-dark;
+			-webkit-box-shadow: inset 0 2px 0 $brand-primary-dark;
+			box-shadow: inset 0 2px 0 $brand-primary-dark;
+	    }
+	}
+	&-danger {
+		@include button($danger);
+	}
+	&-md {
+		font-size: .95rem;
+		padding: 2px 15px;
+		height: auto;
+	}
+}

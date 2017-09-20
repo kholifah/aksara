@@ -1,0 +1,50 @@
+/* - Sweet Alert Reset
+----------------------------------------------- */
+.swal2-modal {
+  font-family: 'Noto Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+.swal2-modal .swal2-title {
+  font-size: 28px;
+}
+.swal2-modal .swal2-content {
+  font-size: 16px;
+}
+.swal2-modal .swal2-spacer {
+  margin: 10px 0;
+}
+.swal2-modal .swal2-file,
+.swal2-modal .swal2-input,
+.swal2-modal .swal2-textarea {
+  border: 2px solid #98a6ad;
+  font-size: 16px;
+  box-shadow: none !important;
+}
+.swal2-icon.swal2-question {
+  color: #5fbeaa;
+  border-color: #5fbeaa;
+}
+.swal2-icon.swal2-success {
+  border-color: #81c868;
+}
+.swal2-icon.swal2-success .line {
+  background-color: #81c868;
+}
+.swal2-icon.swal2-success .placeholder {
+  border-color: #81c868;
+}
+.swal2-icon.swal2-warning {
+  color: #ffbd4a;
+  border-color: #ffbd4a;
+}
+.swal2-icon.swal2-error {
+  border-color: #f05050;
+}
+.swal2-icon.swal2-error .line {
+  background-color: #f05050;
+}
+.swal2-modal .swal2-file:focus,
+.swal2-modal .swal2-input:focus,
+.swal2-modal .swal2-textarea:focus {
+  outline: 0;
+  border: 2px solid #5fbeaa;
+}

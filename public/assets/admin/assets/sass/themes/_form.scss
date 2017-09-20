@@ -1,0 +1,256 @@
+/* - Form 
+------------------------------------------- */
+input[type=text],
+input[type=search],
+input[type=radio],
+input[type=tel],
+input[type=time],
+input[type=url],
+input[type=week],
+input[type=password],
+input[type=checkbox],
+input[type=color],
+input[type=date],
+input[type=datetime],
+input[type=datetime-local],
+input[type=email],
+input[type=month],
+input[type=number],
+textarea,
+select {
+	&.form-control {
+		border: 1px solid #ddd;
+		box-shadow: inset 0 1px 2px rgba(0,0,0,.07);
+		background-color: #fff;
+		color: #32373c;
+		outline: 0;
+		border-radius: 0;
+		@include transition(50ms border-color ease-in-out);
+
+		&:focus {
+			border-color: #5b9dd9;
+			box-shadow: 0 0 2px rgba(30,140,190,.8);
+		}
+
+		&--sm {
+			max-width: 300px;
+		}
+	}
+}
+textarea.form-control {
+	max-height: none;
+	resize: vertical;
+}
+select.form-control {
+    padding: 2px 12px;
+
+    &.form-sm {
+    	padding: 2px 8px;
+    }
+}
+.title-field {
+	.title-field-wrap {
+		.form-control {
+			padding: 5px 15px;
+			font-size: 1.5rem;
+			line-height: 100%;
+			height: auto;
+			max-height: none;
+			width: 100%;
+			outline: 0;
+			margin: 0 0 5px;
+		}
+	}
+	.slug-wrap {
+		@include clear;
+
+		label {
+			float: left;
+			text-align: right;
+			width: 160px;
+			margin-bottom: 0;
+			font-weight: 500;
+			vertical-align: middle;
+			color: #505458;
+			display: none;
+		}
+		.form-control {
+			float: left;
+			width: calc(100% - 180px);
+			vertical-align: middle;
+			height: auto;
+			max-height: none;
+			padding: 4px 12px;
+		}
+	}
+}
+.form-horizontal {
+	.form-group--table {
+		display: table;
+		margin-left: 0;
+		margin-right: 0;
+		width: 100%;
+		border-collapse: collapse;
+		table-layout: fixed;
+
+		.col-form-label,
+		.col-form-input {
+			display: table-cell;
+			vertical-align: middle;
+			width: 100%;
+		}
+		.col-form-label {
+			margin-right: 10px;
+			width: 140px;
+
+			&--sm {
+				width: 60px;
+			}
+		}
+
+		@media (max-width: $screen-xs-max) {
+			display: block;
+
+			.col-form-label,
+			.col-form-input {
+				display: block;
+				vertical-align: middle;
+				width: 100%;
+			}
+		}
+	}
+}
+.form-img {
+	.form-file-wrapper {
+		max-width: 150px;
+		font-size: .95rem;
+		position: relative;
+		display: block;
+		margin-right: auto;
+		margin-left: 0;
+
+		input {
+			width: 100%;
+			height: 100%;
+			visibility: hidden;
+			position: absolute;
+			top: 0;
+			left: 0;
+		}
+	}
+	.info,
+	.info-error {
+		font-style: italic;
+		font-size: .9rem;
+		display: none;
+		margin-bottom: 15px;
+	}
+	.image-preview {
+		width: 100%;
+		padding-bottom: 10px;
+		display: none;
+		position: relative;
+
+		> img {
+			width: auto;
+			max-height: 240px;
+			max-width: 100%;
+			margin-left: 0;
+			margin-right: auto;
+			border-radius: 3px;
+			display: block;
+		}
+
+		&:hover {
+			.img-remove {
+				@include multi-transform(translate(-50%, -50%) scale(1,1));
+			}
+		}
+	}
+	.img-remove {		
+		width: 50px;
+		height: 50px;
+		background-color: rgba(255,255,255,.9);
+		border-radius: 50%;
+		color: #000;
+		line-height: 50px;
+		text-align: center;
+		font-size: 22px;
+		@include center-middle;
+		@include transition(all .3s);
+		@include multi-transform(translate(-50%, -50%) scale(0,0));
+
+		&:hover {
+			color: darken($warning, 10%);
+		}
+	}
+
+	&.preview {
+		.info {
+			display: block;
+		}
+		.image-preview {
+			display: block;
+		}
+	}
+}
+.unstyle-list {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+.submit-row {
+	.alignright + .alignright {
+		margin-right: 15px;
+	}
+}
+.CodeMirror {
+	height: 150px;
+
+	&-linenumber {
+		font-size: 13px;
+	}
+	pre {
+		font-size: 13px;
+	}
+}
+#generator-area {
+	font-family: $font-family-code;
+}
+
+// Edit Permalink
+.edit-slug-box {
+	padding-left: 17px;
+	font-size: 14px;
+	margin-top: 5px;
+
+	#editable-post-name {
+		font-weight: 600;
+	}
+	#new-post-slug {
+		font-size: 13px;
+		margin: 0;
+		width: 200px;
+		color: #333;
+		padding: 3px 5px;
+		display: none;
+		border: 1px solid #ddd;
+		background-color: #fff;
+
+		&:focus {
+			border-color: #5b9dd9;
+			box-shadow: 0 0 2px rgba(30,140,190,.8);
+		}
+	}
+	> * {
+		vertical-align: middle;
+		display: baseline;
+	}
+	#edit-slug-buttons {
+		vertical-align: top;
+
+		.btn + .btn {
+			margin-left: 5px;
+		}
+	}
+}

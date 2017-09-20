@@ -1,0 +1,22 @@
+/* - Grid
+--------------------------------------------- */
+.column-2 {
+	@include clear;
+
+	.container-content {
+		width: calc(100% - 300px);
+		float: left;
+	}
+	.container-sidebar {
+		width: 280px;
+		float: right;
+	}
+
+	@media (max-width: $screen-sm-max) {
+		.container-content,
+		.container-sidebar {
+			width: 100%;
+			float: none;
+		}
+	}
+}

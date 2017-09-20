@@ -1,0 +1,258 @@
+/*
+
+Borobudur Park Style
+Copyright 2017 Tonjoo
+Author: @prihatno96
+
+DESCRIPTION:
+SASS Mixin for easy styling elements with the same style
+
+
+TABLE OF CONTENTS:
+
+- Border radius & shadow
+	- Boder Radius
+	- Remove Box Shadow
+	- Panel shadow 
+- Display
+- Position
+	- Make Object Vertical & Horizontal Center
+	- Make Object Vertical Center
+	- Make Object Horizontal Center
+	- Link Block
+- Background
+	- Add background overlay to make teks/object clearer
+	- Add background overlay on hover
+	- Add Plus Icon on Hover
+- Animations
+	- Zoom in
+	- Scale
+- Transition
+	- Transition ease in out
+	- Reset Transform
+	- Multi Transform
+	- Object Zoom In
+	- Zoom In (Zoom in + Icon Plus)
+	- Remove zoom in style
+- Button
+*/
+
+// Border radius & shadow
+// ------------------------------------
+// ------------------------------------
+
+// Boder Radius
+@mixin border-radius($size) {
+	border-radius: $size;
+	-webkit-border-radius: $size;
+	-moz-border-radius: $size;
+}
+
+// Remove Box Shadow
+@mixin no-box-shadow {
+	box-shadow: none;
+	-webkit-box-shadow: none;
+	-moz-box-shadow: none;
+}
+
+// Text Shadow
+@mixin text-shadow($value) {
+	text-shadow: $value;
+	-webkit-text-shadow: $value;
+	-moz-text-shadow: $value;
+}
+
+// Panel shadow
+@mixin panel-shadow($shadow) {
+	box-shadow: $shadow;
+	-webkit-box-shadow: $shadow; // iOS <4.3 & Android <4.1
+	-moz-box-shadow: $shadow;
+}
+
+// Display
+// ------------------------------------
+// ------------------------------------
+@mixin display-table($alignment) {
+	display: table;
+	width: 100%;
+	> * {
+		display: table-cell;
+		vertical-align: $alignment;
+	}
+}
+
+@mixin display-flex {
+	display: flex;
+
+	display: -webkit-box;
+	display: -moz-box;
+	display: -ms-flexbox;
+	display: -webkit-flex;
+	display: flex;
+
+	-webkit-flex-flow: row wrap;
+}
+
+@mixin display-block {
+	display: block;
+	> * {
+		display: block;
+	}
+}
+
+// Position
+// ------------------------------------
+// ------------------------------------
+
+// Make Object Vertical & Horizontal Center
+@mixin transform-none {
+	transform: none;
+	-moz-transform: none;
+	-webkit-transform: none;
+}
+@mixin center-middle {
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%,-50%);
+	-webkit-transform: translate(-50%,-50%);
+	-moz-transform: translate(-50%,-50%);
+}
+
+// Multi Transform
+@mixin multi-transform($transform...) {
+  -webkit-transform: $transform;
+      -ms-transform: $transform; // IE9 only
+       -o-transform: $transform;
+          transform: $transform;
+}
+
+// Make Object Vertical Center
+@mixin vertical-center($position) {
+	position: $position;
+	top: 50%;
+	transform: translateY(-50%);
+	-webkit-transform: translateY(-50%);
+	-moz-transform: translateY(-50%);
+}
+
+// Make Object Horizontal Center
+@mixin horizontal-center($position) {
+	position: $position;
+	left: 50%;
+	transform: translateX(-50%);
+	-webkit-transform: translateX(-50%);
+	-moz-transform: translateX(-50%);
+}
+
+// Make Object block to container
+@mixin link-block {
+	display: block;
+	position: absolute;
+	left: 0;
+	top: 0;
+	bottom: 0;
+	right: 0;
+	z-index: 1;
+}
+
+// Make Object absolute to bottom
+@mixin pull-bottom {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	right: 0;
+}
+
+// Animations
+// ------------------------------------
+// ------------------------------------
+
+// Object Zoom In
+@mixin zoom {
+	transform: scale(1.1);
+	-webkit-transform: scale(1.1);
+	-moz-transform: scale(1.1);
+}
+
+// Normal Scale
+
+// Position
+// ------------------------------------
+// ------------------------------------
+
+@mixin overlay {
+	&:after {
+		content: "";
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		z-index: 1;
+		height: 100%;
+		opacity: .7;
+		/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#000000+0,000000+100&0+0,0.65+100 */
+		background: -moz-linear-gradient(top,  rgba(0,0,0,0) 0%, rgba(0,0,0,1) 100%); /* FF3.6-15 */
+		background: -webkit-linear-gradient(top,  rgba(0,0,0,0) 0%,rgba(0,0,0,1) 100%); /* Chrome10-25,Safari5.1-6 */
+		background: linear-gradient(to bottom,  rgba(0,0,0,0) 0%,rgba(0,0,0,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+		filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00000000', endColorstr='#a6000000',GradientType=0 ); /* IE6-9 */
+		@include transition(0.2s);
+	}
+
+	&:hover {
+		&:after {opacity: .8;}
+	}
+}
+
+// Button
+// ------------------------------------
+
+@mixin social-icon($color) {
+	background-color: $color;
+	border-color: $color;
+	color: #fff;
+
+	&:hover {
+		background-color: darken($color, 5%);
+		color: #fff;
+	}
+
+	@media (max-width: $screen-xs-max) {
+		color: $color;
+		background-color: #fff;
+	}
+}
+
+@mixin button($color) {
+	color: #fff;
+	background-color: $color;
+	border-color: darken($color, 2%) darken($color, 15%) darken($color, 15%);
+    box-shadow: 0 1px 0 darken($color, 15%);
+    text-shadow: 0 -1px 1px darken($color, 15%), 1px 0 1px darken($color, 15%), 0 1px 1px darken($color, 15%), -1px 0 1px darken($color, 15%);
+	
+	&:focus {
+		background-color: $color;
+		border-color: darken($color, 2%) darken($color, 15%) darken($color, 15%);
+		box-shadow: 0 1px 0 darken($color, 15%);
+	}
+    &:hover {
+    	background-color: lighten($color, 2%);
+    	border-color: darken($color, 2%) darken($color, 15%) darken($color, 15%);
+    }
+    &:active,
+    &:active:focus {
+		background: darken($color, 2%);
+		border-color: darken($color, 15%);
+		-webkit-box-shadow: inset 0 2px 0 darken($color, 15%);
+		box-shadow: inset 0 2px 0 darken($color, 15%);
+    }
+}
+
+@mixin clear {
+	&:after,
+	&:before {
+		content: '';
+		clear: both;
+		display: table;
+	}
+}
