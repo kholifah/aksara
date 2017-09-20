@@ -18,7 +18,7 @@
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
         <![endif]-->
-        @action('aksara.admin_head')
+        @action('aksara.admin.head')
         <!-- Base CSS -->
         <link href="{{ asset('assets/admin/dist/css/style.css') }}" rel="stylesheet" type="text/css"/>
         <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600,700,300|Noto+Sans:400,700" rel="stylesheet">
@@ -81,6 +81,6 @@ aksara_url = "<?php echo url('/') ?>";
 
     </body>
     <footer>
-        @action('aksara.admin_footer')
+        @action('aksara.admin.footer')
     </footer>
 </html>

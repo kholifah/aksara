@@ -63,8 +63,8 @@
     echo '<link href='.url("assets/admin/assets/plugins/datatables/responsive.bootstrap.min.css").' rel="stylesheet" type="text/css"/>';
 });
 
-\App::singleton('aksara.admin_footer',function(){
-\Eventy::addAction('aksara.admin_footer',function()
+
+\Eventy::addAction('aksara.admin.footer',function()
 {
     // File JS / CSS masuk sini
     // @nanti dipindah ke resource
@@ -115,5 +115,4 @@
                 });
             });
         </script>";
-});
 });

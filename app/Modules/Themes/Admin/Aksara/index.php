@@ -39,3 +39,6 @@
                 );
 
 });
+
+
+aksara_admin_enqueue_style(url("assets/modules/Plugins/PostType/assets/style.asdascss"));
