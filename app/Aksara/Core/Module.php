@@ -113,9 +113,9 @@ class Module
       // @TODO Migration
       if( is_dir($migrationFolder) )
       {
-        // app()->afterResolving('migrator', function ($migrator) use ($migrationFolder) {
-          // $migrator->path($migrationFolder);
-        // });
+        app()->afterResolving('migrator', function ($migrator) use ($migrationFolder) {
+          $migrator->path($migrationFolder);
+        });
       }
 
       return true;
