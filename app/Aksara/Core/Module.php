@@ -73,7 +73,7 @@ class Module
             else
             {
               $successActivate = $this->activateModule( 'plugin', $dependency);
-
+              $this->loadModule('plugin', $dependency);
               if( !$successActivate ) {
                 admin_notice('danger','Plugin '.$dependency.' tidak ada dalam sistem.');
                 return false;
@@ -124,26 +124,109 @@ class Module
     return false;
   }
 
-  function moduleActivationMessage($activatedModule)
-  {
-      if( $this->getModuleStatus($activatedModule['moduleType'],$activatedModule['moduleName']) )
-          admin_notice('success',$activatedModule['moduleType'].' - '.$activatedModule['moduleName'].' berhasil diaktifkan.');
-      else
-          admin_notice('warning',$activatedModule['moduleType'].' - '.$activatedModule['moduleName'].' gagal diaktifkan karena terdapat error.');
-  }
-  // Deactive last activated plugin if causing error
-  function moduleActivationErrorHandler()
-  {
-    // $this->deactivateModule('plugin','post-type');
-    // from ModuleManagerController
-    $activatedModule = \get_options('module_activation',false);
-    if( $activatedModule )
+    // @TODO module_activation seharusnya dihapus pada saat laravel berhasil clean shutdown, tapi karena tidak ada hook shutdown pada laravel maka caranya adalah dicek, jika counter sudah 2 dihapus
+    function moduleStatusChangeListener()
     {
-        $this->deactivateModule($activatedModule['moduleType'],$activatedModule['moduleName']);
-        $this->moduleActivationMessage($activatedModule);
-        \delete_options('module_activation');
+        $moduleActivation = \get_options('module_activation', false );
+        $moduleDeactivation = \get_options('module_deactivation', false );
+
+        if( !$moduleActivation && !$moduleDeactivation )
+          return;
+
+        if( !$moduleActivation )
+        {
+            $moduleInQuestion = $moduleDeactivation;
+            $type = 'deactive';
+        }
+        else
+        {
+            $moduleInQuestion = $moduleActivation;
+            $type = 'activation';
+        }
+
+        $moduleInQuestion['counter']++ ;
+
+        if( $type == 'activation' )
+            set_options('module_activation', $moduleInQuestion);
+        else
+            set_options('module_deactivation', $moduleInQuestion);
+
+
+        if( $moduleInQuestion['counter'] >= 2 )
+        {
+            $this->moduleStatusChangeListenerMessage($type, $moduleInQuestion);
+            delete_options('module_activation');
+            delete_options('module_deactivation');
+        }
+
     }
+
+  function moduleStatusChangeListenerMessage($type, $moduleInQuestion)
+  {
+
+      if( $type == 'activation')
+      {
+          if( $this->getModuleStatus($moduleInQuestion['moduleType'],$moduleInQuestion['moduleName']) )
+              admin_notice('success',$moduleInQuestion['moduleType'].' - '.$moduleInQuestion['moduleName'].' berhasil diaktifkan.');
+          else
+              admin_notice('warning',$moduleInQuestion['moduleType'].' - '.$moduleInQuestion['moduleName'].' gagal diaktifkan karena terdapat error.');
+      }
+      else
+      {
+          if( $this->getModuleStatus($moduleInQuestion['moduleType'],$moduleInQuestion['moduleName']) )
+              admin_notice('warning',$moduleInQuestion['moduleType'].' - '.$moduleInQuestion['moduleName'].' gagal di-nonaktifkan  karena terdapat error..');
+          else
+              admin_notice('success',$moduleInQuestion['moduleType'].' - '.$moduleInQuestion['moduleName'].' berhasil dinon-aktifkan');
+
+      }
   }
+  // Deactive last activated plugin if causing error, only on activati
+    function moduleActivationErrorHandler($exception)
+    {
+        // $this->deactivateModule('plugin','post-type');
+        $moduleActivation = \get_options('module_activation', false );
+        $moduleDeactivation = \get_options('module_deactivation', false );
+
+        if( $moduleDeactivation )
+        {
+            $this->activateModule($moduleDeactivation['moduleType'],$moduleDeactivation['moduleName']);
+            $this->moduleStatusChangeListenerMessage('deactive', $moduleDeactivation);
+            delete_options('module_deactivation');
+        }
+        elseif( $moduleActivation )
+        {
+            if( isset($_GET['deactive']) )
+            {
+                $this->deactivateModule($moduleActivation['moduleType'],$moduleActivation['moduleName']);
+                $this->moduleStatusChangeListenerMessage('activation', $moduleActivation);
+                delete_options('module_activation');
+                header('Location: '.url('admin/aksara-module-manager'));
+                exit;
+            }
+
+            // On special an database exception
+            if( $moduleActivation['counter'] <= 2 && $exception instanceof \Illuminate\Database\QueryException )
+            {
+                $moduleActivation['counter'] = 0;
+
+
+                set_options('module_activation', $moduleActivation);
+                // set_options('module_activation', $moduleActivation);
+                $text =  '<p>Modul gagal diaktifkan karena terjadi eksepsi database, coba non aktifkan modul ini dan jalankan migrasi :</p>';
+                $text .=  '<pre>php artisan aksara:migrate '.$moduleActivation['moduleName'].'</pre>';
+                $text .=  '<a href="?deactive=true">Non aktifkan plugin '.$moduleActivation['moduleName'].'.</a>';
+                $text .=  '<pre>'.$exception.'</pre>';
+
+                // @TODO move to view
+                echo $text;
+                die();
+            }
+
+
+
+        }
+
+    }
 
   // activate module
   function activateModule( $type, $moduleName )
@@ -233,6 +316,7 @@ class Module
       $registeredModules[$type] = [];
 
     $moduleDescription = $modulePath.'/description.php' ;
+    $migrationFolder = $modulePath.'/migrations' ;
     $moduleName =  $this->getModuleSlug($modulePath);
 
     if( file_exists($moduleDescription) )
@@ -254,6 +338,8 @@ class Module
 
     $registeredModules[$type][$moduleName]['modulePath'] = $modulePath;
 
+    if( is_dir($migrationFolder) )
+        $registeredModules[$type][$moduleName]['migrationPath'] = $migrationFolder;
 
     \Config::set('aksara.modules', $registeredModules );
   }
@@ -270,19 +356,17 @@ class Module
     $this->activateModule('plugin', $slug);
   }
 
-  // @TODO module_activation seharusnya dihapus pada saat laravel berhasil clean shutdown, tapi karena tidak ada hook shutdown pada laravel maka caranya adalah dicek, jika counter sudah 2 dihapus
-  function incrementActivationCounter()
+  function initDeactivation($slug)
   {
-    $moduleActivation = \get_options('module_activation', false );
+    \set_options('module_deactivation', [
+        'moduleType' => 'plugin',
+        'moduleName' => $slug,
+        'counter' => 0
+    ]);
 
-    if( !$moduleActivation )
-      return;
-
-    $moduleActivation['counter'] = $moduleActivation['counter'] + 1;
-
-    if( $moduleActivation['counter'] == 2 )
-      delete_options('module_activation');
-    else
-      set_options('module_activation',$moduleActivation);
+    //@todo
+    $this->deactivateModule('plugin', $slug);
   }
+
+
 }

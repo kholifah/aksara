@@ -19,7 +19,7 @@ class AksaraServiceProvider extends ServiceProvider
 
       // $post = \App::make('post');
       $module = \App::make('module');
-      $module->incrementActivationCounter();
+      $module->moduleStatusChangeListener();
 
       // Load Core Plugin
       $module->loadModules('core',app_path('Aksara/Core'));

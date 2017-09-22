@@ -93,15 +93,15 @@ function set_post_term($postID = false, $taxonomy = false, $term = false)
 function delete_term($termID = false)
 {
     // To function delete_options in Term model
-    $term = Term::delete_term($termID);
+    $term = Term::deleteTerm($termID);
     return $term;
 }
 
 // Function for get term data
-function get_term($taxonomy = false, $arg = false)
+function get_terms($taxonomy = false, $arg = false)
 {
 
-    $term = Term::get_term($taxonomy, $arg);
+    $term = Term::getTerms($taxonomy, $arg);
     return $term;
 }
 
@@ -124,10 +124,10 @@ function update_term($termID = false, $name= false, $slug = false, $parent = fal
 
 
 // Function for get term data
-function get_taxonomy()
+function get_taxonomies( $postType = false )
 {
-    // To function get_taxonomy in Taxonomy model
-    $taxonomy = Taxonomy::get_taxonomy();
+    // To function get_taxonomies in Taxonomy model
+    $taxonomy = Taxonomy::getTaxonomies($postType);
     return $taxonomy;
 }
 
@@ -137,8 +137,8 @@ function register_taxonomy($taxonomy, $postType, $args )
     $post->registerTaxonomy( $taxonomy, $postType, $args);
 }
 
-function check_taxonomy($postType = false, $taxonomy= false)
-{
-    $taxonomy = Taxonomy::check_taxonomy($postType, $taxonomy);
-    return $taxonomy;
-}
+// function check_taxonomy($postType = false, $taxonomy= false)
+// {
+//     $taxonomy = Taxonomy::check_taxonomy($postType, $taxonomy);
+//     return $taxonomy;
+// }

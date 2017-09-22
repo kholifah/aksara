@@ -38,13 +38,15 @@ class Term extends Model
         return $this->hasMany('App\Modules\Plugins\PostType\Model\TermRelationship', 'term_id');
     }
 
-    public static function delete_term($termID = false)
+    public static function deleteTerm($termID = false)
     {
         //Checking term_id data can't be empty
         if (!$termID)
         {
             return FALSE;
-        } else {
+        }
+        else
+        {
             //Checking term data
             $term = Term::find($termID);
             if ($term)
@@ -60,28 +62,14 @@ class Term extends Model
     }
 
     // Function for get term data
-    public static function get_term($taxonomy = false, $arg = false)
+    public static function getTerms( $taxonomy = false, $arg = false )
     {
         // Checking post_id data can't be empty
-        if (!$taxonomy)
-        {
-            return FALSE;
-        } else {
-            // Checking post data
-            $dtaxonomy = Taxonomy::where('taxonomy_name', $taxonomy)->get();
-            if($dtaxonomy->count() > 1)
-                $dtaxonomy = Taxonomy::where('post_type', get_current_post_type())->where('taxonomy_name', $taxonomy)->first();
-            if (!$dtaxonomy)
-                return FALSE;
-        }
+        if ( !$taxonomy )
+            return collect([]);
 
-        if(isset($dtaxonomy[0]))
-        {
-            $term = Term::where('taxonomy_id', $dtaxonomy[0]->id);
-        } else {
-            // Get term data from db
-            $term = Term::where('taxonomy_id', $dtaxonomy->id);
-        }
+        $terms = Term::query();;
+
         // Checking arg data
         if ($arg)
         {
@@ -89,42 +77,40 @@ class Term extends Model
             if(!is_array($arg))
                 return FALSE;
 
-            foreach ($arg as $k => $v)
+            foreach ($arg as $key => $value)
             {
                 $orderby = 'id';
                 $order = 'ASC';
                 $paginate = 10;
-                switch ($k)
+                switch ($key)
                 {
                     case 'order_by':
-                        $model = new Term;
-                        $fillable = $model->getFillable();
+                        $termModel = new Term;
                         // Checking field name
-                        if(in_array($v, $fillable))
-                            $orderby = $v;
+                        if( in_array($value, $termModel->getFillable()) )
+                            $orderby = $value;
                         else
                             return FALSE;
                         break;
                     case 'order':
-                        $order = $v;
+                        $order = $value;
                         break;
                     case 'child':
-                        if(!((boolean)$v))
-                            $term = $term->where('parent', '=', 0);
+                        if(!((boolean)$value))
+                            $terms = $terms->where('parent', '=', 0);
                         break;
                     case 'paginate':
-                        $paginate = (int)$v;
+                        $paginate = (int)$value;
                         break;
                 }
-
             }
 
-
-            $term =  $term->orderBy($orderby, $order)->paginate($paginate);
-        } else {
-            $term = $term->orderBy('parent')->get();
+            $terms =  $terms->orderBy($orderby, $order)->paginate($paginate);
         }
-        return $term;
+        else
+            $terms = $terms->orderBy('parent')->get();
+
+        return $terms;
     }
 
     // Function for add term data

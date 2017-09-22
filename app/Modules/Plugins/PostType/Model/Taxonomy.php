@@ -22,42 +22,32 @@ class Taxonomy extends Model
     }
 
     // Function for get term data
-    public static function get_taxonomy()
+    public static function getTaxonomies( $postType )
     {
         // Checking post data
-        $taxonomy = Taxonomy::get();
+        if( !$postType )
+            $taxonomy = Taxonomy::get();
+        else
+            $taxonomy = Taxonomy::where('post_type',$postType)->get();
+
         if (!$taxonomy)
             return FALSE;
 
         return $taxonomy;
     }
 
-    // Function for check term data
-    public static function check_taxonomy($postType, $taxonomy)
+    // Persist taxonomy
+    public static function persistTaxonomy($taxonomyName)
     {
-        if(is_array($postType))
+        $taxonomy = Taxonomy::where('taxonomy_name', $taxonomyName)->first();
+
+        if (!$taxonomy)
         {
-            foreach ($postType as $v)
-            {
-                $taxo = Taxonomy::where('post_type', $v)->where('taxonomy_name', $taxonomy)->first();
-                if (!$taxo)
-                {
-                    $taxo = new Taxonomy;
-                    $taxo->post_type = $v;
-                    $taxo->taxonomy_name = $taxonomy;
-                    $taxo->slug = str_slug($taxonomy,'-');
-                    $taxo->save();
-                } else {
-                    $taxo->post_type = $v;
-                    $taxo->taxonomy_name = $taxonomy;
-                    $taxo->slug = str_slug($taxonomy,'-');
-                    $taxo->save();
-                }
-            }
-            //Taxonomy::whereNotIn('post_type', $postType)->where('taxonomy_name', $taxonomy)->delete();
-            return TRUE;
+            $taxonomy = new Taxonomy;
+            $taxonomy->taxonomy_name = $taxonomyName;
+            $taxonomy->slug = str_slug($taxonomyName);
+            $taxonomy->save();
         }
-        return FALSE;
     }
 
 }

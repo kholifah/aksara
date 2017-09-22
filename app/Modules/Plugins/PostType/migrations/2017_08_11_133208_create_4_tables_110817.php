@@ -12,14 +12,6 @@ class Create4Tables110817 extends Migration
      */
     public function up()
     {
-        Schema::create('options', function (Blueprint $table)
-        {
-            $table->bigIncrements('id')->unsigned();
-            $table->string('key', 40)->unique();
-            $table->longText('value');
-
-        });
-
         Schema::create('term_relationships', function (Blueprint $table)
         {
             $table->bigIncrements('id')->unsigned();

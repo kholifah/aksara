@@ -1,6 +1,7 @@
 <?php
 namespace App\Modules\Plugins\PostType;
 use \App\Aksara\Core\AdminMenu\AdminMenu as Menu;
+use App\Modules\Plugins\PostType\Model\Taxonomy;
 
 class Post
 {
@@ -35,8 +36,8 @@ class Post
           \Route::get($postType['route'].'/{id}/restore', ['as' => 'admin.'.$postType['route'].'.restore', 'uses' =>'\App\Modules\Plugins\PostType\Http\PostController@restore']);
           \Route::get($postType['route'].'/{id}/trash', ['as' => 'admin.'.$postType['route'].'.trash', 'uses' =>'\App\Modules\Plugins\PostType\Http\PostController@trash']);
 
-          $registeredTaxonomy = \Config::get('aksara.taxonomy');
-
+          $registeredTaxonomy = \Config::get('aksara.taxonomies');
+        //   dd($registeredTaxonomy);
           if( isset($registeredTaxonomy[$postType['route']]))
           {
               foreach ($registeredTaxonomy[$postType['route']] as $taxonomy => $arg) {
@@ -93,63 +94,58 @@ class Post
   //       'supports'           => array( 'title', 'editor', 'author', 'thumbnail', 'excerpt', 'comments' ),
   //   );
   //
-  function registerPostType( $postType, $args)
-  {
-    $menu = new Menu();
-
-    $registeredPostType = \Config::get('aksara.post_type');
-
-    if( !$registeredPostType )
-      $registeredPostType = [];
-
-    $args = $this->parseDefaultArgs($postType, $args);
-
-    $registeredPostType[$postType] = $args ;
-
-    \Config::set( 'aksara.post_type', $registeredPostType);
-    // string $pageTitle, string $menuTitle ,string  $routeName, $position = 0, string $icon = 'ti-pin-alt',  , string $capability ='
-    $menu->addMenuPage($args['label']['name'], $args['label']['name'], 'admin.'.$args['route'].'.index' , 10, $args['icon'], $args['route'] );
-
-    // Add For Index and Add New
-    $menu->addSubMenuPage( 'admin.'.$args['route'].'.index', "Semua ".$args['label']['name'],"Semua ".$args['label']['name'],'admin.'.$args['route'].'.index');
-    $menu->addSubMenuPage( 'admin.'.$args['route'].'.index', "Tambah ".$args['label']['name'],"Tambah ".$args['label']['name'],'admin.'.$args['route'].'.create');
-
-  }
-
-  function registerTaxonomy( $taxonomy, $postTypes, $args)
-  {
-    if(!$taxonomy)
+    function registerPostType( $postType, $args)
     {
-        return;
+        $menu = new Menu();
+
+        $registeredPostType = \Config::get('aksara.post_type');
+
+        if( !$registeredPostType )
+          $registeredPostType = [];
+
+        $args = $this->parseDefaultArgs($postType, $args);
+
+        $registeredPostType[$postType] = $args ;
+
+        \Config::set( 'aksara.post_type', $registeredPostType);
+        // string $pageTitle, string $menuTitle ,string  $routeName, $position = 0, string $icon = 'ti-pin-alt',  , string $capability ='
+        $menu->addMenuPage($args['label']['name'], $args['label']['name'], 'admin.'.$args['route'].'.index' , 10, $args['icon'], $args['route'] );
+
+        // Add For Index and Add New
+        $menu->addSubMenuPage( 'admin.'.$args['route'].'.index', "Semua ".$args['label']['name'],"Semua ".$args['label']['name'],'admin.'.$args['route'].'.index');
+        $menu->addSubMenuPage( 'admin.'.$args['route'].'.index', "Tambah ".$args['label']['name'],"Tambah ".$args['label']['name'],'admin.'.$args['route'].'.create');
     }
-    $menu = new Menu();
 
-    check_taxonomy($postTypes, $taxonomy);
-
-    $registeredTaxonomy = \Config::get('aksara.taxonomy',[]);
-
-    if(is_array($postTypes))
+    function registerTaxonomy( $taxonomy, $postTypes = [], $args)
     {
-        if($postTypes)
-        {
-            foreach ($postTypes as $postType) {
-                $registeredTaxonomy[$postType][$taxonomy] = $args ;
-            }
+        if( !is_array($postTypes) )
+            $postTypes[] = $postTypes;
 
-            \Config::set( 'aksara.taxonomy', $registeredTaxonomy);
-
-            // Add For Index and Add New
-            foreach ($postTypes as $postType) {
-                $menu->addSubMenuPage( 'admin.'.$postType.'.index', $args['label']['name'], $args['label']['name'], 'admin.'.$postType.'.'.$taxonomy.'.index');
-            }
-        } else {
+        if(!$taxonomy)
             return;
-        }
-    } else {
-        return;
-    }
 
-  }
+        $menu = new Menu();
+
+        // check_taxonomy($postTypes, $taxonomy);
+        Taxonomy::persistTaxonomy($taxonomy);
+
+        $registeredTaxonomy = \Config::get('aksara.taxonomies',[]);
+
+        // register post type to taxonomy
+        foreach ($postTypes as $postType)
+        {
+            $registeredTaxonomy[$postType][$taxonomy] = $args ;
+        }
+
+        \Config::set( 'aksara.taxonomies', $registeredTaxonomy);
+
+        // Add For Index and Add New
+        foreach ($postTypes as $postType)
+        {
+            $menu->addSubMenuPage( 'admin.'.$postType.'.index', $args['label']['name'], $args['label']['name'], 'admin.'.$postType.'.'.$taxonomy.'.index');
+        }
+
+    }
 
   function getCurrentPostType()
   {

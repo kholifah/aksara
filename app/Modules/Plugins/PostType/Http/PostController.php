@@ -19,6 +19,7 @@ class PostController extends Controller
 
     public function index(Request $request)
     {
+
         $posts = Post::setPostType();
 
         //@TODO dipindah ke controller untuk quick edit, gaboleh di index
@@ -60,32 +61,11 @@ class PostController extends Controller
             $this->destroy_all();
         }
 
-        if ($request->input('category'))
-        {
-            $category = $request->input('category');
-            $posts = $posts->join('term_relationships', 'term_relationships.post_id', '=', 'posts.id');
-            $posts = $posts->where('term_id', $category)->groupBy('posts.id');
-        } else {
-            $category = '';
-        }
+        $preGetPost = \Eventy::filter('aksara.post-type.'.get_current_post_type().'.index.pre-get-post', ['posts'=>$posts,'postsQueryArgs'=>[]] );
 
-        // $posts = $posts->where('post_type', $taxo);
-        if ($request->input('search'))
-        {
-            $search = $request->input('search');
-            $posts = $posts->where('post_title', 'LIKE', '%'.$search.'%');
-        } else {
-            $search = '';
-        }
+        $posts = $preGetPost['posts'];
+        $postsQueryArgs = $preGetPost['postsQueryArgs'];
 
-        if ($request->input('post_status'))
-        {
-            $post_status = $request->input('post_status');
-            $posts = $posts->where('post_status', $post_status);
-        } else {
-            $post_status = '';
-            $posts = $posts->where('post_status', '<>', 'trash');
-        }
         $total = $posts->count();
         $count_post = [
             'all' => $this->post->get_total(),
@@ -96,14 +76,13 @@ class PostController extends Controller
         ];
 
         // Filter untuk manipulasi query
-        $posts = \Eventy::filter('aksara.post-type.'.get_current_post_type().'.index.pre-get-post', $posts );
-
         $posts = $posts->select('posts.*')->paginate(10);
+        $taxonomies = get_taxonomies(get_current_post_type());
 
         // Table Column
         $cols = \Eventy::filter('aksara.post-type.'.get_current_post_type().'.index.table.column',[],get_current_post_type());
 
-        return view('plugin:post-type::post.index', compact('posts', 'search', 'total', 'category', 'post_status', 'count_post','cols'));
+        return view('plugin:post-type::post.index', compact('posts', 'postsQueryArgs', 'total', 'count_post','cols','taxonomies'));
     }
 
 

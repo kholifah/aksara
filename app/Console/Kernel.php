@@ -13,7 +13,7 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        //
+        \App\Aksara\Core\ModuleManager\Console\Commands\MigrationCommand::class
     ];
 
     /**

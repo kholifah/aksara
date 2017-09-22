@@ -36,11 +36,12 @@ class Handler extends ExceptionHandler
      */
     public function report(Exception $exception)
     {
+
         //Illuminate\Foundation\Bootstrap\HandleExceptions::handleException 73
         //@todo
         // Need to disable the last activated plugin...
         $module = app('module');
-        $module->moduleActivationErrorHandler();
+        $module->moduleActivationErrorHandler($exception);
         parent::report($exception);
     }
 

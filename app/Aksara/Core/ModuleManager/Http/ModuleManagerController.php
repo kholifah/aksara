@@ -9,6 +9,8 @@ class ModuleManagerController extends Controller
   function index()
   {
     $module = \App::make('module');
+    $module->moduleStatusChangeListener();
+
     $param = compact('module');
 
     return view('core:module-manager::index',$param)->render();
@@ -29,6 +31,7 @@ class ModuleManagerController extends Controller
     $activatedModule = \get_options('module_activation',false);
 
     $module = \App::make('module');
+    $module->moduleStatusChangeListener();
 
     // failed
     if( !$activatedModule || !$module->getModuleStatus($activatedModule['moduleType'],$activatedModule['moduleName']) )
@@ -42,8 +45,7 @@ class ModuleManagerController extends Controller
   {
     $module = \App::make('module');
 
-    if( $module->deactivateModule('plugin',$slug) )
-        admin_notice('success',$slug.' deactivated');
+    $module->initDeactivation($slug);
 
     return redirect()->route('module-manager.index');
   }
