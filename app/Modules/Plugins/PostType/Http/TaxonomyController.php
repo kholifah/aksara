@@ -5,9 +5,9 @@ namespace App\Modules\Plugins\PostType\Http;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\Models\Taxonomy;
-use App\Models\Term;
-use App\Models\TermRelationship;
+use App\Modules\Plugins\PostType\Model\Taxonomy;
+use App\Modules\Plugins\PostType\Model\Term;
+use App\Modules\Plugins\PostType\Model\TermRelationship;
 use App\Repositories\TaxonomyRepositoryInterface;
 
 class TaxonomyController extends Controller
@@ -58,7 +58,8 @@ class TaxonomyController extends Controller
         }
 
         $taxonomy = Taxonomy::where('post_type', get_current_post_type())->where('taxonomy_name', get_current_taxonomy())->first();
-        $parent = Term::orderBy('name')->where('taxonomy_id', $taxonomy->id)->lists('name', 'id');
+        $parent = Term::orderBy('name')->where('taxonomy_id', $taxonomy->id)->get()->pluck('name','id');
+
         $parent = reset($parent);
         $parent['0'] = '-';
 
@@ -121,7 +122,7 @@ class TaxonomyController extends Controller
     {
         $term = Term::find($id);
         $taxonomy = Taxonomy::find($term->taxonomy_id);
-        $parent = Term::orderBy('name')->where('taxonomy_id', $taxonomy->id)->where('id', '<>', $id)->lists('name', 'id');
+        $parent = Term::orderBy('name')->where('taxonomy_id', $taxonomy->id)->where('id', '<>', $id)->get()->pluck('name', 'id');
         $parent = reset($parent);
         $parent['0'] = '-';
 

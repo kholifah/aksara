@@ -1,5 +1,5 @@
 <?php
-\Eventy::addAction('aksara.init_completed',function(){
+\Eventy::addAction('aksara.init',function(){
 
   $sliderIndex = [
                     'page_title' => 'Site Slider',

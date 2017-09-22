@@ -21,7 +21,7 @@ class AuthController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest', ['except' => 'getLogout']);
+        $this->middleware('guest', ['except' => 'logout']);
     }
 
     /**
@@ -63,7 +63,8 @@ class AuthController extends Controller
 
     function logout()
     {
-
+        \Auth::logout();
+        return redirect()->route('admin.login')->with('message', 'Berhasil logout');
     }
 
 }

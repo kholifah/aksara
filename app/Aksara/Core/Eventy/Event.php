@@ -17,7 +17,7 @@ abstract class Event {
 	 * @param integer $priority  Priority of the action
 	 * @param integer $arguments Number of arguments to accept
 	 */
-	public function listen($hook, $callback, $priority = 20, $arguments = 1)
+	public function listen($hook, $callback, $priority = 30, $arguments = 1)
 	{
 		$i = 0;
 		$uniquePriority = $priority;

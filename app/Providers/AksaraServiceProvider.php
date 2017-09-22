@@ -32,6 +32,7 @@ class AksaraServiceProvider extends ServiceProvider
 
       // Load CMD Themes
       $module->loadModules('admin',app_path('Modules/Themes/Admin'));
+      \Eventy::action('aksara.init');
       \Eventy::action('aksara.init_completed');
 
       \Eventy::action('aksara.routes.before');

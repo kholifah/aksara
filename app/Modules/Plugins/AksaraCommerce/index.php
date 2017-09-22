@@ -1,5 +1,5 @@
 <?php
-\Eventy::addAction('aksara.init_completed', function(){
+\Eventy::addAction('aksara.init', function(){
   // Register Product
   $argsPost = [
     'label' => [
@@ -21,7 +21,7 @@
 
 });
 
-\Eventy::addAction('aksara.init_completed', function(){
+\Eventy::addAction('aksara.init', function(){
 
   // $metabox = \App::make('metabox');
   // bisa juga pake kelas kalau mau

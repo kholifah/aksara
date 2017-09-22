@@ -2,7 +2,7 @@
 
 namespace App\Repositories;
 
-use App\Models\Term;
+use App\Modules\Plugins\PostType\Model\Term;
 use Auth;
 
 class TaxonomyRepository implements TaxonomyRepositoryInterface {

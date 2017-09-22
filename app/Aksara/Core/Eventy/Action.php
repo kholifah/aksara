@@ -20,8 +20,8 @@ class Action extends Event {
 							if(isset($args[$i])) {
 								$parameters[] = $args[$i];
 							}
-						}
-						call_user_func_array($this->getFunction($arguments['callback']), $parameters);
+						}				
+						call_user_func_array(get_calback($arguments['callback']), $parameters);
 					}
 				}
 			}

@@ -1,7 +1,7 @@
 <?php
 // Only load module manager if load_all  == false
 
-\Eventy::addAction('aksara.init_completed',function()
+\Eventy::addAction('aksara.init',function()
 {
   if( !\Config::get('aksara.module_manager.load_all',false) )
   {

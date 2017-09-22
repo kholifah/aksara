@@ -75,81 +75,24 @@
         <table class="datatable-responsive table noborder-top display" cellspacing="0" width="100%">
             <thead>
                 <tr>
-                    <th class="no-sort check-column" width="20">
-                        <div class="checkbox checkbox-single checkall">
-                            <input type="checkbox">
-                            <label></label>
-                        </div>
+                    @foreach ($cols as $colId => $colArgs)
+                    <th class="{!! $colId !!} {!! @$colArgs['class']!!}"
+                        @if(@$colArgs['width'])
+                            {!! 'width="'.$colArgs['width'].'"'!!}
+                        @endif
+                        >
+                        {!! $colArgs['title'] !!}
                     </th>
-                    <th>Judul</th>
-                    <?php
-                    $taxonomies = (\Config::get('aksara.taxonomy'));
-                    ?>
-                    @if($taxonomies)
-                    @foreach($taxonomies as $key => $val)
-                    @if($key == get_current_post_type())
-                    @foreach($val as $key1 => $val1)
-                        <th width="100">{{ $val1['label']['name'] }}</th>
                     @endforeach
-                    @endif
-                    @endforeach
-                    @endif
-
-                    <th width="100">Status</th>
-                    <th class="no-sort" width="50">Edit</th>
                 </tr>
             </thead>
             <tbody>
                 @if($posts->count() > 0)
                 @foreach($posts as $post)
                 <tr>
-                    <td class="check-column">
-                        <div class="checkbox checkbox-single">
-                            <input name="post_id[]" type="checkbox" value="{{ $post->id }}">
-                            <label></label>
-                        </div>
-                    </td>
-                    <td>{{ $post->post_title }}</td>
-                    @if($taxonomies)
-                    @foreach($taxonomies as $key => $val)
-                    @if($key == get_current_post_type())
-                    @foreach($val as $key1 => $val1)
-                        <td>
-                            <?php
-                            $post_term = get_post_term($post->id, $key1, ['order_by' => 'name']);
-                            if($post_term){
-                                $u = 0;
-                                foreach ($post_term as $v) {
-                                    if($u == 0)
-                                    {
-                                        echo $v->term->name;
-                                    } else {
-                                        echo ', '.$v->term->name;
-                                    }
-                                    $u++;
-                                }
-                            }
-                            ?>
-
-                        </td>
+                    @foreach ($cols as $colId => $colArgs)
+                    @action('aksara.post-type.'.get_current_post_type().'.index.table.row',$colId,$post)
                     @endforeach
-                    @endif
-                    @endforeach
-                    @endif
-
-
-                    <td>
-                        {{ status_post($post->post_status) }}
-                    </td>
-                    <td>
-                        @if($post_status == 'trash')
-                        <a href="{{ route('admin.'.get_current_post_type_slug().'.restore', $post->id) }}" class="icon-edit sa-warning"><i title="Restore" class="fa fa-reply"></i></a>
-                        <a onclick="return confirm('Yakin ingin menghapus data?');" href="{{ route('admin.'.get_current_post_type_slug().'.destroy', $post->id) }}" class="icon-delete sa-warning"><i title="Trash" class="fa fa-trash-o"></i></a>
-                        @else
-                        <a href="{{ route('admin.'.get_current_post_type_slug().'.edit', $post->id) }}" class="icon-edit"><i title="Edit" class="fa fa-pencil-square-o edit-row" data-toggle="modal" data-target="#edit-komponen"></i> </a>
-                        <a onclick="return confirm('Yakin ingin memindahkan data ke trash?');" href="{{ route('admin.'.get_current_post_type_slug().'.trash', $post->id) }}" class="icon-delete sa-warning"><i title="Trash" class="fa fa-trash-o"></i></a>
-                        @endif
-                    </td>
                 </tr>
                 @endforeach
                 @endif

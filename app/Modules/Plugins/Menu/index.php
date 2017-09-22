@@ -1,6 +1,6 @@
 <?php
 
-\Eventy::addAction('aksara.init_completed',function()
+\Eventy::addAction('aksara.init',function()
 {
   $menuIndex = [
     'page_title' => 'Site Menu',

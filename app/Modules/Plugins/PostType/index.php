@@ -1,4 +1,7 @@
 <?php
+require __DIR__.'/filter/post-index-list.php';
+require __DIR__.'/base-metabox.php';
+require __DIR__.'/base-table.php';
 // return;
 \App::singleton('post',function()
 {
@@ -10,11 +13,22 @@
   return new \App\Modules\Plugins\PostType\MetaBox();
 });
 
+\App::singleton('App\Modules\Plugins\PostType\Media',function(){
+  return new \App\Modules\Plugins\PostType\Media();
+});
+
+
 \App::bind('App\Repositories\PostRepositoryInterface', 'App\Repositories\PostRepository');
 \App::bind('App\Repositories\TaxonomyRepositoryInterface', 'App\Repositories\TaxonomyRepository');
 
+\App\Modules\Plugins\PostType\Model\Post::observe(new \App\Modules\Plugins\PostType\Model\PostSlugObserver());
+\App\Modules\Plugins\PostType\Model\Term::observe(new \App\Modules\Plugins\PostType\Model\TermSlugObserver());
 
-\Eventy::addAction('aksara.init_completed',function(){
+// Init media post type and all its glory
+$media = \App::make('App\Modules\Plugins\PostType\Media');
+$media->init();
+
+\Eventy::addAction('aksara.init',function(){
   $post = \App::make('post');
 
   // Register Post
@@ -55,15 +69,19 @@
   ];
 
   $post->registerTaxonomy('tag', ['post'], $argsTag);
+
+
+
 });
 
+//@TODO pindah ke aksara_admin)enqueue
 \Eventy::addAction('aksara.admin_head',function()
 {
     echo '<link href='.url("assets/admin/assets/plugins/datatables/jquery.dataTables.min.css").' rel="stylesheet" type="text/css"/>';
     echo '<link href='.url("assets/admin/assets/plugins/datatables/responsive.bootstrap.min.css").' rel="stylesheet" type="text/css"/>';
 });
 
-
+//@TODO pindah ke aksara_admin)enqueue
 \Eventy::addAction('aksara.admin.footer',function()
 {
     // File JS / CSS masuk sini

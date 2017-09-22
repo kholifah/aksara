@@ -1,19 +1,17 @@
 <?php
-
 namespace App\Modules\Plugins\PostType\Http;
 
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\Models\Taxonomy;
-use App\Models\Term;
-use App\Models\Post;
+use App\Modules\Plugins\PostType\Model\Taxonomy;
+use App\Modules\Plugins\PostType\Model\Term;
+use App\Modules\Plugins\PostType\Model\Post;
 use Illuminate\Support\Facades\File;
 use App\Repositories\PostRepositoryInterface;
 
 class PostController extends Controller
 {
-
     public function __construct(PostRepositoryInterface $post)
     {
         $this->post = $post;
@@ -21,8 +19,9 @@ class PostController extends Controller
 
     public function index(Request $request)
     {
-        $posts = Post::setPostType()->orderBy('posts.id');
+        $posts = Post::setPostType();
 
+        //@TODO dipindah ke controller untuk quick edit, gaboleh di index
         if ($request->get('bapply'))
         {
             if($request->input('apply'))
@@ -95,8 +94,16 @@ class PostController extends Controller
             'pending' => $this->post->get_total_pending(),
             'trash' => $this->post->get_total_trash(),
         ];
+
+        // Filter untuk manipulasi query
+        $posts = \Eventy::filter('aksara.post-type.'.get_current_post_type().'.index.pre-get-post', $posts );
+
         $posts = $posts->select('posts.*')->paginate(10);
-        return view('plugin:post-type::post.index', compact('posts', 'search', 'total', 'category', 'post_status', 'count_post'));
+
+        // Table Column
+        $cols = \Eventy::filter('aksara.post-type.'.get_current_post_type().'.index.table.column',[],get_current_post_type());
+
+        return view('plugin:post-type::post.index', compact('posts', 'search', 'total', 'category', 'post_status', 'count_post','cols'));
     }
 
 
@@ -107,6 +114,7 @@ class PostController extends Controller
      */
     public function create(Request $request)
     {
+
         $post = new Post();
         $post->post_type = get_current_post_type();
         return view('plugin:post-type::post.create', compact('post'));
@@ -120,18 +128,11 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
+
         $post = new Post();
 
         $data = $request->all();
-        $data['post_name'] = str_slug($data['post_title'],'-');
         $data['post_type'] = get_current_post_type();
-
-        if($data['post_slug'])
-        {
-            $data['post_slug'] = $this->post->get_slug(str_slug($data['post_slug'],'-'));
-        } else {
-            $data['post_slug'] = $this->post->get_slug(str_slug($data['post_title'],'-'));
-        }
 
         if ($request->file('post_image')) {
             if ($request->file('post_image')->isValid()) {
@@ -146,6 +147,7 @@ class PostController extends Controller
         }
 
         $validator = $post->validate($data);
+
         if ($validator->fails())
         {
             foreach ($validator->messages()->toArray() as $v) {
@@ -153,19 +155,19 @@ class PostController extends Controller
             }
             return back()->withInput();
         }
-        $post->post_type = $data['post_type'];
+
+        $post->post_type = get_current_post_type();
         $post->post_author = \Auth::user()->id;
         $post->post_date = date('Y-m-d H:i:s');
         $post->post_modified = date('Y-m-d H:i:s');
         $post->post_status = $data['post_status'];
-        $post->post_name = $data['post_name'];
-        $post->post_title = $data['post_title'];
-        $post->post_slug = $data['post_slug'];
-        $post->post_content = $data['post_content'];
+        $post->post_title = $request->input('post_title','') == null ? "" : $request->input('post_title','') ;
+        $post->post_slug = $request->input('post_slug','') == null ? "" : $request->input('post_slug','') ;
+        $post->post_content = $request->input('post_content','') == null ? "" : $request->input('post_content','') ;
         $post->post_image = $data['post_image'];
         $post->save();
 
-        \Eventy::action('aksara.'.get_current_post_type().'.create',$post,$request);
+        \Eventy::action('aksara.post-type.'.get_current_post_type().'.create', $post, $request);
 
 //        set_post_meta($post->id, 'post_content', $data['post_content'], false);
 //        set_post_meta($post->id, 'post_slug', $data['slug'], false);
@@ -183,18 +185,6 @@ class PostController extends Controller
         admin_notice('success', 'Data berhasil ditambahkan.');
 
         return redirect()->route('admin.'.get_current_post_type_slug().'.edit',['id'=>$post->id]);
-    }
-
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-
     }
 
     /**
@@ -222,13 +212,7 @@ class PostController extends Controller
     {
         $post = Post::find($id);
         $data = $request->all();
-        $data['post_name'] = str_slug($data['post_title'],'-');
-        if($data['post_slug'])
-        {
-            $data['post_slug'] = $this->post->get_slug(str_slug($data['post_slug'],'-'), $id);
-        } else {
-            $data['post_slug'] = $this->post->get_slug(str_slug($data['post_title'],'-', $id));
-        }
+        $data['post_type'] = get_current_post_type();
 
         $validator = $post->validate($data);
         if ($validator->fails())
@@ -257,23 +241,19 @@ class PostController extends Controller
             $post->post_type = get_current_post_type();
         if(isset($data['post_status']))
             $post->post_status = $data['post_status'];
-        if(isset($data['post_name']))
-            $post->post_name = $data['post_name'];
-        if(isset($data['post_title']))
-            $post->post_title = $data['post_title'];
-        if(isset($data['post_slug']))
-            $post->post_slug = $data['post_slug'];
-        if(isset($data['post_content']))
-            $post->post_content = $data['post_content'];
+
+        $post->post_title = $request->input('post_title','') == null ? "" : $request->input('post_title','') ;
+        $post->post_slug = $request->input('post_slug','') == null ? "" : $request->input('post_slug','') ;
+        $post->post_content = $request->input('post_content','') == null ? "" : $request->input('post_content','') ;
+
         if(isset($data['post_image']))
             $post->post_image = $data['post_image'];
+
         $post->post_author = \Auth::user()->id;
         $post->post_modified = date('Y-m-d H:i:s');
         $post->save();
 
-        \Eventy::action('aksara.'.get_current_post_type().'.update',$post,$request);
-//        set_post_meta($id, 'post_content', $data['post_content'], false);
-//        set_post_meta($id, 'post_slug', $data['slug'], false);
+        \Eventy::action('aksara.post-type.'.get_current_post_type().'.update',$post,$request);
         $key = [];
         if(isset($data['taxonomy']))
         {
@@ -289,10 +269,11 @@ class PostController extends Controller
             }
 
         }
+
         if($key)
-            \App\Models\TermRelationship::where('post_id', $id)->whereNotIn('term_id', $key)->delete();
+            \App\Modules\Plugins\PostType\Model\TermRelationship::where('post_id', $id)->whereNotIn('term_id', $key)->delete();
         else
-            \App\Models\TermRelationship::where('post_id', $id)->delete();
+            \App\Modules\Plugins\PostType\Model\TermRelationship::where('post_id', $id)->delete();
         admin_notice('success', 'Data berhasil diubah.');
 
         return redirect()->route('admin.'.get_current_post_type_slug().'.edit',['id'=>$post->id]);
@@ -324,6 +305,8 @@ class PostController extends Controller
         } else {
             admin_notice('danger', 'Tidak ada data yang dihapus.');
         }
+
+        \Eventy::action('aksara.post-type.'.get_current_post_type().'.destroy',$post,$request);
 
         return redirect()->route('admin.'.get_current_post_type_slug().'.index', ['post_status' => 'trash']);
     }

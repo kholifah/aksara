@@ -26,7 +26,7 @@
 //});
 // \Config::set('aksara.module_manager.load_all',true);
 
-\Eventy::addAction('aksara.init_completed',function()
+\Eventy::addAction('aksara.init',function()
 {
   register_menu( ['primary' => [
                     'label' => 'Primary'
@@ -39,6 +39,3 @@
                 );
 
 });
-
-
-aksara_admin_enqueue_style(url("assets/modules/Plugins/PostType/assets/style.asdascss"));

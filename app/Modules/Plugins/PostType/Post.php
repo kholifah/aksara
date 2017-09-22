@@ -7,45 +7,48 @@ class Post
 
   function __construct()
   {
-    \Eventy::addAction('aksara.routes.admin' , 'App\Modules\Plugins\PostType\Post@registerAdminRoutes');
+      \Eventy::addAction('aksara.routes.admin' , 'App\Modules\Plugins\PostType\Post@registerAdminRoutes');
   }
 
   function registerAdminRoutes()
   {
-    $postTypes = \Config::get('aksara.post_type');
+      $postTypes = \Config::get('aksara.post_type');
 
-    foreach ( $postTypes as $postType)
-    {
-      \Route::resource($postType['route'], '\App\Modules\Plugins\PostType\Http\PostController',[
-        'names' => [
-          'index' => 'admin.'.$postType['route'].'.index',
-          'create' => 'admin.'.$postType['route'].'.create',
-          'store' => 'admin.'.$postType['route'].'.store',
-          'show' => 'admin.'.$postType['route'].'.show',
-          'edit' => 'admin.'.$postType['route'].'.edit',
-          'update' => 'admin.'.$postType['route'].'.update',
-          'destroy' => 'admin.'.$postType['route'].'.destroy'
-        ]
-      ]);
-      \Route::get($postType['route'].'/{id}/destroy', ['as' => 'admin.'.$postType['route'].'.destroy', 'uses' =>'\App\Modules\Plugins\PostType\Http\PostController@destroy']);
-      \Route::get($postType['route'].'/{id}/delete_img', ['as' => 'admin.'.$postType['route'].'.delete_img', 'uses' =>'\App\Modules\Plugins\PostType\Http\PostController@delete_img']);
-      \Route::get($postType['route'].'/{id}/restore', ['as' => 'admin.'.$postType['route'].'.restore', 'uses' =>'\App\Modules\Plugins\PostType\Http\PostController@restore']);
-      \Route::get($postType['route'].'/{id}/trash', ['as' => 'admin.'.$postType['route'].'.trash', 'uses' =>'\App\Modules\Plugins\PostType\Http\PostController@trash']);
-
-      $registeredTaxonomy = \Config::get('aksara.taxonomy');
-
-      if( isset($registeredTaxonomy[$postType['route']]))
+      foreach ( $postTypes as $postType)
       {
-        foreach ($registeredTaxonomy[$postType['route']] as $taxonomy => $arg) {
-            \Route::get($postType['route'].'/'.$taxonomy.'/index', ['as' => 'admin.'.$postType['route'].'.'.$taxonomy.'.index', 'uses' =>'\App\Modules\Plugins\PostType\Http\TaxonomyController@index']);
-            \Route::get($postType['route'].'/'.$taxonomy.'/create', ['as' => 'admin.'.$postType['route'].'.'.$taxonomy.'.create', 'uses' =>'\App\Modules\Plugins\PostType\Http\TaxonomyController@create']);
-            \Route::post($postType['route'].'/'.$taxonomy.'/store', ['as' => 'admin.'.$postType['route'].'.'.$taxonomy.'.store', 'uses' =>'\App\Modules\Plugins\PostType\Http\TaxonomyController@store']);
-            \Route::get($postType['route'].'/'.$taxonomy.'/{id}/edit', ['as' => 'admin.'.$postType['route'].'.'.$taxonomy.'.edit', 'uses' =>'\App\Modules\Plugins\PostType\Http\TaxonomyController@edit']);
-            \Route::post($postType['route'].'/'.$taxonomy.'/{id}/update', ['as' => 'admin.'.$postType['route'].'.'.$taxonomy.'.update', 'uses' =>'\App\Modules\Plugins\PostType\Http\TaxonomyController@update']);
-            \Route::get($postType['route'].'/'.$taxonomy.'/{id}/destroy', ['as' => 'admin.'.$postType['route'].'.'.$taxonomy.'.destroy', 'uses' =>'\App\Modules\Plugins\PostType\Http\TaxonomyController@destroy']);
-        }
+          \Route::resource($postType['route'], '\App\Modules\Plugins\PostType\Http\PostController',[
+              'names' => [
+                      'index' => 'admin.'.$postType['route'].'.index',
+                      'create' => 'admin.'.$postType['route'].'.create',
+                      'store' => 'admin.'.$postType['route'].'.store',
+                      'edit' => 'admin.'.$postType['route'].'.edit',
+                      'update' => 'admin.'.$postType['route'].'.update',
+                      'destroy' => 'admin.'.$postType['route'].'.destroy'
+                  ],
+              'except' => [
+                      'show'
+                  ]
+              ]);
+
+          // \Route::get($postType['route'].'/{id}/destroy', ['as' => 'admin.'.$postType['route'].'.destroy', 'uses' =>'\App\Modules\Plugins\PostType\Http\PostController@destroy']);
+          // \Route::get($postType['route'].'/{id}/delete_img', ['as' => 'admin.'.$postType['route'].'.delete_img', 'uses' =>'\App\Modules\Plugins\PostType\Http\PostController@delete_img']);
+          \Route::get($postType['route'].'/{id}/restore', ['as' => 'admin.'.$postType['route'].'.restore', 'uses' =>'\App\Modules\Plugins\PostType\Http\PostController@restore']);
+          \Route::get($postType['route'].'/{id}/trash', ['as' => 'admin.'.$postType['route'].'.trash', 'uses' =>'\App\Modules\Plugins\PostType\Http\PostController@trash']);
+
+          $registeredTaxonomy = \Config::get('aksara.taxonomy');
+
+          if( isset($registeredTaxonomy[$postType['route']]))
+          {
+              foreach ($registeredTaxonomy[$postType['route']] as $taxonomy => $arg) {
+                  \Route::get($postType['route'].'/'.$taxonomy.'/index', ['as' => 'admin.'.$postType['route'].'.'.$taxonomy.'.index', 'uses' =>'\App\Modules\Plugins\PostType\Http\TaxonomyController@index']);
+                  \Route::get($postType['route'].'/'.$taxonomy.'/create', ['as' => 'admin.'.$postType['route'].'.'.$taxonomy.'.create', 'uses' =>'\App\Modules\Plugins\PostType\Http\TaxonomyController@create']);
+                  \Route::post($postType['route'].'/'.$taxonomy.'/store', ['as' => 'admin.'.$postType['route'].'.'.$taxonomy.'.store', 'uses' =>'\App\Modules\Plugins\PostType\Http\TaxonomyController@store']);
+                  \Route::get($postType['route'].'/'.$taxonomy.'/{id}/edit', ['as' => 'admin.'.$postType['route'].'.'.$taxonomy.'.edit', 'uses' =>'\App\Modules\Plugins\PostType\Http\TaxonomyController@edit']);
+                  \Route::post($postType['route'].'/'.$taxonomy.'/{id}/update', ['as' => 'admin.'.$postType['route'].'.'.$taxonomy.'.update', 'uses' =>'\App\Modules\Plugins\PostType\Http\TaxonomyController@update']);
+                  \Route::get($postType['route'].'/'.$taxonomy.'/{id}/destroy', ['as' => 'admin.'.$postType['route'].'.'.$taxonomy.'.destroy', 'uses' =>'\App\Modules\Plugins\PostType\Http\TaxonomyController@destroy']);
+              }
+          }
       }
-    }
   }
 
   // $labels = array(
@@ -78,11 +81,11 @@ class Post
   //   $args = array(
   //       'labels'             => $labels, --> done
   //       'public'             => true, @TODO
-  //       'publicly_queryable' => true,
+  //       'publicly_queryable' => true, @TODO
   //       'show_ui'            => true,
   //       'show_in_menu'       => true,
   //       'query_var'          => true,
-  //       'slug'               => 'book', -->done
+  //       'route'               => 'book', -->done
   //       'capability_type'    => 'post',
   //       'has_archive'        => true, @TODO
   //       'hierarchical'       => false,
@@ -98,6 +101,8 @@ class Post
 
     if( !$registeredPostType )
       $registeredPostType = [];
+
+    $args = $this->parseDefaultArgs($postType, $args);
 
     $registeredPostType[$postType] = $args ;
 
@@ -268,6 +273,29 @@ class Post
 
     return false;
 
+  }
+
+  function parseDefaultArgs($postType, $args)
+  {
+      if( !isset($args['label']) )
+          throw new Exception('Missing label argument for registering post type '.$postType);
+
+      if( !isset($args['public']) )
+          $args['public'] = true;
+
+      if( !isset($args['publicly_queryable']) )
+          $args['publicly_queryable'] = true;
+
+      if( !isset($args['route']) )
+          $args['route'] = \aksara_slugify($postType);
+
+      if( !isset($args['has_archive']) )
+          $args['has_archive'] = true;
+
+      if( !isset($args['supports']) || !is_array($args['supports']) )
+          $args['supports'] = ['editor','thumbnail','title'];
+
+      return $args;
   }
 
 }

@@ -24,7 +24,7 @@
         <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600,700,300|Noto+Sans:400,700" rel="stylesheet">
 
         @yield('add-header')
-        <script type="text/javascript" src="{{ asset('assets/plugins/jQuery/jQuery-2.2.0.min.js') }}"></script>
+
         <script type="text/javascript" src="{{ asset('assets/admin/dist/js/modernizr.min.js') }}"></script>
 
         <script type="text/javascript">

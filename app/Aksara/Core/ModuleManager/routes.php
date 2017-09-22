@@ -1,6 +1,6 @@
 <?php
 
-\Eventy::addAction( 'aksara.init_completed', function(){
+\Eventy::addAction( 'aksara.init', function(){
   $route = \App::make('route');
 
   $moduleManagerSave = [

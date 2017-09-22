@@ -5,43 +5,42 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 class StaticFileController extends Controller {
+
     public function serve($module_type,$module_name)
     {
-      // if( $routeParams['module_type'] == 'plugins' )
-      if( str_contains(\Request::url(),'Themes'  )  )
-        $path = '/Modules/Themes/'.$module_type.'/'.$module_name.'/assets/';
-      else
-        $path = '/Modules/'.$module_type.'/'.$module_name.'/assets/';
+        // if( $routeParams['module_type'] == 'plugins' )
+        if( str_contains(\Request::url(),'Themes'  )  )
+            $path = '/Modules/Themes/'.$module_type.'/'.$module_name.'/assets/';
+        else
+            $path = '/Modules/'.$module_type.'/'.$module_name.'/assets/';
 
-      $routeParams = \Route::getCurrentRoute()->parameters();
+        $routeParams = \Route::getCurrentRoute()->parameters();
 
-      unset($routeParams['module_type']);
-      unset($routeParams['module_name']);
+        unset($routeParams['module_type']);
+        unset($routeParams['module_name']);
 
-      $pathAsset = implode('/',$routeParams);
+        $pathAsset = implode('/',$routeParams);
 
-      // Security
-      $pathAsset = str_replace('..','',$pathAsset);
+        // Security
+        $pathAsset = str_replace('..','',$pathAsset);
 
-      // full path
-      $path = $path.$pathAsset;
-      $realPath = app_path().$path;
+        // full path
+        $path = $path.$pathAsset;
+        $realPath = app_path().$path;
 
-      if( !file_exists($realPath) )
-        return "file {$path} not found";
+        if( !file_exists($realPath) )
+            return "file {$path} not found";
 
+        // get extension
+        $extension = \File::extension($realPath);
 
-      // get extension
-      $extension = \File::extension($realPath);
+        $mimes = new \Mimey\MimeTypes;
 
-      $mimes = new \Mimey\MimeTypes;
+        // Convert extension to MIME type:
+        $mime = $mimes->getMimeType($extension); // application/json
 
-      // Convert extension to MIME type:
-      $mime = $mimes->getMimeType($extension); // application/json
-
-      header("Content-Type: ".$mime);
-      readfile($realPath); // Reading the file into the output buffer
-      exit;
-
+        header("Content-Type: ".$mime);
+        readfile($realPath); // Reading the file into the output buffer
+        exit;
     }
 }

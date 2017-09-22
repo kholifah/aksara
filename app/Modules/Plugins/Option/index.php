@@ -1,5 +1,5 @@
 <?php
-\Eventy::addAction('aksara.init_completed',function(){
+\Eventy::addAction('aksara.init',function(){
 
   $optionIndex = [
                     'page_title' => 'Site Option',

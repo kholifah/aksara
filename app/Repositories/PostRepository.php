@@ -2,16 +2,16 @@
 
 namespace App\Repositories;
 
-use App\Models\Post;
+use App\Modules\Plugins\PostType\Model\Post;
 
 class PostRepository implements PostRepositoryInterface {
-   
+
     protected $post_type;
 
     public function __construct() {
         $this->post_type = get_current_post_type();
     }
-    
+
     public function get_total()
     {
         $post = Post::where('post_status', '<>', 'trash');
@@ -35,7 +35,7 @@ class PostRepository implements PostRepositoryInterface {
         $post = Post::where('post_status', 'draft');
         if( $this->post_type )
           $post->where('post_type', $this->post_type);
-          
+
         return $post->count();
     }
 
@@ -54,21 +54,21 @@ class PostRepository implements PostRepositoryInterface {
           $post->where('post_type', $this->post_type);
         return $post->count();
     }
-    
+
     public function get_slug($data, $id = FALSE)
-    {              
+    {
         $post = Post::where('post_slug', $data);
         if( $this->post_type )
-            $post->where('post_type', $this->post_type);  
+            $post->where('post_type', $this->post_type);
         if( $id )
-            $post->where('id', '<>', $id);  
+            $post->where('id', '<>', $id);
         if($post->count())
         {
-            $slug = $this->set_slug($data);            
-            $data = $this->get_slug($slug, $id);            
+            $slug = $this->set_slug($data);
+            $data = $this->get_slug($slug, $id);
         } else {
-            $data = $data;    
-        }            
+            $data = $data;
+        }
         return $data;
     }
 
@@ -76,7 +76,7 @@ class PostRepository implements PostRepositoryInterface {
     {
         if (strpos($data, '-') !== false)
             $s = explode('-', $data);
-        else 
+        else
             $s = [$data];
         $last = (int)$s[(count($s) - 1)];
         if($last)
@@ -88,7 +88,7 @@ class PostRepository implements PostRepositoryInterface {
                     $slug = $s[$i];
                 else if($i == (count($s)-1))
                     $slug = $slug.'-'.($last + 1);
-                else 
+                else
                     $slug = $slug.'-'.$s[$i];
             }
         } else {

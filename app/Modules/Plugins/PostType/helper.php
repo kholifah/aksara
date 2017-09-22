@@ -1,8 +1,15 @@
 <?php
-use App\Models\PostMeta;
-use App\Models\TermRelationship;
-use App\Models\Term;
-use App\Models\Taxonomy;
+use App\Modules\Plugins\PostType\Model\PostMeta;
+use App\Modules\Plugins\PostType\Model\TermRelationship;
+use App\Modules\Plugins\PostType\Model\Term;
+use App\Modules\Plugins\PostType\Model\Taxonomy;
+
+function aksara_media_uploader()
+{
+    $media = \App::make('App\Modules\Plugins\PostType\Media');
+
+    $media->enqueueScript();
+}
 
 // Function for delete post meta data
 function delete_post_meta($postID = false, $key = false)
@@ -52,10 +59,10 @@ function register_post_type( $postType, $args )
     $post->registerPostType( $postType, $args);
 }
 
-function add_meta_box( string $id, string $postType,string $callbackRender,string $callbackSave="",string $location = "default",  $priority = 10 )
+function add_meta_box( string $id, string $postType,string $callbackRender,string $callbackSave = null,string $location = "metabox",  $priority = 20 )
 {
     $metabox = \App::make('App\Modules\Plugins\PostType\MetaBox');
-    $metabox->add( $id, $postType, $callbackRender, $callbackSave,$location, $priority );
+    $metabox->add( $id, $postType, $callbackRender, $callbackSave, $location, $priority );
 }
 
 // Function for delete term data
