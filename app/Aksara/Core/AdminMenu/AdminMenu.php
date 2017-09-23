@@ -4,103 +4,100 @@ namespace App\Aksara\Core\AdminMenu;
 
 class AdminMenu
 {
-  // $args = [
-  //           'page_title' => $pageTitle,
-  //           'menu_title' => $menuTitle,
-  //           'capability' => $capability,
-  //           'route'      => [
-  //                              'slug' => '/route'
-  //                              'args' => [
-  //                                          'as' => 'menu-custom-route',
-  //                                          'uses' => 'Akasara\Core\Options\Http\Controller@index',
-  //                                          ]
-  //                              ]
-  //           'routeName'  => $routeName,
-  //           'icon' => $icon,
-  //           ];
-
-
-  function addMenuPageController( $args = [] )
-  {
-
-    if( !isset( $args['routeName'] ) )
+    // $args = [
+    //           'page_title' => $pageTitle,
+    //           'menu_title' => $menuTitle,
+    //           'capability' => $capability,
+    //           'route'      => [
+    //                              'slug' => '/route'
+    //                              'args' => [
+    //                                          'as' => 'menu-custom-route',
+    //                                          'uses' => 'Akasara\Core\Options\Http\Controller@index',
+    //                                          ]
+    //                              ]
+    //           'routeName'  => $routeName,
+    //           'icon' => $icon,
+    //           ];
+    function addMenuPageController( $args = [] )
     {
-      if( !isset( $args['route'] ) )
-        return;
+        if( !isset( $args['routeName'] ) )
+        {
+            if( !isset( $args['route'] ) )
+                return;
 
-      if( !isset( $args['route']['slug'] ) )
-        return;
+            if( !isset( $args['route']['slug'] ) )
+                return;
 
-      if( !isset( $args['route']['args'] ) )
-        return;
+            if( !isset( $args['route']['args'] ) )
+                return;
 
-      if( !isset( $args['route']['args']['as'] ) )
-        return;
+            if( !isset( $args['route']['args']['as'] ) )
+                return;
 
-      if( !isset( $args['route']['args']['uses'] ) )
-        return;
+            if( !isset( $args['route']['args']['uses'] ) )
+                return;
 
-      \App::make('route')->addRoute($args['route']);
+            \App::make('route')->addRoute($args['route']);
 
-      // register named route
-      $args['routeName'] = $args['route']['args']['as'];
+            // register named route
+            $args['routeName'] = $args['route']['args']['as'];
+        }
+
+        //register route
+        if( !isset( $args['position'] ) )
+            $args['position'] = 90;
+
+        if( !isset( $args['icon'] ) )
+            $args['icon'] = 'ti-pin-alt';
+
+        if( !isset( $args['capability'] ) )
+            $args['capability'] = '';
+
+        $this->addMenuPage( $args['page_title'], $args['menu_title'], $args['routeName'], $args['position'], $args['icon'], $args['capability'] );
     }
-
-    //register route
-    if( !isset( $args['position'] ) )
-       $args['position'] = 90;
-
-    if( !isset( $args['icon'] ) )
-       $args['icon'] = 'ti-pin-alt';
-
-    if( !isset( $args['capability'] ) )
-       $args['capability'] = '';
-
-    $this->addMenuPage( $args['page_title'], $args['menu_title'], $args['routeName'], $args['position'], $args['icon'], $args['capability'] );
-  }
 
 
     function addSubMenuPageController(string $parrentRouteName, $args = [] )
     {
 
-      if( !isset( $args['routeName'] ) )
-      {
-        if( !isset( $args['route'] ) )
-          return;
+        if( !isset( $args['routeName'] ) )
+        {
+            if( !isset( $args['route'] ) )
+                return;
 
-        if( !isset( $args['route']['slug'] ) )
-          return;
+            if( !isset( $args['route']['slug'] ) )
+                return;
 
-        if( !isset( $args['route']['args'] ) )
-          return;
+            if( !isset( $args['route']['args'] ) )
+                return;
 
-        if( !isset( $args['route']['args']['as'] ) )
-          return;
+            if( !isset( $args['route']['args']['as'] ) )
+                return;
 
-        if( !isset( $args['route']['args']['uses'] ) )
-          return;
+            if( !isset( $args['route']['args']['uses'] ) )
+                return;
 
-        \App::make('route')->addRoute($args['route']);
+            \App::make('route')->addRoute($args['route']);
 
-        // register named route
-        $args['routeName'] = $args['route']['args']['as'];
-      }
+            // register named route
+            $args['routeName'] = $args['route']['args']['as'];
+        }
 
-      //register route
-      if( !isset( $args['position'] ) )
+        //register route
+        if( !isset( $args['position'] ) )
          $args['position'] = 90;
 
-      if( !isset( $args['icon'] ) )
+        if( !isset( $args['icon'] ) )
          $args['icon'] = 'ti-pin-alt';
 
-      if( !isset( $args['capability'] ) )
+        if( !isset( $args['capability'] ) )
          $args['capability'] = '';
 
-      $this->addSubMenuPage( $parrentRouteName, $args['page_title'], $args['menu_title'], $args['routeName'], $args['position'], $args['icon'], $args['capability'] );
+        $this->addSubMenuPage( $parrentRouteName, $args['page_title'], $args['menu_title'], $args['routeName'], $args['position'], $args['icon'], $args['capability'] );
     }
 
-  function addMenuPage( string $pageTitle, string $menuTitle ,string  $routeName, $position = 20, string $icon = 'ti-pin-alt', string $capability ='' )
-  {
+    function addMenuPage( string $pageTitle, string $menuTitle ,string  $routeName, $position = 20, string $icon = 'ti-pin-alt', string $capability ='' )
+    {
     $adminMenu = \Config::get('aksara.admin_menu');
 
     if(!$adminMenu)
@@ -120,10 +117,10 @@ class AdminMenu
     array_push( $adminMenu[$position], $menu );
 
     \Config::Set( 'aksara.admin_menu', $adminMenu);
-  }
+    }
 
-  function addSubMenuPage( string $parrentRouteName, string $pageTitle, string $menuTitle, string $routeName ,string $icon = 'ti-pin-alt', string $capability = '' )
-  {
+    function addSubMenuPage( string $parrentRouteName, string $pageTitle, string $menuTitle, string $routeName ,string $icon = 'ti-pin-alt', string $capability = '' )
+    {
     $adminSubMenu = \Config::get('aksara.admin_sub_menu');
 
     if(!$adminSubMenu)
@@ -143,7 +140,7 @@ class AdminMenu
     array_push( $adminSubMenu[$parrentRouteName], $subMenu );
 
     \Config::Set( 'aksara.admin_sub_menu', $adminSubMenu);
-  }
+    }
 
 
   /*
@@ -153,15 +150,36 @@ class AdminMenu
    *  30 -> THeme Options
    *
    */
-  function render()
-  {
+    function render()
+    {
+        $adminMenu = \Config::get('aksara.admin_menu');
+        $adminSubMenu = \Config::get('aksara.admin_sub_menu');
 
-    $adminMenu = \Config::get('aksara.admin_menu');
-    $adminSubMenu = \Config::get('aksara.admin_sub_menu');
+        // sort array
+        ksort($adminMenu);
 
-    // sort array
-    ksort($adminMenu);
+        echo view('admin:aksara::partials.admin-menu',compact('adminMenu','adminSubMenu'))->render();
+    }
 
-    echo view('admin:aksara::partials.admin-menu',compact('adminMenu','adminSubMenu'))->render();
-  }
+    function removeAdminMenu( $adminMenuRoute )
+    {
+    }
+
+    function removeAdminSubMenu( $adminSubMenuRoute )
+    {
+        $adminSubMenu = \Config::get( 'aksara.admin_sub_menu');
+
+        foreach ( $adminSubMenu as $menu => $subMenus )
+        {
+            foreach ( $subMenus as $key => $subMenu )
+            {
+                if( $subMenu['routeName'] == $adminSubMenuRoute )
+                {
+                    unset($adminSubMenu[$menu][$key]);
+                    \Config::set( 'aksara.admin_sub_menu',$adminSubMenu);
+                    return;
+                }
+            }
+        }
+    }
 }

@@ -9,26 +9,30 @@
 
 @section('content')
 <div class="content__head">
-    <h2 class="page-title">Semua {{ get_current_post_type_args('label.name') }} <a href="{{ route('admin.'.get_current_post_type_slug().'.create') }}" class="page-title-action">Tambah {{ get_current_post_type_args('label.name') }}</a></h2>
+    <h2 class="page-title">Semua {{ get_current_post_type_args('label.name') }}
+        @if( array_search_value_recursive('admin.'.get_current_post_type_args('route').'.create',\Config::get('aksara.admin_sub_menu')) )
+        <a href="{{ route('admin.'.get_current_post_type_args('route').'.create') }}" class="page-title-action">Tambah {{ get_current_post_type_args('label.name') }}</a>
+        @endif
+    </h2>
 </div>
 <!-- /.content__head -->
 <div class="content__body">
 
     <ul class="trash-sistem">
         <li>
-            <a href="{{ route('admin.'.get_current_post_type_slug().'.index') }}" <?php if ($postsQueryArgs['post_status'] == '') echo 'class="current"' ?> >All <span class="count">({{ $count_post['all'] }})</span></a> |
+            <a href="{{ route('admin.'.get_current_post_type_args('route').'.index') }}" <?php if ($viewData['post_status'] == '') echo 'class="current"' ?> >All <span class="count">({{ $count_post['all'] }})</span></a> |
         </li>
         <li>
-            <a href="{{ route('admin.'.get_current_post_type_slug().'.index') }}?post_status=publish" <?php if ($postsQueryArgs['post_status'] == 'publish') echo 'class="current"' ?>>{{ status_post('publish',get_current_post_type()) }} <span class="count">({{ $count_post['publish'] }})</span></a> |
+            <a href="{{ route('admin.'.get_current_post_type_args('route').'.index') }}?post_status=publish" <?php if ($viewData['post_status'] == 'publish') echo 'class="current"' ?>>{{ status_post('publish',get_current_post_type()) }} <span class="count">({{ $count_post['publish'] }})</span></a> |
         </li>
         <li>
-            <a href="{{ route('admin.'.get_current_post_type_slug().'.index') }}?post_status=draft" <?php if ($postsQueryArgs['post_status'] == 'draft') echo 'class="current"' ?>>{{ status_post('draft',get_current_post_type()) }} <span class="count">({{ $count_post['draft'] }})</span></a> |
+            <a href="{{ route('admin.'.get_current_post_type_args('route').'.index') }}?post_status=draft" <?php if ($viewData['post_status'] == 'draft') echo 'class="current"' ?>>{{ status_post('draft',get_current_post_type()) }} <span class="count">({{ $count_post['draft'] }})</span></a> |
         </li>
         <li>
-            <a href="{{ route('admin.'.get_current_post_type_slug().'.index') }}?post_status=pending" <?php if ($postsQueryArgs['post_status'] == 'pending') echo 'class="current"' ?>>{{ status_post('pending',get_current_post_type()) }} <span class="count">({{ $count_post['pending'] }})</span></a> |
+            <a href="{{ route('admin.'.get_current_post_type_args('route').'.index') }}?post_status=pending" <?php if ($viewData['post_status'] == 'pending') echo 'class="current"' ?>>{{ status_post('pending',get_current_post_type()) }} <span class="count">({{ $count_post['pending'] }})</span></a> |
         </li>
         <li>
-            <a href="{{ route('admin.'.get_current_post_type_slug().'.index') }}?post_status=trash" <?php if ($postsQueryArgs['post_status'] == 'trash') echo 'class="current"' ?>>{{ status_post('trash',get_current_post_type()) }} <span class="count">({{ $count_post['trash'] }})</span></a>
+            <a href="{{ route('admin.'.get_current_post_type_args('route').'.index') }}?post_status=trash" <?php if ($viewData['post_status'] == 'trash') echo 'class="current"' ?>>{{ status_post('trash',get_current_post_type()) }} <span class="count">({{ $count_post['trash'] }})</span></a>
         </li>
     </ul>
     <form action="" class="posts-filter clearfix">
@@ -36,7 +40,7 @@
         <div class="alignleft action bulk-action">
 
                 <select name="apply" class="form-control">
-                    @if($postsQueryArgs['post_status'] == 'trash')
+                    @if($viewData['post_status'] == 'trash')
                         <option disabled selected>Bulk Action</option>
                         <option value='restore'>Restore</option>
                         <option value='destroy'>Delete Permanently</option>
@@ -51,26 +55,19 @@
         <div class="alignleft action filter-box">
             @foreach($taxonomies as $taxonomy)
             <?php
-                // dd($taxonomy->taxonomy_name);
-                $terms = get_terms($taxonomy->taxonomy_name.'-');
-                dd($terms);
-                $terms[0] = 'All '.$taxonomy;
-                if($term)
-                {
-                    foreach ($term as $v)
-                    {
-                        $aterm[] = $v->name;
-                    }
-                }
+                $terms = get_terms(array_get($taxonomy,'id'));
+                $terms = $terms->pluck('name','id');
+                $terms = $terms->toArray();
+
+                $termSelect = [ 0=>'All '.array_get($taxonomy,'label.name') ] ;
+                $termSelect = $termSelect + $terms;
             ?>
-            {!! Form::select('category', $aterm, $postsQueryArgs['category'], array('class' => 'form-control')); !!}
+            {!! Form::select('taxonomy['.array_get($taxonomy,'id').']', $termSelect, @$viewData['taxonomy'][array_get($taxonomy,'id')], array('class' => 'form-control')); !!}
             @endforeach
-
-
             <input name="bfilter" type="submit" class="btn btn-secondary" value="Filter">
         </div>
         <div class="alignleft search-box">
-            <input name="search" value="{{ $postsQueryArgs['search'] }}" type="text" class="form-control">
+            <input name="search" value="{{ $viewData['search'] }}" type="text" class="form-control">
             <input name="bsearch" type="submit" class="btn btn-secondary" value="Search">
         </div>
         <div class="tablenav-pages"><span class="displaying-num">{{ $total }} @if($total > 1 )items @else item @endif</span>
@@ -108,7 +105,7 @@
     <div class="tablenav bottom clearfix">
         <div class="alignleft action bulk-action">
             <select name="apply" class="form-control">
-                @if($postsQueryArgs['post_status'] == 'trash')
+                @if($viewData['post_status'] == 'trash')
                     <option disabled selected>Bulk Action</option>
                     <option value='restore'>Restore</option>
                     <option value='destroy'>Delete Permanently</option>
@@ -119,7 +116,7 @@
             </select>
             <input name="bapply" type="submit" class="btn btn-secondary" value="Apply">
         </div>
-        @if($postsQueryArgs['post_status'] == 'trash')
+        @if($viewData['post_status'] == 'trash')
         <div class="alignleft">
             <input name="bapplyall" type="submit" class="btn btn-secondary" value="Empty Trash">
         </div>

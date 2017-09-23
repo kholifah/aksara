@@ -1,7 +1,8 @@
 <?php
-require __DIR__.'/filter/post-index-list.php';
-require __DIR__.'/base-metabox.php';
-require __DIR__.'/base-table.php';
+require __DIR__.'/action-filter/post-index-list.php';
+require __DIR__.'/action-filter//set-post-terms.php';
+require __DIR__.'/action-filter/base-metabox.php';
+require __DIR__.'/action-filter/base-table.php';
 // return;
 \App::singleton('post',function()
 {
@@ -18,8 +19,8 @@ require __DIR__.'/base-table.php';
 });
 
 
-\App::bind('App\Repositories\PostRepositoryInterface', 'App\Repositories\PostRepository');
-\App::bind('App\Repositories\TaxonomyRepositoryInterface', 'App\Repositories\TaxonomyRepository');
+\App::bind('App\Modules\Plugins\PostType\Repository\PostRepositoryInterface', 'App\Modules\Plugins\PostType\Repository\PostRepository');
+\App::bind('App\Modules\Plugins\PostType\Repository\TaxonomyRepositoryInterface', 'App\Modules\Plugins\PostType\Repository\TaxonomyRepository');
 
 \App\Modules\Plugins\PostType\Model\Post::observe(new \App\Modules\Plugins\PostType\Model\PostSlugObserver());
 \App\Modules\Plugins\PostType\Model\Term::observe(new \App\Modules\Plugins\PostType\Model\TermSlugObserver());
@@ -27,6 +28,10 @@ require __DIR__.'/base-table.php';
 // Init media post type and all its glory
 $media = \App::make('App\Modules\Plugins\PostType\Media');
 $media->init();
+
+// Init metabox action handler
+$metabox = \App::make('App\Modules\Plugins\PostType\MetaBox');
+$metabox->init();
 
 \Eventy::addAction('aksara.init',function(){
   $post = \App::make('post');

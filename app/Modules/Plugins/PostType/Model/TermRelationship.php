@@ -54,24 +54,24 @@ class TermRelationship extends Model
                 if(!count($term))
                     return FALSE;
                 //Get post term data
-                $postterm = TermRelationship::where('post_id', $postID)->whereIn('term_id', $term);
+                $postTerm = TermRelationship::where('post_id', $postID)->whereIn('term_id', $term);
                 //Checking post term data
-                if ($postterm->count())
+                if ($postTerm->count())
                 {
                     // Delete post term data if data valid
-                    if(!$postterm->delete())
+                    if(!$postTerm->delete())
                         return FALSE;
                 } else {
                     return FALSE;
                 }
             } else {
                 //Get post term data
-                $postterm = TermRelationship::where('post_id', $postID);
+                $postTerm = TermRelationship::where('post_id', $postID);
                 //Checking post term data
-                if ($postterm->count())
+                if ($postTerm->count())
                 {
                     // Delete post term data if data valid
-                    if(!$postterm->delete())
+                    if(!$postTerm->delete())
                         return FALSE;
                 } else {
                     return FALSE;
@@ -82,40 +82,39 @@ class TermRelationship extends Model
     }
 
     // Function for get post term data
-    public static function get_post_term($postID = false, $taxonomy = false, $arg = false)
+    public static function getPostTerms($postID = false, $taxonomy = false, $arg = false)
     {
         // Checking post_id data can't be empty
         if (!$postID)
         {
-            return FALSE;
+            return collect([]);
         } else {
             // Checking post data
             $post = Post::find($postID);
             if (!$post)
-                return FALSE;
+                return collect([]);
         }
 
         // Checking post_id data can't be empty
         if (!$taxonomy)
         {
-            return FALSE;
+            return collect([]);
         } else {
             // Checking taxonomy data
-            $dtaxonomy = Taxonomy::where('post_type', get_current_post_type())->where('taxonomy_name', $taxonomy)->first();
+            $dtaxonomy = Taxonomy::where('taxonomy_name', $taxonomy)->first();
             if (!$dtaxonomy)
-                return FALSE;
+                return collect([]);
         }
 
-
         // Start get post term data from db
-        $postterm = TermRelationship::where('post_id', $postID)->where('terms.taxonomy_id', $dtaxonomy->id);
-        $postterm = $postterm->join('terms', 'terms.id', '=', 'term_relationships.term_id');
+        $postTerm = TermRelationship::where('post_id', $postID)->where('terms.taxonomy_id', $dtaxonomy->id);
+        $postTerm = $postTerm->join('terms', 'terms.id', '=', 'term_relationships.term_id');
         // Checking arg data
         if ($arg)
         {
             // Checking arg data if not in array type
             if(!is_array($arg))
-                return FALSE;
+                return collect([]);
 
             foreach ($arg as $k => $v)
             {
@@ -130,92 +129,79 @@ class TermRelationship extends Model
                         if(in_array($v, $fillable))
                             $orderby = $v;
                         else
-                            return FALSE;
+                            return collect([]);
                         break;
                     case 'order':
                         $order = $v;
                         break;
                     case 'child':
                         if(!((boolean)$v))
-                            $postterm = $postterm->where('terms.parent', '=', 0);
+                            $postTerm = $postTerm->where('terms.parent', '=', 0);
                         break;
                 }
 
             }
-            $postterm = $postterm->select('term_relationships.*')->orderBy('terms.'.$orderby, $order)->get();
+            $postTerm = $postTerm->select('term_relationships.*')->orderBy('terms.'.$orderby, $order)->get();
         } else {
-            $postterm = $postterm->select('term_relationships.*')->get();
+            $postTerm = $postTerm->select('term_relationships.*')->get();
         }
-        return $postterm;
+        return $postTerm;
     }
 
     // Function for set post term data
-    public static function set_post_term($postID = false, $taxonomy = false, $term = false)
+    public static function set_post_term($postID = false, $taxonomy = false, $terms = false)
     {
         // Checking post_id data can't be empty
         if (!$postID)
+            throw new \Exception('Post ID not set');
+        else
         {
-            return FALSE;
-        } else {
             // Checking post data
             $post = Post::find($postID);
             if (!$post)
-                return FALSE;
+                throw new \Exception('Post with ID = '.$postID.' not exist');
         }
 
         // Checking taxonomy data can't be empty
         if (!$taxonomy)
+            throw new \Exception('Taxonomy not set');
+        else
         {
-            return FALSE;
-        } else {
             // Checking taxonomy
-            $dtaxonomy = Taxonomy::where('post_type', get_current_post_type())->where('taxonomy_name', $taxonomy)->first();
+            $dtaxonomy = Taxonomy::where('taxonomy_name', $taxonomy)->first();
             if (!$dtaxonomy)
-                return FALSE;
+                throw new \Exception('Taxonomy name '.$taxonomyName.' not found');
         }
 
         // Checking term data can't be empty
-        if (!$term)
+        if ( !$terms )
+            throw new \Exception('Term(s) not set');
+
+        if( !is_array($terms) )
+            $terms = [$terms];
+
+        foreach ($terms as $term )
         {
-            return FALSE;
-        } else {
             // Checking term if interger type
-            if(is_integer($term))
+            if(is_integer($terms))
                 $dterm = Term::find($term);
             else
-                $dterm = Term::where('taxonomy_id', $dtaxonomy->id)->where('slug', $term)->first();
+                $dterm = Term::where('taxonomy_id', $dtaxonomy->id)->where('id', $term)->first();
+
             // Checking term data valid or invalid
             if (!$dterm)
-                return FALSE;
+                throw new \Exception('Term name '.$term->name.' not found on taxonomy ',$taxonomy->taxonomy_name);
+
+            $postTerm = TermRelationship::where('post_id', $postID)->where('term_id', $dterm->id)->first();
+
+            if($postTerm)
+                continue;
+
+            $postTerm = new TermRelationship;
+            $postTerm->term_id = $dterm->id;
+            $postTerm->post_id = $postID;
+            $postTerm->save();
         }
-
-        // Data input
-        $save = [
-            'term_id' => (int)$dterm->id,
-            'post_id' => (int)$postID,
-        ];
-
-        $postterm = TermRelationship::where('post_id', $postID)->where('term_id', $dterm->id)->first();
-
-        if(!$postterm)
-        {
-            $postterm = new TermRelationship;
-            // Checking data input
-            $validator = $postterm->validate($save);
-            if ($validator->fails())
-            {
-                return back()->withErrors($validator)->withInput();
-            }
-            $postterm->term_id = $save['term_id'];
-            $postterm->post_id = $save['post_id'];
-
-            // Create new data
-            if ($postterm->save())
-                return TRUE;
-            else
-                return false;
-        }
-
     }
 
 }

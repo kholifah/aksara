@@ -195,11 +195,15 @@ class Module
         }
         elseif( $moduleActivation )
         {
-            if( isset($_GET['deactive']) )
+            if( \App::runningInConsole() || isset($_GET['deactive']) )
             {
                 $this->deactivateModule($moduleActivation['moduleType'],$moduleActivation['moduleName']);
                 $this->moduleStatusChangeListenerMessage('activation', $moduleActivation);
                 delete_options('module_activation');
+
+                if( \App::runningInConsole() )
+                    return;
+
                 header('Location: '.url('admin/aksara-module-manager'));
                 exit;
             }
@@ -213,7 +217,7 @@ class Module
                 set_options('module_activation', $moduleActivation);
                 // set_options('module_activation', $moduleActivation);
                 $text =  '<p>Modul gagal diaktifkan karena terjadi eksepsi database, coba non aktifkan modul ini dan jalankan migrasi :</p>';
-                $text .=  '<pre>php artisan aksara:migrate '.$moduleActivation['moduleName'].'</pre>';
+                $text .=  '<pre>php artisan aksara:migrate plugin'.$moduleActivation['moduleName'].'</pre>';
                 $text .=  '<a href="?deactive=true">Non aktifkan plugin '.$moduleActivation['moduleName'].'.</a>';
                 $text .=  '<pre>'.$exception.'</pre>';
 

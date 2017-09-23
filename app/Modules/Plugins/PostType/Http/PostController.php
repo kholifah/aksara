@@ -8,18 +8,17 @@ use App\Modules\Plugins\PostType\Model\Taxonomy;
 use App\Modules\Plugins\PostType\Model\Term;
 use App\Modules\Plugins\PostType\Model\Post;
 use Illuminate\Support\Facades\File;
-use App\Repositories\PostRepositoryInterface;
+use App\Modules\Plugins\PostType\Repository\PostRepositoryInterface;
 
 class PostController extends Controller
 {
-    public function __construct(PostRepositoryInterface $post)
+    public function __construct(PostRepositoryInterface $postRepository)
     {
-        $this->post = $post;
+        $this->postRepository = $postRepository;
     }
 
     public function index(Request $request)
     {
-
         $posts = Post::setPostType();
 
         //@TODO dipindah ke controller untuk quick edit, gaboleh di index
@@ -61,18 +60,18 @@ class PostController extends Controller
             $this->destroy_all();
         }
 
-        $preGetPost = \Eventy::filter('aksara.post-type.'.get_current_post_type().'.index.pre-get-post', ['posts'=>$posts,'postsQueryArgs'=>[]] );
+        $preGetPost = \Eventy::filter('aksara.post-type.'.get_current_post_type().'.index.pre-get-post', ['posts'=>$posts,'viewData'=>[]] );
 
         $posts = $preGetPost['posts'];
-        $postsQueryArgs = $preGetPost['postsQueryArgs'];
+        $viewData = $preGetPost['viewData'];
 
         $total = $posts->count();
         $count_post = [
-            'all' => $this->post->get_total(),
-            'publish' => $this->post->get_total_publish(),
-            'draft' => $this->post->get_total_draft(),
-            'pending' => $this->post->get_total_pending(),
-            'trash' => $this->post->get_total_trash(),
+            'all' => $this->postRepository->get_total($posts),
+            'publish' => $this->postRepository->get_total_publish($posts),
+            'draft' => $this->postRepository->get_total_draft($posts),
+            'pending' => $this->postRepository->get_total_pending($posts),
+            'trash' => $this->postRepository->get_total_trash($posts),
         ];
 
         // Filter untuk manipulasi query
@@ -82,7 +81,7 @@ class PostController extends Controller
         // Table Column
         $cols = \Eventy::filter('aksara.post-type.'.get_current_post_type().'.index.table.column',[],get_current_post_type());
 
-        return view('plugin:post-type::post.index', compact('posts', 'postsQueryArgs', 'total', 'count_post','cols','taxonomies'));
+        return view('plugin:post-type::post.index', compact('posts', 'viewData', 'total', 'count_post','cols','taxonomies'));
     }
 
 
@@ -148,22 +147,9 @@ class PostController extends Controller
 
         \Eventy::action('aksara.post-type.'.get_current_post_type().'.create', $post, $request);
 
-//        set_post_meta($post->id, 'post_content', $data['post_content'], false);
-//        set_post_meta($post->id, 'post_slug', $data['slug'], false);
-
-        if(isset($data['taxonomy']))
-        {
-            foreach ($data['taxonomy'] as $k => $v)
-            {
-                if($v)
-                    foreach ($v as $v1) {
-                        set_post_term($post->id, $k, (int)$v1);
-                    }
-            }
-        }
         admin_notice('success', 'Data berhasil ditambahkan.');
 
-        return redirect()->route('admin.'.get_current_post_type_slug().'.edit',['id'=>$post->id]);
+        return redirect()->route('admin.'.get_current_post_type_args('route').'.edit',['id'=>$post->id]);
     }
 
     /**
@@ -191,6 +177,7 @@ class PostController extends Controller
     {
         $post = Post::find($id);
         $data = $request->all();
+
         $data['post_type'] = get_current_post_type();
 
         $validator = $post->validate($data);
@@ -214,10 +201,7 @@ class PostController extends Controller
                 $data['post_image'] = $fileName;
             }
         }
-        $data['post_type'] = get_current_post_type();
 
-        if(isset($data['post_type']))
-            $post->post_type = get_current_post_type();
         if(isset($data['post_status']))
             $post->post_status = $data['post_status'];
 
@@ -233,29 +217,10 @@ class PostController extends Controller
         $post->save();
 
         \Eventy::action('aksara.post-type.'.get_current_post_type().'.update',$post,$request);
-        $key = [];
-        if(isset($data['taxonomy']))
-        {
-            foreach ($data['taxonomy'] as $k => $v)
-            {
-                if($v)
-                {
-                    foreach ($v as $v1) {
-                        set_post_term($id, $k, (int)$v1);
-                        $key[] = (int)$v1;
-                    }
-                }
-            }
 
-        }
-
-        if($key)
-            \App\Modules\Plugins\PostType\Model\TermRelationship::where('post_id', $id)->whereNotIn('term_id', $key)->delete();
-        else
-            \App\Modules\Plugins\PostType\Model\TermRelationship::where('post_id', $id)->delete();
         admin_notice('success', 'Data berhasil diubah.');
 
-        return redirect()->route('admin.'.get_current_post_type_slug().'.edit',['id'=>$post->id]);
+        return redirect()->route('admin.'.get_current_post_type_args('route').'.edit',['id'=>$post->id]);
     }
 
     /**
@@ -287,7 +252,7 @@ class PostController extends Controller
 
         \Eventy::action('aksara.post-type.'.get_current_post_type().'.destroy',$post,$request);
 
-        return redirect()->route('admin.'.get_current_post_type_slug().'.index', ['post_status' => 'trash']);
+        return redirect()->route('admin.'.get_current_post_type_args('route').'.index', ['post_status' => 'trash']);
     }
 
     public function delete_img($id)
@@ -315,7 +280,7 @@ class PostController extends Controller
         if(set_post_meta($id, 'trash_meta_status', $post->post_status, false))
             $post->update(['post_status' => 'trash']);
         admin_notice('success', 'Data berhasil dipindah ke Trash.');
-        return redirect()->route('admin.'.get_current_post_type_slug().'.index');
+        return redirect()->route('admin.'.get_current_post_type_args('route').'.index');
     }
 
     public function restore($id)
@@ -325,7 +290,7 @@ class PostController extends Controller
             $post->update(['post_status' => get_post_meta($id, 'trash_meta_status')]);
         delete_post_meta($id, 'trash_meta_status');
         admin_notice('success', 'Data berhasil dikembalikan ke '.$post->post_status.'.');
-        return redirect()->route('admin.'.get_current_post_type_slug().'.index', ['post_status' => $post->post_status]);
+        return redirect()->route('admin.'.get_current_post_type_args('route').'.index', ['post_status' => $post->post_status]);
     }
 
     public function destroy_all()
@@ -340,7 +305,7 @@ class PostController extends Controller
         } else {
             admin_notice('danger', 'Data gagal dihapus.');
         }
-        return redirect()->route('admin.'.get_current_post_type_slug().'.index');
+        return redirect()->route('admin.'.get_current_post_type_args('route').'.index');
     }
 
 

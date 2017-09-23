@@ -12,12 +12,28 @@ class Term extends Model
     protected $fillable = ['taxonomy_id', 'name', 'slug', 'parent'];
     public $timestamps = false;
 
+    public static function getTerm($taxonomy,$arg)
+    {
+        if( !$taxonomy )
+            throw new \Exception('Taxonomy with name : "'.$taxonomy.'" not found');
+
+        $term = Term::whereHas('taxonomy',function($query) use ($taxonomy){
+                    $query->where('taxonomy_name','=',$taxonomy);
+                });
+
+        if( (int) $arg )
+            $term = $term->where('id',$arg);
+        elseif( $args )
+            $term = $term->where('name',$arg);
+
+        return $term->first();
+    }
+
     public function validate($data)
     {
         $rules = [
             'taxonomy_id' => 'required',
-            'name' => 'required',
-            'slug' => 'required',
+            'name' => 'required'
         ];
 
         return \Validator::make($data, $rules);
@@ -28,9 +44,9 @@ class Term extends Model
         return $this->belongsTo('App\Modules\Plugins\PostType\Model\Term', 'parent');
     }
 
-    public function taxomony()
+    public function taxonomy()
     {
-        return $this->belongsTo('App\Modules\Plugins\PostType\Model\Taxonomy', 'taxomony_id');
+        return $this->belongsTo('App\Modules\Plugins\PostType\Model\Taxonomy', 'taxonomy_id');
     }
 
     public function term_relations()
@@ -68,7 +84,10 @@ class Term extends Model
         if ( !$taxonomy )
             return collect([]);
 
-        $terms = Term::query();;
+        //@TODO join taxonomy where taxonomy name
+        $terms = Term::whereHas('taxonomy',function($query) use ($taxonomy) {
+                                $query->where('taxonomy_name','=',$taxonomy);
+                            });
 
         // Checking arg data
         if ($arg)
@@ -114,66 +133,49 @@ class Term extends Model
     }
 
     // Function for add term data
-    public static function add_term($taxonomy = false, $name= false, $slug = false, $parent = false)
+    public static function addTerm($taxonomyName = false, $name= false, $slug = false, $parent = false)
     {
         // Checking taxonomy data can't be empty
-        if (!$taxonomy)
+        if (!$taxonomyName)
+            return false;
+        else
         {
-            return FALSE;
-        } else {
             // Checking taxonomy
-            $dtaxonomy = Taxonomy::where('post_type', get_current_post_type())->where('taxonomy_name', $taxonomy)->first();
+            $taxonomy = Taxonomy::where('taxonomy_name', $taxonomyName)->first();
 
-            if (!$dtaxonomy)
+            if (!$taxonomy)
             {
-                admin_notice('danger', 'Data '.$taxonomy.' tidak valid!');
-                return FALSE;
+                return false;
             }
-
-        }
-
-        // Checking name data can't be empty
-        if (!$name)
-        {
-            admin_notice('danger', 'Bidang isian judul wajib diisi.');
-            return FALSE;
-        }
-
-        // Checking slug data can't be empty
-        if (!$slug)
-        {
-            admin_notice('danger', 'Bidang isian judul wajib diisi.');
-            return FALSE;
-        } else {
-            // Checking slug mush be unique group by taxonomy type
-            $sterm = Term::where('taxonomy_id', $dtaxonomy->id)->where('slug', $slug)->first();
-            if($sterm)
-                return FALSE;
         }
 
          // Checking parent data if data null or empty
         if (!$parent)
         {
             $parent = 0;
-        } else {
+        }
+        else
+        {
             // Get term parent with make sure parent data integer
             $cterm = Term::find((int)$parent);
             // Checking term parent valid or invalid
             if($cterm)
             {
                 // Checking term parent in same taxomony
-                if($cterm->taxonomy_id != $dtaxonomy->id)
+                if($cterm->taxonomy_id != $taxonomy->id)
                 {
-                    return FALSE;
+                    return false;
                 }
-            } else {
-                return FALSE;
+            }
+            else
+            {
+                return false;
             }
         }
 
         // Data input
         $save = [
-            'taxonomy_id' => (int)$dtaxonomy->id,
+            'taxonomy_id' => (int) $taxonomy->id,
             'name' => $name,
             'slug' => $slug,
             'parent' => (int)$parent
@@ -182,6 +184,7 @@ class Term extends Model
         $term = new Term;
         // Checking data input
         $validator = $term->validate($save);
+
         if ($validator->fails())
         {
             foreach ($validator->messages()->toArray() as $v) {
@@ -195,7 +198,7 @@ class Term extends Model
         $term->parent = $save['parent'];
         // Create new data
         if ($term->save())
-            return TRUE;
+            return true;
         else
             return false;
 
@@ -203,45 +206,21 @@ class Term extends Model
 
 
     // Function for update term data
-    public static function update_term($termID = false, $name= false, $slug = false, $parent = false)
+    public static function updateTerm($termID = false, $name= false, $slug = false, $parent = false)
     {
-        // Checking term_id data can't be empty
-        if (!$termID)
-        {
-            return FALSE;
-        } else {
-                // Get term data
-                $term = Term::find($termID);
-                //Checking term data valid or invalid
-                if(!$term)
-                    return FALSE;
-        }
+        $term = Term::find($termID);
 
-        // Checking name data can't be empty
-        if (!$name)
-        {
-            admin_notice('danger', 'Judul is required.');
-            return FALSE;
-        }
-
-        // Checking slug data can't be empty
-        if (!$slug)
-        {
-            admin_notice('danger', 'Judul is required.');
-            return FALSE;
-        } else {
-            // Checking slug mush be unique group by taxonomy type
-            $sterm = Term::where('taxonomy_id', $term->taxonomy_id)->where('slug', $slug)->where('id', '<>', $termID)->first();
-            if($sterm)
-                return FALSE;
-        }
+        if( !$term )
+            return;
 
          // Checking parent data if data null or empty
         if (!$parent)
         {
             $parent = 0;
-        } else {
-            // Get term parent and make sure parent data integer
+        }
+        else
+        {
+            // Get term parent with make sure parent data integer
             $cterm = Term::find((int)$parent);
             // Checking term parent valid or invalid
             if($cterm)
@@ -249,10 +228,12 @@ class Term extends Model
                 // Checking term parent in same taxomony
                 if($cterm->taxonomy_id != $term->taxonomy_id)
                 {
-                    return FALSE;
+                    return false;
                 }
-            } else {
-                return FALSE;
+            }
+            else
+            {
+                return false;
             }
         }
         // Data input
@@ -260,11 +241,12 @@ class Term extends Model
             'taxonomy_id' => $term->taxonomy_id,
             'name' => $name,
             'slug' => $slug,
-            'parent' => (int)$parent
+            'parent' => (int) $parent
         ];
 
         // Checking data input
         $validator = $term->validate($save);
+
         if ($validator->fails())
         {
             foreach ($validator->messages()->toArray() as $v) {
@@ -276,9 +258,10 @@ class Term extends Model
         $term->name = $save['name'];
         $term->slug = $save['slug'];
         $term->parent = $save['parent'];
+
         // Update new data
         if ($term->save())
-            return TRUE;
+            return true;
         else
             return false;
     }

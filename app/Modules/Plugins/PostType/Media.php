@@ -10,7 +10,7 @@ class Media
 
     function init()
     {
-        \Eventy::addAction('aksara.init',[$this,'registerPostType'],90);
+        \Eventy::addAction('aksara.init',[$this,'registerPostType'],20);
         // add route
         \Eventy::addAction('aksara.routes.admin',function(){
             \Route::post('media-ajax-upload',['as'=>'media-ajax-upload','uses'=>'\App\Modules\Plugins\PostType\Http\MediaAjaxUpload@handle']);
@@ -26,12 +26,14 @@ class Media
             'label' => [
                 'name' => 'Media'
             ],
-                'icon' => 'ti-gallery',
-                'publicly_queryable'=>false,
-                'supports' => []
-            ];
+            'priority'=>20,
+            'icon' => 'ti-gallery',
+            'publicly_queryable'=>false,
+            'supports' => []
+        ];
 
         $post->registerPostType('media',$argsPost);
+        remove_admin_sub_menu('admin.media.create');
     }
 
     function enqueueScript()

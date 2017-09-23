@@ -8,7 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Modules\Plugins\PostType\Model\Taxonomy;
 use App\Modules\Plugins\PostType\Model\Term;
 use App\Modules\Plugins\PostType\Model\TermRelationship;
-use App\Repositories\TaxonomyRepositoryInterface;
+use App\Modules\Plugins\PostType\Repository\TaxonomyRepositoryInterface;
 
 class TaxonomyController extends Controller
 {
@@ -23,7 +23,8 @@ class TaxonomyController extends Controller
 
         $terms = Term::orderBy('terms.id');
 
-        $taxonomy = Taxonomy::where('post_type', get_current_post_type())->where('taxonomy_name', get_current_taxonomy())->first();
+        $taxonomy = Taxonomy::where('taxonomy_name', get_current_taxonomy())->first();
+        $taxonomyArgs = get_taxonomy_args(get_current_taxonomy());
 
         $terms = $terms->where('terms.taxonomy_id', $taxonomy->id);
 
@@ -35,8 +36,11 @@ class TaxonomyController extends Controller
         } else {
             $search = '';
         }
+
         $total = $terms->count();
         $terms = $terms->select('terms.*')->paginate(10);
+
+
         return view('plugin:post-type::taxonomy.index', compact('terms', 'taxonomy', 'search', 'total'));
     }
 
@@ -57,7 +61,7 @@ class TaxonomyController extends Controller
             $taxo = 'category';
         }
 
-        $taxonomy = Taxonomy::where('post_type', get_current_post_type())->where('taxonomy_name', get_current_taxonomy())->first();
+        $taxonomy = Taxonomy::where('taxonomy_name', get_current_taxonomy())->first();
         $parent = Term::orderBy('name')->where('taxonomy_id', $taxonomy->id)->get()->pluck('name','id');
 
         $parent = reset($parent);
@@ -76,24 +80,25 @@ class TaxonomyController extends Controller
     {
         $data = $request->all();
 
-        if($data['slug'])
-        {
-            $data['slug'] = $this->term->get_slug(str_slug($data['slug'],'-'));
-        } else {
-            $data['slug'] = $this->term->get_slug(str_slug($data['name'],'-'));
-        }
+        // if($data['slug'])
+        // {
+        //     $data['slug'] = $this->term->getSlug(str_slug($data['slug'],'-'));
+        // } else {
+        //     $data['slug'] = $this->term->getSlug(str_slug($data['name'],'-'));
+        // }
 
         $data = add_term($data['taxonomy'], $data['name'], $data['slug'], $data['parent']);
+
         if($data)
         {
             admin_notice('success', 'Data berhasil ditambahkan.');
-            return redirect()->route('admin.'.get_current_post_type_slug().'.'.get_current_taxonomy_slug().'.index');
+            return redirect()->route('admin.'.get_current_post_type_args('route').'.'.get_current_taxonomy_args('slug').'.index');
         } else if (!$data) {
 
-            return redirect()->route('admin.'.get_current_post_type_slug().'.'.get_current_taxonomy_slug().'.create')
+            return redirect()->route('admin.'.get_current_post_type_args('route').'.'.get_current_taxonomy_args('slug').'.create')
                             ->withInput();
         } else if(!$data->fails()){
-            return redirect()->route('admin.'.get_current_post_type_slug().'.'.get_current_taxonomy_slug().'.create')
+            return redirect()->route('admin.'.get_current_post_type_args('route').'.'.get_current_taxonomy_args('slug').'.create')
                             ->withErrors($data)
                             ->withInput();
         }
@@ -139,21 +144,16 @@ class TaxonomyController extends Controller
     public function update(Request $request, $id)
     {
         $data = $request->all();
-        if($data['slug'])
-        {
-            $data['slug'] = $this->term->get_slug(str_slug($data['slug'],'-'), $id);
-        } else {
-            $data['slug'] = $this->term->get_slug(str_slug($data['name'],'-'), $id);
-        }
 
         $data = update_term($data['id'], $data['name'], $data['slug'], $data['parent']);
+
         if (!$data) {
-            return redirect()->route('admin.'.get_current_post_type_slug().'.'.get_current_taxonomy_slug().'.edit', $id)
+            return redirect()->route('admin.'.get_current_post_type_args('route').'.'.get_current_taxonomy_args('slug').'.edit', $id)
 //                            ->withErrors($validator)
                             ->withInput();
         }
         admin_notice('success', 'Data berhasil diubah.');
-        return redirect()->route('admin.'.get_current_post_type_slug().'.'.get_current_taxonomy_slug().'.index');
+        return redirect()->route('admin.'.get_current_post_type_args('route').'.'.get_current_taxonomy_args('slug').'.index');
     }
 
     /**
@@ -171,7 +171,7 @@ class TaxonomyController extends Controller
             delete_term($id);
         }
         admin_notice('success', 'Data berhasil dihapus.');
-        return redirect()->route('admin.'.get_current_post_type_slug().'.'.get_current_taxonomy_slug().'.index');
+        return redirect()->route('admin.'.get_current_post_type_args('route').'.'.get_current_taxonomy_args('slug').'.index');
     }
 
 }

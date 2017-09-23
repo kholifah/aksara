@@ -74,15 +74,17 @@ function delete_post_term($postID = false, $taxonomy = false)
 }
 
 // Function for get post term data
-function get_post_term($postID = false, $taxonomy = false, $arg = false)
+//
+// $term (string|array)=> term id or term slug
+function get_post_terms($postID = false, $taxonomy = false, $arg = false)
 {
     // To function delete_options in TermRelationship model
-    $postterm = TermRelationship::get_post_term($postID, $taxonomy, $arg);
+    $postterm = TermRelationship::getPostTerms($postID, $taxonomy, $arg);
     return $postterm;
 }
 
 // Function for set post term data
-function set_post_term($postID = false, $taxonomy = false, $term = false)
+function set_post_terms($postID = false, $taxonomy = false, $term = false)
 {
     // To function delete_options in TermRelationship model
     $postterm = TermRelationship::set_post_term($postID, $taxonomy, $term);
@@ -98,18 +100,23 @@ function delete_term($termID = false)
 }
 
 // Function for get term data
-function get_terms($taxonomy = false, $arg = false)
+function get_terms($taxonomy = false, $args = false)
 {
-
-    $term = Term::getTerms($taxonomy, $arg);
+    $term = Term::getTerms($taxonomy, $args);
     return $term;
+}
+
+// $args (String|Integer)
+function get_term($taxonomy,$arg)
+{
+    return Term::getTerm($taxonomy,$arg);
 }
 
 // Function for add term data
 function add_term($taxonomy = false, $name= false, $slug = false, $parent = false)
 {
     // To function delete_options in Term model
-    $term = Term::add_term($taxonomy, $name, $slug, $parent);
+    $term = Term::addTerm($taxonomy, $name, $slug, $parent);
     return $term;
 }
 
@@ -118,7 +125,7 @@ function add_term($taxonomy = false, $name= false, $slug = false, $parent = fals
 function update_term($termID = false, $name= false, $slug = false, $parent = false)
 {
     // To function delete_options in Term model
-    $term = Term::update_term($termID, $name, $slug, $parent);
+    $term = Term::updateTerm($termID, $name, $slug, $parent);
     return $term;
 }
 
@@ -137,8 +144,8 @@ function register_taxonomy($taxonomy, $postType, $args )
     $post->registerTaxonomy( $taxonomy, $postType, $args);
 }
 
-// function check_taxonomy($postType = false, $taxonomy= false)
-// {
-//     $taxonomy = Taxonomy::check_taxonomy($postType, $taxonomy);
-//     return $taxonomy;
-// }
+function add_post_type_to_taxonomy($taxonomy, $postType)
+{
+    $post = \App::make('post');
+    $post->addPostTypeToTaxonomy( $taxonomy, $postType);
+}

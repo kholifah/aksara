@@ -58,3 +58,34 @@ function post_type_image_row($colsId,$post)
         echo view('plugin:post-type::partials.table-row-image',compact('colsId','post'))->render();
 }
 \Eventy::addAction('aksara.post-type.media.index.table.row','post_type_image_row',1,2);
+
+function post_type_tag_category_column($cols,$postType)
+{
+
+    $taxonomyCol = [
+        'category' => ['title'=>'Category','width'=>'150px'],
+        'tag' => ['title'=>'tag','width'=>'150px']
+    ];
+
+    insert_after_array_key($cols,'title',$taxonomyCol);
+
+    return $cols;
+}
+\Eventy::addFilter('aksara.post-type.post.index.table.column','post_type_tag_category_column',20,2);
+
+function post_type_tag_category_row($colsId,$post)
+{
+    if( $colsId == 'tag' || $colsId == 'category' )
+    {
+        $terms = get_post_terms($post->id,$colsId);
+
+
+        if( !$terms )
+            return;
+
+        $terms = $terms->pluck('term.name')->toArray();
+
+        echo view('plugin:post-type::partials.table-row-post-category-tag',compact('terms'))->render();
+    }
+}
+\Eventy::addAction('aksara.post-type.post.index.table.row','post_type_tag_category_row',1,2);

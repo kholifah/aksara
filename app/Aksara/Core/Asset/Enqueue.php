@@ -3,7 +3,7 @@ namespace App\Aksara\Core\Asset;
 
 class Enqueue
 {
-  protected $location = ['admin','front-end'];
+  protected $location = ['admin','front-end','admin-footer','front-end-footer'];
   protected $type = ['script','style'];
 
   function __construct()
@@ -17,14 +17,20 @@ class Enqueue
     \Eventy::addAction('aksara.admin.head',function(){
       \App::make('enqueue')->renderStyle('admin');
     });
-    \Eventy::addAction('aksara.admin.footer',function(){
+    \Eventy::addAction('aksara.admin.head',function(){
       \App::make('enqueue')->renderScript('admin');
+    });
+    \Eventy::addAction('aksara.admin.footer',function(){
+      \App::make('enqueue')->renderScript('admin-footer');
     });
     \Eventy::addAction('aksara.front-end.head',function(){
       \App::make('enqueue')->renderStyle('front-end');
     });
-    \Eventy::addAction('aksara.front-end.footer',function(){
+    \Eventy::addAction('aksara.front-end.head',function(){
       \App::make('enqueue')->renderScript('front-end');
+    });
+    \Eventy::addAction('aksara.front-end.footer',function(){
+      \App::make('enqueue')->renderScript('front-end-footer');
     });
   }
 
@@ -81,9 +87,10 @@ class Enqueue
 
   // $type = 'js' | 'css'
   // $location = 'admin' | front-end
+  // $id
   // $priority
-
-  function enqueue($location, $type, $url, $priority = 10 )
+  // in footer
+  function enqueue($location, $type, $url, $id, $priority = 10, $footer )
   {
     if( !in_array($location,$this->location) )
       return false;
@@ -91,7 +98,8 @@ class Enqueue
     if( !in_array($type,$this->type) )
       return false;
 
-
+    if( $type == 'script' && $footer == true )
+        $location = $location.'-footer';
 
     $config = \Config::get('aksara.assets',[]);
 

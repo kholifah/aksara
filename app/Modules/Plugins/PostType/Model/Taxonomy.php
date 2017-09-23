@@ -24,16 +24,20 @@ class Taxonomy extends Model
     // Function for get term data
     public static function getTaxonomies( $postType )
     {
-        // Checking post data
+        $registeredTaxonomies = \Config::get('aksara.taxonomies',false);
+
         if( !$postType )
-            $taxonomy = Taxonomy::get();
-        else
-            $taxonomy = Taxonomy::where('post_type',$postType)->get();
+            return false;
 
-        if (!$taxonomy)
-            return FALSE;
+        $postTypeTaxonomies = collect([]);
 
-        return $taxonomy;
+        foreach ($registeredTaxonomies as $taxonomy => $taxonomyArgs )
+        {
+            if( in_array($postType,$taxonomyArgs['post_type']) )
+                $postTypeTaxonomies[$taxonomy] = $taxonomyArgs ;
+        }
+
+        return $postTypeTaxonomies;
     }
 
     // Persist taxonomy

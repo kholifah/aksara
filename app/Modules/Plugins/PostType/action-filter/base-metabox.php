@@ -4,7 +4,6 @@
     $postTypes = \Config::get('aksara.post_type');
 
     foreach ($postTypes as $postType => $args ) {
-
         $supports = $args['supports'];
 
         if( in_array('title',$supports) )
@@ -20,7 +19,7 @@
 
         add_meta_box('taxonomy',$postType,'render_metabox_taxonomy',false,'metabox-sidebar',10);
     }
-    
+
     add_meta_box('media','media','render_metabox_media',false,'metabox',10);
 });
 
@@ -38,8 +37,11 @@ function render_metabox_thumbnail($post)
 
 function render_metabox_taxonomy($post)
 {
+    $taxonomies = get_taxonomies($post->post_type);
 
-    $taxonomies = (\Config::get('aksara.taxonomy'));
+    if( !$taxonomies )
+        return;
+
     echo view('plugin:post-type::partials.metabox-taxonomy',compact('post','taxonomies'))->render();
 }
 

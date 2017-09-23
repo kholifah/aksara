@@ -3,14 +3,14 @@
 @section('breadcrumb')
 <ol class="breadcrumb">
     <li class="breadcrumb-item"><a href="{{ route('admin.root') }}">Dashboard</a></li>
-    <li class="breadcrumb-item"><a href="{{ route('admin.'.get_current_post_type_slug().'.index') }}">{{ get_current_post_type_args('label.name') }}</a></li>
+    <li class="breadcrumb-item"><a href="{{ route('admin.'.get_current_post_type_args('route').'.index') }}">{{ get_current_post_type_args('label.name') }}</a></li>
     <li class="breadcrumb-item active">{{ get_current_taxonomy_args('label.name') }}</li>
 </ol>
 @endsection
 
 @section('content')
 <div class="content__head">
-    <h2 class="page-title">Pengaturan {{ get_current_taxonomy_args('label.name') }}  <a href="{{ route('admin.'.get_current_post_type_slug().'.'.get_current_taxonomy().'.create') }}" class="page-title-action">Tambah {{ get_current_taxonomy_args('label.name') }}</a></h2>
+    <h2 class="page-title">Pengaturan {{ get_current_taxonomy_args('label.name') }}  <a href="{{ route('admin.'.get_current_post_type_args('route').'.'.get_current_taxonomy().'.create') }}" class="page-title-action">Tambah {{ get_current_taxonomy_args('label.name') }}</a></h2>
 </div>
 <!-- /.content__head -->
 
@@ -52,8 +52,8 @@
                                 @endif
                             </td>
                             <td>
-                                <a href="{{ route('admin.'.get_current_post_type_slug().'.'.get_current_taxonomy().'.edit', $term->id) }}" class="icon-edit"><i title="Edit" class="fa fa-pencil-square-o edit-row" data-toggle="modal" data-target="#edit-komponen"></i> </a>
-                                <a href="{{ route('admin.'.get_current_post_type_slug().'.'.get_current_taxonomy().'.destroy', $term->id) }}" onclick="return confirm('Yakin ingin menghapus data?');" class="icon-delete sa-warning"><i title="Trash" class="fa fa-trash-o"></i></a>
+                                <a href="{{ route('admin.'.get_current_post_type_args('route').'.'.get_current_taxonomy().'.edit', $term->id) }}" class="icon-edit"><i title="Edit" class="fa fa-pencil-square-o edit-row" data-toggle="modal" data-target="#edit-komponen"></i> </a>
+                                <a href="{{ route('admin.'.get_current_post_type_args('route').'.'.get_current_taxonomy().'.destroy', $term->id) }}" onclick="return confirm('Yakin ingin menghapus data?');" class="icon-delete sa-warning"><i title="Trash" class="fa fa-trash-o"></i></a>
 
 
                             </td>

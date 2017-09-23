@@ -13,6 +13,30 @@ class CreateTaxonomyNTermTable081017 extends Migration
      */
     public function up()
     {
+        Schema::create('post_meta', function (Blueprint $table)
+        {
+            $table->bigIncrements('id')->unsigned();
+            $table->string('meta_key', 40)->index();
+            $table->longText('meta_value');
+            $table->bigInteger('post_id')->unsigned()->index();
+
+        });
+
+        Schema::create('posts', function (Blueprint $table)
+        {
+            $table->bigIncrements('id')->unsigned();
+            $table->string('post_type', 20);
+            $table->longText('post_content');
+            $table->bigInteger('post_author')->unsigned()->index();
+            $table->datetime('post_date');
+            $table->datetime('post_modified');
+            $table->string('post_status', 20)->index();
+            $table->text('post_title');
+            $table->text('post_image');
+            $table->text('post_slug');
+
+        });
+
         Schema::create('taxonomies', function (Blueprint $table)
         {
             $table->bigIncrements('id')->unsigned();
@@ -28,6 +52,18 @@ class CreateTaxonomyNTermTable081017 extends Migration
             $table->text('slug');
             $table->bigInteger('parent')->unsigned();
         });
+
+        Schema::create('term_relationships', function (Blueprint $table)
+        {
+            $table->bigIncrements('id')->unsigned();
+            $table->bigInteger('term_id')->unsigned();
+            $table->foreign('term_id')
+                    ->references('id')
+                    ->on('posts')
+                    ->onDelete('cascade');
+            $table->bigInteger('post_id')->unsigned()->index();
+
+        });
     }
 
     /**
@@ -39,6 +75,9 @@ class CreateTaxonomyNTermTable081017 extends Migration
     {
         Schema::drop('taxonomies');
         Schema::drop('terms');
+        Schema::drop('term_relationships');
+        Schema::drop('post_meta');
+        Schema::drop('posts');
     }
 
 }

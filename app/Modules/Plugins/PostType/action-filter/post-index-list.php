@@ -31,13 +31,13 @@ function post_type_index_filter_search($args)
     // $posts = $posts->where('post_type', $taxo);
     if (\Request::input('search'))
     {
-        $postsQueryArgs['search'] = \Request::input('search');
-        $posts = $posts->where('post_title', 'LIKE', '%'.$postsQueryArgs['search'].'%');
+        $viewData['search'] = \Request::input('search');
+        $posts = $posts->where('post_title', 'LIKE', '%'.$viewData['search'].'%');
     } else {
-        $postsQueryArgs['search'] = '';
+        $viewData['search'] = '';
     }
 
-    return compact('posts','postsQueryArgs');
+    return compact('posts','viewData');
 }
 
 function post_type_index_filter_post_status($args)
@@ -46,28 +46,38 @@ function post_type_index_filter_post_status($args)
 
     if (\Request::input('post_status'))
     {
-        $postsQueryArgs['post_status'] = \Request::input('post_status');
-        $posts = $posts->where('post_status', $postsQueryArgs['post_status']);
+        $viewData['post_status'] = \Request::input('post_status');
+        $posts = $posts->where('post_status', $viewData['post_status']);
     } else {
-        $postsQueryArgs['post_status'] = '';
+        $viewData['post_status'] = '';
         $posts = $posts->where('post_status', '<>', 'trash');
     }
 
-    return compact('posts','postsQueryArgs');
+    return compact('posts','viewData');
 }
 
 function post_type_index_filter_filter_taxonomy($args)
 {
     extract($args);
 
-    if (\Request::input('category'))
+    // get all taxonomy for post type
+    $taxonomies = get_taxonomies(get_current_post_type());
+    foreach ( $taxonomies as $taxonomy )
     {
-        $postsQueryArgs['category'] = \Request::input('category');
-        $posts = $posts->join('term_relationships', 'term_relationships.post_id', '=', 'posts.id');
-        $posts = $posts->where('term_id', $postsQueryArgs['category'])->groupBy('posts.id');
-    } else {
-        $postsQueryArgs['category'] = '';
+        $searchTerm = \Request::input('taxonomy.'.$taxonomy['id'] );
+
+        if( !$searchTerm )
+            continue;
+
+        $term = get_term($taxonomy['id'],$searchTerm);
+
+        if( !$term )
+            continue;
+
+        $posts = $posts->whereHas('term_relations',function($query) use ($term){
+            $query->where('term_id','=',$term->id);
+        });
     }
 
-    return compact('posts','postsQueryArgs');
+    return compact('posts','viewData');
 }

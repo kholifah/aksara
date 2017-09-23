@@ -13,11 +13,13 @@
 
   $argsCategory = [
         'label' => [
-          'name' => 'Category'
+          'name' => 'Category Product'
         ],
       ];
 
   register_taxonomy('product-category', ['product'], $argsCategory);
+
+  add_post_type_to_taxonomy('category', 'product');
 
 });
 

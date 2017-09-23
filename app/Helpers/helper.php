@@ -52,3 +52,19 @@ function insert_after_array_key( &$array, $needle, $value = [])
             array_slice($array, $needleIndex+1, count($array) - 1, true) ;
     // dd(array_slice($array, $needleIndex+1, count($array) - 1, true));
 }
+
+function array_search_value_recursive($needle, $haystack)
+{
+    foreach ($haystack as $key => $value)
+    {
+        if ($value === $needle)
+            return true;
+        elseif (is_array($value))
+        {
+            $result = array_search_value_recursive($needle, $value);
+            if ($result !== false)
+                return true;
+        }
+    }
+    return false;
+}

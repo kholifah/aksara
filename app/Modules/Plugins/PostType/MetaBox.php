@@ -4,14 +4,14 @@ namespace App\Modules\Plugins\PostType;
 class MetaBox
 {
 
-    function __construct()
+    function init()
     {
         \Eventy::addAction('aksara.init_completed',function()
         {
             $postTypes = \Config::get('aksara.post_type',[]);
 
             foreach ($postTypes as $postType => $args )
-            {                    
+            {
                 \Eventy::addAction('aksara.post_editor.'.$postType.'.metabox','App\Modules\Plugins\PostType\MetaBox@renderMetabox');
                 \Eventy::addAction('aksara.post_editor.'.$postType.'.metabox-sidebar','App\Modules\Plugins\PostType\MetaBox@renderMetaboxSidebar');
                 \Eventy::addAction('aksara.post-type.'.$postType.'.create','App\Modules\Plugins\PostType\MetaBox@saveMetabox',10,2);
