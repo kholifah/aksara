@@ -90,7 +90,7 @@ class Enqueue
   // $id
   // $priority
   // in footer
-  function enqueue($location, $type, $url, $id, $priority = 10, $footer )
+  function enqueue($location, $type, $url, $id, $priority = 10, $footer=false)
   {
     if( !in_array($location,$this->location) )
       return false;

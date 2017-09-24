@@ -53,18 +53,52 @@ function insert_after_array_key( &$array, $needle, $value = [])
     // dd(array_slice($array, $needleIndex+1, count($array) - 1, true));
 }
 
-function array_search_value_recursive($needle, $haystack)
+// search value for given key
+function array_search_value_recursive($needle, $haystack, $returnObject = true)
 {
     foreach ($haystack as $key => $value)
     {
-        if ($value === $needle)
-            return true;
+        if ($key === $needle)
+        {
+            return $returnObject === true ? $value : true ;
+        }
         elseif (is_array($value))
         {
             $result = array_search_value_recursive($needle, $value);
             if ($result !== false)
-                return true;
+                return $result;
         }
     }
     return false;
+}
+// search key for given value
+function array_search_key_recursive($needle, $haystack, $returnObject = true)
+{
+    foreach ($haystack as $key => $value)
+    {
+        if ($value === $needle)
+        {
+            return $returnObject === true ? $key : true ;
+        }
+        elseif (is_array($value))
+        {
+            $result = array_search_key_recursive($needle, $value);
+            if ($result !== false)
+                return $result;
+        }
+    }
+    return false;
+}
+
+function array_delete_recursive(array $array, callable $callback)
+{
+    foreach ($array as $key => $value)
+    {
+        if (is_array($value))
+            $array[$key] = array_delete_recursive($value, $callback);
+        else
+            if ($callback($value, $key))
+                unset($array[$key]);
+    }
+    return $array;
 }

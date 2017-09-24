@@ -65,15 +65,6 @@ class PostController extends Controller
         $posts = $preGetPost['posts'];
         $viewData = $preGetPost['viewData'];
 
-        $total = $posts->count();
-        $count_post = [
-            'all' => $this->postRepository->get_total($posts),
-            'publish' => $this->postRepository->get_total_publish($posts),
-            'draft' => $this->postRepository->get_total_draft($posts),
-            'pending' => $this->postRepository->get_total_pending($posts),
-            'trash' => $this->postRepository->get_total_trash($posts),
-        ];
-
         // Filter untuk manipulasi query
         $posts = $posts->select('posts.*')->paginate(10);
         $taxonomies = get_taxonomies(get_current_post_type());
@@ -81,7 +72,7 @@ class PostController extends Controller
         // Table Column
         $cols = \Eventy::filter('aksara.post-type.'.get_current_post_type().'.index.table.column',[],get_current_post_type());
 
-        return view('plugin:post-type::post.index', compact('posts', 'viewData', 'total', 'count_post','cols','taxonomies'));
+        return view('plugin:post-type::post.index', compact('posts', 'viewData', 'total','cols','taxonomies'));
     }
 
 

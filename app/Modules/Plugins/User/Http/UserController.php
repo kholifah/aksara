@@ -13,7 +13,7 @@ class UserController extends Controller {
 
     public function __construct() {
      //   $this->authorize('user');
-        
+
     }
 
     /**
@@ -55,7 +55,7 @@ class UserController extends Controller {
      */
     public function create() {
         $user = new User();
-        $user_role = Role::orderBy('name')->lists('name', 'name');
+        $user_role = Role::orderBy('name')->get()->pluck('name', 'name');
         return view('plugin:user::user.create', compact('user', 'user_role'));
     }
 
@@ -68,16 +68,16 @@ class UserController extends Controller {
     public function store(Request $request) {
         $user = new User();
 
-        $validator = $user->validate($request->all(), false);
-
-        if ($validator->fails()) {
-            foreach ($validator->messages()->toArray() as $v) {
-                admin_notice('danger', $v[0]);
-            }
-            return redirect('admin/user/create')
-                            ->withErrors($validator)
-                            ->withInput();
-        }
+        // $validator = $user->validate($request->all(), false);
+        //
+        // if ($validator->fails()) {
+        //     foreach ($validator->messages()->toArray() as $v) {
+        //         admin_notice('danger', $v[0]);
+        //     }
+        //     return redirect('admin/user/create')
+        //                     ->withErrors($validator)
+        //                     ->withInput();
+        // }
         $data = $request->all();
         $user->name = $data['name'];
         $user->email = $data['email'];
@@ -107,7 +107,7 @@ class UserController extends Controller {
      */
     public function edit($id) {
         $user = User::find($id);
-        $user_role = Role::orderBy('name')->lists('name', 'name');   
+        $user_role = Role::orderBy('name')->get()->pluck('name', 'name');
         return view('plugin:user::user.edit', compact('user', 'user_role'));
     }
 
@@ -119,7 +119,9 @@ class UserController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id) {
+
         $user = User::find($id);
+
         if ($request->input('password') || $request->input('password_confirmation'))
             $data = [
                 'id' => $id,
@@ -139,15 +141,17 @@ class UserController extends Controller {
                 'active' => $request->input('active')
             ];
 
-        $validator = $user->validate($data, false);
-        if ($validator->fails()) {
-            foreach ($validator->messages()->toArray() as $v) {
-                admin_notice('danger', $v[0]);
-            }
-            return redirect('admin/user/' . $id . '/edit')
-                            ->withErrors($validator)
-                            ->withInput();
-        }
+        // $validator = $user->validate($data, false);
+        //
+        // if ($validator->fails()) {
+        //     foreach ($validator->messages()->toArray() as $v) {
+        //         admin_notice('danger', $v[0]);
+        //     }
+        //     return redirect('admin/user/' . $id . '/edit')
+        //                     ->withErrors($validator)
+        //                     ->withInput();
+        // }
+
         if (isset($data['name']))
             $user->name = $data['name'];
         if (isset($data['email']))

@@ -25,21 +25,21 @@
 
                     </div>
                     <div class="tablenav-pages"><span class="displaying-num">{{ $total }} @if($total > 1 )items @else item @endif</span>
-                        {!! paginate($roles, ['search' => $search]) !!}
+                        {!! $roles->appends(['search' => $search])->links() !!}
                     </div>
                 </div>
                 <div class="table-box">
-                    <table class="datatable-responsive table noborder-top display nowrap" cellspacing="0" width="100%">
+                    <table class="table noborder-top display nowrap" cellspacing="0" width="100%">
                         <thead>
                             <tr>
-                                <th class="no-sort check-column" width="20">
+                                <th class="no-sort check-column" width="20px">
                                     <div class="checkbox checkbox-single checkall">
                                         <input type="checkbox">
                                         <label></label>
                                     </div>
                                 </th>
                                 <th>Nama</th>
-                                <th class="no-sort" width="50">Edit</th>
+                                <th class="no-sort" width="100px">Edit</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -72,7 +72,7 @@
                         <input name="bapply" type="submit" class="btn btn-secondary" value="Apply">
                     </div>
                     <div class="tablenav-pages"><span class="displaying-num">{{ $total }} @if($total > 1 )items @else item @endif</span>
-                        {!! paginate($roles, ['search' => $search]) !!}
+                        {!! $roles->appends(['search' => $search])->links() !!}
                     </div>
                 </div>
             </form>

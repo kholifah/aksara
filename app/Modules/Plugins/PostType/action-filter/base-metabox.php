@@ -21,11 +21,14 @@
     }
 
     add_meta_box('media','media','render_metabox_media',false,'metabox',10);
-    add_meta_box('page-template','page','render_metabox_page_template','save_metabox_page_template','metabox',10);
+    add_meta_box('page-template','page','render_metabox_page_template','save_metabox_page_template','metabox-sidebar',10);
 });
 
 function save_metabox_page_template($post)
 {
+    if( \Request::input('page_template') )
+        set_post_meta($post->id,'page_template',\Request::input('page_template'));
+
     return $post;
 }
 
@@ -36,6 +39,12 @@ function render_metabox_page_template($post)
 
     if( sizeof($pageTemplates) == 0 )
         return;
+
+    $pageTemplatesDefault['default'] = 'Default';
+    // FLIP LIKE A PRO
+    $pageTemplates = array_flip($pageTemplates);
+
+    $pageTemplates = $pageTemplatesDefault + $pageTemplates ;
 
     echo view('plugin:post-type::partials.metabox-page-template',compact('pageTemplates','pageTemplate'))->render();
 }

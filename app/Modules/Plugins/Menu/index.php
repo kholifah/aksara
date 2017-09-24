@@ -33,7 +33,7 @@
   $route->addRoute($menuSave);
 });
 
-\Eventy::addAction('aksara.admin_footer',function()
+\Eventy::addAction('aksara.admin.footer',function()
 {
     // only inject JS in menu management
     if( \Request::route()->getName() != 'aksara-menu' )

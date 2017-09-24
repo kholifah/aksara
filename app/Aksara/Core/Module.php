@@ -202,10 +202,13 @@ class Module
                 delete_options('module_activation');
 
                 if( \App::runningInConsole() )
+                {
+                    echo 'Modul '.$moduleActivation['moduleName'].' dinon-aktifkan karena terjadi terjadi kesalahan.';
                     return;
+                }
 
                 header('Location: '.url('admin/aksara-module-manager'));
-                exit;
+                die();
             }
 
             // On special an database exception

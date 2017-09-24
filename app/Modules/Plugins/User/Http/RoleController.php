@@ -42,6 +42,7 @@ class RoleController extends Controller {
 
         $total = $roles->count();
         $roles = $roles->paginate(10);
+
         return view('plugin:user::role.index', compact('roles', 'search', 'total'));
     }
 
@@ -53,7 +54,8 @@ class RoleController extends Controller {
     public function create() {
         $role = new Role();
         $role->permissions = [];
-        return view('plugin:user::role.create', compact('role'));
+        $capabilities = get_capabilities();
+        return view('plugin:user::role.create', compact('role','capabilities'));
     }
 
     /**
@@ -100,8 +102,9 @@ class RoleController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function edit($id) {
-        $role = Role::find($id);       
-        return view('plugin:user::role.edit', compact('role'));
+        $role = Role::find($id);
+        $capabilities = get_capabilities();
+        return view('plugin:user::role.edit', compact('role','capabilities'));
     }
 
     /**
@@ -141,7 +144,7 @@ class RoleController extends Controller {
         $role = Role::find($id);
         if ($role->delete())
             admin_notice('success', 'Data berhasil dihapus.');
-        else 
+        else
             admin_notice('danger', 'Data gagal dihapus.');
         return redirect()->route('aksara-role');
     }

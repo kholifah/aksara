@@ -28,6 +28,7 @@ class PostRepository implements PostRepositoryInterface
     public function get_total_publish( $posts=false,$postType = false )
     {
         $posts = clone $posts;
+
         if( !$postType )
             $postType  = get_current_post_type();
 

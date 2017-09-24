@@ -3,6 +3,7 @@ require __DIR__.'/action-filter/post-index-list.php';
 require __DIR__.'/action-filter//set-post-terms.php';
 require __DIR__.'/action-filter/base-metabox.php';
 require __DIR__.'/action-filter/base-table.php';
+require __DIR__.'/action-filter/add-capabilities.php';
 // return;
 \App::singleton('post',function()
 {

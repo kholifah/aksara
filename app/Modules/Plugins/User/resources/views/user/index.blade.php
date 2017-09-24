@@ -44,7 +44,7 @@
                                 <th>Email</th>
                                 <th>Role</th>
                                 <th>Active</th>
-                                <th class="no-sort" width="50">Edit</th>
+                                <th class="no-sort" width="100">Edit</th>
                             </tr>
                         </thead>
                         <tbody>
