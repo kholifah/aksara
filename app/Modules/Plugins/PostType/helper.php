@@ -4,6 +4,20 @@ use App\Modules\Plugins\PostType\Model\TermRelationship;
 use App\Modules\Plugins\PostType\Model\Term;
 use App\Modules\Plugins\PostType\Model\Taxonomy;
 
+function add_page_template($name,$path)
+{
+    $pageTemplates = \Config::get('aksara.post-type.page-templates',[]);
+
+    $pageTemplates[$name] = $path;
+
+    \Config::set('aksara.post-type.page-templates',$pageTemplates);
+}
+
+function get_page_template($post)
+{
+    return get_post_meta($post->id,'page_template',false);
+}
+
 function aksara_media_uploader()
 {
     $media = \App::make('App\Modules\Plugins\PostType\Media');

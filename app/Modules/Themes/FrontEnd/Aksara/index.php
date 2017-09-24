@@ -39,3 +39,6 @@
                 );
 
 });
+
+
+add_page_template('contact-form','front-end:aksara::page-contact-form');

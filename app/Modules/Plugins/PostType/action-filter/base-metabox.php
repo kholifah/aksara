@@ -21,7 +21,24 @@
     }
 
     add_meta_box('media','media','render_metabox_media',false,'metabox',10);
+    add_meta_box('page-template','page','render_metabox_page_template','save_metabox_page_template','metabox',10);
 });
+
+function save_metabox_page_template($post)
+{
+    return $post;
+}
+
+function render_metabox_page_template($post)
+{
+    $pageTemplates = $pageTemplates = \Config::get('aksara.post-type.page-templates',[]);
+    $pageTemplate = get_page_template($post);
+
+    if( sizeof($pageTemplates) == 0 )
+        return;
+
+    echo view('plugin:post-type::partials.metabox-page-template',compact('pageTemplates','pageTemplate'))->render();
+}
 
 function render_metabox_media($post)
 {
