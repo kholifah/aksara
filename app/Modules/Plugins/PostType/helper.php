@@ -4,18 +4,18 @@ use App\Modules\Plugins\PostType\Model\TermRelationship;
 use App\Modules\Plugins\PostType\Model\Term;
 use App\Modules\Plugins\PostType\Model\Taxonomy;
 
-function add_page_template($name,$path)
+function add_page_template($name, $path)
 {
-    $pageTemplates = \Config::get('aksara.post-type.page-templates',[]);
+    $pageTemplates = \Config::get('aksara.post-type.page-templates', []);
 
     $pageTemplates[$name] = $path;
 
-    \Config::set('aksara.post-type.page-templates',$pageTemplates);
+    \Config::set('aksara.post-type.page-templates', $pageTemplates);
 }
 
 function get_page_template($post)
 {
-    return get_post_meta($post->id,'page_template',false);
+    return get_post_meta($post->id, 'page_template', false);
 }
 
 function aksara_media_uploader()
@@ -47,7 +47,6 @@ function set_post_meta($postID = false, $key = false, $value = false)
     // To function delete_options in PostMeta model
     $post_meta = PostMeta::set_post_meta($postID, $key, $value);
     return $post_meta;
-
 }
 
 function status_post($status = false)
@@ -59,24 +58,23 @@ function status_post($status = false)
         'trash' => 'Trash'
     ];
     //Checking status
-    if ($status)
-    {
+    if ($status) {
         return $stat[$status];
     } else {
         return $stat;
     }
 }
 
-function register_post_type( $postType, $args )
+function register_post_type($postType, $args)
 {
     $post = \App::make('post');
-    $post->registerPostType( $postType, $args);
+    $post->registerPostType($postType, $args);
 }
 
-function add_meta_box( string $id, string $postType,string $callbackRender,string $callbackSave = null,string $location = "metabox",  $priority = 20 )
+function add_meta_box(string $id, string $postType, string $callbackRender, string $callbackSave = null, string $location = "metabox", $priority = 20)
 {
     $metabox = \App::make('App\Modules\Plugins\PostType\MetaBox');
-    $metabox->add( $id, $postType, $callbackRender, $callbackSave, $location, $priority );
+    $metabox->add($id, $postType, $callbackRender, $callbackSave, $location, $priority);
 }
 
 // Function for delete term data
@@ -121,9 +119,9 @@ function get_terms($taxonomy = false, $args = false)
 }
 
 // $args (String|Integer)
-function get_term($taxonomy,$arg)
+function get_term($taxonomy, $arg)
 {
-    return Term::getTerm($taxonomy,$arg);
+    return Term::getTerm($taxonomy, $arg);
 }
 
 // Function for add term data
@@ -145,21 +143,21 @@ function update_term($termID = false, $name= false, $slug = false, $parent = fal
 
 
 // Function for get term data
-function get_taxonomies( $postType = false )
+function get_taxonomies($postType = false)
 {
     // To function get_taxonomies in Taxonomy model
     $taxonomy = Taxonomy::getTaxonomies($postType);
     return $taxonomy;
 }
 
-function register_taxonomy($taxonomy, $postType, $args )
+function register_taxonomy($taxonomy, $postType, $args)
 {
     $post = \App::make('post');
-    $post->registerTaxonomy( $taxonomy, $postType, $args);
+    $post->registerTaxonomy($taxonomy, $postType, $args);
 }
 
 function add_post_type_to_taxonomy($taxonomy, $postType)
 {
     $post = \App::make('post');
-    $post->addPostTypeToTaxonomy( $taxonomy, $postType);
+    $post->addPostTypeToTaxonomy($taxonomy, $postType);
 }

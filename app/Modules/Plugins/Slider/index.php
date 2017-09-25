@@ -1,7 +1,6 @@
 <?php
-\Eventy::addAction('aksara.init',function(){
-
-  $sliderIndex = [
+\Eventy::addAction('aksara.init', function () {
+    $sliderIndex = [
                     'page_title' => 'Site Slider',
                     'menu_title' => 'Site Slider',
                     'icon'       => 'ti-layout-slider',
@@ -15,11 +14,11 @@
                                        ]
                     ];
 
-  add_admin_menu_route($sliderIndex);
+    add_admin_menu_route($sliderIndex);
 
-  $route = \App::make('route');
+    $route = \App::make('route');
 
-  $sliderSave = [
+    $sliderSave = [
              'slug' => '/aksara-slider-save',
              'method' => 'POST',
              'args' => [
@@ -28,6 +27,5 @@
                         ],
              ];
 
-  $route->addRoute($sliderSave);
-
+    $route->addRoute($sliderSave);
 });

@@ -1,7 +1,6 @@
 <?php
 
-\Eventy::addAction('aksara.routes.front_end',function()
-{
+\Eventy::addAction('aksara.routes.front_end', function () {
     $loginRoute = Eventy::filter('aksara.route.login', 'auth/login');
     $registerRoute = Eventy::filter('aksara.route.register', 'auth/register');
 
@@ -22,5 +21,4 @@
     // // Password reset routes...
     // \Route::get('password/reset/{token}', '\App\Aksara\Core\AuthLoginRegister\Http\AuthController@getReset');
     // \Route::post('password/reset', '\App\Aksara\Core\AuthLoginRegister\Http\AuthController@postReset');
-
 });

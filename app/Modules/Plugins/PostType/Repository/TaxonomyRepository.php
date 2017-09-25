@@ -4,11 +4,13 @@ namespace App\Modules\Plugins\PostType\Repository;
 use App\Modules\Plugins\PostType\Model\Term;
 use Auth;
 
-class TaxonomyRepository implements TaxonomyRepositoryInterface {
+class TaxonomyRepository implements TaxonomyRepositoryInterface
+{
 
     // protected $post_type;
 
-    public function __construct() {
+    public function __construct()
+    {
         // $this->post_type = get_current_post_type();
     }
 
@@ -57,5 +59,4 @@ class TaxonomyRepository implements TaxonomyRepositoryInterface {
     //     }
     //     return $slug;
     // }
-
 }

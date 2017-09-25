@@ -26,16 +26,16 @@
 //});
 // \Config::set('aksara.module_manager.load_all',true);
 
-\Eventy::addAction('aksara.init',function()
-{
-  register_menu( ['primary' => [
+\Eventy::addAction('aksara.init', function () {
+    register_menu(
+      ['primary' => [
                     'label' => 'Primary'
                     ]]
                   );
 
-  register_menu( ['footer' => [
+    register_menu(
+      ['footer' => [
                     'label' => 'Footer'
                   ]]
                 );
-
 });

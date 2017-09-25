@@ -1,7 +1,6 @@
 <?php
-\Eventy::addAction('aksara.init',function(){
-
-  $optionIndex = [
+\Eventy::addAction('aksara.init', function () {
+    $optionIndex = [
                     'page_title' => 'Site Option',
                     'menu_title' => 'Site Option',
                     'icon'       => 'ti-brush-alt',
@@ -15,11 +14,11 @@
                                        ]
                     ];
 
-  add_admin_menu_route($optionIndex);
+    add_admin_menu_route($optionIndex);
 
-  $route = \App::make('route');
+    $route = \App::make('route');
 
-  $optionSave = [
+    $optionSave = [
              'slug' => '/aksara-option-save',
              'method' => 'POST',
              'args' => [
@@ -28,47 +27,46 @@
                         ],
              ];
 
-  $route->addRoute($optionSave);
+    $route->addRoute($optionSave);
 
 
-  \Eventy::addFilter('aksara.application_name',function($name){
+    \Eventy::addFilter('aksara.application_name', function ($name) {
+        $site_options = get_options('site_options', []);
 
-    $site_options = get_options('site_options',[]);
+        if (isset($site_options['application_name']) && $site_options['application_name'] !== "") {
+            return $site_options['application_name'];
+        }
 
-    if( isset($site_options['application_name']) && $site_options['application_name'] !== "" )
-      return $site_options['application_name'];
+        return $name;
+    });
 
-    return $name;
-  });
+    \Eventy::addFilter('aksara.site_title', function ($name) {
+        $site_options = get_options('site_options', []);
 
-  \Eventy::addFilter('aksara.site_title',function($name){
+        if (isset($site_options['site_title']) && $site_options['site_title'] !== "") {
+            return $site_options['site_title'];
+        }
 
-    $site_options = get_options('site_options',[]);
+        return $name;
+    });
 
-    if( isset($site_options['site_title']) && $site_options['site_title'] !== "" )
-      return $site_options['site_title'];
+    \Eventy::addFilter('aksara.admin_site_title', function ($name) {
+        $site_options = get_options('site_options', []);
 
-    return $name;
-  });
+        if (isset($site_options['admin_site_title']) && $site_options['admin_site_title'] !== "") {
+            return $site_options['admin_site_title'];
+        }
 
-  \Eventy::addFilter('aksara.admin_site_title',function($name){
+        return $name;
+    });
 
-    $site_options = get_options('site_options',[]);
+    \Eventy::addFilter('aksara.tagline', function ($name) {
+        $site_options = get_options('site_options', []);
 
-    if( isset($site_options['admin_site_title']) && $site_options['admin_site_title'] !== "" )
-      return $site_options['admin_site_title'];
+        if (isset($site_options['tagline']) && $site_options['tagline'] !== "") {
+            return $site_options['tagline'];
+        }
 
-    return $name;
-  });
-
-  \Eventy::addFilter('aksara.tagline',function($name){
-
-    $site_options = get_options('site_options',[]);
-
-    if( isset($site_options['tagline']) && $site_options['tagline'] !== "" )
-      return $site_options['tagline'];
-
-    return $name;
-  });
-
+        return $name;
+    });
 });

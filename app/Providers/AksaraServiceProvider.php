@@ -13,49 +13,49 @@ class AksaraServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-      //@TODO Check installed or not
-      if ( !\Schema::hasTable('options'))
-        return;
+        //@TODO Check installed or not
+        if (!\Schema::hasTable('options')) {
+            return;
+        }
 
-      // $post = \App::make('post');
-      $module = \App::make('module');
-      $module->moduleStatusChangeListener();
+        // $post = \App::make('post');
+        $module = \App::make('module');
+        $module->moduleStatusChangeListener();
 
-      // Load Core Plugin
-      $module->loadModules('core',app_path('Aksara/Core'));
+        // Load Core Plugin
+        $module->loadModules('core', app_path('Aksara/Core'));
 
-      // Load Plugin
-      $module->loadModules('plugin',app_path('Modules/Plugins'));
+        // Load Plugin
+        $module->loadModules('plugin', app_path('Modules/Plugins'));
 
-      // Load Front End Themes
-      $module->loadModules('front-end',app_path('Modules/Themes/FrontEnd'));
+        // Load Front End Themes
+        $module->loadModules('front-end', app_path('Modules/Themes/FrontEnd'));
 
-      // Load CMD Themes
-      $module->loadModules('admin',app_path('Modules/Themes/Admin'));
-      \Eventy::action('aksara.init');
-      \Eventy::action('aksara.init_completed');
+        // Load CMD Themes
+        $module->loadModules('admin', app_path('Modules/Themes/Admin'));
+        \Eventy::action('aksara.init');
+        \Eventy::action('aksara.init_completed');
 
-      \Eventy::action('aksara.routes.before');
+        \Eventy::action('aksara.routes.before');
 
-      $argsGroupFrontEnd = \Eventy::filter('aksara.middleware.front_end', ['middleware' => ['web','csrf']]);
-      //
+        $argsGroupFrontEnd = \Eventy::filter('aksara.middleware.front_end', ['middleware' => ['web','csrf']]);
+        //
 
-      \Route::group($argsGroupFrontEnd, function() {
-          \Eventy::action('aksara.routes.front_end');
-      });
-      //
-      $argsGroupAdmin = \Eventy::filter('aksara.middleware.admin', ['prefix' => 'admin', 'middleware' => ['web','csrf', 'auth']]);
-      //
-      \Route::group($argsGroupAdmin, function () {
-          \Eventy::action('aksara.routes.admin');
-      });
-      //
-      //
-      \Eventy::action('aksara.routes.after');
-      //
+        \Route::group($argsGroupFrontEnd, function () {
+            \Eventy::action('aksara.routes.front_end');
+        });
+        //
+        $argsGroupAdmin = \Eventy::filter('aksara.middleware.admin', ['prefix' => 'admin', 'middleware' => ['web','csrf', 'auth']]);
+        //
+        \Route::group($argsGroupAdmin, function () {
+            \Eventy::action('aksara.routes.admin');
+        });
+        //
+        //
+        \Eventy::action('aksara.routes.after');
+        //
 
-      $routeList = \Route::getRoutes();
-
+        $routeList = \Route::getRoutes();
     }
 
     /**
@@ -65,17 +65,17 @@ class AksaraServiceProvider extends ServiceProvider
      */
     public function register()
     {
-      \App::singleton('menu',function(){
-        return new \App\Aksara\Core\AdminMenu\AdminMenu();
-      });
+        \App::singleton('menu', function () {
+            return new \App\Aksara\Core\AdminMenu\AdminMenu();
+        });
 
-      \App::singleton('route',function(){
-        return new \App\Aksara\Core\Route();
-      });
+        \App::singleton('route', function () {
+            return new \App\Aksara\Core\Route();
+        });
 
-      \App::singleton('module',function(){
-        return new \App\Aksara\Core\Module();
-      });
+        \App::singleton('module', function () {
+            return new \App\Aksara\Core\Module();
+        });
     }
 
     /**
@@ -87,5 +87,4 @@ class AksaraServiceProvider extends ServiceProvider
     // {
     //   echo "--|--";
     // }
-
 }

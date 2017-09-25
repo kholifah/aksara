@@ -5,18 +5,17 @@ require __DIR__.'/action-filter/base-metabox.php';
 require __DIR__.'/action-filter/base-table.php';
 require __DIR__.'/action-filter/add-capabilities.php';
 // return;
-\App::singleton('post',function()
-{
-  $post =  new \App\Modules\Plugins\PostType\Post();
-  return $post;
+\App::singleton('post', function () {
+    $post =  new \App\Modules\Plugins\PostType\Post();
+    return $post;
 });
 
-\App::singleton('App\Modules\Plugins\PostType\MetaBox',function(){
-  return new \App\Modules\Plugins\PostType\MetaBox();
+\App::singleton('App\Modules\Plugins\PostType\MetaBox', function () {
+    return new \App\Modules\Plugins\PostType\MetaBox();
 });
 
-\App::singleton('App\Modules\Plugins\PostType\Media',function(){
-  return new \App\Modules\Plugins\PostType\Media();
+\App::singleton('App\Modules\Plugins\PostType\Media', function () {
+    return new \App\Modules\Plugins\PostType\Media();
 });
 
 
@@ -34,11 +33,11 @@ $media->init();
 $metabox = \App::make('App\Modules\Plugins\PostType\MetaBox');
 $metabox->init();
 
-\Eventy::addAction('aksara.init',function(){
-  $post = \App::make('post');
+\Eventy::addAction('aksara.init', function () {
+    $post = \App::make('post');
 
-  // Register Post
-  $argsPost = [
+    // Register Post
+    $argsPost = [
     'label' => [
       'name' => 'Post'
     ],
@@ -46,10 +45,10 @@ $metabox->init();
     'icon' => 'ti-write'
   ];
 
-  $post->registerPostType('post',$argsPost);
+    $post->registerPostType('post', $argsPost);
 
-  // Register Page
-  $argsPage = [
+    // Register Page
+    $argsPage = [
     'label' => [
       'name' => 'Page'
     ],
@@ -57,39 +56,34 @@ $metabox->init();
     'icon' => 'ti-book'
   ];
 
-  $post->registerPostType('page',$argsPage);
+    $post->registerPostType('page', $argsPage);
 
-   // Register Taxonomy
-  $argsCategory = [
+    // Register Taxonomy
+    $argsCategory = [
     'label' => [
       'name' => 'Category'
     ],
   ];
 
-  $post->registerTaxonomy('category', ['post'], $argsCategory);
+    $post->registerTaxonomy('category', ['post'], $argsCategory);
 
-  $argsTag = [
+    $argsTag = [
     'label' => [
       'name' => 'Tag'
     ],
   ];
 
-  $post->registerTaxonomy('tag', ['post'], $argsTag);
-
-
-
+    $post->registerTaxonomy('tag', ['post'], $argsTag);
 });
 
 //@TODO pindah ke aksara_admin)enqueue
-\Eventy::addAction('aksara.admin_head',function()
-{
+\Eventy::addAction('aksara.admin_head', function () {
     echo '<link href='.url("assets/admin/assets/plugins/datatables/jquery.dataTables.min.css").' rel="stylesheet" type="text/css"/>';
     echo '<link href='.url("assets/admin/assets/plugins/datatables/responsive.bootstrap.min.css").' rel="stylesheet" type="text/css"/>';
 });
 
 //@TODO pindah ke aksara_admin)enqueue
-\Eventy::addAction('aksara.admin.footer',function()
-{
+\Eventy::addAction('aksara.admin.footer', function () {
     // File JS / CSS masuk sini
     // @nanti dipindah ke resource
     echo '<script src='.url("assets/admin/assets/plugins/datatables/jquery.dataTables.min.js").'></script>';

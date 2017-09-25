@@ -1,9 +1,10 @@
 <?php
 namespace App\Aksara\Core;
+
 use \App\Aksara\Lib\BootstrapThreePresenter;
 
-class CPaginate extends BootstrapThreePresenter {
-
+class CPaginate extends BootstrapThreePresenter
+{
     public function render()
     {
         if ($this->hasPages()) {
@@ -22,8 +23,8 @@ class CPaginate extends BootstrapThreePresenter {
     public function getLast()
     {
         $url = $this->paginator->url($this->paginator->lastPage());
-        if($this->paginator->lastPage() == $this->paginator->currentPage()){
-           return $btn = ' <span class="tablenav-pages-navspan" aria-hidden="true">»</span>';
+        if ($this->paginator->lastPage() == $this->paginator->currentPage()) {
+            return $btn = ' <span class="tablenav-pages-navspan" aria-hidden="true">»</span>';
         }
         return $btn = ' <a class="next-page" href="'.$url.'"><span class="" aria-hidden="true">»</span></a>';
     }
@@ -31,7 +32,7 @@ class CPaginate extends BootstrapThreePresenter {
     public function getFirst()
     {
         $url = $this->paginator->url(1);
-        if(1 == $this->paginator->currentPage()){
+        if (1 == $this->paginator->currentPage()) {
             return $btn = '<span class="tablenav-pages-navspan" aria-hidden="true">«</span>';
         }
         return $btn = '<a class="next-page " href="'.$url.'"><span class="" aria-hidden="true">«</span></a>';
@@ -47,7 +48,7 @@ class CPaginate extends BootstrapThreePresenter {
     public function getButtonPre()
     {
         $url = $this->paginator->previousPageUrl();
-        if(empty($url)){
+        if (empty($url)) {
             return $btn = '<span class="tablenav-pages-navspan" aria-hidden="true">‹</span>';
         }
         return $btn = '<a class="next-page" href="'.$url.'"><span class="" aria-hidden="true">‹</span></a>';
@@ -56,10 +57,9 @@ class CPaginate extends BootstrapThreePresenter {
     public function getButtonNext()
     {
         $url = $this->paginator->nextPageUrl();
-        if(empty($url)){
+        if (empty($url)) {
             return $btn = '<span class="tablenav-pages-navspan" aria-hidden="true">›</span>';
         }
         return $btn = '<a class="next-page" href="'.$url.'"><span aria-hidden="true">›</span></a>';
     }
-
 }

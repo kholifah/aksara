@@ -7,15 +7,14 @@ use App\Http\Requests;
 
 class OptionController extends Controller
 {
-
-    function index()
+    public function index()
     {
-      $site_options = get_options('site_options',[]);
+        $site_options = get_options('site_options', []);
 
-      return view('plugin:option::index',compact('site_options'));
+        return view('plugin:option::index', compact('site_options'));
     }
 
-    function save(Request $request)
+    public function save(Request $request)
     {
         $data = $request->all();
 
@@ -23,7 +22,5 @@ class OptionController extends Controller
 
         admin_notice('success', 'Data berhasil diubah.');
         return redirect()->route('aksara-option');
-
     }
-
 }

@@ -1,9 +1,9 @@
 <?php
 
-\Eventy::addAction( 'aksara.init', function(){
-  $route = \App::make('route');
+\Eventy::addAction('aksara.init', function () {
+    $route = \App::make('route');
 
-  $moduleManagerSave = [
+    $moduleManagerSave = [
              'slug' => '/aksara-module-manager/activate/{slug}',
              'method' => 'POST',
              'args' => [
@@ -12,9 +12,9 @@
                         ],
              ];
 
-  $route->addRoute($moduleManagerSave);
+    $route->addRoute($moduleManagerSave);
 
-  $moduleManagerSave = [
+    $moduleManagerSave = [
              'slug' => '/aksara-module-manager/deactivate/{slug}',
              'method' => 'POST',
              'args' => [
@@ -23,9 +23,9 @@
                         ],
              ];
 
-  $route->addRoute($moduleManagerSave);
+    $route->addRoute($moduleManagerSave);
 
-  $moduleManagerInfo = [
+    $moduleManagerInfo = [
              'slug' => '/aksara-module-manager/activate/{slug}',
              'method' => 'GET',
              'args' => [
@@ -34,5 +34,5 @@
                         ],
              ];
 
-  $route->addRoute($moduleManagerInfo);
+    $route->addRoute($moduleManagerInfo);
 });

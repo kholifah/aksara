@@ -4,32 +4,34 @@ namespace App\Aksara\Core\Asset\Http;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class StaticFileController extends Controller {
-
-    public function serve($module_type,$module_name)
+class StaticFileController extends Controller
+{
+    public function serve($module_type, $module_name)
     {
         // if( $routeParams['module_type'] == 'plugins' )
-        if( str_contains(\Request::url(),'Themes'  )  )
+        if (str_contains(\Request::url(), 'Themes')) {
             $path = '/Modules/Themes/'.$module_type.'/'.$module_name.'/assets/';
-        else
+        } else {
             $path = '/Modules/'.$module_type.'/'.$module_name.'/assets/';
+        }
 
         $routeParams = \Route::getCurrentRoute()->parameters();
 
         unset($routeParams['module_type']);
         unset($routeParams['module_name']);
 
-        $pathAsset = implode('/',$routeParams);
+        $pathAsset = implode('/', $routeParams);
 
         // Security
-        $pathAsset = str_replace('..','',$pathAsset);
+        $pathAsset = str_replace('..', '', $pathAsset);
 
         // full path
         $path = $path.$pathAsset;
         $realPath = app_path().$path;
 
-        if( !file_exists($realPath) )
+        if (!file_exists($realPath)) {
             return "file {$path} not found";
+        }
 
         // get extension
         $extension = \File::extension($realPath);

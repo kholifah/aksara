@@ -9,11 +9,11 @@ use App\User;
 use App\Models\Role;
 use Auth;
 
-class UserController extends Controller {
-
-    public function __construct() {
-     //   $this->authorize('user');
-
+class UserController extends Controller
+{
+    public function __construct()
+    {
+        //   $this->authorize('user');
     }
 
     /**
@@ -21,7 +21,8 @@ class UserController extends Controller {
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request) {
+    public function index(Request $request)
+    {
         $users = User::orderBy('name');
         if ($request->get('bapply')) {
             if ($request->input('apply')) {
@@ -53,7 +54,8 @@ class UserController extends Controller {
      *
      * @return \Illuminate\Http\Response
      */
-    public function create() {
+    public function create()
+    {
         $user = new User();
         $user_role = Role::orderBy('name')->get()->pluck('name', 'name');
         return view('plugin:user::user.create', compact('user', 'user_role'));
@@ -65,7 +67,8 @@ class UserController extends Controller {
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request) {
+    public function store(Request $request)
+    {
         $user = new User();
 
         // $validator = $user->validate($request->all(), false);
@@ -95,7 +98,8 @@ class UserController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id) {
+    public function show($id)
+    {
         //
     }
 
@@ -105,7 +109,8 @@ class UserController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id) {
+    public function edit($id)
+    {
         $user = User::find($id);
         $user_role = Role::orderBy('name')->get()->pluck('name', 'name');
         return view('plugin:user::user.edit', compact('user', 'user_role'));
@@ -118,11 +123,11 @@ class UserController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id) {
-
+    public function update(Request $request, $id)
+    {
         $user = User::find($id);
 
-        if ($request->input('password') || $request->input('password_confirmation'))
+        if ($request->input('password') || $request->input('password_confirmation')) {
             $data = [
                 'id' => $id,
                 'name' => $request->input('name'),
@@ -132,7 +137,7 @@ class UserController extends Controller {
                 'role' => $request->input('role'),
                 'active' => $request->input('active')
             ];
-        else
+        } else {
             $data = [
                 'id' => $id,
                 'name' => $request->input('name'),
@@ -140,6 +145,7 @@ class UserController extends Controller {
                 'role' => $request->input('role'),
                 'active' => $request->input('active')
             ];
+        }
 
         // $validator = $user->validate($data, false);
         //
@@ -152,16 +158,21 @@ class UserController extends Controller {
         //                     ->withInput();
         // }
 
-        if (isset($data['name']))
+        if (isset($data['name'])) {
             $user->name = $data['name'];
-        if (isset($data['email']))
+        }
+        if (isset($data['email'])) {
             $user->email = $data['email'];
-        if (isset($data['password']))
+        }
+        if (isset($data['password'])) {
             $user->password = $data['password'];
-        if (isset($data['role']))
+        }
+        if (isset($data['role'])) {
             $user->role = $data['role'];
-        if (isset($data['active']))
+        }
+        if (isset($data['active'])) {
             $user->active = $data['active'];
+        }
         $user->save();
         admin_notice('success', 'Data berhasil diubah.');
         return redirect()->route('aksara-user');
@@ -173,14 +184,16 @@ class UserController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id) {
+    public function destroy($id)
+    {
         $user = User::find($id);
-        if ($id != Auth::user()->id)
-            if ($user->delete())
+        if ($id != Auth::user()->id) {
+            if ($user->delete()) {
                 admin_notice('success', 'Data berhasil dihapus.');
-            else
+            } else {
                 admin_notice('danger', 'Data gagal dihapus.');
+            }
+        }
         return redirect()->route('aksara-user');
     }
-
 }

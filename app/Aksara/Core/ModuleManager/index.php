@@ -1,11 +1,9 @@
 <?php
 // Only load module manager if load_all  == false
 
-\Eventy::addAction('aksara.init',function()
-{
-  if( !\Config::get('aksara.module_manager.load_all',false) )
-  {
-    $moduleManagerIndex = [
+\Eventy::addAction('aksara.init', function () {
+    if (!\Config::get('aksara.module_manager.load_all', false)) {
+        $moduleManagerIndex = [
                       'page_title' => 'Module Manager',
                       'menu_title' => 'Module Manager',
                       'icon'       => 'ti-layout-menu-v',
@@ -20,11 +18,11 @@
                                          ]
                       ];
 
-    add_admin_menu_route($moduleManagerIndex);
+        add_admin_menu_route($moduleManagerIndex);
 
-    $route = \App::make('route');
+        $route = \App::make('route');
 
-    $moduleManagerSave = [
+        $moduleManagerSave = [
                'slug' => '/aksara-module-manager/activate/{slug}',
                'method' => 'POST',
                'args' => [
@@ -33,9 +31,9 @@
                           ],
                ];
 
-    $route->addRoute($moduleManagerSave);
+        $route->addRoute($moduleManagerSave);
 
-    $moduleManagerSave = [
+        $moduleManagerSave = [
                'slug' => '/aksara-module-manager/deactivate/{slug}',
                'method' => 'POST',
                'args' => [
@@ -44,9 +42,9 @@
                           ],
                ];
 
-    $route->addRoute($moduleManagerSave);
+        $route->addRoute($moduleManagerSave);
 
-    $moduleManagerInfo = [
+        $moduleManagerInfo = [
                'slug' => '/aksara-module-manager/activate/{slug}',
                'method' => 'GET',
                'args' => [
@@ -55,6 +53,6 @@
                           ],
                ];
 
-    $route->addRoute($moduleManagerInfo);
-  }
+        $route->addRoute($moduleManagerInfo);
+    }
 });

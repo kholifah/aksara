@@ -12,8 +12,6 @@ use Illuminate\Http\Request;
 
 class AuthController extends Controller
 {
-
-
     /**
      * Create a new authentication controller instance.
      *
@@ -40,7 +38,8 @@ class AuthController extends Controller
         ]);
     }
 
-    public function login(Request $request) {
+    public function login(Request $request)
+    {
         return view('admin:aksara::auth.login')->render();
     }
 
@@ -55,16 +54,16 @@ class AuthController extends Controller
         $credential = $request->only(['email','password']);
 
         // if($user->active){
-        if (\Auth::attempt($credential))
-             return redirect()->route('admin.root');
-         else
+        if (\Auth::attempt($credential)) {
+            return redirect()->route('admin.root');
+        } else {
             return redirect()->route('admin.login')->with('message', 'Login Gagal');
+        }
     }
 
-    function logout()
+    public function logout()
     {
         \Auth::logout();
         return redirect()->route('admin.login')->with('message', 'Berhasil logout');
     }
-
 }

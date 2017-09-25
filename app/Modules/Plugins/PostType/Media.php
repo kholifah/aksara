@@ -3,21 +3,20 @@ namespace App\Modules\Plugins\PostType;
 
 class Media
 {
-    function __construct()
+    public function __construct()
     {
-
     }
 
-    function init()
+    public function init()
     {
-        \Eventy::addAction('aksara.init',[$this,'registerPostType'],20);
+        \Eventy::addAction('aksara.init', [$this,'registerPostType'], 20);
         // add route
-        \Eventy::addAction('aksara.routes.admin',function(){
-            \Route::post('media-ajax-upload',['as'=>'media-ajax-upload','uses'=>'\App\Modules\Plugins\PostType\Http\MediaAjaxUpload@handle']);
+        \Eventy::addAction('aksara.routes.admin', function () {
+            \Route::post('media-ajax-upload', ['as'=>'media-ajax-upload','uses'=>'\App\Modules\Plugins\PostType\Http\MediaAjaxUpload@handle']);
         });
     }
 
-    function registerPostType()
+    public function registerPostType()
     {
         $post = \App::make('post');
 
@@ -32,17 +31,17 @@ class Media
             'supports' => []
         ];
 
-        $post->registerPostType('media',$argsPost);
+        $post->registerPostType('media', $argsPost);
         remove_admin_sub_menu('admin.media.create');
     }
 
-    function enqueueScript()
+    public function enqueueScript()
     {
         // only embed one times
-        if( \Config::get('aksara_media_uploader',false) )
+        if (\Config::get('aksara_media_uploader', false)) {
             return;
+        }
 
         aksara_admin_enqueue_script(url("assets/modules/Plugins/PostType/assets/js/media-upload.js"));
-
     }
 }

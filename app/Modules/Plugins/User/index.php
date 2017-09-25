@@ -1,8 +1,6 @@
 <?php
 
-\Eventy::addAction('aksara.init_completed',function(){
-
-
+\Eventy::addAction('aksara.init_completed', function () {
     $userIndex = [
         'page_title' => 'User',
         'menu_title' => 'User',
@@ -142,20 +140,18 @@
     $route->addRoute($userDestroy);
 
     add_capability('User');
-    add_capability('Add User','add-user','user');
-    add_capability('Edit User','edit-user','user');
-    add_capability('Delete User','delete-user','user');
+    add_capability('Add User', 'add-user', 'user');
+    add_capability('Edit User', 'edit-user', 'user');
+    add_capability('Delete User', 'delete-user', 'user');
 });
 
-\Eventy::addAction('aksara.admin_head',function()
-{
+\Eventy::addAction('aksara.admin_head', function () {
     echo '<link href='.url("assets/admin/assets/plugins/datatables/jquery.dataTables.min.css").' rel="stylesheet" type="text/css"/>';
     echo '<link href='.url("assets/admin/assets/plugins/datatables/responsive.bootstrap.min.css").' rel="stylesheet" type="text/css"/>';
 });
 
 
-    \Eventy::addAction('aksara.admin_footer',function()
-    {
+    \Eventy::addAction('aksara.admin_footer', function () {
         // File JS / CSS masuk sini
         // @nanti dipindah ke resource
         echo '<script src='.url("assets/admin/assets/plugins/datatables/jquery.dataTables.min.js").'></script>';

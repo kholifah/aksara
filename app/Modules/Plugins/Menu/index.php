@@ -1,8 +1,7 @@
 <?php
 
-\Eventy::addAction('aksara.init',function()
-{
-  $menuIndex = [
+\Eventy::addAction('aksara.init', function () {
+    $menuIndex = [
     'page_title' => 'Site Menu',
     'menu_title' => 'Site Menu',
     'icon'       => 'ti-layout-menu-v',
@@ -17,11 +16,11 @@
                        ]
     ];
 
-  add_admin_menu_route($menuIndex);
+    add_admin_menu_route($menuIndex);
 
-  $route = \App::make('route');
+    $route = \App::make('route');
 
-  $menuSave = [
+    $menuSave = [
      'slug' => '/aksara-menu',
      'method' => 'POST',
      'args' => [
@@ -30,20 +29,18 @@
                 ],
      ];
 
-  $route->addRoute($menuSave);
+    $route->addRoute($menuSave);
 });
 
-\Eventy::addAction('aksara.admin.footer',function()
-{
+\Eventy::addAction('aksara.admin.footer', function () {
     // only inject JS in menu management
-    if( \Request::route()->getName() != 'aksara-menu' )
-      return;
+    if (\Request::route()->getName() != 'aksara-menu') {
+        return;
+    }
     // File JS / CSS masuk sini
-    // @nanti dipindah ke resource
-    ?>
+    // @nanti dipindah ke resource ?>
     <script src="https://unpkg.com/vue"></script>
 
     <?php
     echo view('plugin:menu::script')->render();
-
 });

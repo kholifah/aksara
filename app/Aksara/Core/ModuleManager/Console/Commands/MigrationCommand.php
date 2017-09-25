@@ -34,15 +34,17 @@ class MigrationCommand extends Command
 
         $modules = \Config::get('aksara.modules');
 
-        if( !isset($modules[$type]) )
+        if (!isset($modules[$type])) {
             $this->error('Jenis module '.$type.' tidak ada, gunakan [plugin,admin,front-end]');
+        }
 
-        if( !isset($modules[$type][$moduleName]) )
+        if (!isset($modules[$type][$moduleName])) {
             $this->error('Module dengan nama '.$moduleName.' tidak ada');
+        }
 
         $module = $modules[$type][$moduleName];
 
-         $module['migrationPath'] = str_replace(base_path(),"",$module['migrationPath']);
+        $module['migrationPath'] = str_replace(base_path(), "", $module['migrationPath']);
 
         $this->call('migrate', array('--path' => $module['migrationPath']));
     }

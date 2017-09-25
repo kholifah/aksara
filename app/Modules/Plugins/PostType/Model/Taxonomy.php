@@ -5,7 +5,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Taxonomy extends Model
 {
-
     protected $table = 'taxonomies';
     protected $fillable = ['post_type', 'taxonomy_name', 'slug'];
     public $timestamps = false;
@@ -22,19 +21,20 @@ class Taxonomy extends Model
     }
 
     // Function for get term data
-    public static function getTaxonomies( $postType )
+    public static function getTaxonomies($postType)
     {
-        $registeredTaxonomies = \Config::get('aksara.taxonomies',false);
+        $registeredTaxonomies = \Config::get('aksara.taxonomies', false);
 
-        if( !$postType )
+        if (!$postType) {
             return false;
+        }
 
         $postTypeTaxonomies = collect([]);
 
-        foreach ($registeredTaxonomies as $taxonomy => $taxonomyArgs )
-        {
-            if( in_array($postType,$taxonomyArgs['post_type']) )
+        foreach ($registeredTaxonomies as $taxonomy => $taxonomyArgs) {
+            if (in_array($postType, $taxonomyArgs['post_type'])) {
                 $postTypeTaxonomies[$taxonomy] = $taxonomyArgs ;
+            }
         }
 
         return $postTypeTaxonomies;
@@ -45,13 +45,11 @@ class Taxonomy extends Model
     {
         $taxonomy = Taxonomy::where('taxonomy_name', $taxonomyName)->first();
 
-        if (!$taxonomy)
-        {
+        if (!$taxonomy) {
             $taxonomy = new Taxonomy;
             $taxonomy->taxonomy_name = $taxonomyName;
             $taxonomy->slug = str_slug($taxonomyName);
             $taxonomy->save();
         }
     }
-
 }

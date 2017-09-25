@@ -39,5 +39,5 @@ function get_capability($id = false)
 
 function get_capabilities()
 {
-    return \Config::get('aksara.user.capabilities',[]);
+    return \Config::get('aksara.user.capabilities', []);
 }

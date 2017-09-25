@@ -3,117 +3,114 @@ namespace App\Modules\Plugins\PostType;
 
 class MetaBox
 {
-
-    function init()
+    public function init()
     {
-        \Eventy::addAction('aksara.init_completed',function()
-        {
-            $postTypes = \Config::get('aksara.post_type',[]);
+        \Eventy::addAction('aksara.init_completed', function () {
+            $postTypes = \Config::get('aksara.post_type', []);
 
-            foreach ($postTypes as $postType => $args )
-            {
-                \Eventy::addAction('aksara.post_editor.'.$postType.'.metabox','App\Modules\Plugins\PostType\MetaBox@renderMetabox');
-                \Eventy::addAction('aksara.post_editor.'.$postType.'.metabox-sidebar','App\Modules\Plugins\PostType\MetaBox@renderMetaboxSidebar');
-                \Eventy::addAction('aksara.post-type.'.$postType.'.create','App\Modules\Plugins\PostType\MetaBox@saveMetabox',10,2);
-                \Eventy::addAction('aksara.post-type.'.$postType.'.update','App\Modules\Plugins\PostType\MetaBox@saveMetabox',10,2);
+            foreach ($postTypes as $postType => $args) {
+                \Eventy::addAction('aksara.post_editor.'.$postType.'.metabox', 'App\Modules\Plugins\PostType\MetaBox@renderMetabox');
+                \Eventy::addAction('aksara.post_editor.'.$postType.'.metabox-sidebar', 'App\Modules\Plugins\PostType\MetaBox@renderMetaboxSidebar');
+                \Eventy::addAction('aksara.post-type.'.$postType.'.create', 'App\Modules\Plugins\PostType\MetaBox@saveMetabox', 10, 2);
+                \Eventy::addAction('aksara.post-type.'.$postType.'.update', 'App\Modules\Plugins\PostType\MetaBox@saveMetabox', 10, 2);
             }
         });
     }
 
     // location default / sidebar
-    function add(string $id, string $postType,string $callbackRender = null,string $callbackSave = null,string $location = "metabox",  $priority = 10 )
+    public function add(string $id, string $postType, string $callbackRender = null, string $callbackSave = null, string $location = "metabox", $priority = 10)
     {
-      $metaboxes = \Config::get('aksara.metaboxes',[]);
+        $metaboxes = \Config::get('aksara.metaboxes', []);
 
-      if( !isset($metaboxes[$postType]) )
-          $metaboxes[$postType] = [];
+        if (!isset($metaboxes[$postType])) {
+            $metaboxes[$postType] = [];
+        }
 
-      if( !isset($metaboxes[$postType][$location]) )
-          $metaboxes[$postType][$location] =[];
+        if (!isset($metaboxes[$postType][$location])) {
+            $metaboxes[$postType][$location] =[];
+        }
 
-      if( !isset($metaboxes[$postType][$location][$priority]) )
-          $metaboxes[$postType][$location][$priority] =[];
+        if (!isset($metaboxes[$postType][$location][$priority])) {
+            $metaboxes[$postType][$location][$priority] =[];
+        }
 
-      $args = [
+        $args = [
          'callbackRender' => $callbackRender,
          'callbackSave' => $callbackSave,
          'id' => $id,
       ];
 
-      array_push( $metaboxes[$postType][$location][$priority], $args);
+        array_push($metaboxes[$postType][$location][$priority], $args);
 
-      \Config::set('aksara.metaboxes',$metaboxes);
+        \Config::set('aksara.metaboxes', $metaboxes);
     }
 
-    function renderMetaboxSidebar($parameters=[])
+    public function renderMetaboxSidebar($parameters=[])
     {
-        $this->render('metabox-sidebar',$parameters);
+        $this->render('metabox-sidebar', $parameters);
     }
 
-    function renderMetabox($parameters=[])
+    public function renderMetabox($parameters=[])
     {
-        $this->render('metabox',$parameters);
+        $this->render('metabox', $parameters);
     }
 
-    function saveMetabox($post,$request)
+    public function saveMetabox($post, $request)
     {
         $postType = get_current_post_type();
 
-        $metaboxes = \Config::get('aksara.metaboxes',[]);
+        $metaboxes = \Config::get('aksara.metaboxes', []);
 
-        if( !isset($metaboxes[$postType]) )
-          return;
+        if (!isset($metaboxes[$postType])) {
+            return;
+        }
 
 
-        foreach ( $metaboxes[$postType] as $location => $priority)
-        {
-            foreach (  $priority as $metabox => $metaboxArgs )
-            {
-                foreach ($metaboxArgs as $metaboxArg)
-                {
-                    if( !$metaboxArg['callbackSave'] )
+        foreach ($metaboxes[$postType] as $location => $priority) {
+            foreach ($priority as $metabox => $metaboxArgs) {
+                foreach ($metaboxArgs as $metaboxArg) {
+                    if (!$metaboxArg['callbackSave']) {
                         continue;
+                    }
 
                     $callback = get_calback($metaboxArg['callbackSave']);
-                    call_user_func_array( $callback, [$post,$request]);
-
+                    call_user_func_array($callback, [$post,$request]);
                 }
             }
         }
     }
 
-    function render( $location, $post )
+    public function render($location, $post)
     {
         $postType = get_current_post_type();
 
-        $metaboxes = \Config::get('aksara.metaboxes',[]);
+        $metaboxes = \Config::get('aksara.metaboxes', []);
 
-        if( !isset($metaboxes[$postType]) )
-          return;
+        if (!isset($metaboxes[$postType])) {
+            return;
+        }
 
-        if( !isset($metaboxes[$postType][$location]) )
-          return;
+        if (!isset($metaboxes[$postType][$location])) {
+            return;
+        }
 
         // sort by priority
         ksort($metaboxes[$postType][$location]);
 
 
         // start render
-        foreach ($metaboxes[$postType][$location] as $priority => $metabox)
-        {
-            foreach ($metabox as $metaboxArg )
-            {
-                if( !$metaboxArg['callbackRender'] )
+        foreach ($metaboxes[$postType][$location] as $priority => $metabox) {
+            foreach ($metabox as $metaboxArg) {
+                if (!$metaboxArg['callbackRender']) {
                     continue;
+                }
 
                 $callback = get_calback($metaboxArg['callbackRender']);
 
                 echo '<div id="'.$metaboxArg['id'].'" class="metabox">';
-                call_user_func_array( $callback, [$post]);
+                call_user_func_array($callback, [$post]);
                 echo '</div>';
-
             }
         }
     }
-
 }

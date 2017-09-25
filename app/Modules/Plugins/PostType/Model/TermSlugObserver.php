@@ -5,38 +5,34 @@ use App\Modules\Plugins\PostType\Model\Post;
 
 class TermSlugObserver
 {
-    function saving($term)
+    public function saving($term)
     {
         $this->updateSlug($term);
     }
 
-    function updating($term)
+    public function updating($term)
     {
         $this->updateSlug($term);
     }
 
-    function updateSlug($term)
+    public function updateSlug($term)
     {
-        if( $term['slug'] !== null && $term['slug'] != '' )
-        {
+        if ($term['slug'] !== null && $term['slug'] != '') {
             $term['slug'] = str_slug($term['slug']);
-        }
-        else if( $term['name'] !== null && $term['name'] != '' )
-        {
+        } elseif ($term['name'] !== null && $term['name'] != '') {
             $term['slug'] = str_slug($term['name']);
         }
 
         // No slug no term title, bail out
-        if( $term['slug'] == '' )
+        if ($term['slug'] == '') {
             return;
+        }
 
         $counter = 0;
         $exist = true;
 
-        while( $exist )
-        {
-            if( $counter != 0 )
-            {
+        while ($exist) {
+            if ($counter != 0) {
                 $term['slug'] = $term['slug'].'-'.$counter;
             }
 
@@ -46,11 +42,11 @@ class TermSlugObserver
             ])->first();
 
             //@TODO kalau sifatnya copy (autosave) perlu ditangani
-            if( !$find || $find->id == $term['id'] )
+            if (!$find || $find->id == $term['id']) {
                 $exist = false;
-            else
+            } else {
                 $counter++;
-
+            }
         }
     }
 }

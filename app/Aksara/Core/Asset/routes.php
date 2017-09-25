@@ -1,32 +1,28 @@
 <?php
 
-\Eventy::addAction('aksara.routes.before',function(){
+\Eventy::addAction('aksara.routes.before', function () {
+    $pathArray = [];
 
-  $pathArray = [];
+    // register assets path with depth of 10 folder
+    for ($i=1;$i<=10;$i++) {
+        $path = '{path_'.$i.'}';
 
-  // register assets path with depth of 10 folder
-  for ($i=1;$i<=10;$i++) {
+        array_push($pathArray, $path);
 
-    $path = '{path_'.$i.'}';
+        $pathRegisterRoute = implode('/', $pathArray);
 
-    array_push($pathArray,$path);
+        Route::get('/assets/modules/{module_type}/{module_name}/assets/'.$pathRegisterRoute, '\App\Aksara\Core\Asset\Http\StaticFileController@serve');
+    }
 
-    $pathRegisterRoute = implode('/',$pathArray);
+    $pathArray = [];
+    // register assets path with depth of 10 folder
+    for ($i=1;$i<=10;$i++) {
+        $path = '{path_'.$i.'}';
 
-    Route::get('/assets/modules/{module_type}/{module_name}/assets/'.$pathRegisterRoute, '\App\Aksara\Core\Asset\Http\StaticFileController@serve');
-  }
+        array_push($pathArray, $path);
 
-  $pathArray = [];
-  // register assets path with depth of 10 folder
-  for ($i=1;$i<=10;$i++) {
+        $pathRegisterRoute = implode('/', $pathArray);
 
-    $path = '{path_'.$i.'}';
-
-    array_push($pathArray,$path);
-
-    $pathRegisterRoute = implode('/',$pathArray);
-
-    Route::get('/assets/modules/Themes/{module_type}/{module_name}/assets/'.$pathRegisterRoute, '\App\Aksara\Core\Asset\Http\StaticFileController@serve');
-  }
-
+        Route::get('/assets/modules/Themes/{module_type}/{module_name}/assets/'.$pathRegisterRoute, '\App\Aksara\Core\Asset\Http\StaticFileController@serve');
+    }
 });

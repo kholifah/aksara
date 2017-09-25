@@ -12,7 +12,6 @@ use App\Modules\Plugins\PostType\Repository\TaxonomyRepositoryInterface;
 
 class TaxonomyController extends Controller
 {
-
     public function __construct(TaxonomyRepositoryInterface $term)
     {
         $this->term = $term;
@@ -20,7 +19,6 @@ class TaxonomyController extends Controller
 
     public function index(Request $request)
     {
-
         $terms = Term::orderBy('terms.id');
 
         $taxonomy = Taxonomy::where('taxonomy_name', get_current_taxonomy())->first();
@@ -28,8 +26,7 @@ class TaxonomyController extends Controller
 
         $terms = $terms->where('terms.taxonomy_id', $taxonomy->id);
 
-        if ($request->input('search'))
-        {
+        if ($request->input('search')) {
             $search = $request->input('search');
             $terms = $terms->leftjoin('terms as terms1', 'terms1.id', '=', 'terms.parent');
             $terms = $terms->where('terms.name', 'LIKE', '%'.$search.'%')->orWhere('terms1.name', 'LIKE', '%'.$search.'%');
@@ -54,15 +51,14 @@ class TaxonomyController extends Controller
     {
         $term = new Term();
         $term->parent = 0;
-        if ($request->input('taxonomy'))
-        {
+        if ($request->input('taxonomy')) {
             $taxo = $request->input('taxonomy');
         } else {
             $taxo = 'category';
         }
 
         $taxonomy = Taxonomy::where('taxonomy_name', get_current_taxonomy())->first();
-        $parent = Term::orderBy('name')->where('taxonomy_id', $taxonomy->id)->get()->pluck('name','id');
+        $parent = Term::orderBy('name')->where('taxonomy_id', $taxonomy->id)->get()->pluck('name', 'id');
 
         $parent = reset($parent);
         $parent['0'] = '-';
@@ -89,20 +85,17 @@ class TaxonomyController extends Controller
 
         $data = add_term($data['taxonomy'], $data['name'], $data['slug'], $data['parent']);
 
-        if($data)
-        {
+        if ($data) {
             admin_notice('success', 'Data berhasil ditambahkan.');
             return redirect()->route('admin.'.get_current_post_type_args('route').'.'.get_current_taxonomy_args('slug').'.index');
-        } else if (!$data) {
-
+        } elseif (!$data) {
             return redirect()->route('admin.'.get_current_post_type_args('route').'.'.get_current_taxonomy_args('slug').'.create')
                             ->withInput();
-        } else if(!$data->fails()){
+        } elseif (!$data->fails()) {
             return redirect()->route('admin.'.get_current_post_type_args('route').'.'.get_current_taxonomy_args('slug').'.create')
                             ->withErrors($data)
                             ->withInput();
         }
-
     }
 
 
@@ -114,7 +107,6 @@ class TaxonomyController extends Controller
      */
     public function show($id)
     {
-
     }
 
     /**
@@ -165,13 +157,11 @@ class TaxonomyController extends Controller
     public function destroy($id)
     {
         $term = Term::find($id);
-        if($term)
-        {
+        if ($term) {
             TermRelationship::where('term_id', $id)->delete();
             delete_term($id);
         }
         admin_notice('success', 'Data berhasil dihapus.');
         return redirect()->route('admin.'.get_current_post_type_args('route').'.'.get_current_taxonomy_args('slug').'.index');
     }
-
 }

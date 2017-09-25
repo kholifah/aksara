@@ -4,28 +4,29 @@
 //                   'label' => 'Footer'
 //                 ]]
 //               );
-function register_menu( $menu )
+function register_menu($menu)
 {
-    $menus = \Config::get('aksara.menu.menus',[]);
+    $menus = \Config::get('aksara.menu.menus', []);
 
-    $key = aksara_slugify( key($menu) );
+    $key = aksara_slugify(key($menu));
 
     $menus[$key] = $menu[$key];
 
-    \Config::set('aksara.menu.menus',$menus);
+    \Config::set('aksara.menu.menus', $menus);
 }
 
 function get_registered_menu()
 {
-  return \Config::get('aksara.menu.menus',[]);
+    return \Config::get('aksara.menu.menus', []);
 }
 
-function get_menus( $json = false )
+function get_menus($json = false)
 {
-  $menus =  get_options('aksara.menu.menus',[]);
+    $menus =  get_options('aksara.menu.menus', []);
 
-  if( !$json )
-    $menus = json_decode($menus);
+    if (!$json) {
+        $menus = json_decode($menus);
+    }
 
-  return $menus;
+    return $menus;
 }

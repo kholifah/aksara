@@ -7,10 +7,11 @@ use App\Http\Controllers\Controller;
 use App\Models\Role;
 use Auth;
 
-class RoleController extends Controller {
-
-    public function __construct() {
-    //    $this->authorize('user');
+class RoleController extends Controller
+{
+    public function __construct()
+    {
+        //    $this->authorize('user');
     }
 
     /**
@@ -18,7 +19,8 @@ class RoleController extends Controller {
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request) {
+    public function index(Request $request)
+    {
         $roles = Role::orderBy('name');
         if ($request->get('bapply')) {
             if ($request->input('apply')) {
@@ -51,11 +53,12 @@ class RoleController extends Controller {
      *
      * @return \Illuminate\Http\Response
      */
-    public function create() {
+    public function create()
+    {
         $role = new Role();
         $role->permissions = [];
         $capabilities = get_capabilities();
-        return view('plugin:user::role.create', compact('role','capabilities'));
+        return view('plugin:user::role.create', compact('role', 'capabilities'));
     }
 
     /**
@@ -64,7 +67,8 @@ class RoleController extends Controller {
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request) {
+    public function store(Request $request)
+    {
         $role = new Role();
 
         $validator = $role->validate($request->all(), false);
@@ -91,7 +95,8 @@ class RoleController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id) {
+    public function show($id)
+    {
         //
     }
 
@@ -101,10 +106,11 @@ class RoleController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id) {
+    public function edit($id)
+    {
         $role = Role::find($id);
         $capabilities = get_capabilities();
-        return view('plugin:user::role.edit', compact('role','capabilities'));
+        return view('plugin:user::role.edit', compact('role', 'capabilities'));
     }
 
     /**
@@ -114,7 +120,8 @@ class RoleController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id) {
+    public function update(Request $request, $id)
+    {
         $role = Role::find($id);
         $validator = $role->validate($request->all(), false);
 
@@ -140,13 +147,14 @@ class RoleController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id) {
+    public function destroy($id)
+    {
         $role = Role::find($id);
-        if ($role->delete())
+        if ($role->delete()) {
             admin_notice('success', 'Data berhasil dihapus.');
-        else
+        } else {
             admin_notice('danger', 'Data gagal dihapus.');
+        }
         return redirect()->route('aksara-role');
     }
-
 }
