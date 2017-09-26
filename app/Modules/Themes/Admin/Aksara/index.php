@@ -38,4 +38,10 @@
                     'label' => 'Footer'
                   ]]
                 );
+
+    register_menu(
+      ['top' => [
+                    'label' => 'Top'
+                  ]]
+                );
 });

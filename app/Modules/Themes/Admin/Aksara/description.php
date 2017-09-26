@@ -3,5 +3,5 @@
 return [
   'name' => 'Basic Aksara Theme',
   'description' => 'Sample Theme',
-  'dependencies'=> 'menu','post-type','user'
+  'dependencies'=> ['menu','post-type','user']
 ];

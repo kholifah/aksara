@@ -2,8 +2,12 @@
 
 use App\Models\Option;
 
-// Function for delete data options
-function delete_options($key = FALSE)
+/**
+ * Delete option by key
+ * @param  string $key Option key
+ * @return boolean     true or false
+ */
+function delete_options($key = false)
 {
     // To function delete_options in option model
     $option = Option::delete_options($key);
@@ -11,8 +15,13 @@ function delete_options($key = FALSE)
 
 }
 
-// Function for get option data
-function get_options($key = FALSE, $default = FALSE)
+/**
+ * Get options by key
+ * @param  string $key     Option key
+ * @param  mixed $default  Default value if key not found
+ * @return mixed           Option value
+ */
+function get_options($key = false, $default = false)
 {
     // To function delete_options in model
     $option = Option::get_options($key, $default);
@@ -20,8 +29,13 @@ function get_options($key = FALSE, $default = FALSE)
     return $option;
 }
 
-// Function for set option data
-function set_options($key = FALSE, $value = FALSE)
+/**
+ * Set options
+ * @param  string $key  Option key
+ * @param  mixed $value Option value
+ * @return boolean      true or false
+ */
+function set_options($key = false, $value = false)
 {
     // To function delete_options in model
     $option = Option::set_options($key, $value);

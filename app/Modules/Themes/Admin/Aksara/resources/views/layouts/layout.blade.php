@@ -9,9 +9,6 @@
         <link rel="shortcut icon" href="{{ asset('assets/admin/dist/images/logo_sm.png') }}">
 
         <title>@filter('aksara.admin_site_title', 'Aksara Dashboard')</title>
-
-
-
         <!-- HTML5 Shiv and Respond.js IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
         <!--[if lt IE 9]>

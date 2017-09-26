@@ -12,14 +12,12 @@
 function post_type_base_column($cols, $postType)
 {
     $cols['quick-edit'] = ['title'=>'','width'=>'20px','class'=>'no-sort'];
-    ;
     $cols['title'] = ['title'=>'Judul'];
     $cols['status'] = ['title'=>'Status','width'=>'100px'];
     $cols['edit'] = ['title'=>'Edit','width'=>'125px','class'=>'no-sort'];
-    ;
+
     return $cols;
 }
-
 
 function post_type_base_row($colsId, $post)
 {
