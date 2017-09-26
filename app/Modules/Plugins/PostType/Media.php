@@ -42,6 +42,6 @@ class Media
             return;
         }
 
-        aksara_admin_enqueue_script(url("assets/modules/Plugins/PostType/assets/js/media-upload.js"));
+        aksara_admin_enqueue_script(url("assets/modules/Plugins/PostType/js/media-upload.js"));
     }
 }

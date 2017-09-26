@@ -11,7 +11,7 @@
 
         $pathRegisterRoute = implode('/', $pathArray);
 
-        Route::get('/assets/modules/{module_type}/{module_name}/assets/'.$pathRegisterRoute, '\App\Aksara\Core\Asset\Http\StaticFileController@serve');
+        Route::get('/assets/modules/{module_type}/{module_name}/'.$pathRegisterRoute, '\App\Aksara\Core\Asset\Http\StaticFileController@serve');
     }
 
     $pathArray = [];
@@ -23,6 +23,6 @@
 
         $pathRegisterRoute = implode('/', $pathArray);
 
-        Route::get('/assets/modules/Themes/{module_type}/{module_name}/assets/'.$pathRegisterRoute, '\App\Aksara\Core\Asset\Http\StaticFileController@serve');
+        Route::get('/assets/modules/Themes/{module_type}/{module_name}/'.$pathRegisterRoute, '\App\Aksara\Core\Asset\Http\StaticFileController@serve');
     }
 });

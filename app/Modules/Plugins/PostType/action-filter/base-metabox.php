@@ -84,7 +84,7 @@ function render_metabox_save_post($post)
 
 function render_metabox_editor($post)
 {
-    aksara_admin_enqueue_script(url('assets/modules/Plugins/PostType/assets/plugins/tinymce/tinymce.min.js'));
+    aksara_admin_enqueue_script(url('assets/modules/Plugins/PostType/plugins/tinymce/tinymce.min.js'));
     \Eventy::addAction('aksara.admin.footer', function () {
         ?>
         <script type="text/javascript">
