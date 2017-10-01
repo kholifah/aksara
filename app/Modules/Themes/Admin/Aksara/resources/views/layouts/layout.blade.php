@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html>
-    <head>
+<head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="A fully featured admin theme which can be used to build CRM, CMS, etc.">
-        <meta name="author" content="Coderthemes">
-
+        <meta name="author" content="Tonjoo">
+        <meta name="_token" content="{{ csrf_token() }}"/>
         <link rel="shortcut icon" href="{{ asset('assets/admin/dist/images/logo_sm.png') }}">
 
         <title>@filter('aksara.admin_site_title', 'Aksara Dashboard')</title>
@@ -19,7 +19,7 @@
         <!-- Base CSS -->
         <link href="{{ asset('assets/admin/dist/css/style.css') }}" rel="stylesheet" type="text/css"/>
         <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600,700,300|Noto+Sans:400,700" rel="stylesheet">
-
+        <script type="text/javascript" src="{{ asset('assets/admin/dist/js/script.min.js') }}"></script>
         @yield('add-header')
 
         <script type="text/javascript" src="{{ asset('assets/admin/dist/js/modernizr.min.js') }}"></script>
@@ -72,7 +72,7 @@ aksara_url = "<?php echo url('/') ?>";
         <script>
             var resizefunc = [];
         </script>
-        <script type="text/javascript" src="{{ asset('assets/admin/dist/js/script.min.js') }}"></script>
+
 
         @yield('add-footer')
 

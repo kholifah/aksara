@@ -17,7 +17,7 @@
         add_meta_box('save-post', $postType, 'render_metabox_save_post', false, 'metabox-sidebar', 10);
 
         if (in_array('thumbnail', $supports)) {
-            add_meta_box('thumbnail', $postType, 'render_metabox_thumbnail', false, 'metabox-sidebar', 10);
+            add_meta_box('thumbnail', $postType, 'render_metabox_thumbnail', 'save_metabox_thumbnail', 'metabox-sidebar', 10);
         }
 
         add_meta_box('taxonomy', $postType, 'render_metabox_taxonomy', false, 'metabox-sidebar', 10);
@@ -27,10 +27,23 @@
     add_meta_box('page-template', 'page', 'render_metabox_page_template', 'save_metabox_page_template', 'metabox-sidebar', 10);
 });
 
+function save_metabox_thumbnail($post)
+{
+    if (\Request::input('post_thumbnail')) {
+        set_post_meta($post->id, 'thumbnail_id', \Request::input('post_thumbnail'));
+    }
+    else {
+        delete_post_meta($post->id, 'thumbnail_id');
+    }
+}
+
 function save_metabox_page_template($post)
 {
     if (\Request::input('page_template')) {
         set_post_meta($post->id, 'page_template', \Request::input('page_template'));
+    }
+    else {
+        delete_post_meta($post->id, 'page_template');
     }
 
     return $post;

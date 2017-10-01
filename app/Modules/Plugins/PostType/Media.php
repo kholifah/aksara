@@ -3,21 +3,19 @@ namespace App\Modules\Plugins\PostType;
 
 class Media
 {
-    public function __construct()
-    {
-    }
-
     public function init()
     {
         \Eventy::addAction('aksara.init', [$this,'registerPostType'], 20);
         // add route
         \Eventy::addAction('aksara.routes.admin', function () {
-            \Route::post('media-ajax-upload', ['as'=>'media-ajax-upload','uses'=>'\App\Modules\Plugins\PostType\Http\MediaAjaxUpload@handle']);
+            \Route::get('media/upload', ['as'=>'admin.media.upload-view','uses'=>'\App\Modules\Plugins\PostType\Http\MediaController@mediaManager']);
+            \Route::post('media/upload', ['as'=>'admin.media.upload','uses'=>'\App\Modules\Plugins\PostType\Http\MediaController@upload']);
         });
     }
 
     public function registerPostType()
     {
+
         $post = \App::make('post');
 
         // Register Post
@@ -41,7 +39,8 @@ class Media
         if (\Config::get('aksara_media_uploader', false)) {
             return;
         }
+        \Config::set('aksara_media_uploader', true);
 
-        aksara_admin_enqueue_script(url("assets/modules/Plugins/PostType/js/media-upload.js"));
+        aksara_admin_enqueue_script(url('assets/modules/Plugins/PostType/js/media-uploader.js'),'aksara-media-uploader',5,true);
     }
 }

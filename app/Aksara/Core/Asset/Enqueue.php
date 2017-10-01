@@ -45,7 +45,7 @@ class Enqueue
         foreach ($enqueueScripts as $position => $scripts) {
             foreach ($scripts as $script) {
                 if (filter_var($script, FILTER_VALIDATE_URL)) {
-                    echo '<script src="'.$script.'"></script>';
+                    echo '<script type="text/javascript" src="'.$script.'"></script>';
                 }
             }
         }

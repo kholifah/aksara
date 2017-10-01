@@ -94,18 +94,7 @@ class PostController extends Controller
 
         $data = $request->all();
         $data['post_type'] = get_current_post_type();
-
-        if ($request->file('post_image')) {
-            if ($request->file('post_image')->isValid()) {
-                $destinationPath = 'img/'; // upload path
-                $extension = $request->file('post_image')->getClientOriginalName();
-                $fileName = rand(11111, 99999) . '_' . str_replace(' ', '', $extension);
-                $request->file('post_image')->move($destinationPath, $fileName);
-                $data['post_image'] = $fileName;
-            }
-        } else {
-            $data['post_image'] = '';
-        }
+        $data['post_image'] = '';
 
         $validator = $post->validate($data);
 
@@ -169,18 +158,6 @@ class PostController extends Controller
             }
             return back()->withInput();
         }
-        if ($request->file('post_image')) {
-            if ($request->file('post_image')->isValid()) {
-                $destinationPath = 'img/'; // upload path
-                $extension = $request->file('post_image')->getClientOriginalName();
-                if (File::exists($destinationPath . $post->post_image)) {
-                    File::delete($destinationPath . $post->post_image);
-                }
-                $fileName = rand(11111, 99999) . '_' . str_replace(' ', '', $extension);
-                $request->file('post_image')->move($destinationPath, $fileName);
-                $data['post_image'] = $fileName;
-            }
-        }
 
         if (isset($data['post_status'])) {
             $post->post_status = $data['post_status'];
@@ -189,10 +166,7 @@ class PostController extends Controller
         $post->post_title = $request->input('post_title', '') == null ? "" : $request->input('post_title', '') ;
         $post->post_slug = $request->input('post_slug', '') == null ? "" : $request->input('post_slug', '') ;
         $post->post_content = $request->input('post_content', '') == null ? "" : $request->input('post_content', '') ;
-
-        if (isset($data['post_image'])) {
-            $post->post_image = $data['post_image'];
-        }
+        $post->post_image = '';
 
         $post->post_author = \Auth::user()->id;
         $post->post_modified = date('Y-m-d H:i:s');
@@ -232,22 +206,6 @@ class PostController extends Controller
         \Eventy::action('aksara.post-type.'.get_current_post_type().'.destroy', $post, $request);
 
         return redirect()->route('admin.'.get_current_post_type_args('route').'.index', ['post_status' => 'trash']);
-    }
-
-    public function delete_img($id)
-    {
-        $post = Post::find($id);
-        if ($post->post_image != '') {
-            $destinationPath = 'img/'; // upload path
-            if (File::exists($destinationPath . $post->post_image)) {
-                if (File::delete($destinationPath . $post->post_image)) {
-                    $post->update(['post_image' => '']);
-                    return true;
-                } else {
-                    return true;
-                }
-            }
-        }
     }
 
     public function trash($id)

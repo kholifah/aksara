@@ -13,6 +13,22 @@ function add_page_template($name, $path)
     \Config::set('aksara.post-type.page-templates', $pageTemplates);
 }
 
+function get_post_thumbnail($postId,$size=false)
+{
+    $postTumbnailId = get_post_meta($postId,'thumbnail_id',false);
+
+    if(!$postTumbnailId) {
+        return false;
+    }
+
+    if(get_post_meta($postTumbnailId,'image',false)) {
+        return url(get_post_meta($postTumbnailId,'image',false));
+    }
+    else {
+        return "";
+    }
+}
+
 function get_page_template($post)
 {
     return get_post_meta($post->id, 'page_template', false);

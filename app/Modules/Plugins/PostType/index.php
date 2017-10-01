@@ -7,6 +7,7 @@ require __DIR__.'/action-filter/add-capabilities.php';
 // return;
 \App::singleton('post', function () {
     $post =  new \App\Modules\Plugins\PostType\Post();
+    $post->enqueueAsset();
     return $post;
 });
 
@@ -86,51 +87,5 @@ $metabox->init();
 \Eventy::addAction('aksara.admin.footer', function () {
     // File JS / CSS masuk sini
     // @nanti dipindah ke resource
-    echo '<script src='.url("assets/admin/assets/plugins/datatables/jquery.dataTables.min.js").'></script>';
-    echo '<script src='.url("assets/admin/assets/plugins/datatables/dataTables.responsive.min.js").'></script>';
-    echo '<script src='.url("assets/admin/assets/pages/datatables.init.js").'></script>';
-    echo "<script type='text/javascript'>
-            $(document).ready(function () {
-                var oTable = $('.datatable-responsive').DataTable({
-                    paging: false,
-                    ordering: true,
-                    info: false,
-                    searching: false,
-                    order: [],
-                    columnDefs: [
-                        {targets: 'no-sort', orderable: false}
-                    ],
-                    responsive: true
-                });
-                oTable.on('responsive-display', function (e, datatable, row, showHide, update) {
-                    $('.sa-success').click(function () {
-                        swal(
-                                {
-                                    title: 'Sukses!',
-                                    text: 'Data telah tersimpan.',
-                                    type: 'success',
-                                    confirmButtonColor: '#4fa7f3'
-                                }
-                        )
-                    });
-                    $('.sa-warning').click(function () {
-                        swal({
-                            title: 'Are you sure?',
-                            text: 'You will not be able to recover this selected file!',
-                            type: 'warning',
-                            showCancelButton: true,
-                            confirmButtonColor: '#d57171',
-                            cancelButtonColor: '#b7b7b7',
-                            confirmButtonText: 'Delete'
-                        }).then(function () {
-                            swal(
-                                    'Deleted!',
-                                    'Your file has been deleted.',
-                                    'success'
-                                    )
-                        })
-                    });
-                });
-            });
-        </script>";
+
 });

@@ -11,6 +11,11 @@ class Post
         \Eventy::addAction('aksara.routes.admin', 'App\Modules\Plugins\PostType\Post@registerAdminRoutes');
     }
 
+    public function enqueueAsset()
+    {
+        aksara_admin_enqueue_script(url('assets/modules/Plugins/PostType/js/post-type.js'),'aksara-post-type',5,true);
+    }
+
     public function registerAdminRoutes()
     {
         $postTypes = \Config::get('aksara.post_type');
