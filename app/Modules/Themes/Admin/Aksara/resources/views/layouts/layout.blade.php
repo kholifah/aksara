@@ -19,13 +19,13 @@
         <!-- Base CSS -->
         <link href="{{ asset('assets/admin/dist/css/style.css') }}" rel="stylesheet" type="text/css"/>
         <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600,700,300|Noto+Sans:400,700" rel="stylesheet">
-        <script type="text/javascript" src="{{ asset('assets/admin/dist/js/script.min.js') }}"></script>
+
         @yield('add-header')
 
         <script type="text/javascript" src="{{ asset('assets/admin/dist/js/modernizr.min.js') }}"></script>
 
         <script type="text/javascript">
-aksara_url = "<?php echo url('/') ?>";
+            aksara_url = "<?php echo url('/') ?>";
         </script>
     </head>
 
@@ -78,6 +78,7 @@ aksara_url = "<?php echo url('/') ?>";
 
     </body>
     <footer>
+        <script type="text/javascript" src="{{ asset('assets/admin/dist/js/script.min.js') }}"></script>
         @action('aksara.admin.footer')
     </footer>
 </html>
