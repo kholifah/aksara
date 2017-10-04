@@ -9,7 +9,7 @@ class StaticFileController extends Controller
     public function serve($module_type, $module_name)
     {
         // if( $routeParams['module_type'] == 'plugins' )
-        if (str_contains(\Request::url(), 'Themes')) {
+        if ( str_contains(\Request::url(), '/Admin/') || str_contains(\Request::url(), '/FrontEnd/')  ) {
             $path = '/Modules/Themes/'.$module_type.'/'.$module_name.'/assets/';
         } else {
             $path = '/Modules/'.$module_type.'/'.$module_name.'/assets/';
@@ -30,7 +30,7 @@ class StaticFileController extends Controller
         $realPath = app_path().$path;
 
         if (!file_exists($realPath)) {
-            return "file {$path} not found";
+            abort(404,'file not found');
         }
 
         // get extension

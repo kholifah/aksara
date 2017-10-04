@@ -78,7 +78,6 @@
 
     </body>
     <footer>
-        <script type="text/javascript" src="{{ asset('assets/admin/dist/js/script.min.js') }}"></script>
         @action('aksara.admin.footer')
     </footer>
 </html>

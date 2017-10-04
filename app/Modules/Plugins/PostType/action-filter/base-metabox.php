@@ -30,10 +30,10 @@
 function save_metabox_thumbnail($post)
 {
     if (\Request::input('post_thumbnail')) {
-        set_post_meta($post->id, 'thumbnail_id', \Request::input('post_thumbnail'));
+        set_post_meta($post->id, 'featured_image_post_id', \Request::input('post_thumbnail'));
     }
     else {
-        delete_post_meta($post->id, 'thumbnail_id');
+        delete_post_meta($post->id, 'featured_image_post_id');
     }
 }
 

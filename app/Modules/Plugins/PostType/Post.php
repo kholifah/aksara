@@ -13,7 +13,7 @@ class Post
 
     public function enqueueAsset()
     {
-        aksara_admin_enqueue_script(url('assets/modules/Plugins/PostType/js/post-type.js'),'aksara-post-type',5,true);
+        aksara_admin_enqueue_script(url('assets/modules/Plugins/PostType/js/post-type.js'),'aksara-post-type',20,true);
     }
 
     public function registerAdminRoutes()

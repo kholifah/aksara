@@ -44,6 +44,7 @@
                     'label' => 'Top'
                   ]]
                 );
+    aksara_admin_enqueue_script(url('assets/modules/Admin/Aksara/js/script.min.js'),'aksara-admin',10,true);
 });
 
 //@TODO Enqueue semua script dan css admin side kesini

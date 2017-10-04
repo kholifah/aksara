@@ -54,7 +54,7 @@ class MediaUpload
         $post->save();
 
         // Set post meta
-        set_post_meta($post->id,'image',$imagePath);
+        set_post_meta($post->id,'post_image',$imagePath);
 
         return [
             'image_path'=>$imageAbsolutePath,

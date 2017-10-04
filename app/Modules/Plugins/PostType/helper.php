@@ -13,16 +13,21 @@ function add_page_template($name, $path)
     \Config::set('aksara.post-type.page-templates', $pageTemplates);
 }
 
-function get_post_thumbnail($postId,$size=false)
+function get_featured_image($postId,$size=false)
 {
-    $postTumbnailId = get_post_meta($postId,'thumbnail_id',false);
+    $postTumbnailId = get_post_meta($postId,'featured_image_post_id',false);
 
     if(!$postTumbnailId) {
         return false;
     }
 
-    if(get_post_meta($postTumbnailId,'image',false)) {
-        return url(get_post_meta($postTumbnailId,'image',false));
+    return get_post_image($postTumbnailId);
+}
+
+function get_post_image($postId,$size = false)
+{
+    if(get_post_meta($postId,'post_image',false)) {
+        return url(get_post_meta($postId,'post_image',false));
     }
     else {
         return "";

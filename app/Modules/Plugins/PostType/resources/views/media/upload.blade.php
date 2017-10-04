@@ -26,6 +26,12 @@
         </div>
         <div class="col-md-4"></div>
     </div>
+@endsection
+
+<?php
+
+\Eventy::addAction('aksara.admin.footer',function(){
+    ?>
     <script>
     jQuery(document).ready(function(){
         jQuery('a.file-upload').click(function(){
@@ -56,4 +62,6 @@
         });
     })
     </script>
-@endsection
+    <?php
+})
+?>

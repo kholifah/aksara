@@ -45,7 +45,7 @@ class Enqueue
         foreach ($enqueueScripts as $position => $scripts) {
             foreach ($scripts as $script) {
                 if (filter_var($script, FILTER_VALIDATE_URL)) {
-                    echo '<script type="text/javascript" src="'.$script.'"></script>';
+                    echo '<script type="text/javascript" src="'.$script.'"></script>'."\n";
                 }
             }
         }
@@ -62,7 +62,7 @@ class Enqueue
         foreach ($enqueueStyles as $position => $styles) {
             foreach ($styles as $style) {
                 if (filter_var($style, FILTER_VALIDATE_URL)) {
-                    echo '<link rel="stylesheet" type="text/css" href="'.$style.'">';
+                    echo '<link rel="stylesheet" type="text/css" href="'.$style.'">'."\n";
                 }
             }
         }
@@ -92,7 +92,7 @@ class Enqueue
     // $id
     // $priority
     // in footer
-    public function enqueue($location, $type, $url, $id, $priority = 10, $footer=false)
+    public function enqueue($location, $type, $url, $id, $priority = 20, $footer=false)
     {
         if (!in_array($location, $this->location)) {
             return false;
