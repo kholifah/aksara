@@ -50,6 +50,11 @@ function get_featured_image($postId,$size=false)
     return get_post_image($postTumbnailId,$size);
 }
 
+function get_featured_image_id($postId,$size=false)
+{
+    return get_post_meta($postId,'featured_image_post_id',false);
+}
+
 function get_post_image($postId,$size = false)
 {
     if(get_post_meta($postId,'post_image',false)) {
