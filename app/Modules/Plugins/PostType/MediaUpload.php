@@ -37,8 +37,8 @@ class MediaUpload
         $filename = uniqid() . '_' . time() . '.' . $extension;
         $this->request->file('file')->move($path, $filename);
 
-        $imagePath = $path.'/'.$filename;
-        $imageAbsolutePath = url($path).'/'.$filename;
+        $imagePath = $path.$filename;
+        $imageAbsolutePath = url($imagePath);
 
         // Assign to media Post Type
         $post = new Post();

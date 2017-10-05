@@ -4,6 +4,32 @@ use App\Modules\Plugins\PostType\Model\TermRelationship;
 use App\Modules\Plugins\PostType\Model\Term;
 use App\Modules\Plugins\PostType\Model\Taxonomy;
 
+/**
+ * [registerImageSize description]
+ * @param  string  $name   Image size id
+ * @param  integer $width  Image width
+ * @param  integer $height Image height
+ * @param  boolean $crop   Crop center on Image
+ * @param  boolean $aspectRatio   Preserve aspect ratio
+ * @return boolean
+ */
+function register_image_size($name, $width = 0, $height = 0, $crop = true, $aspectRatio = true)
+{
+    $media = \App::make('App\Modules\Plugins\PostType\Media');
+
+    return $media->registerImageSize($name, $width, $height, $crop, $aspectRatio );
+}
+
+function get_image_size($id,$imageURL)
+{
+    $imageSizes = \Config::get('aksara.post-type.image-sizes',[]);
+    if( !isset($imageSizes[$id]) )
+        return $imageURL;
+
+    $pos = strrpos($imageURL, '.');
+    return substr($imageURL, 0, $pos)  ."-{$imageSizes[$id]['width']}x{$imageSizes[$id]['height']}". substr($imageURL, $pos);
+}
+
 function add_page_template($name, $path)
 {
     $pageTemplates = \Config::get('aksara.post-type.page-templates', []);
@@ -21,13 +47,19 @@ function get_featured_image($postId,$size=false)
         return false;
     }
 
-    return get_post_image($postTumbnailId);
+    return get_post_image($postTumbnailId,$size);
 }
 
 function get_post_image($postId,$size = false)
 {
     if(get_post_meta($postId,'post_image',false)) {
-        return url(get_post_meta($postId,'post_image',false));
+        $imageUrl = url(get_post_meta($postId,'post_image',false)) ;
+        if( !$size) {
+            return $imageUrl;
+        }
+        else {
+            return get_image_size($size, $imageUrl);
+        }
     }
     else {
         return "";

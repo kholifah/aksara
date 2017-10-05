@@ -4,6 +4,8 @@ require __DIR__.'/action-filter//set-post-terms.php';
 require __DIR__.'/action-filter/base-metabox.php';
 require __DIR__.'/action-filter/base-table.php';
 require __DIR__.'/action-filter/add-capabilities.php';
+require __DIR__.'/vendor/autoload.php';
+
 // return;
 \App::singleton('post', function () {
     $post =  new \App\Modules\Plugins\PostType\Post();
@@ -18,7 +20,6 @@ require __DIR__.'/action-filter/add-capabilities.php';
 \App::singleton('App\Modules\Plugins\PostType\Media', function () {
     return new \App\Modules\Plugins\PostType\Media();
 });
-
 
 \App::bind('App\Modules\Plugins\PostType\Repository\PostRepositoryInterface', 'App\Modules\Plugins\PostType\Repository\PostRepository');
 \App::bind('App\Modules\Plugins\PostType\Repository\TaxonomyRepositoryInterface', 'App\Modules\Plugins\PostType\Repository\TaxonomyRepository');
@@ -75,6 +76,11 @@ $metabox->init();
   ];
 
     $post->registerTaxonomy('tag', ['post'], $argsTag);
+
+    register_image_size('thumbnail',500,500,true,false);
+    register_image_size('small',0,500);
+    register_image_size('medium',0,900);
+    register_image_size('large',0,1400);
 });
 
 //@TODO pindah ke aksara_admin)enqueue
