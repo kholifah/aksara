@@ -31,7 +31,7 @@ class FrontEndController extends Controller
             $aksaraQueryArgs['post_type'] = $data['postType'];
             $aksaraQueryArgs['post_slug'] = \Request::route('slug');
 
-            $priorities = [
+            $viewPriorities = [
                 'front-end:aksara::single-'.$data['postType'],
                 'front-end:aksara::single'
             ];
@@ -41,7 +41,7 @@ class FrontEndController extends Controller
             \Config::set('aksara.post-type.front-end.template.is_archive',true);
             $data['taxonomy'] = get_current_taxonomy_from_route('archive-taxonomy.');
 
-            $priorities = [
+            $viewPriorities = [
                 'front-end:aksara::archive-'.$data['taxonomy'] ,
                 'front-end:aksara::archive-taxonomy',
                 'front-end:aksara::archive'
@@ -68,7 +68,7 @@ class FrontEndController extends Controller
 
             \Config::set('aksara.post-type.front-end.template.is_archive',true);
             $data['postType'] =  get_current_post_type();
-            $priorities = [
+            $viewPriorities = [
                 'front-end:aksara::archive-'.$data['postType'],
                 'front-end:aksara::archive'
             ];
@@ -79,7 +79,7 @@ class FrontEndController extends Controller
             \Config::set('aksara.post-type.front-end.template.is_home',true);
             $aksaraQueryArgs['post_type'] = 'post' ;
 
-            $priorities = [
+            $viewPriorities = [
                 'front-end:aksara::home'
             ];
         }
@@ -87,7 +87,7 @@ class FrontEndController extends Controller
 
             \Config::set('aksara.post-type.front-end.template.is_archive',true);
             \Config::set('aksara.post-type.front-end.template.is_search',true);
-            $priorities = [
+            $viewPriorities = [
                 'front-end:aksara::search',
                 'front-end:aksara::archive'
             ];
@@ -106,15 +106,13 @@ class FrontEndController extends Controller
                 if( !$data['post'] )
                     abort(404,'Page Not Found');
             }
-
-
         }
 
+        $viewPriorities = \Eventy::filter('aksara.post-type.front-end.template.view',$viewPriorities,$data);
 
-
-        foreach ( $priorities as $priority ) {
-            if( view()->exists($priority) ) {
-                return view($priority,compact('data'));
+        foreach ( $viewPriorities as $viewPriority ) {
+            if( view()->exists($viewPriority) ) {
+                return view($viewPriority,compact('data'));
             }
         }
 

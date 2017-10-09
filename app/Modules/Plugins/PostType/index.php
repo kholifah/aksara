@@ -5,6 +5,7 @@ require __DIR__.'/action-filter/base-metabox.php';
 require __DIR__.'/action-filter/base-table.php';
 require __DIR__.'/action-filter/add-capabilities.php';
 require __DIR__.'/action-filter/post-filter.php';
+require __DIR__.'/action-filter/page-template.php';
 require __DIR__.'/vendor/autoload.php';
 
 // return;
