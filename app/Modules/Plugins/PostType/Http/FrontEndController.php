@@ -23,6 +23,7 @@ class FrontEndController extends Controller
 
         if( str_contains($routeName,'single') ) {
 
+            // Check if slug exist
             \Config::set('aksara.post-type.front-end.template.is_single',true);
 
             $data['postType'] =  get_current_post_type();
@@ -100,6 +101,11 @@ class FrontEndController extends Controller
             $data['posts'] = $data['posts']->getQuery();
             $data['posts'] = $data['posts']->get();
             $data['post'] = $data['posts']->first();
+
+            if( \Config::get('aksara.post-type.front-end.template.is_single',false) ) {
+                if( !$data['post'] )
+                    abort(404,'Page Not Found');
+            }
 
 
         }
