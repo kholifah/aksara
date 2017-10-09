@@ -63,7 +63,7 @@ class AksaraQuery
         $post = new Post();
 
         if( isset($this->args['post_type']) && $this->args['post_type'] !== false ) {
-            if( $this->args['post_type'] == 'post' || $this->args['post_type'] == 'page' ) {
+            if( ( $this->args['post_type'] == 'post' || $this->args['post_type'] == 'page') && isset($this->args['post_slug']) ) {
                 $post = $post->orWhereIn('post_type',['post','page']);
             }
             else  {

@@ -77,6 +77,7 @@ class FrontEndController extends Controller
         elseif (str_contains($routeName,'home') ) {
 
             \Config::set('aksara.post-type.front-end.template.is_home',true);
+            
             $aksaraQueryArgs['post_type'] = 'post' ;
 
             $viewPriorities = [
