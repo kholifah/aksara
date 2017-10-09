@@ -2,7 +2,7 @@
 
 // modify post ordering
 \Eventy::addAction('aksara.init_completed', function () {
-    $postTypes = \Config::get('aksara.post_type');
+    $postTypes = \Config::get('aksara.post-type.post-types');
 
     foreach ($postTypes as $postType => $args) {
         $name = array_get($args, 'label.name');

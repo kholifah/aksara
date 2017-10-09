@@ -76,8 +76,8 @@
 
         @yield('add-footer')
 
+        <footer>
+            @action('aksara.admin.footer')
+        </footer>
     </body>
-    <footer>
-        @action('aksara.admin.footer')
-    </footer>
 </html>

@@ -6,6 +6,7 @@
         <div class="edit-slug-box">
             <strong>Permalink:</strong>
             <span class="sample-permalink">
+                {{-- @todo --}}
                 <a href="{{ url('/') }}/{{ get_current_post_type() }}/{{ $post->post_slug }}">
                     {{ url('/') }}/{{ get_current_post_type() }}/<span id="editable-post-name">{{ $post->post_slug }}</span>
                 </a>

@@ -9,56 +9,6 @@ function render_admin_menu()
   $menu->render();
 }
 
-function get_current_post_type()
-{
-  $post = \App::make('post');
-  return $post->getCurrentPostType();
-}
-
-// function get_current_post_type_args('route')
-// {
-//   $post = \App::make('post');
-//   return $post->getCurrentPostType();
-// }
-
-function get_post_type_args($key = false)
-{
-  $post = \App::make('post');
-  return $post->getPostTypeArgs($key);
-}
-
-function get_current_post_type_args($key = false)
-{
-    $args = get_post_type_args(get_current_post_type());
-
-    return array_get($args,$key);
-}
-
-
-function get_current_taxonomy()
-{
-  $post = \App::make('post');
-  return $post->getCurrentTaxonomy();
-}
-
-// function get_current_taxonomy_args('slug')
-// {
-//   $post = \App::make('post');
-//   return $post->getCurrentTaxonomy();
-// }
-
-function get_taxonomy_args($key = false)
-{
-  $post = \App::make('post');
-  return $post->getTaxonomyArgs($key);
-}
-
-function get_current_taxonomy_args( $key = false )
-{
-    $args = get_taxonomy_args(get_current_taxonomy());
-    return array_get($args,$key);
-}
-
 function admin_notice( $labelClass, $content )
 {
   $adminNotices = Session::get('message');

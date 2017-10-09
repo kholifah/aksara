@@ -23,10 +23,25 @@ function get_registered_menu()
 function get_menus($json = false)
 {
     $menus =  get_options('aksara.menu.menus', []);
-
     if (!$json) {
-        $menus = json_decode($menus);
+        foreach ($menus as $menuId => $menuValue) {
+            $menus[$menuId] = json_decode($menuValue,true);
+        }
     }
 
     return $menus;
+}
+
+function get_menu($menuId, $json = false)
+{
+    $menus =  get_options('aksara.menu.menus', []);
+
+    if( !isset($menus[$menuId]) )
+        return false;
+
+    if (!$json) {
+        return $menus[$menuId] = json_decode($menus[$menuId],true);
+    }
+
+    return $menus[$menuId];
 }

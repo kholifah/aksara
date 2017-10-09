@@ -4,6 +4,24 @@ use App\Modules\Plugins\PostType\Model\TermRelationship;
 use App\Modules\Plugins\PostType\Model\Term;
 use App\Modules\Plugins\PostType\Model\Taxonomy;
 
+
+function get_post_title($post) {
+    return \Eventy::filter('aksara.post-type.front-end.post_title',$post->post_title,$post);
+}
+
+function get_post_content($post) {
+    return \Eventy::filter('aksara.post-type.front-end.post_title',$post->post_content,$post);
+}
+
+function get_post_excerpt($post) {
+    return \Eventy::filter('aksara.post-type.front-end.post_excerpt',$post->post_content,$post);
+
+}
+
+function get_post_permalink($post) {
+    return \Eventy::filter('aksara.post-type.front-end.post_permalink',$post->post_slug,$post);
+}
+
 /**
  * [registerImageSize description]
  * @param  string  $name   Image size id
@@ -39,8 +57,9 @@ function add_page_template($name, $path)
     \Config::set('aksara.post-type.page-templates', $pageTemplates);
 }
 
-function get_featured_image($postId,$size=false)
+function get_post_featured_image($post,$size=false)
 {
+    $postId = $post->id;
     $postTumbnailId = get_post_meta($postId,'featured_image_post_id',false);
 
     if(!$postTumbnailId) {
@@ -218,4 +237,84 @@ function add_post_type_to_taxonomy($taxonomy, $postType)
 {
     $post = \App::make('post');
     $post->addPostTypeToTaxonomy($taxonomy, $postType);
+}
+
+
+function get_current_post_type()
+{
+  $post = \App::make('post');
+  return $post->getCurrentPostType();
+}
+
+function get_current_post_type_from_route($delimiter = false)
+{
+  $post = \App::make('post');
+  return $post->getPostTypeFromRoute($delimiter);
+}
+
+function get_current_taxonomy_from_route($delimiter = false)
+{
+  $post = \App::make('post');
+  return $post->getTaxonomyFromRoute($delimiter);
+}
+
+function get_post_type_args($key,$postType = false)
+{
+  $post = \App::make('post');
+
+  $args = $post->getPostTypeArgs($postType);
+
+  return array_get($args,$key);
+}
+
+function get_current_post_type_args($key = false)
+{
+    $postType = get_current_post_type();
+
+     $post = \App::make('post');
+
+    $args = $post->getPostTypeArgs($postType);
+
+    return array_get($args,$key);
+}
+
+
+function get_current_taxonomy()
+{
+  $post = \App::make('post');
+  return $post->getCurrentTaxonomy();
+}
+
+// function get_current_taxonomy_args('slug')
+// {
+//   $post = \App::make('post');
+//   return $post->getCurrentTaxonomy();
+// }
+
+function get_taxonomy_args($key = false)
+{
+  $post = \App::make('post');
+  return $post->getTaxonomyArgs($key);
+}
+
+function get_current_taxonomy_args( $key = false )
+{
+    $args = get_taxonomy_args(get_current_taxonomy());
+    return array_get($args,$key);
+}
+
+function is_home() {
+    return \Config::get('aksara.post-type.front-end.template.is_home',false);
+}
+
+function is_single() {
+    return \Config::get('aksara.post-type.front-end.template.is_single',false);
+}
+
+function is_archive() {
+    return \Config::get('aksara.post-type.front-end.template.is_archive',false);
+}
+
+function is_search() {
+    return \Config::get('aksara.post-type.front-end.template.is_search',false);
 }

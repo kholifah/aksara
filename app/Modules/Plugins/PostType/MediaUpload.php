@@ -30,6 +30,7 @@ class MediaUpload
 
         // Upload file to proper location
         $extension = $this->request->file('file')->getClientOriginalExtension(); // getting image extension
+        $extension = strtolower($extension);
 
         $yearMonth = \Carbon\Carbon::now();
         $path = 'uploads/'.$yearMonth->format('Y/m').'/';

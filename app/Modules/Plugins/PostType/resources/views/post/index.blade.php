@@ -10,8 +10,8 @@
 @section('content')
 <div class="content__head">
     <h2 class="page-title">Semua {{ get_current_post_type_args('label.name') }}
-        @if( array_search_key_recursive('admin.'.get_current_post_type_args('route').'.create',\Config::get('aksara.admin_sub_menu'),false) )
-        <a href="{{ route('admin.'.get_current_post_type_args('route').'.create') }}" class="page-title-action">Tambah {{ get_current_post_type_args('label.name') }}</a>
+        @if( array_search_key_recursive('admin.'.get_current_post_type_args('slug').'.create',\Config::get('aksara.admin_sub_menu'),false) )
+        <a href="{{ route('admin.'.get_current_post_type_args('slug').'.create') }}" class="page-title-action">Tambah {{ get_current_post_type_args('label.name') }}</a>
         @endif
     </h2>
 </div>
@@ -20,19 +20,19 @@
 
     <ul class="trash-sistem">
         <li>
-            <a href="{{ route('admin.'.get_current_post_type_args('route').'.index') }}" <?php if ($viewData['post_status'] == '') echo 'class="current"' ?> >All <span class="count">({{ $viewData['count_post']['all'] }})</span></a> |
+            <a href="{{ route('admin.'.get_current_post_type_args('slug').'.index') }}" <?php if ($viewData['post_status'] == '') echo 'class="current"' ?> >All <span class="count">({{ $viewData['count_post']['all'] }})</span></a> |
         </li>
         <li>
-            <a href="{{ route('admin.'.get_current_post_type_args('route').'.index') }}?post_status=publish" <?php if ($viewData['post_status'] == 'publish') echo 'class="current"' ?>>{{ status_post('publish',get_current_post_type()) }} <span class="count">({{ $viewData['count_post']['publish'] }})</span></a> |
+            <a href="{{ route('admin.'.get_current_post_type_args('slug').'.index') }}?post_status=publish" <?php if ($viewData['post_status'] == 'publish') echo 'class="current"' ?>>{{ status_post('publish',get_current_post_type()) }} <span class="count">({{ $viewData['count_post']['publish'] }})</span></a> |
         </li>
         <li>
-            <a href="{{ route('admin.'.get_current_post_type_args('route').'.index') }}?post_status=draft" <?php if ($viewData['post_status'] == 'draft') echo 'class="current"' ?>>{{ status_post('draft',get_current_post_type()) }} <span class="count">({{ $viewData['count_post']['draft'] }})</span></a> |
+            <a href="{{ route('admin.'.get_current_post_type_args('slug').'.index') }}?post_status=draft" <?php if ($viewData['post_status'] == 'draft') echo 'class="current"' ?>>{{ status_post('draft',get_current_post_type()) }} <span class="count">({{ $viewData['count_post']['draft'] }})</span></a> |
         </li>
         <li>
-            <a href="{{ route('admin.'.get_current_post_type_args('route').'.index') }}?post_status=pending" <?php if ($viewData['post_status'] == 'pending') echo 'class="current"' ?>>{{ status_post('pending',get_current_post_type()) }} <span class="count">({{ $viewData['count_post']['pending'] }})</span></a> |
+            <a href="{{ route('admin.'.get_current_post_type_args('slug').'.index') }}?post_status=pending" <?php if ($viewData['post_status'] == 'pending') echo 'class="current"' ?>>{{ status_post('pending',get_current_post_type()) }} <span class="count">({{ $viewData['count_post']['pending'] }})</span></a> |
         </li>
         <li>
-            <a href="{{ route('admin.'.get_current_post_type_args('route').'.index') }}?post_status=trash" <?php if ($viewData['post_status'] == 'trash') echo 'class="current"' ?>>{{ status_post('trash',get_current_post_type()) }} <span class="count">({{ $viewData['count_post']['trash'] }})</span></a>
+            <a href="{{ route('admin.'.get_current_post_type_args('slug').'.index') }}?post_status=trash" <?php if ($viewData['post_status'] == 'trash') echo 'class="current"' ?>>{{ status_post('trash',get_current_post_type()) }} <span class="count">({{ $viewData['count_post']['trash'] }})</span></a>
         </li>
     </ul>
     <form action="" class="posts-filter clearfix">

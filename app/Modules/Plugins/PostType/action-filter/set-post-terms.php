@@ -1,7 +1,7 @@
 <?php
 // modify post ordering
 \Eventy::addAction('aksara.init', function () {
-    $postTypes = \Config::get('aksara.post_type');
+    $postTypes = \Config::get('aksara.post-type.post-types');
     $postTypes = array_keys($postTypes);
 
     foreach ($postTypes as $postType) {

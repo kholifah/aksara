@@ -41,8 +41,15 @@ class Post extends Model
         return $this->hasMany('App\Modules\Plugins\PostType\Model\PostMeta', 'post_id');
     }
 
+    //@TODO rename to termRelations
     public function term_relations()
     {
         return $this->hasMany('App\Modules\Plugins\PostType\Model\TermRelationship', 'post_id');
+    }
+
+    //@TODO rename to termRelations
+    public function author()
+    {
+        return $this->hasOne('App\User', 'id','post_author');
     }
 }

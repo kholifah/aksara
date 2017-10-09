@@ -23,7 +23,7 @@ class Taxonomy extends Model
     // Function for get term data
     public static function getTaxonomies($postType)
     {
-        $registeredTaxonomies = \Config::get('aksara.taxonomies', false);
+        $registeredTaxonomies = \Config::get('aksara.post-type.taxonomies', false);
 
         if (!$postType) {
             return false;

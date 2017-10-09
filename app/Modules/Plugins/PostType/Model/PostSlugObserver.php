@@ -38,7 +38,7 @@ class PostSlugObserver
 
             $find = Post::where([
               'post_slug' => $post['post_slug'],
-              'post_type' => $post['post_type']
+            //   'post_type' => $post['post_type']
             ])->first();
 
             //@TODO kalau sifatnya copy (autosave) perlu ditangani

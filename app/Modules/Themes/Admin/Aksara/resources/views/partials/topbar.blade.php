@@ -1,7 +1,7 @@
 <!-- LOGO -->
 <div class="topbar-left">
     <div class="text-left">
-        <a href="index.php" class="logo">
+        <a href="#" class="logo">
             <img src="{{ asset('assets/admin/dist/images/logo_white.png') }}" class="icon-c-logo icon-collapse">
             <span><!-- <img src="dist/images/logo_white.png"> --> @filter('aksara.application_name','Aksara')</span>
         </a>

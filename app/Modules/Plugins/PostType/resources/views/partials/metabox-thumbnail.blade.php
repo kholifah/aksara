@@ -4,10 +4,10 @@
     </div>
     <div class="card-box__body">
         <div class="form-img clearfix">
-            @if (get_featured_image($post->id))
+            @if (get_post_featured_image($post))
                 <div class="image-preview" style="display:block">
                     <a data-tumbnail-id="({{ $post->id }})" data-remove><i class="ti-trash"></i></a>
-                    <img src="{{ get_featured_image($post->id) }}">
+                    <img src="{{ get_post_featured_image($post) }}">
                 </div>
                 <p class="info" style="display:block">Klik icon pada gambar untuk menghapus</p>
             @else
@@ -19,7 +19,7 @@
             @endif
             <input type="file" id="file-media-uploader" style="display: none"/>
             <a href="#" data-tumbnail-id="({{ $post->id }})" class="btn btn-md btn-primary alignright" media-uploader-button >Set Foto Utama</a>
-            <input type="hidden" value="{{ get_featured_image_id($post->id) }}" name="post_thumbnail">
+            <input type="hidden" value="{{ get_post_featured_image($post) }}" name="post_thumbnail">
         </div>
     </div>
 </div>
