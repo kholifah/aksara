@@ -10,7 +10,11 @@
       <ul class="navbar-nav ml-auto">
         @foreach ( get_menu('primary') as $menu)
             <li class="nav-item">
+                @if( !str_contains($menu['data']['url'],'http://') )
+                <a class="nav-link" href="{{url($menu['data']['url'])}}">{{ $menu['data']['label'] }}</a>
+                @else
                 <a class="nav-link" href="{{$menu['data']['url']}}">{{ $menu['data']['label'] }}</a>
+                @endif
             </li>
         @endforeach
       </ul>

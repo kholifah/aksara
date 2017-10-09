@@ -12,11 +12,11 @@ class CreateRoleTable060917 extends Migration
      */
     public function up()
     {
-        Schema::create('roles', function (Blueprint $table) 
+        Schema::create('roles', function (Blueprint $table)
         {
             $table->bigIncrements('id')->unsigned();
-            $table->string('name', 255)->unique();
-            $table->longText('permissions');            
+            $table->string('name')->unique();
+            $table->longText('permissions');
         });
     }
 
