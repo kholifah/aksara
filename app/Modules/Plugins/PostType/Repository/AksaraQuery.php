@@ -63,7 +63,12 @@ class AksaraQuery
         $post = new Post();
 
         if( isset($this->args['post_type']) && $this->args['post_type'] !== false ) {
-            $post = $post->where('post_type',$this->args['post_type']);
+            if( $this->args['post_type'] == 'post' || $this->args['post_type'] == 'page' ) {
+                $post = $post->orWhereIn('post_type',['post','page']);
+            }
+            else  {
+                $post = $post->where('post_type',$this->args['post_type']);
+            }
         }
 
         if( isset($this->args['post_status']) ) {
