@@ -7,8 +7,8 @@
             <strong>Permalink:</strong>
             <span class="sample-permalink">
                 {{-- @todo --}}
-                <a href="{{ url('/') }}/{{ get_current_post_type() }}/{{ $post->post_slug }}">
-                    {{ url('/') }}/{{ get_current_post_type() }}/<span id="editable-post-name">{{ $post->post_slug }}</span>
+                <a href="{!! get_post_permalink_structure($post) !!}/{{ $post->post_slug }}">
+                    {!! get_post_permalink_structure($post) !!}/<span id="editable-post-name">{{ $post->post_slug }}</span>
                 </a>
             <input name="post_slug" type="text" autocomplete="off" value="{{ $post->post_slug }}" id="new-post-slug">
             </span>

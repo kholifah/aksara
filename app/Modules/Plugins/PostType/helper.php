@@ -5,21 +5,31 @@ use App\Modules\Plugins\PostType\Model\Term;
 use App\Modules\Plugins\PostType\Model\Taxonomy;
 
 
-function get_post_title($post) {
-    return \Eventy::filter('aksara.post-type.front-end.post_title',$post->post_title,$post);
+function get_post_title($post)
+{
+    return \Eventy::filter('aksara.post-type.front-end.post-title',$post->post_title,$post);
 }
 
-function get_post_content($post) {
-    return \Eventy::filter('aksara.post-type.front-end.post_title',$post->post_content,$post);
+function get_post_content($post)
+{
+    return \Eventy::filter('aksara.post-type.front-end.post-content',$post->post_content,$post);
 }
 
-function get_post_excerpt($post) {
-    return \Eventy::filter('aksara.post-type.front-end.post_excerpt',$post->post_content,$post);
-
+function get_post_excerpt($post)
+{
+    return \Eventy::filter('aksara.post-type.front-end.post-excerpt',$post->post_content,$post);
 }
 
-function get_post_permalink($post) {
-    return \Eventy::filter('aksara.post-type.front-end.post_permalink',$post->post_slug,$post);
+function get_post_permalink($post)
+{
+    $postClass = \App::make('App\Modules\Plugins\PostType\Post');
+    return $postClass->getPermalink($post);
+}
+
+function get_post_permalink_structure($post)
+{
+    $postClass = \App::make('App\Modules\Plugins\PostType\Post');
+    return $postClass->getPermalinkStructure($post);
 }
 
 /**

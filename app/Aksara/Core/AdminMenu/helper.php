@@ -23,3 +23,26 @@ function add_admin_sub_menu_route($parrentRouteName, $args)
     $menu = \App::make('menu');
     $menu->addSubMenuPageController($parrentRouteName, $args);
 }
+
+
+function add_admin_menu_toolbar($args)
+{
+    $menu = \App::make('menuToolbar');
+
+    $menu->registerAdminToolbarMenu($args);
+}
+function add_admin_menu_toolbar_dropdown($args)
+{
+    $menu = \App::make('menuToolbar');
+    $menu->registerAdminToolbarDropDownMenu($args);
+}
+function render_admin_menu_toolbar()
+{
+    $menu = \App::make('menuToolbar');
+    $menu->renderAdminToolbarMenu();
+}
+function render_admin_menu_toolbar_dropdown()
+{
+    $menu = \App::make('menuToolbar');
+    $menu->renderAdminToolbarDropDownMenu();
+}

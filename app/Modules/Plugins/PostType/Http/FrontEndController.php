@@ -14,7 +14,6 @@ class FrontEndController extends Controller
 
         // aksara.post-type.front-end.template.data
         $data = [];
-        $data = \Eventy::filter('aksara.post-type.front-end.template.data',$data);
         $data['posts'] = false;
         $data['post'] = false;
         $data['postType'] = false;
@@ -77,7 +76,7 @@ class FrontEndController extends Controller
         elseif (str_contains($routeName,'home') ) {
 
             \Config::set('aksara.post-type.front-end.template.is_home',true);
-            
+
             $aksaraQueryArgs['post_type'] = 'post' ;
 
             $viewPriorities = [
@@ -100,7 +99,7 @@ class FrontEndController extends Controller
 
             $data['posts'] = new AksaraQuery($aksaraQueryArgs);
             $data['posts'] = $data['posts']->getQuery();
-            $data['posts'] = $data['posts']->get();
+            $data['posts'] = $data['posts']->paginate();
             $data['post'] = $data['posts']->first();
 
             if( \Config::get('aksara.post-type.front-end.template.is_single',false) ) {
@@ -108,6 +107,8 @@ class FrontEndController extends Controller
                     abort(404,'Page Not Found');
             }
         }
+
+        $data = \Eventy::filter('aksara.post-type.front-end.template.data',$data);
 
         $viewPriorities = \Eventy::filter('aksara.post-type.front-end.template.view',$viewPriorities,$data);
 

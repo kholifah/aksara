@@ -1,20 +1,20 @@
 <?php
 
-\Eventy::addAction('aksara.init_completed', function () {
-    $userIndex = [
-        'page_title' => 'User',
-        'menu_title' => 'User',
-        'icon' => 'ti-user',
-        'capability' => '',
-        'route' => [
-            'slug' => '/aksara-user',
-            'args' => [
-                'as' => 'aksara-user',
-                'uses' => '\App\Modules\Plugins\User\Http\UserController@index',
-            ],
-        ]
-    ];
-    add_admin_menu_route($userIndex);
+\Eventy::addAction('aksara.init-completed', function () {
+    // $userIndex = [
+    //     'page_title' => 'User',
+    //     'menu_title' => 'User',
+    //     'icon' => 'ti-user',
+    //     'capability' => '',
+    //     'route' => [
+    //         'slug' => '/aksara-user',
+    //         'args' => [
+    //             'as' => 'aksara-user',
+    //             'uses' => '\App\Modules\Plugins\User\Http\UserController@index',
+    //         ],
+    //     ]
+    // ];
+    // add_admin_sub_menu_route('aksara-menu-user', $userIndex);
 
     $args = [
         'page_title' => 'User',
@@ -29,7 +29,23 @@
             ],
         ]
     ];
-    add_admin_sub_menu_route('aksara-user', $args);
+    add_admin_sub_menu_route('aksara-menu-user', $args);
+
+
+    $args = [
+        'page_title' => 'Edit Profile',
+        'menu_title' => 'Edit Profile',
+        'icon' => 'ti-user',
+        'capability' => '',
+        'route' => [
+            'slug' => '/aksara/user/edit-profile',
+            'args' => [
+                'as' => 'aksara.user.edit-profile',
+                'uses' => '\App\Modules\Plugins\User\Http\UserController@editProfile',
+            ],
+        ]
+    ];
+    add_admin_sub_menu_route('aksara-menu-user', $args);
 
     $route = \App::make('route');
     $userCreate = [
@@ -68,6 +84,17 @@
         ],
     ];
     $route->addRoute($userUpdate);
+
+    $userUpdate = [
+        'slug' => '/aksara/user/update-profile',
+        'method' => 'PUT',
+        'args' => [
+            'as' => 'aksara.user.update-profile',
+            'uses' => '\App\Modules\Plugins\User\Http\UserController@update',
+        ],
+    ];
+    $route->addRoute($userUpdate);
+
     $userDestroy = [
         'slug' => '/aksara-user/{id}/destroy',
         'method' => 'GET',
@@ -91,7 +118,8 @@
             ],
         ]
     ];
-    add_admin_sub_menu_route('aksara-user', $args);
+    add_admin_sub_menu_route('aksara-menu-user', $args);
+
     $route = \App::make('route');
     $userCreate = [
         'slug' => '/aksara-role/create',
@@ -144,6 +172,21 @@
     add_capability('Edit User', 'edit-user', 'user');
     add_capability('Delete User', 'delete-user', 'user');
 });
+
+
+
+\Eventy::addAction('aksara.init-after-routes',function(){
+
+    $args = [
+        'position' => 5,
+        'menuTitle' =>'Edit Profile',
+        'capability' =>[],
+        'url' => route('aksara.user.edit-profile')
+    ];
+
+    add_admin_menu_toolbar_dropdown($args);
+},20);
+
 
 \Eventy::addAction('aksara.admin_head', function () {
     echo '<link href='.url("assets/admin/assets/plugins/datatables/jquery.dataTables.min.css").' rel="stylesheet" type="text/css"/>';

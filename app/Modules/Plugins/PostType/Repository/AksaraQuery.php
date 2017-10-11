@@ -208,6 +208,8 @@ class AksaraQuery
             $post = $post->take($take)->skip($skip);
         }
 
+
+
         return $post;
     }
 }

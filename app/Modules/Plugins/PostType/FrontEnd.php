@@ -4,7 +4,9 @@ use App\Modules\Plugins\PostType\Repository\AksaraQuery;
 
 class FrontEnd
 {
-
+    /**
+     * Registering front end route
+     */
     function init()
     {
         \Eventy::addAction('aksara.routes.front_end',function(){
@@ -12,6 +14,7 @@ class FrontEnd
             $registeredTaxonomies = \Config::get('aksara.post-type.taxonomies');
 
             // Post Type
+            // @TODO pake get_post_permalink_structure
             foreach( $postTypes as $postType => $postTypeArgs ) {
                 if( $postType == 'page') {
                     continue;

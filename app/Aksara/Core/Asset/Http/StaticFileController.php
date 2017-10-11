@@ -31,6 +31,7 @@ class StaticFileController extends Controller
 
         if (!file_exists($realPath)) {
             abort(404,'file not found');
+            die();
         }
 
         // get extension

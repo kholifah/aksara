@@ -1,0 +1,16 @@
+.tablenav-pages {
+    display: block !important;
+	margin-top: -7px !important;
+	position: relative;
+}
+
+.tablenav .displaying-num {
+    vertical-align: top !important;
+    position: absolute;
+    top: 5px;
+    left: -70px;
+}
+
+.pagination {
+   margin: 0px !important;
+}

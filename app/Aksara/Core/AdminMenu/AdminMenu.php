@@ -22,22 +22,26 @@ class AdminMenu
     {
         if (!isset($args['routeName'])) {
             if (!isset($args['route'])) {
-                return;
+                throw new Exception('Menu must have a route');
             }
 
             if (!isset($args['route']['slug'])) {
+                throw new Exception('Menu must have route slug paramater');
                 return;
             }
 
             if (!isset($args['route']['args'])) {
+                throw new Exception('Menu must have route args paramater');
                 return;
             }
 
             if (!isset($args['route']['args']['as'])) {
+                throw new Exception('Menu must have a route name');
                 return;
             }
 
             if (!isset($args['route']['args']['uses'])) {
+                throw new Exception('Menu must have a route controller');
                 return;
             }
 
@@ -49,7 +53,7 @@ class AdminMenu
 
         //register route
         if (!isset($args['position'])) {
-            $args['position'] = 90;
+            $args['position'] = 40;
         }
 
         if (!isset($args['icon'])) {
@@ -57,10 +61,14 @@ class AdminMenu
         }
 
         if (!isset($args['capability'])) {
-            $args['capability'] = '';
+            $args['capability'] = [];
         }
 
-        $this->addMenuPage($args['page_title'], $args['menu_title'], $args['routeName'], $args['position'], $args['icon'], $args['capability']);
+        if (!isset($args['render'])) {
+            $args['render'] = true;
+        }
+
+        $this->addMenuPage($args['page_title'], $args['menu_title'], $args['routeName'], $args['position'], $args['icon'], $args['capability'], $args['render']);
     }
 
 
@@ -68,22 +76,26 @@ class AdminMenu
     {
         if (!isset($args['routeName'])) {
             if (!isset($args['route'])) {
-                return;
+                throw new Exception('Menu must have a route');
             }
 
             if (!isset($args['route']['slug'])) {
+                throw new Exception('Menu must have route slug paramater');
                 return;
             }
 
             if (!isset($args['route']['args'])) {
+                throw new Exception('Menu must have route args paramater');
                 return;
             }
 
             if (!isset($args['route']['args']['as'])) {
+                throw new Exception('Menu must have a route name');
                 return;
             }
 
             if (!isset($args['route']['args']['uses'])) {
+                throw new Exception('Menu must have a route controller');
                 return;
             }
 
@@ -103,15 +115,15 @@ class AdminMenu
         }
 
         if (!isset($args['capability'])) {
-            $args['capability'] = '';
+            $args['capability'] = [];
         }
 
         $this->addSubMenuPage($parrentRouteName, $args['page_title'], $args['menu_title'], $args['routeName'], $args['position'], $args['icon'], $args['capability']);
     }
 
-    public function addMenuPage(string $pageTitle, string $menuTitle, string  $routeName, $position = 20, string $icon = 'ti-pin-alt', string $capability ='')
+    public function addMenuPage(string $pageTitle, string $menuTitle, string  $routeName, $position = 20, string $icon = 'ti-pin-alt', $capability=[], $render = true)
     {
-        $adminMenu = \Config::get('aksara.admin_menu');
+        $adminMenu = \Config::get('aksara.admin-menu.admin-menu');
 
         if (!$adminMenu) {
             $adminMenu = [];
@@ -127,16 +139,17 @@ class AdminMenu
               'capability' => $capability,
               'routeName' => $routeName,
               'icon' => $icon,
+              'render'=>$render
               ];
 
         array_push($adminMenu[$position], $menu);
 
-        \Config::Set('aksara.admin_menu', $adminMenu);
+        \Config::Set('aksara.admin-menu.admin-menu', $adminMenu);
     }
 
-    public function addSubMenuPage(string $parrentRouteName, string $pageTitle, string $menuTitle, string $routeName, string $icon = 'ti-pin-alt', string $capability = '')
+    public function addSubMenuPage(string $parrentRouteName, string $pageTitle, string $menuTitle, string $routeName, string $icon = 'ti-pin-alt', $capability=[])
     {
-        $adminSubMenu = \Config::get('aksara.admin_sub_menu');
+        $adminSubMenu = \Config::get('aksara.admin-menu.admin-sub-menu');
 
         if (!$adminSubMenu) {
             $adminSubMenu = [];
@@ -156,24 +169,23 @@ class AdminMenu
 
         array_push($adminSubMenu[$parrentRouteName], $subMenu);
 
-        \Config::Set('aksara.admin_sub_menu', $adminSubMenu);
+        \Config::Set('aksara.admin-menu.admin-sub-menu', $adminSubMenu);
     }
 
-
-    /*
-     *   0 -> Dashboard
-     *  10 -> Post Type
-     *  20 -> Banner / Sidebar
-     *  30 -> THeme Options
-     *
-     */
     public function render()
     {
-        $adminMenu = \Config::get('aksara.admin_menu');
-        $adminSubMenu = \Config::get('aksara.admin_sub_menu');
+        $adminMenu = \Config::get('aksara.admin-menu.admin-menu');
+        $adminSubMenu = \Config::get('aksara.admin-menu.admin-sub-menu');
 
         // sort array
         ksort($adminMenu);
+
+        foreach ($adminMenu as $position => $menus) {
+            foreach ($menus as $priority => $menu) {
+                if( $menu['render'] == false && !isset($adminSubMenu[$menu['routeName']]) )
+                    unset($adminMenu[$position][$priority]);
+            }
+        }
 
         echo view('admin:aksara::partials.admin-menu', compact('adminMenu', 'adminSubMenu'))->render();
     }
@@ -184,13 +196,13 @@ class AdminMenu
 
     public function removeAdminSubMenu($adminSubMenuRoute)
     {
-        $adminSubMenu = \Config::get('aksara.admin_sub_menu');
+        $adminSubMenu = \Config::get('aksara.admin-menu.admin-sub-menu');
 
         foreach ($adminSubMenu as $menu => $subMenus) {
             foreach ($subMenus as $key => $subMenu) {
                 if ($subMenu['routeName'] == $adminSubMenuRoute) {
                     unset($adminSubMenu[$menu][$key]);
-                    \Config::set('aksara.admin_sub_menu', $adminSubMenu);
+                    \Config::set('aksara.admin-menu.admin-sub-menu', $adminSubMenu);
                     return;
                 }
             }

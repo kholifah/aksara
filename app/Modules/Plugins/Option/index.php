@@ -14,7 +14,7 @@
                                        ]
                     ];
 
-    add_admin_menu_route($optionIndex);
+    add_admin_sub_menu_route('aksara-menu-options',$optionIndex);
 
     $route = \App::make('route');
 

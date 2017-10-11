@@ -34,10 +34,9 @@ class AksaraServiceProvider extends ServiceProvider
         // Load CMD Themes
         $module->loadModules('admin', app_path('Modules/Themes/Admin'));
         \Eventy::action('aksara.init');
-        \Eventy::action('aksara.init_completed');
+        \Eventy::action('aksara.init-completed');
 
         \Eventy::action('aksara.routes.before');
-
 
         $argsGroupAdmin = \Eventy::filter('aksara.middleware.admin', ['prefix' => 'admin', 'middleware' => ['web','csrf', 'auth']]);
 
@@ -52,6 +51,8 @@ class AksaraServiceProvider extends ServiceProvider
         });
 
         \Eventy::action('aksara.routes.after');
+
+        \Eventy::action('aksara.init-after-routes');
     }
 
     /**
@@ -61,9 +62,7 @@ class AksaraServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        \App::singleton('menu', function () {
-            return new \App\Aksara\Core\AdminMenu\AdminMenu();
-        });
+
 
         \App::singleton('route', function () {
             return new \App\Aksara\Core\Route();

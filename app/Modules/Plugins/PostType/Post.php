@@ -89,7 +89,7 @@ class Post
 
         \Config::set('aksara.post-type.post-types', $registeredPostType);
         // string $pageTitle, string $menuTitle ,string  $routeName, $position = 0, string $icon = 'ti-pin-alt',  , string $capability ='
-        $menu->addMenuPage($args['label']['name'], $args['label']['name'], 'admin.'.$args['route'].'.index', $args['priority'], $args['icon'], $args['route']);
+        $menu->addMenuPage($args['label']['name'], $args['label']['name'], 'admin.'.$args['route'].'.index', $args['priority'], $args['icon'], $args['capability']);
 
         // Add For Index and Add New
         $menu->addSubMenuPage('admin.'.$args['route'].'.index', "Semua ".$args['label']['name'], "Semua ".$args['label']['name'], 'admin.'.$args['route'].'.index');
@@ -113,6 +113,10 @@ class Post
         if (!isset($args['route'])) {
             $args['route'] = \aksara_slugify($postType);
         }
+
+        if (!isset($args['capability'])) {
+            $args['capability'] = '';
+        }
         //@TODO rename route to slug
 
         if (!isset($args['has_archive'])) {
@@ -124,7 +128,7 @@ class Post
         }
 
         if (!isset($args['priority']) || !is_int($args['priority'])) {
-            $args['priority'] = 10;
+            $args['priority'] = 20;
         }
 
         $args['slug'] = $args['route'];
@@ -213,6 +217,31 @@ class Post
         } else {
             throw new \Exception('Taxonomy '.$taxonomy.' is not registered yet');
         }
+    }
+
+    public function getPermalink($post)
+    {
+        if(!$post)
+                return false;
+        $postPermalink = $this->getPermalinkStructure($post).'/'.$post->post_slug;
+        return \Eventy::filter('aksara.post-type.front-end.post-permalink',$postPermalink,$post);
+    }
+
+    public function getPermalinkStructure($post)
+    {
+        if(!$post)
+            return false;
+
+        if( $post->post_type == 'post' || $post->post_type == 'page' ) {
+            $permalinkStructure =  url('');
+        }
+        else {
+            $postTypeSlug = get_post_type_args('slug',$post->post_type);
+
+            $permalinkStructure =  url('/'.$postTypeSlug);
+        }
+
+        return \Eventy::filter('aksara.post-type.front-end.post-permalink-structure',$permalinkStructure,$post);
     }
 
     public function getCurrentPostType()

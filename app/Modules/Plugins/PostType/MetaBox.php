@@ -5,7 +5,7 @@ class MetaBox
 {
     public function init()
     {
-        \Eventy::addAction('aksara.init_completed', function () {
+        \Eventy::addAction('aksara.init-completed', function () {
             $postTypes = \Config::get('aksara.post-type.post-types', []);
 
             foreach ($postTypes as $postType => $args) {

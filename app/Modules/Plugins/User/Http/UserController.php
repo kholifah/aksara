@@ -117,16 +117,29 @@ class UserController extends Controller
     }
 
     /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function editProfile()
+    {
+        $user = \Auth::user();
+        $user_role = Role::orderBy('name')->get()->pluck('name', 'name');
+        return view('plugin:user::user.edit-profile', compact('user', 'user_role'));
+    }
+
+    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $id = false)
     {
-        $user = User::find($id);
-
+        $user = $id === false ? \Auth::user() :  User::find($id);
+        
         if ($request->input('password') || $request->input('password_confirmation')) {
             $data = [
                 'id' => $id,
@@ -175,6 +188,11 @@ class UserController extends Controller
         }
         $user->save();
         admin_notice('success', 'Data berhasil diubah.');
+
+        if( $id === false ) {
+                return redirect()->route('aksara.user.edit-profile');
+        }
+
         return redirect()->route('aksara-user');
     }
 

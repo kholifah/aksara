@@ -25,7 +25,7 @@
                     </form>
                 </div>
                 <div class="tablenav-pages"><span class="displaying-num">{{ $total }} @if($total > 1 )items @else item @endif</span>
-                    {!! $terms->links() !!}
+                    {!! $terms->links('admin:aksara::partials.pagination') !!}
                 </div>
             </div>
             <div class="table-box">
@@ -65,7 +65,7 @@
             </div>
             <div class="tablenav bottom clearfix">
                 <div class="tablenav-pages"><span class="displaying-num">{{ $total }} @if($total > 1 )items @else item @endif</span>
-                   {!! $terms->links() !!}
+                   {!! $terms->links('admin:aksara::partials.pagination') !!}
                 </div>
             </div>
         </div>

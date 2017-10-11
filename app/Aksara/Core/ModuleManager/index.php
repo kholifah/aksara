@@ -7,8 +7,8 @@
                       'page_title' => 'Module Manager',
                       'menu_title' => 'Module Manager',
                       'icon'       => 'ti-layout-menu-v',
-                      'position'   => 70,
-                      'capability' => '',
+                      'position'   => 30,
+                      'capability' => [],
                       'route'      => [
                                          'slug' => '/aksara-module-manager',
                                          'args' => [

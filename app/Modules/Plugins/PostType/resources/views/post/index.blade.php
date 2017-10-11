@@ -10,7 +10,7 @@
 @section('content')
 <div class="content__head">
     <h2 class="page-title">Semua {{ get_current_post_type_args('label.name') }}
-        @if( array_search_key_recursive('admin.'.get_current_post_type_args('slug').'.create',\Config::get('aksara.admin_sub_menu'),false) )
+        @if( array_search_key_recursive('admin.'.get_current_post_type_args('slug').'.create',\Config::get('aksara.admin-menu.admin-sub-menu'),false) )
         <a href="{{ route('admin.'.get_current_post_type_args('slug').'.create') }}" class="page-title-action">Tambah {{ get_current_post_type_args('label.name') }}</a>
         @endif
     </h2>
@@ -71,7 +71,7 @@
             <input name="bsearch" type="submit" class="btn btn-secondary" value="Search">
         </div>
         <div class="tablenav-pages"><span class="displaying-num">{{ $viewData['total'] }} @if($viewData['total'] > 1 )items @else item @endif</span>
-            {!! $posts->links() !!}
+            {!! $posts->links('admin:aksara::partials.pagination') !!}
         </div>
     </div>
     <div class="table-box">
@@ -122,7 +122,7 @@
         </div>
         @endif
         <div class="tablenav-pages"><span class="displaying-num">{{ $viewData['total'] }} @if($viewData['total'] > 1 ) items @else item @endif</span>
-            {!! $posts->links() !!}
+            {!! $posts->links('admin:aksara::partials.pagination') !!}
         </div>
     </div>
     </form>
