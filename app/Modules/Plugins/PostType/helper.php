@@ -301,15 +301,17 @@ function get_current_taxonomy()
 //   return $post->getCurrentTaxonomy();
 // }
 
-function get_taxonomy_args($key = false)
+function get_taxonomy_args($key,$taxonomy = false)
 {
   $post = \App::make('post');
-  return $post->getTaxonomyArgs($key);
+  $args = $post->getTaxonomyArgs($taxonomy);
+
+  return array_get($args,$key);
 }
 
 function get_current_taxonomy_args( $key = false )
 {
-    $args = get_taxonomy_args(get_current_taxonomy());
+    $args = get_taxonomy_args($key,get_current_taxonomy());
     return array_get($args,$key);
 }
 
@@ -318,13 +320,45 @@ function is_home() {
 }
 
 function is_single() {
-    return \Config::get('aksara.post-type.front-end.template.is_single',false);
+    return \Config::get('aksara.post-type.front-end.template.is-single',false);
 }
 
 function is_archive() {
-    return \Config::get('aksara.post-type.front-end.template.is_archive',false);
+    return \Config::get('aksara.post-type.front-end.template.is-archive',false);
+}
+
+function is_archive_post_type() {
+    return \Config::get('aksara.post-type.front-end.template.is-archive-post-type',false);
+}
+
+function is_archive_taxonomy() {
+    return \Config::get('aksara.post-type.front-end.template.is-archive-taxonomy',false);
 }
 
 function is_search() {
-    return \Config::get('aksara.post-type.front-end.template.is_search',false);
+    return \Config::get('aksara.post-type.front-end.template.is-search',false);
+}
+
+//@TODO Translasi
+function get_archive_title() {
+    if( is_archive_taxonomy() ) {
+        echo get_taxonomy_args('label.name',get_current_taxonomy()).' Archive ';
+    }
+    elseif( is_archive_post_type() ) {
+        // @ Todo Translasi
+        echo get_post_type_args('label.name',get_current_post_type()).' Archive ';
+    }
+    elseif( is_search() ) {
+        echo 'Search Archive';
+    }
+    elseif( is_archive() ) {
+        echo 'Archive';
+    }
+}
+
+function get_search_results() {
+    if( is_search() ) {
+        $aksaraQuery = \App::make('currentAksaraQuery');
+        echo 'Search Query : "'.\Request::input('query').'", found '.$aksaraQuery->total().' result(s).';
+    }
 }

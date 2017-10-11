@@ -33,7 +33,7 @@
                     </div>
                     <hr>
                 @endforeach
-                {{ $data['posts']->links('front-end:aksara::partials.pagination') }}
+                {{ $data['posts']->appends(\Request::except('page'))->links('front-end:aksara::partials.pagination') }}
             @else
             <h2> No Post Found.. </h2>
             @endif

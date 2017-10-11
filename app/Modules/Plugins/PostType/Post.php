@@ -293,11 +293,12 @@ class Post
 
 
     }
+
     // return taxonomy from route
     public function getTaxonomyFromRoute($delimiter = false)
     {
         if( !$delimiter )
-            return false; //@TODO
+            return $this->getCurrentTaxonomy();
 
         $routeName = \Request::route()->getName();
         $taxonomy = substr($routeName, strpos($routeName, $delimiter) + strlen($delimiter));
@@ -330,6 +331,14 @@ class Post
 
     public function getCurrentTaxonomy()
     {
+
+        $routeName = \Request::route()->getName();
+        // dd(strpos($routeName, 'admin.'));
+
+        if ( $this->getTaxonomyFromRoute('archive-taxonomy.') ) {
+            return $this->getTaxonomyFromRoute('archive-taxonomy.');
+        }
+
         $segments = \Request::segments();
 
         if (!isset($segments[0])) {
@@ -354,19 +363,18 @@ class Post
         return false;
     }
 
-    public function getTaxonomyArgs($key = false)
+    public function getTaxonomyArgs($taxonomy = false)
     {
-        if (!$key) {
+        if (!$taxonomy) {
             return false;
         }
 
-        $currentTaxonomy = $this->getCurrentTaxonomy();
         $registerTaxonomies = \Config::get('aksara.post-type.taxonomies');
 
-        if (!isset($registerTaxonomies[$key])) {
+        if (!isset($registerTaxonomies[$taxonomy])) {
             return false;
         }
 
-        return $registerTaxonomies[$key];
+        return $registerTaxonomies[$taxonomy];
     }
 }

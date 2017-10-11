@@ -22,7 +22,6 @@ class TaxonomyController extends Controller
         $terms = Term::orderBy('terms.id');
 
         $taxonomy = Taxonomy::where('taxonomy_name', get_current_taxonomy())->first();
-        $taxonomyArgs = get_taxonomy_args(get_current_taxonomy());
 
         $terms = $terms->where('terms.taxonomy_id', $taxonomy->id);
 

@@ -46,7 +46,7 @@ class AksaraQuery
             'post_type' => 'post',
             'post_status' => 'publish',
             'page' => 1,
-            'post_per_page'=> 10,
+            'post_per_page'=> 5,
             'order_by' => 'post_date',
             'order' => 'desc'
         ];
@@ -85,6 +85,15 @@ class AksaraQuery
 
         if( isset($this->args['author_id']) ) {
             $post = $post->where('post_author',$this->args['author_id']);
+        }
+
+        // @TODO Full text search
+        if( isset($this->args['query']) ) {
+            $searchTerm = $this->args['query'];
+            $post = $post->where(function($query) use ($searchTerm) {
+                $query->orWhere('post_title','like','%'.$searchTerm.'%');
+                $query->orWhere('post_content','like','%'.$searchTerm.'%');
+            });
         }
 
         if( isset($this->args['author_slug']) ) {
@@ -200,16 +209,19 @@ class AksaraQuery
         }
 
         // Pagination
-        $take = isset($this->args['post_per_page']) ? $this->args['post_per_page'] : 10 ;
-        $page = isset($this->args['page']) ? $this->args['page'] : 1 ;
-        $skip = ($page- 1)*$take ;
+        // $take = isset($this->args['post_per_page']) ? $this->args['post_per_page'] : 10 ;
+        // $page = isset($this->args['page']) ? $this->args['page'] : 1 ;
+        // $skip = ($page- 1)*$take ;
 
-        if( isset($this->args['page']) && isset($this->args['post_per_page']) ) {
-            $post = $post->take($take)->skip($skip);
-        }
-
-
+        // if( isset($this->args['page']) && isset($this->args['post_per_page']) ) {
+            // $post = $post->take($take)->skip($skip);
+        // }
 
         return $post;
     }
+
+    function paginate() {
+        return $this->getQuery()->paginate($this->args['post_per_page']);
+    }
+
 }

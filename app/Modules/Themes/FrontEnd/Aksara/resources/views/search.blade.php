@@ -4,7 +4,7 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-md-10 mx-auto">
-                <div class="site-heading heading-archive">
+                <div class="site-heading">
                     <h2>{{ get_archive_title() }}</h2>
                     <span class="subheading">{{ get_search_results() }}</span>
                 </div>
@@ -16,7 +16,7 @@
 <div class="container">
     <div class="row">
         <div class="col-lg-8 col-md-10 mx-auto">
-            @if( sizeof($data['posts']) > 0 )
+            @if( $data['posts'] )
                 @foreach ($data['posts'] as $post)
                     <div class="post-preview">
                         <a href="{{ get_post_permalink($post) }}">

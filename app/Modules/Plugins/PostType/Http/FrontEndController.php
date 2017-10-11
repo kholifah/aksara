@@ -23,7 +23,7 @@ class FrontEndController extends Controller
         if( str_contains($routeName,'single') ) {
 
             // Check if slug exist
-            \Config::set('aksara.post-type.front-end.template.is_single',true);
+            \Config::set('aksara.post-type.front-end.template.is-single',true);
 
             $data['postType'] =  get_current_post_type();
 
@@ -36,9 +36,10 @@ class FrontEndController extends Controller
             ];
         }
         elseif (str_contains($routeName,'archive-taxonomy') ) {
+            \Config::set('aksara.post-type.front-end.template.is-archive',true);
+            \Config::set('aksara.post-type.front-end.template.is-archive-taxonomy',true);
 
-            \Config::set('aksara.post-type.front-end.template.is_archive',true);
-            $data['taxonomy'] = get_current_taxonomy_from_route('archive-taxonomy.');
+            $data['taxonomy'] = get_current_taxonomy();
 
             $viewPriorities = [
                 'front-end:aksara::archive-'.$data['taxonomy'] ,
@@ -65,7 +66,9 @@ class FrontEndController extends Controller
         }
         elseif (str_contains($routeName,'archive-post-type') ) {
 
-            \Config::set('aksara.post-type.front-end.template.is_archive',true);
+            \Config::set('aksara.post-type.front-end.template.is-archive',true);
+            \Config::set('aksara.post-type.front-end.template.is-archive-post-type',true);
+
             $data['postType'] =  get_current_post_type();
             $viewPriorities = [
                 'front-end:aksara::archive-'.$data['postType'],
@@ -85,31 +88,48 @@ class FrontEndController extends Controller
         }
         elseif (str_contains($routeName,'search') ) {
 
-            \Config::set('aksara.post-type.front-end.template.is_archive',true);
-            \Config::set('aksara.post-type.front-end.template.is_search',true);
+            \Config::set('aksara.post-type.front-end.template.is-archive',true);
+            \Config::set('aksara.post-type.front-end.template.is-search',true);
+
+            $aksaraQueryArgs['post_type'] = false;
+
             $viewPriorities = [
                 'front-end:aksara::search',
                 'front-end:aksara::archive'
             ];
         }
 
+        // Search Query Param
+        if ( ( \Config::get('aksara.post-type.front-end.template.is-archive',false) ||
+               \Config::get('aksara.post-type.front-end.template.is-search',false) ) &&
+               \Request::input('query') ) {
+
+                \Config::set('aksara.post-type.front-end.template.is-search',true);
+
+                $aksaraQueryArgs['query'] = \Request::input('query');
+        }
+
         if( is_array($aksaraQueryArgs) ) {
 
             $aksaraQueryArgs = \Eventy::filter('aksara.post-type.front-end.template.query-args',$aksaraQueryArgs);
 
-            $data['posts'] = new AksaraQuery($aksaraQueryArgs);
-            $data['posts'] = $data['posts']->getQuery();
-            $data['posts'] = $data['posts']->paginate();
+            $aksaraQuery = new AksaraQuery($aksaraQueryArgs);
+            // $data['posts'] = $aksaraQuery->getQuery();
+
+            \App::singleton('currentAksaraQuery',function() use ($aksaraQuery){
+                return $aksaraQuery->paginate();
+            });
+
+            $data['posts'] = $aksaraQuery->paginate();
             $data['post'] = $data['posts']->first();
 
-            if( \Config::get('aksara.post-type.front-end.template.is_single',false) ) {
+            if( \Config::get('aksara.post-type.front-end.template.is-single',false) ) {
                 if( !$data['post'] )
                     abort(404,'Page Not Found');
             }
         }
 
         $data = \Eventy::filter('aksara.post-type.front-end.template.data',$data);
-
         $viewPriorities = \Eventy::filter('aksara.post-type.front-end.template.view',$viewPriorities,$data);
 
         foreach ( $viewPriorities as $viewPriority ) {

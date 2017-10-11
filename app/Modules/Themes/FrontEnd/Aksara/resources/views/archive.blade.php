@@ -5,7 +5,8 @@
         <div class="row">
             <div class="col-lg-8 col-md-10 mx-auto">
                 <div class="site-heading heading-archive">
-                    <h2>{{ $data['postType'] }} Archive</h2>
+                    <h2>{{ get_archive_title() }}</h2>
+                    <span class="subheading">{{ get_search_results() }}</span>
                 </div>
             </div>
         </div>
@@ -32,6 +33,7 @@
                     </div>
                     <hr>
                 @endforeach
+                {{ $data['posts']->appends(\Request::except('page'))->links('front-end:aksara::partials.pagination') }}
             @else
             <h2> No Post Found.. </h2>
             @endif
