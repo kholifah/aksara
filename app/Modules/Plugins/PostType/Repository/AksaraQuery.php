@@ -46,7 +46,7 @@ class AksaraQuery
             'post_type' => 'post',
             'post_status' => 'publish',
             'page' => 1,
-            'post_per_page'=> 5,
+            'post_per_page'=> 10,
             'order_by' => 'post_date',
             'order' => 'desc'
         ];
