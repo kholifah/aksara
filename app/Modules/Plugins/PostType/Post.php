@@ -206,8 +206,11 @@ class Post
 
         $registeredTaxonomy = \Config::get('aksara.post-type.taxonomies');
 
-        if (isset($registeredTaxonomy,$taxonomy)) {
+
+        if (isset($registeredTaxonomy[$taxonomy])) {
             // add new post type to existing taxonomy
+
+
             array_push($registeredTaxonomy[$taxonomy]['post_type'], $postType);
             // menu
             $menu = new Menu();

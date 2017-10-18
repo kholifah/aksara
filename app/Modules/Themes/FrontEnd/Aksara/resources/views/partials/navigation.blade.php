@@ -18,6 +18,23 @@
             </li>
         @endforeach
       </ul>
+      <div class="header-search active" id="header-search">
+          <form action="{{url('/search')}}">
+              <input type="text" name="query" placeholder="Ketik kata kunci pencarian Anda di sini." class="form-control">
+              <button class="header-search__submit"><i class="fa fa-search"></i></button>
+          </form>
+      </div>
+      <div class="search-toggle">
+            <i class="fa fa-search"></i>
+        </div>
+        <div class="lang">
+            <div class="lang-active">
+                <img src="{{url("assets/modules/FrontEnd/Aksara/img/ina.png")}}" alt="">
+            </div>
+            <div class="option">
+                <a href="#"><img src="{{url("assets/modules/FrontEnd/Aksara/img/eng.png")}}" alt=""></a>
+            </div>
+        </div>
     </div>
   </div>
 </nav>

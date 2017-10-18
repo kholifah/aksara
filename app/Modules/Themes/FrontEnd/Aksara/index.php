@@ -56,6 +56,7 @@
     aksara_enqueue_script(url("assets/modules/FrontEnd/Aksara/vendor/popper/popper.min.js"));
     aksara_enqueue_script(url("assets/modules/FrontEnd/Aksara/vendor/bootstrap/js/bootstrap.min.js"));
     aksara_enqueue_script(url("assets/modules/FrontEnd/Aksara/js/clean-blog.min.js"));
+    aksara_enqueue_script(url("assets/modules/FrontEnd/Aksara/js/custom.js"));
 
     add_page_template('Contact Form', 'front-end:aksara::page-contact-form');
     add_page_template('About Us', 'front-end:aksara::page-about-us');

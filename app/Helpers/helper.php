@@ -35,6 +35,12 @@ function aksara_slugify( $name )
 function is_admin()
 {
     $segments = \Request::segments();
+
+    if( count($segments) != 0 && $segments[0] == 'admin' ) {
+        return true;
+    }
+
+    return false;
 }
 
 function insert_after_array_key( &$array, $needle, $value = [])

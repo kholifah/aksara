@@ -40,7 +40,7 @@
         return $name;
     });
 
-    \Eventy::addFilter('aksara.site_title', function ($name) {
+    \Eventy::addFilter('aksara.site-title', function ($name) {
         $site_options = get_options('site_options', []);
 
         if (isset($site_options['site_title']) && $site_options['site_title'] !== "") {

@@ -358,7 +358,10 @@ function get_archive_title() {
 
 function get_search_results() {
     if( is_search() ) {
-        $aksaraQuery = \App::make('currentAksaraQuery');
+        $aksaraQuery = get_current_aksara_query();
         echo 'Search Query : "'.\Request::input('query').'", found '.$aksaraQuery->total().' result(s).';
     }
+}
+function get_current_aksara_query() {
+    return \App::make('currentAksaraQuery');
 }

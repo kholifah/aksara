@@ -1,5 +1,5 @@
 <?php
-\Eventy::addAction('aksara.init', function () {
+\Eventy::addAction('aksara.init-completed', function () {
     // Register Product
     $argsPost = [
     'label' => [
