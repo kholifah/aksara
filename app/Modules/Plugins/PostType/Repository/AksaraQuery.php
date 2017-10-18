@@ -72,7 +72,10 @@ class AksaraQuery
         }
 
         if( isset($this->args['post_status']) ) {
-            $post = $post->where('post_status',$this->args['post_status']);
+
+            $this->args['post_status'] = is_array($this->args['post_status']) ? $this->args['post_status'] : array($this->args['post_status']);
+
+            $post = $post->whereIn('post_status',$this->args['post_status']);
         }
 
         if( isset($this->args['post_slug']) ) {

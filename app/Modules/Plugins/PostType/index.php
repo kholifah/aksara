@@ -8,6 +8,7 @@ require __DIR__.'/action-filter/post-filter.php';
 require __DIR__.'/action-filter/page-template.php';
 require __DIR__.'/action-filter/header-title.php';
 require __DIR__.'/action-filter/front-end-admin-toolbar.php';
+require __DIR__.'/action-filter/query-filter.php';
 require __DIR__.'/vendor/autoload.php';
 
 // return;

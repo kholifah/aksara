@@ -7,8 +7,6 @@
 		margin-top: 32px !important;
 	}
 </style>
-<link rel="stylesheet" type="text/css" href="../dist/css/adminbar.min.css">
-
 <div id="aksara-adminbar" class="adminbar">
 	<ul class="adminbar__menu">
 		<li class="adminbar__item">
@@ -16,7 +14,7 @@
 		</li>
         @if( is_single() )
 		<li class="adminbar__item">
-			<a href="../index.php"><i class="ti-pencil"></i> <span> Edit Post </span></a>
+			<a href="{{ route('admin.'.get_current_post_type_args('route').'.edit', $post->id)  }}"><i class="ti-pencil"></i> <span> Edit Post </span></a>
 		</li>
         @endif
 	</ul>
