@@ -1,7 +1,7 @@
 <?php
 
 \Eventy::addFilter('aksara.post-type.front-end.template.view',function($viewPriorities,$data) {
-    if( $data['postType'] == 'post' && $data['post']->post_type == 'page' ) {
+    if( isset($data['post']) && $data['postType'] == 'post' && $data['post']->post_type == 'page' ) {
         $pageTemplate = get_page_template($data['post']);
         return [$pageTemplate];
     }
