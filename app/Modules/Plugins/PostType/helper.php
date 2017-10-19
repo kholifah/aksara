@@ -311,8 +311,8 @@ function get_taxonomy_args($key,$taxonomy = false)
 
 function get_current_taxonomy_args( $key = false )
 {
-    $args = get_taxonomy_args($key,get_current_taxonomy());
-    return array_get($args,$key);
+    return get_taxonomy_args($key,get_current_taxonomy());
+    // return array_get($args,$key);
 }
 
 function is_home() {

@@ -25,7 +25,7 @@
                 </div>
                 <div class="card-box__body">
                     {!! Form::open(['route' => 'admin.'.get_current_post_type_args('route').'.'.get_current_taxonomy().'.store', 'role' => 'form', 'class' => 'form-horizontal'])!!}
-                        @include('plugin:post-type::taxonomy._form')                        
+                        @include('plugin:post-type::taxonomy._form')
                     {!! Form::close() !!}
                 </div>
             </div>

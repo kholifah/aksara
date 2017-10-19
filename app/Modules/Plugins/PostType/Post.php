@@ -380,6 +380,7 @@ class Post
 
         $registerTaxonomies = \Config::get('aksara.post-type.taxonomies');
 
+
         if (!isset($registerTaxonomies[$taxonomy])) {
             return false;
         }
