@@ -362,6 +362,36 @@ function get_search_results() {
         echo 'Search Query : "'.\Request::input('query').'", found '.$aksaraQuery->total().' result(s).';
     }
 }
-function get_current_aksara_query() {
-    return \App::make('currentAksaraQuery');
+
+function set_current_post($post)
+{
+    app()['currentAksaraPost'] = $post;
+}
+
+
+function get_current_post()
+{
+    try {
+        $aksaraQuery = app()['currentAksaraPost'];
+        return $aksaraQuery;
+    }
+    catch(\Exception $e) {
+        return false;
+    }
+}
+
+
+function get_current_aksara_query()
+{
+    try {
+        $aksaraQuery = app()['currentAksaraQuery'];
+        return $aksaraQuery->paginate();
+    }
+    catch(\Exception $e) {
+        return false;
+    }
+}
+
+function set_current_aksara_query($aksaraQuery) {
+    app()['currentAksaraQuery'] = $aksaraQuery;
 }

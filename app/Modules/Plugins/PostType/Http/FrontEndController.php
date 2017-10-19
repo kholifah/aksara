@@ -109,19 +109,17 @@ class FrontEndController extends Controller
                 $aksaraQueryArgs['query'] = \Request::input('query');
         }
 
+        $aksaraQueryArgs = \Eventy::filter('aksara.post-type.front-end.template.query-args',$aksaraQueryArgs);
+
         if( is_array($aksaraQueryArgs) ) {
 
-            $aksaraQueryArgs = \Eventy::filter('aksara.post-type.front-end.template.query-args',$aksaraQueryArgs);
-
             $aksaraQuery = new AksaraQuery($aksaraQueryArgs);
-            // $data['posts'] = $aksaraQuery->getQuery();
-
-            \App::singleton('currentAksaraQuery',function() use ($aksaraQuery){
-                return $aksaraQuery->paginate();
-            });
+            set_current_aksara_query($aksaraQuery);
 
             $data['posts'] = $aksaraQuery->paginate();
             $data['post'] = $data['posts']->first();
+
+            set_current_post($data['post']);
 
             if( \Config::get('aksara.post-type.front-end.template.is-single',false) ) {
                 if( !$data['post'] )
@@ -129,8 +127,12 @@ class FrontEndController extends Controller
             }
         }
 
+        get_current_aksara_query();
+
         $data = \Eventy::filter('aksara.post-type.front-end.template.data',$data);
         $viewPriorities = \Eventy::filter('aksara.post-type.front-end.template.view',$viewPriorities,$data);
+
+        \Eventy::action('aksara.post-type.front-end.before-render',$data);
 
         foreach ( $viewPriorities as $viewPriority ) {
             if( view()->exists($viewPriority) ) {

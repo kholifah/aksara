@@ -1,8 +1,8 @@
 <?php
 \Eventy::addAction('aksara.init', function () {
     $optionIndex = [
-                    'page_title' => 'Site Option',
-                    'menu_title' => 'Site Option',
+                    'page_title' => 'General Option',
+                    'menu_title' => 'General Option',
                     'icon'       => 'ti-brush-alt',
                     'capability' => '',
                     'route'      => [

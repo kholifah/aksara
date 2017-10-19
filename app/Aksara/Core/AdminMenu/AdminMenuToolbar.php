@@ -80,7 +80,6 @@ class AdminMenuToolbar
     public function renderAdminToolbarDropDownMenu()
     {
         $adminMenus = \Config::get('aksara.admin-menu.toolbar-dropdown-menu',[]);
-
         ksort($adminMenus);
 
         echo view('admin:aksara::partials.toolbar-dropdown-menu', compact('adminMenus'))->render();

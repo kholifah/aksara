@@ -6,9 +6,11 @@ require __DIR__.'/action-filter/base-table.php';
 require __DIR__.'/action-filter/add-capabilities.php';
 require __DIR__.'/action-filter/post-filter.php';
 require __DIR__.'/action-filter/page-template.php';
-require __DIR__.'/action-filter/header-title.php';
+require __DIR__.'/action-filter/header-meta-tag.php';
+require __DIR__.'/action-filter/custom-script-css.php';
 require __DIR__.'/action-filter/front-end-admin-toolbar.php';
 require __DIR__.'/action-filter/query-filter.php';
+require __DIR__.'/action-filter/robots.php';
 require __DIR__.'/vendor/autoload.php';
 
 // return;
@@ -109,4 +111,36 @@ $postTypeFrontEnd->init();
     // File JS / CSS masuk sini
     // @nanti dipindah ke resource
 
+});
+
+
+\Eventy::addAction('aksara.init-completed', function () {
+    $optionIndex = [
+                    'page_title' => 'Website Option',
+                    'menu_title' => 'Website Option',
+                    'icon'       => 'ti-brush-alt',
+                    'capability' => '',
+                    'route'      => [
+                                       'slug' => '/aksara-post-type-option',
+                                       'args' => [
+                                                    'as' => 'aksara-post-type-option',
+                                                    'uses' => '\App\Modules\Plugins\PostType\Http\OptionController@index',
+                                                  ],
+                                       ]
+                    ];
+
+    add_admin_sub_menu_route('aksara-menu-options',$optionIndex);
+
+    $route = \App::make('route');
+
+    $optionSave = [
+             'slug' => '/aksara-post-type-option-save',
+             'method' => 'POST',
+             'args' => [
+                          'as' => 'aksara-post-type-option-save',
+                          'uses' => '\App\Modules\Plugins\PostType\Http\OptionController@save',
+                        ],
+             ];
+
+    $route->addRoute($optionSave);
 });

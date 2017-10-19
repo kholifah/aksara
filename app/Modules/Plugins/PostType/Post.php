@@ -249,6 +249,12 @@ class Post
 
     public function getCurrentPostType()
     {
+        $post = get_current_post();
+
+        if( @$post->id ) {
+            return $post->post_type;
+        }
+
         $routeName = \Request::route()->getName();
         // dd(strpos($routeName, 'admin.'));
 

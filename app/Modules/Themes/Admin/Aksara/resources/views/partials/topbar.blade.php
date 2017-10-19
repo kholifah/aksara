@@ -31,7 +31,7 @@
                 <li class="dropdown top-menu-item-xs">
                     <a href="#" class="dropdown-toggle profile" data-toggle="dropdown" aria-expanded="true">
                         <i class="fa fa-user m-r-5" aria-hidden="true"></i>
-                        <span class="name">Username</span>
+                        <span class="name">{{ \Auth::user()->name }}</span>
                     </a>
                     {!! render_admin_menu_toolbar_dropdown() !!}
                 </li>

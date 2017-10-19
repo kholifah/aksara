@@ -22,7 +22,7 @@
 		<li class="adminbar__dropdown adminbar__item">
 			<a href="#" class="adminbar__dropdown-toggle profile" data-toggle="dropdown" aria-expanded="true">
                 <i class="ti-user"></i>
-                <span class="name">Username</span>
+                <span class="name">{{ \Auth::user()->name }}</span>
 			</a>
             <ul class="adminbar__dropdown-menu">
             @foreach($adminMenus as $adminMenu)
@@ -31,7 +31,6 @@
                 @endforeach
             @endforeach
             </ul>
-
 		</li>
 	</ul>
 </div>
