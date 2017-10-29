@@ -1,4 +1,8 @@
 <?php
+require __DIR__.'/action-filter/table.php';
+require __DIR__.'/action-filter/query-filter.php';
+require __DIR__.'/action-filter/metabox.php';
+
 
 \Eventy::addAction('aksara.init', function () {
     $optionIndex = [
@@ -17,26 +21,23 @@
 
     add_admin_sub_menu_route('aksara-menu-options',$optionIndex);
 
-    $route = \App::make('route');
-
-    $optionSave = [
-     'slug' => '//aksara-multibas-option',
-     'method' => 'POST',
-     'args' => [
-                  'as' => 'aksara-multibas-option-save',
-                  'uses' => '\App\Modules\Plugins\AksaraMultiBas\Http\OptionController@save',
-                ],
-     ];
-
-    $route->addRoute($optionSave);
 },200);
 
+\Eventy::addAction('aksara.routes.admin',function(){
 
-// \Eventy::addAction('aksara.admin.footer', function () {
-//     // only inject JS in menu management
-//     if (\Request::route()->getName() != 'aksara-multibas-option') {
-//         return;
-//     }
-//
-//
-// });
+    \Route::post('/aksara-multibas-option',[
+                 'as' => 'aksara-multibas-option-save',
+                 'uses' => '\App\Modules\Plugins\AksaraMultiBas\Http\OptionController@save',
+               ]);
+
+    \Route::get('/aksara-generate-translation/{postId}/{lang}',[
+                 'as' => 'aksara-multibas-generate-translation',
+                 'uses' => '\App\Modules\Plugins\AksaraMultiBas\Http\TranslationController@generate',
+               ]);
+
+});
+
+\Eventy::addAction('aksara.post-type.post-controller.construct',function(){
+        aksara_admin_enqueue_style(url("assets/modules/Plugins/AksaraMultiBas/css/flag-icon.min.css"), "flag-icon" , 25, true);
+        aksara_admin_enqueue_style(url("assets/modules/Plugins/AksaraMultiBas/css/style.css"), "multibas" , 25, true);
+});

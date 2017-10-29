@@ -79,9 +79,11 @@
                 <tr>
                     @foreach ($cols as $colId => $colArgs)
                     <th class="{!! $colId !!} {!! @$colArgs['class']!!}"
-                        @if(@$colArgs['width'])
-                            {!! 'width="'.$colArgs['width'].'"'!!}
-                        @endif
+                        @foreach ($colArgs as $colAttributeName => $colAttributeValue)
+                            @if(!in_array($colAttributeName,['class','title']))
+                                {!! $colAttributeName.'="'.$colAttributeValue.'"' !!}
+                            @endif
+                        @endforeach
                         >
                         {!! $colArgs['title'] !!}
                     </th>

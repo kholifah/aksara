@@ -2,7 +2,7 @@
 
 \Eventy::addFilter('aksara.post-type.front-end.post-excerpt',function($content){
 
-    $maxLength = 300;
+    $maxLength = 250;
     $startPos = 0;
 
     $content = strip_tags($content);

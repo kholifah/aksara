@@ -1,6 +1,6 @@
 <?php
 // modify post ordering
-\Eventy::addAction('aksara.init', function () {
+\Eventy::addAction('aksara.init-completed', function () {
     $postTypes = \Config::get('aksara.post-type.post-types');
     $postTypes = array_keys($postTypes);
 
