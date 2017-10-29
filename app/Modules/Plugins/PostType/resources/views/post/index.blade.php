@@ -17,7 +17,6 @@
 </div>
 <!-- /.content__head -->
 <div class="content__body">
-
     <ul class="trash-sistem">
         <li>
             <a href="{{ route('admin.'.get_current_post_type_args('slug').'.index') }}" <?php if ($viewData['post_status'] == '') echo 'class="current"' ?> >All <span class="count">({{ $viewData['count_post']['all'] }})</span></a> |

@@ -1,5 +1,5 @@
 <?php
-\Eventy::addAction('aksara.init-completed', function () {
+\Eventy::addAction('aksara.init', function () {
     // Register Product
     $argsPost = [
     'label' => [
@@ -20,7 +20,7 @@
     register_taxonomy('product-category', ['product'], $argsCategory);
 
     add_post_type_to_taxonomy('category', 'product');
-});
+},100);
 
 \Eventy::addAction('aksara.init', function () {
 

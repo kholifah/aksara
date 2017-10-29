@@ -39,7 +39,7 @@
     }
     // File JS / CSS masuk sini
     // @nanti dipindah ke resource ?>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.4.4/vue.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.4.4/vue.min.js"></script>
 
     <?php
     echo view('plugin:menu::script')->render();

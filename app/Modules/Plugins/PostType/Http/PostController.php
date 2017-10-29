@@ -9,6 +9,7 @@ use App\Modules\Plugins\PostType\Model\Term;
 use App\Modules\Plugins\PostType\Model\Post;
 use Illuminate\Support\Facades\File;
 use App\Modules\Plugins\PostType\Repository\PostRepositoryInterface;
+use App\Modules\Plugins\PostType\Repository\AksaraQuery;
 
 class PostController extends Controller
 {
@@ -19,7 +20,9 @@ class PostController extends Controller
 
     public function index(Request $request)
     {
-        $posts = Post::setPostType();
+
+        $aksaraQueryArgs = [];
+        $aksaraQueryArgs['post_type'] = get_current_post_type();
 
         //@TODO dipindah ke controller untuk quick edit, gaboleh di index
         if ($request->get('bapply')) {
@@ -54,14 +57,19 @@ class PostController extends Controller
             $this->destroy_all();
         }
 
-        $preGetPost = \Eventy::filter('aksara.post-type.'.get_current_post_type().'.index.pre-get-post', ['posts'=>$posts,'viewData'=>[]]);
 
-        $posts = $preGetPost['posts'];
-        $viewData = $preGetPost['viewData'];
+        // Generate and filter query
+        $aksaraQueryArgs = \Eventy::filter('aksara.post-type.'.get_current_post_type().'.index.query-args', $aksaraQueryArgs);
+        $aksaraQuery = new AksaraQuery($aksaraQueryArgs);
+        $aksaraQuery = \Eventy::filter('aksara.post-type.'.get_current_post_type().'.index.query', $aksaraQuery);
+        $posts = $aksaraQuery->paginate(10);
 
-        // Filter untuk manipulasi query
-        $posts = $posts->select('posts.*')->paginate(10);
         $taxonomies = get_taxonomies(get_current_post_type());
+
+        // Data
+        $data = \Eventy::filter('aksara.post-type.'.get_current_post_type().'.index.data', ['posts'=>$posts,'viewData'=>[]]);
+        $posts = $data['posts'];
+        $viewData = $data['viewData'];
 
         // Table Column
         $cols = \Eventy::filter('aksara.post-type.'.get_current_post_type().'.index.table.column', [], get_current_post_type());
@@ -243,3 +251,4 @@ class PostController extends Controller
         return redirect()->route('admin.'.get_current_post_type_args('route').'.index');
     }
 }
+                            

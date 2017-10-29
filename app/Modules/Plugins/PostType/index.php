@@ -82,9 +82,9 @@ require __DIR__.'/vendor/autoload.php';
     $post->registerTaxonomy('tag', ['post'], $argsTag);
 
     register_image_size('thumbnail',500,500,true,false);
-    register_image_size('small',0,500);
-    register_image_size('medium',0,900);
-    register_image_size('large',0,1400);
+    register_image_size('small',0,300);
+    register_image_size('medium',0,500);
+    register_image_size('large',0,900);
 
 });
 

@@ -108,3 +108,9 @@ function array_delete_recursive(array $array, callable $callback)
     }
     return $array;
 }
+
+function get_country_code()
+{
+    $countries = file_get_contents(app_path().'/Aksara/Lib/locale_lang_flag.json');
+    return collect(json_decode($countries,true));
+}

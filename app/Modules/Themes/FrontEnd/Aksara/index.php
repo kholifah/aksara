@@ -42,7 +42,7 @@
     // register_image_size('thumbnail-2',600,600,false);
     // register_image_size('large',1200,900,true);
     // register_image_size('mashead',0,900,true);
-    register_image_size('masthead',0,500);
+    register_image_size('masthead',0,600);
 
     // Enqueue Style
     aksara_enqueue_style(url("assets/modules/FrontEnd/Aksara/vendor/bootstrap/css/bootstrap.min.css"));

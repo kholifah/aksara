@@ -5,6 +5,7 @@ use App\Modules\Plugins\PostType\Model\Post as Post;
 class AksaraQuery
 {
     private $args = [];
+    private $queries = [];
 
     public function __construct($args=[])
     {
@@ -223,8 +224,21 @@ class AksaraQuery
         return $post;
     }
 
-    function paginate() {
-        return $this->getQuery()->paginate($this->args['post_per_page']);
+    function addQuery( $query )
+    {
+        if( is_callable($query) ) {
+            array_push($this->queries,$query);
+        }
     }
 
+    function paginate()
+    {
+        $query = $this->getQuery();
+
+        foreach ( $this->queries as $additionalQuery) {
+            $query = call_user_func( $additionalQuery , $query );
+        }
+
+        return $query->paginate($this->args['post_per_page']);
+    }
 }

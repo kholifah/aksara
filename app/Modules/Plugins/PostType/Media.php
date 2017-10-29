@@ -149,14 +149,14 @@ class Media
             }
             elseif( $imageSizes[$imageSizeId]['crop'] == true ) {
                 $image->fit($imageSizes[$imageSizeId]['width'], $imageSizes[$imageSizeId]['height'],function($constraint) {
-                    $constraint->aspectRatio();
+                    // $constraint->aspectRatio();
                     $constraint->upsize();
                 });
             }
             else {
                 $image->crop($imageSizes[$imageSizeId]['width'], $imageSizes[$imageSizeId]['height'],function($contsraint) {
                     $constraint->aspectRatio();
-                    $constraint->upsize();
+                    // $constraint->upsize();
                 });
             }
 

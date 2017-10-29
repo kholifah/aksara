@@ -1,6 +1,5 @@
 <?php
 namespace App\Aksara\Core;
-
 use \App\Aksara\Lib\BootstrapThreePresenter;
 
 class CPaginate extends BootstrapThreePresenter

@@ -1,15 +1,17 @@
 <?php
 // modify post ordering
-\Eventy::addAction('aksara.init', function () {
+\Eventy::addAction('aksara.init-completed', function () {
     $postTypes = \Config::get('aksara.post-type.post-types');
     $postTypes = array_keys($postTypes);
 
     foreach ($postTypes as $postType) {
-        \Eventy::addfilter('aksara.post-type.'.$postType.'.index.pre-get-post', 'post_type_index_filter_ordering');
-        \Eventy::addfilter('aksara.post-type.'.$postType.'.index.pre-get-post', 'post_type_index_filter_search');
-        \Eventy::addfilter('aksara.post-type.'.$postType.'.index.pre-get-post', 'post_type_index_filter_filter_taxonomy');
-        \Eventy::addfilter('aksara.post-type.'.$postType.'.index.pre-get-post', 'post_type_index_filter_post_status', 1, 80);
-        \Eventy::addfilter('aksara.post-type.'.$postType.'.index.pre-get-post', 'post_type_index_filter_total', 1, 90);
+        \Eventy::addfilter('aksara.post-type.'.$postType.'.index.query', 'post_type_index_filter_ordering');
+        \Eventy::addfilter('aksara.post-type.'.$postType.'.index.data', 'post_type_index_filter_search_data');
+        \Eventy::addfilter('aksara.post-type.'.$postType.'.index.query', 'post_type_index_filter_search');
+        \Eventy::addfilter('aksara.post-type.'.$postType.'.index.query', 'post_type_index_filter_filter_taxonomy');
+        \Eventy::addfilter('aksara.post-type.'.$postType.'.index.query', 'post_type_index_filter_post_status', 1, 80);
+        \Eventy::addfilter('aksara.post-type.'.$postType.'.index.data', 'post_type_index_filter_post_status_data', 1, 80);
+        \Eventy::addfilter('aksara.post-type.'.$postType.'.index.data', 'post_type_index_filter_total', 1, 90);
     }
 }, 90);
 
@@ -24,27 +26,27 @@ function post_type_index_filter_total($args)
     return compact('posts', 'viewData');
 }
 
-function post_type_index_filter_ordering($args)
+function post_type_index_filter_ordering($posts)
 {
-    extract($args);
-
     if (get_current_post_type() == 'page') {
-        $posts = $posts->orderBy('post_title', 'asc');
+        $posts->addQuery(function($query){
+            return  $query->orderBy('post_title', 'asc');
+        });
     } else {
-        $posts = $posts->orderBy('post_date', 'desc');
+        $posts->addQuery(function($query){
+            return  $query->orderBy('post_date', 'desc');
+        });
     }
 
-    return compact('posts', 'viewData');
+    return $posts;
 }
 
-function post_type_index_filter_search($args)
+function post_type_index_filter_search_data($args)
 {
     extract($args);
-    // $posts = $posts->where('post_type', $taxo);
 
     if (\Request::input('search')) {
         $viewData['search'] = \Request::input('search');
-        $posts = $posts->where('post_title', 'LIKE', '%'.$viewData['search'].'%');
     } else {
         $viewData['search'] = '';
     }
@@ -52,7 +54,18 @@ function post_type_index_filter_search($args)
     return compact('posts', 'viewData');
 }
 
-function post_type_index_filter_post_status($args)
+function post_type_index_filter_search($posts)
+{
+    if (\Request::input('search')) {
+        $posts->addQuery(function($query){
+            return  $query->where('post_title', 'LIKE', '%'.\Request::input('search').'%');
+        });
+    }
+
+    return $posts;
+}
+
+function post_type_index_filter_post_status_data($args)
 {
     extract($args);
 
@@ -66,22 +79,32 @@ function post_type_index_filter_post_status($args)
         'trash' => $postRepository->get_total_trash($posts),
     ];
 
-
     if (\Request::input('post_status')) {
         $viewData['post_status'] = \Request::input('post_status');
-        $posts = $posts->where('post_status', $viewData['post_status']);
     } else {
         $viewData['post_status'] = '';
-        $posts = $posts->where('post_status', '<>', 'trash');
     }
 
     return compact('posts', 'viewData');
 }
 
-function post_type_index_filter_filter_taxonomy($args)
+function post_type_index_filter_post_status($posts)
 {
-    extract($args);
+    if (\Request::input('post_status')) {
+        $posts->addQuery(function($query){
+            return $query->where('post_status', $viewData['post_status']);
+        });
+    } else {
+        $posts->addQuery(function($query){
+            return  $query->where('post_status', '<>', 'trash');
+        });
+    }
 
+    return $posts;
+}
+
+function post_type_index_filter_filter_taxonomy($posts)
+{
     // get all taxonomy for post type
     $taxonomies = get_taxonomies(get_current_post_type());
     foreach ($taxonomies as $taxonomy) {
@@ -97,10 +120,13 @@ function post_type_index_filter_filter_taxonomy($args)
             continue;
         }
 
-        $posts = $posts->whereHas('term_relations', function ($query) use ($term) {
-            $query->where('term_id', '=', $term->id);
+        $posts->addQuery(function($query) use ($term) {
+            return $query->whereHas('term_relations', function ($query) use ($term) {
+                $query->where('term_id', '=', $term->id);
+            });
         });
+
     }
 
-    return compact('posts', 'viewData');
+    return $posts;
 }

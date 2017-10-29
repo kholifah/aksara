@@ -13,9 +13,12 @@
 			<a href="{{url('/admin')}}"><i class="ti-dashboard"></i> <span> Dashboard </span></a>
 		</li>
         @if( is_single() )
-		<li class="adminbar__item">
-			<a href="{{ route('admin.'.get_current_post_type_args('route').'.edit', $post->id)  }}"><i class="ti-pencil"></i> <span> Edit Post </span></a>
-		</li>
+				<li class="adminbar__item">
+						<a href="{{ route('admin.'.get_current_post_type_args('route').'.edit', $post->id)  }}">
+								<i class="ti-pencil"></i>
+								<span>Edit {{ get_current_post_type_args('label.name') }}</span>
+						</a>
+				</li>
         @endif
 	</ul>
 	<ul class="adminbar__secondary">

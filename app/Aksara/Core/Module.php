@@ -81,7 +81,6 @@ class Module
 
         // register index
         if (file_exists($moduleIndex)) {
-            require_once($moduleIndex);
 
             if (file_exists($moduleHelper)) {
                 require_once($moduleHelper);
@@ -106,6 +105,8 @@ class Module
                     $migrator->path($migrationFolder);
                 });
             }
+
+            require_once($moduleIndex);
 
             return true;
         }

@@ -109,11 +109,12 @@ class FrontEndController extends Controller
                 $aksaraQueryArgs['query'] = \Request::input('query');
         }
 
-        $aksaraQueryArgs = \Eventy::filter('aksara.post-type.front-end.template.query-args',$aksaraQueryArgs);
+        $aksaraQueryArgs = \Eventy::filter('aksara.post-type.front-end.template.query-args', $aksaraQueryArgs);
 
         if( is_array($aksaraQueryArgs) ) {
 
             $aksaraQuery = new AksaraQuery($aksaraQueryArgs);
+            $aksaraQuery = \Eventy::filter('aksara.post-type.front-end.template.query', $aksaraQuery);
             set_current_aksara_query($aksaraQuery);
 
             $data['posts'] = $aksaraQuery->paginate();
