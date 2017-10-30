@@ -36,8 +36,8 @@ class FrontEnd
 
             \Route::get( '/', ['as' => 'aksara.post-type.front-end.home.', 'uses' =>'\App\Modules\Plugins\PostType\Http\FrontEndController@serve']);
 
-
-            \Route::get( '/{slug}', ['as' => 'aksara.post-type.front-end.single.post', 'uses' =>'\App\Modules\Plugins\PostType\Http\FrontEndController@serve']);
+            // Catch All Controller
+            \Route::get( '{slug}', ['as' => 'aksara.post-type.front-end.single.post', 'uses' =>'\App\Modules\Plugins\PostType\Http\FrontEndController@serve']);
 
         },30);
     }

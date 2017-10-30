@@ -16,9 +16,10 @@ function render_metabox_multibas($post)
     $languages = get_registered_languages();
 
     if( get_post_meta($post->id,'is_translation') ) {
-        $originalPost = \App\Modules\Plugins\PostType\Model\PostMeta::where('meta_key','like','multibas-translation-%')->first();
+        $originalPost = \App\Modules\Plugins\PostType\Model\PostMeta::where('meta_key','like','multibas-translation-%')
+                                                                        ->where('post_id','=',$post->id)
+                                                                        ->first();
         $post = \App\Modules\Plugins\PostType\Model\Post::where('id',$originalPost->meta_value)->first();
-
     }
 
     foreach ( $languages as $language ) {

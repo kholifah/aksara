@@ -4,7 +4,7 @@ use App\Modules\Plugins\PostType\Model\Post;
 use App\Modules\Plugins\AksaraMultiBas\TranslationEngine;
 
 function get_registered_languages() {
-    return  collect(json_decode(get_options('multibas_countries', []),true));
+    return collect(json_decode(get_options('multibas_countries', "[]"),true));
 }
 
 function get_translated_post($post,$lang) {

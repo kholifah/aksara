@@ -49,6 +49,13 @@
                                     {!! Form::text('options[tagline]', @$site_options['tagline'], ['class'=>'form-control', 'placeholder' => 'Tagline Website']) !!}
                                 </div>
                             </div>
+
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-xs-4 col-xxs-12 col-form-label">Bahasa</label>
+                                <div class="col-sm-10 col-xs-8 col-xxs-12">
+                                    {!! Form::select('options[language]',$lang_options, @$site_options['language'], ['class'=>'form-control']) !!}
+                                </div>
+                            </div>
                         </div>
 
                         <div class="tab-pane__footer">
