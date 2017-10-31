@@ -22,14 +22,14 @@ function get_post_excerpt($post)
 
 function get_post_permalink($post)
 {
-    $postClass = \App::make('App\Modules\Plugins\PostType\Post');
-    return $postClass->getPermalink($post);
+    $permalink = \App::make('App\Modules\Plugins\PostType\Permalink');
+    return $permalink->getPermalink($post);
 }
 
-function get_post_permalink_structure($post)
+function get_post_permalink_format($post)
 {
-    $postClass = \App::make('App\Modules\Plugins\PostType\Post');
-    return $postClass->getPermalinkStructure($post);
+    $permalink = \App::make('App\Modules\Plugins\PostType\Permalink');
+    return $permalink->getPostPermalinkFormat($post);
 }
 
 /**

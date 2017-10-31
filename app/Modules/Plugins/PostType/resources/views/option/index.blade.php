@@ -57,6 +57,38 @@
                                     {!! Form::select('options[front_page]', $pages, @$options['front_page'], ['class'=>'form-control']) !!}
                                 </div>
                             </div>
+                            <h2 class="border-title">Permalink</h2>
+                            <div class="form-group row">
+                                <p>Permalink Options, choose one of the options</p>
+                                <table class='table table-bordered table-striped'>
+                                    <tr>
+                                        <td>{post-type}/{slug}</td>
+                                        <td>Default permalink for custom post type</td>
+                                    </tr>
+                                    <tr>
+                                        <td>{year}/{month}/{slug}</td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>{taxonomy-name[name]}/{term-name}/{slug}</td>
+                                        <td>replace [name] with the taxonomy name</td>
+                                    </tr>
+                                    <tr>
+                                        <td>{slug}</td>
+                                        <td>Default for post and page</td>
+                                    </tr>
+                                </table>
+                            </div>
+                            @foreach ($postTypes as $postType => $args)
+                            @if( get_post_type_args('publicly_queryable',$postType) )
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-xs-4 col-xxs-12 col-form-label">{{ get_post_type_args('label.name',$postType) }}</label>
+                                <div class="col-sm-10 col-xs-8 col-xxs-12">
+                                    {!! Form::text("options[permalink][{$postType}]",$permalink->getPostPermalinkFormat($postType), ['class'=>'form-control']) !!}
+                                </div>
+                            </div>
+                            @endif
+                            @endforeach
                             <h2 class="border-title">SEO</h2>
                             <div class="form-group row">
                                 <label class="col-sm-2 col-xs-4 col-xxs-12 col-form-label">Custom meta header</label>

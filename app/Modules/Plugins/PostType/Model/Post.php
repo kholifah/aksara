@@ -8,6 +8,19 @@ class Post extends Model
     protected $table = 'posts';
     protected $fillable = ['post_type', 'post_author', 'post_date', 'post_modified', 'post_status', 'post_name', 'post_title', 'post_slug', 'post_content', 'post_image'];
     public $timestamps = false;
+    protected $dates = [
+        'post_date',
+        'post_modified'
+    ];
+
+    public function __construct(array $attributes = array())
+{
+    $this->setRawAttributes([
+        'post_date'=> \Carbon\Carbon::now(),
+        'post_modified'=> \Carbon\Carbon::now()
+    ], true);
+    parent::__construct($attributes);
+}
 
     public function validate($data)
     {

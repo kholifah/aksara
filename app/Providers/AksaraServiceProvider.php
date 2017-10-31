@@ -49,7 +49,6 @@ class AksaraServiceProvider extends ServiceProvider
         });
 
         $argsGroupFrontEnd = \Eventy::filter('aksara.middleware.front_end', ['middleware' => ['web','csrf']]);
-
         \Route::group($argsGroupFrontEnd, function () {
             \Eventy::action('aksara.routes.front_end');
         });

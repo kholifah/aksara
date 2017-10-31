@@ -32,6 +32,10 @@ require __DIR__.'/vendor/autoload.php';
     return new \App\Modules\Plugins\PostType\FrontEnd();
 });
 
+\App::singleton('App\Modules\Plugins\PostType\Permalink', function () {
+    return new \App\Modules\Plugins\PostType\Permalink();
+});
+
 \App::bind('App\Modules\Plugins\PostType\Repository\PostRepositoryInterface', 'App\Modules\Plugins\PostType\Repository\PostRepository');
 \App::bind('App\Modules\Plugins\PostType\Repository\TaxonomyRepositoryInterface', 'App\Modules\Plugins\PostType\Repository\TaxonomyRepository');
 
@@ -58,6 +62,7 @@ require __DIR__.'/vendor/autoload.php';
     'label' => [
       'name' => 'Page'
     ],
+    'has_archive'=>false,
     'route' => 'page',
     'icon' => 'ti-book'
   ];
@@ -143,4 +148,9 @@ $postTypeFrontEnd->init();
              ];
 
     $route->addRoute($optionSave);
+});
+
+\Eventy::addAction('aksara.routes.before',function(){
+    $permalink = \App::make('App\Modules\Plugins\PostType\Permalink');
+    $permalink->init();
 });
