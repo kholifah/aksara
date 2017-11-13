@@ -22,14 +22,14 @@ function get_post_excerpt($post)
 
 function get_post_permalink($post)
 {
-    $postClass = \App::make('App\Modules\Plugins\PostType\Post');
-    return $postClass->getPermalink($post);
+    $permalink = \App::make('App\Modules\Plugins\PostType\Permalink');
+    return $permalink->getPermalink($post);
 }
 
-function get_post_permalink_structure($post)
+function get_post_permalink_format($post)
 {
-    $postClass = \App::make('App\Modules\Plugins\PostType\Post');
-    return $postClass->getPermalinkStructure($post);
+    $permalink = \App::make('App\Modules\Plugins\PostType\Permalink');
+    return $permalink->getPostPermalinkFormat($post);
 }
 
 /**
@@ -129,10 +129,10 @@ function get_post_meta($postID = false, $key = false, $default = false)
 }
 
 // Function for setting post meta data
-function set_post_meta($postID = false, $key = false, $value = false)
+function set_post_meta($postID = false, $key = false, $value = false, $serialize = false)
 {
     // To function delete_options in PostMeta model
-    $post_meta = PostMeta::set_post_meta($postID, $key, $value);
+    $post_meta = PostMeta::set_post_meta($postID, $key, $value, $serialize);
     return $post_meta;
 }
 

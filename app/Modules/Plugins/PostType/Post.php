@@ -171,17 +171,9 @@ class Post
             $registeredTaxonomy[$taxonomy] = [];
         }
 
+        $args = $this->parseTaxonomyDefaultArgs($taxonomy, $args);
+
         $registeredTaxonomy[$taxonomy] = $args;
-
-        if (!isset($registeredTaxonomy[$taxonomy]['post_type'])) {
-            $registeredTaxonomy[$taxonomy]['post_type'] = [];
-        }
-
-        if (!isset($registeredTaxonomy[$taxonomy]['slug'])) {
-            $registeredTaxonomy[$taxonomy]['slug'] = $taxonomy;
-        }
-
-        $registeredTaxonomy[$taxonomy]['id'] = $taxonomy;
 
         // register post type to taxonomy
         foreach ($postTypes as $postType) {
@@ -194,6 +186,39 @@ class Post
         foreach ($postTypes as $postType) {
             $menu->addSubMenuPage('admin.'.$postType.'.index', $args['label']['name'], $args['label']['name'], 'admin.'.$postType.'.'.$taxonomy.'.index');
         }
+    }
+
+
+    public function parseTaxonomyDefaultArgs($taxonomy, $args)
+    {
+        if (!isset($args['label'])) {
+            throw new Exception('Missing label argument for registering taxonomy '.$taxonomy);
+        }
+
+        if (!isset($args['capability'])) {
+            $args['capability'] = '';
+        }
+        //@TODO rename route to slug
+
+        if (!isset($args['has_archive'])) {
+            $args['has_archive'] = true;
+        }
+
+        if (!isset($args['priority']) || !is_int($args['priority'])) {
+            $args['priority'] = 20;
+        }
+
+        if (!isset($args['slug']) ) {
+            $args['slug'] = $taxonomy;
+        }
+
+        if (!isset($args['post_type'])) {
+            $args['post_type'] = [];
+        }
+
+        $args['id'] = $taxonomy;
+
+        return $args;
     }
 
     public function addPostTypeToTaxonomy($taxonomy, $postType)
@@ -222,30 +247,31 @@ class Post
         }
     }
 
-    public function getPermalink($post)
-    {
-        if(!$post)
-                return false;
-        $postPermalink = $this->getPermalinkStructure($post).'/'.$post->post_slug;
-        return \Eventy::filter('aksara.post-type.front-end.post-permalink',$postPermalink,$post);
-    }
-
-    public function getPermalinkStructure($post)
-    {
-        if(!$post)
-            return false;
-
-        if( $post->post_type == 'post' || $post->post_type == 'page' ) {
-            $permalinkStructure =  url('');
-        }
-        else {
-            $postTypeSlug = get_post_type_args('slug',$post->post_type);
-
-            $permalinkStructure =  url('/'.$postTypeSlug);
-        }
-
-        return \Eventy::filter('aksara.post-type.front-end.post-permalink-structure',$permalinkStructure,$post);
-    }
+    // public function getPermalink($post)
+    // {
+    //     if(!$post) {
+    //         return false;
+    //     }
+    //     $postPermalink = $this->getPermalinkStructure($post).'/'.$post->post_slug;
+    //     return \Eventy::filter('aksara.post-type.front-end.post-permalink',$postPermalink,$post);
+    // }
+    //
+    // public function getPermalinkStructure($post)
+    // {
+    //     if(!$post)
+    //         return false;
+    //
+    //     if( $post->post_type == 'post' || $post->post_type == 'page' ) {
+    //         $permalinkStructure =  url('');
+    //     }
+    //     else {
+    //         $postTypeSlug = get_post_type_args('slug',$post->post_type);
+    //
+    //         $permalinkStructure =  url('/'.$postTypeSlug);
+    //     }
+    //
+    //     return \Eventy::filter('aksara.post-type.front-end.post-permalink-structure',$permalinkStructure,$post);
+    // }
 
     public function getCurrentPostType()
     {

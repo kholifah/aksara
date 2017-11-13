@@ -15,6 +15,7 @@ class PostController extends Controller
 {
     public function __construct(PostRepositoryInterface $postRepository)
     {
+        \Eventy::action('aksara.post-type.post-controller.construct');
         $this->postRepository = $postRepository;
     }
 
@@ -251,4 +252,3 @@ class PostController extends Controller
         return redirect()->route('admin.'.get_current_post_type_args('route').'.index');
     }
 }
-                            

@@ -19,7 +19,7 @@ class OptionController extends Controller
         aksara_admin_enqueue_script(url("assets/modules/Plugins/AksaraMultiBas/js/script.js"), "multibas-script" , 25, true);
         aksara_admin_enqueue_style(url("assets/modules/Plugins/AksaraMultiBas/css/flag-icon.min.css"), "flag-icon" , 25, true);
 
-        $countries = get_options('multibas_countries', []);
+        $countries = get_registered_languages();
         $lang_options = get_country_code();
         $lang_options =  json_encode($lang_options);
 

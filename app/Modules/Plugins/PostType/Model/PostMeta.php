@@ -113,7 +113,7 @@ class PostMeta extends Model
     }
 
     // Function for setting post meta data
-    public static function set_post_meta($postID = false, $key = false, $value = false)
+    public static function set_post_meta($postID = false, $key = false, $value = false, $serialize = false)
     {
         // Checking post_id data can't be empty
         if (!$postID) {
@@ -136,13 +136,21 @@ class PostMeta extends Model
         $data = '';
 
         // Checking value data to unserialize or change array data to string data
-        $dataSerialize = @serialize($value);
+        if( is_object($value) || is_array($value) ) {
 
-        if ($dataSerialize !== false) {
-            $data = $dataSerialize;
-        } else {
+            $dataSerialize = @serialize($value);
+
+            if ($dataSerialize !== false) {
+                $data = $dataSerialize;
+            } else {
+                $data = $value;
+            }
+        }
+        else {
             $data = $value;
         }
+
+
 
         $save = [
             'meta_key' => $key,

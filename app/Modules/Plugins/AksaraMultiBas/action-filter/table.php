@@ -41,11 +41,17 @@ function multibas_row($colsId, $post) {
             if( $language['default'] == true) {
                 echo '<td class="multibas-column" ><span class="glyphicon glyphicon-ok" ></span></td>';
             }
-            elseif( get_translated_post($post,$language['language_code']) ) {
-                echo '<td class="multibas-column"><a href="#" class="glyphicon glyphicon-pencil" ></a></td>';
-            }
             else {
-                echo '<td class="multibas-column"><a class="glyphicon glyphicon-plus" href="#"></a></td>';
+                 $translatedPost = get_translated_post($post,$language['language_code']);
+
+
+                 if( $translatedPost ) {
+                     echo '<td class="multibas-column"><a href="'.route('admin.'.get_current_post_type_args('route').'.edit', $translatedPost->id).'" class="glyphicon glyphicon-pencil" ></a></td>';
+                 }
+                 else {
+                     echo '<td class="multibas-column"><a class="glyphicon glyphicon-plus" href="'.route('aksara-multibas-generate-translation',['postId'=>$post->id,'lang'=>$lang]).'"></a></td>';
+                 }
+
             }
         }
     }

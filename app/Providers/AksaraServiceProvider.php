@@ -36,6 +36,10 @@ class AksaraServiceProvider extends ServiceProvider
         \Eventy::action('aksara.init');
         \Eventy::action('aksara.init-completed');
 
+        if(is_admin()) {
+            \Eventy::action('aksara.admin.init-completed');
+        }
+
         \Eventy::action('aksara.routes.before');
 
         $argsGroupAdmin = \Eventy::filter('aksara.middleware.admin', ['prefix' => 'admin', 'middleware' => ['web','csrf', 'auth']]);
@@ -45,7 +49,6 @@ class AksaraServiceProvider extends ServiceProvider
         });
 
         $argsGroupFrontEnd = \Eventy::filter('aksara.middleware.front_end', ['middleware' => ['web','csrf']]);
-
         \Route::group($argsGroupFrontEnd, function () {
             \Eventy::action('aksara.routes.front_end');
         });
