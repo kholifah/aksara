@@ -48,41 +48,41 @@ require __DIR__.'/vendor/autoload.php';
 
     // Register Post
     $argsPost = [
-    'label' => [
-      'name' => 'Post'
-    ],
-    'route' => 'post',
-    'icon' => 'ti-write'
-  ];
+        'label' => [
+            'name' => 'Post'
+        ],
+        'route' => 'post',
+        'icon' => 'ti-write'
+    ];
 
     $post->registerPostType('post', $argsPost);
 
     // Register Page
     $argsPage = [
-    'label' => [
-      'name' => 'Page'
-    ],
-    'has_archive'=>false,
-    'route' => 'page',
-    'icon' => 'ti-book'
-  ];
+        'label' => [
+            'name' => 'Page'
+        ],
+        'has_archive'=>false,
+        'route' => 'page',
+        'icon' => 'ti-book'
+    ];
 
     $post->registerPostType('page', $argsPage);
 
     // Register Taxonomy
     $argsCategory = [
-    'label' => [
-      'name' => 'Category'
-    ],
-  ];
+        'label' => [
+            'name' => 'Category'
+        ],
+    ];
 
     $post->registerTaxonomy('category', ['post'], $argsCategory);
 
     $argsTag = [
-    'label' => [
-      'name' => 'Tag'
-    ],
-  ];
+        'label' => [
+            'name' => 'Tag'
+        ],
+    ];
 
     $post->registerTaxonomy('tag', ['post'], $argsTag);
 
@@ -121,31 +121,31 @@ $postTypeFrontEnd->init();
 
 \Eventy::addAction('aksara.init-completed', function () {
     $optionIndex = [
-                    'page_title' => 'Website Option',
-                    'menu_title' => 'Website Option',
-                    'icon'       => 'ti-brush-alt',
-                    'capability' => '',
-                    'route'      => [
-                                       'slug' => '/aksara-post-type-option',
-                                       'args' => [
-                                                    'as' => 'aksara-post-type-option',
-                                                    'uses' => '\App\Modules\Plugins\PostType\Http\OptionController@index',
-                                                  ],
-                                       ]
-                    ];
+        'page_title' => 'Website Option',
+        'menu_title' => 'Website Option',
+        'icon'       => 'ti-brush-alt',
+        'capability' => '',
+        'route'      => [
+            'slug' => '/aksara-post-type-option',
+            'args' => [
+                'as' => 'aksara-post-type-option',
+                'uses' => '\App\Modules\Plugins\PostType\Http\OptionController@index',
+            ],
+        ]
+    ];
 
     add_admin_sub_menu_route('aksara-menu-options',$optionIndex);
 
     $route = \App::make('route');
 
     $optionSave = [
-             'slug' => '/aksara-post-type-option-save',
-             'method' => 'POST',
-             'args' => [
-                          'as' => 'aksara-post-type-option-save',
-                          'uses' => '\App\Modules\Plugins\PostType\Http\OptionController@save',
-                        ],
-             ];
+        'slug' => '/aksara-post-type-option-save',
+        'method' => 'POST',
+        'args' => [
+            'as' => 'aksara-post-type-option-save',
+            'uses' => '\App\Modules\Plugins\PostType\Http\OptionController@save',
+        ],
+    ];
 
     $route->addRoute($optionSave);
 });
