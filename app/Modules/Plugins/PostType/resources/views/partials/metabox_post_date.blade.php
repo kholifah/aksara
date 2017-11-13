@@ -10,9 +10,4 @@
             </div>
         </div>
     </div>
-    {{--<div class="card-box__footer">--}}
-        {{--<div class="submit-row clearfix">--}}
-            {{--<input type="submit" class="btn btn-md btn-primary alignright" value="Simpan">--}}
-        {{--</div>--}}
-    {{--</div>--}}
 </div>
