@@ -35,10 +35,10 @@ class MetaBox
         }
 
         $args = [
-         'callbackRender' => $callbackRender,
-         'callbackSave' => $callbackSave,
-         'id' => $id,
-      ];
+            'callbackRender' => $callbackRender,
+            'callbackSave' => $callbackSave,
+            'id' => $id,
+        ];
 
         array_push($metaboxes[$postType][$location][$priority], $args);
 

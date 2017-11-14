@@ -15,6 +15,14 @@
         }
 
         add_meta_box('save-post', $postType, 'render_metabox_save_post', false, 'metabox-sidebar', 10);
+        add_meta_box(
+            'post-date-metabox',
+            $postType,
+            'App\Modules\Plugins\PostType\PostDateMetaBox@render',
+            'App\Modules\Plugins\PostType\PostDateMetaBox@save',
+            'metabox-sidebar',
+            10
+        );
 
         if (in_array('thumbnail', $supports)) {
             add_meta_box('thumbnail', $postType, 'render_metabox_thumbnail', 'save_metabox_thumbnail', 'metabox-sidebar', 10);
