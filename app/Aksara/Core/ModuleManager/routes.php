@@ -4,7 +4,7 @@
     $route = \App::make('route');
 
     $moduleManagerSave = [
-             'slug' => '/aksara-module-manager/activate/{slug}',
+             'slug' => '/aksara-module-manager/activate/{type}/{slug}',
              'method' => 'POST',
              'args' => [
                           'as' => 'module-manager.activate',
@@ -15,7 +15,7 @@
     $route->addRoute($moduleManagerSave);
 
     $moduleManagerSave = [
-             'slug' => '/aksara-module-manager/deactivate/{slug}',
+             'slug' => '/aksara-module-manager/deactivate/{type}/{slug}',
              'method' => 'POST',
              'args' => [
                           'as' => 'module-manager.deactivate',
@@ -26,7 +26,7 @@
     $route->addRoute($moduleManagerSave);
 
     $moduleManagerInfo = [
-             'slug' => '/aksara-module-manager/activate/{slug}',
+             'slug' => '/aksara-module-manager/activate/{type}/{slug}',
              'method' => 'GET',
              'args' => [
                           'as' => 'module-manager.activation-info',
