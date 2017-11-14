@@ -16,17 +16,17 @@ class ModuleManagerController extends Controller
         return view('core:module-manager::index', $param)->render();
     }
 
-    public function activate(Request $request, $slug)
+    public function activate($type, $slug)
     {
         $module = \App::make('module');
 
-        $module->initActivation($slug);
+        $module->initActivation($slug,$type);
 
-        return redirect()->route('module-manager.activation-info', ['slug'=>$slug]);
+        return redirect()->route('module-manager.activation-info', ['slug'=>$slug,'type'=>$type]);
     }
 
     // Test plugin activation and admin rendering
-    public function activationInfo(Request $reqeuest, $slug)
+    public function activationInfo($type, $slug)
     {
         $activatedModule = \get_options('module_activation', false);
 
@@ -42,11 +42,11 @@ class ModuleManagerController extends Controller
         return view('core:module-manager::activation-info', compact('activatedModule'))->render();
     }
 
-    public function deactivate($slug)
+    public function deactivate($type,$slug)
     {
         $module = \App::make('module');
 
-        $module->initDeactivation($slug);
+        $module->initDeactivation($slug, $type);
 
         return redirect()->route('module-manager.index');
     }

@@ -19,7 +19,6 @@ class Module
             if (!$this->getModuleStatus($type, $moduleName)) {
                 continue;
             }
-
             $this->loadModule($type, $moduleName);
         }
     }
@@ -252,7 +251,7 @@ class Module
     public function getModuleStatus($type, $moduleName)
     {
         // @TODO if front-end / admin should check first
-        if ($type == 'front-end' || $type =='admin' || $type == 'core') {
+        if ( $type =='admin' || $type == 'core') {
             return true;
         }
 
@@ -336,27 +335,27 @@ class Module
         \Config::set('aksara.modules', $registeredModules);
     }
 
-    public function initActivation($slug)
+    public function initActivation($slug,$type='plugin')
     {
         \set_options('module_activation', [
-        'moduleType' => 'plugin',
+        'moduleType' => $type,
         'moduleName' => $slug,
         'counter' => 0
     ]);
 
         //@todo
-        $this->activateModule('plugin', $slug);
+        $this->activateModule($type, $slug);
     }
 
-    public function initDeactivation($slug)
+    public function initDeactivation($slug,$type='plugin')
     {
         \set_options('module_deactivation', [
-        'moduleType' => 'plugin',
+        'moduleType' => $type,
         'moduleName' => $slug,
         'counter' => 0
     ]);
 
         //@todo
-        $this->deactivateModule('plugin', $slug);
+        $this->deactivateModule($type, $slug);
     }
 }

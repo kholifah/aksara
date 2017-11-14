@@ -51,6 +51,7 @@ function multibas_row($colsId, $post) {
                  else {
                      echo '<td class="multibas-column"><a class="glyphicon glyphicon-plus" href="'.route('aksara-multibas-generate-translation',['postId'=>$post->id,'lang'=>$lang]).'"></a></td>';
                  }
+
             }
         }
     }

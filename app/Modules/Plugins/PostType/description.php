@@ -2,5 +2,6 @@
 
 return [
   'name' => 'Post Type',
-  'description' => 'WordPress like Post Type manager for Aksara'
+  'description' => 'WordPress like Post Type manager for Aksara',
+  'dependencies'=> ['user']
 ];
