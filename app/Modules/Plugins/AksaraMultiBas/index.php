@@ -21,6 +21,11 @@ require __DIR__.'/action-filter/metabox.php';
 
     add_admin_sub_menu_route('aksara-menu-options',$optionIndex);
 
+    $languageSwitcher = new \App\Modules\Plugins\AksaraMultiBas\LanguageSwitcher();
+    $languageSwitcher->setLanguageFromParam();
+    \App::singleton('App\Modules\Plugins\AksaraMultiBas\LanguageSwitcher', $languageSwitcher);
+
+
 },200);
 
 \Eventy::addAction('aksara.routes.admin',function(){
