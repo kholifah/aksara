@@ -1,51 +1,54 @@
 <?php
 namespace App\Modules\Plugins\PostType\Http;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Modules\Plugins\PostType\Media;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
-
+use Mimey\MimeTypes;
 
 class MediaController extends Controller
 {
-        public function mediaManager()
-       {
-           aksara_media_uploader();
-           return view('plugin:post-type::media.upload');
-       }
-       public function upload(Request $request)
-       {
-          $mediaUpload = new \App\Modules\Plugins\PostType\MediaUpload($request);
+    /** @var Media */
+    private $media;
+    private $mimes;
 
-          $response = $mediaUpload->handle();
+    public function __construct(Media $media, MimeTypes $mimes)
+    {
+        $this->media = $media;
+        $this->mimes = $mimes;
+    }
 
-          return $response;
-       }
+    public function mediaManager()
+    {
+        aksara_media_uploader();
+        return view('plugin:post-type::media.upload');
+    }
 
-       function serveImage()
-       {
-           $path = \Request::path();
+    public function upload(Request $request)
+    {
+        $mediaUpload = new \App\Modules\Plugins\PostType\MediaUpload($request);
 
-           $media = \App::make('App\Modules\Plugins\PostType\Media');
+        $response = $mediaUpload->handle();
 
-           $path = $media->generateImageSize($path);
+        return $response;
+    }
 
-           if (!file_exists($path)) {
-               abort(404,'file not found');
-           }
+    public function serveImage()
+    {
+        $path = \Request::path();
 
-           // get extension
-           $extension = \File::extension($path);
+        $extension = \File::extension($path);
+        $mime = $this->mimes->getMimeType($extension);
+        $path = $this->media->generateImageSize($path);
 
-           $mimes = new \Mimey\MimeTypes;
+        if (!file_exists($path)) {
+            abort(404,'file not found');
+        }
 
-           // Convert extension to MIME type:
-           $mime = $mimes->getMimeType($extension); // application/json
-
-           header("Content-Type: ".$mime);
-           readfile($path); // Reading the file into the output buffer
-           exit;
-
-       }
+        header("Content-Type: ".$mime);
+        readfile($path); // Reading the file into the output buffer
+        exit;
+    }
 
 }

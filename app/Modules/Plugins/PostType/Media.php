@@ -1,9 +1,18 @@
 <?php
 namespace App\Modules\Plugins\PostType;
+
 use Intervention\Image\ImageManager as ImageManager;
+use Mimey\MimeTypes;
 
 class Media
 {
+    private $mimes;
+
+    public function __construct(MimeTypes $mimes)
+    {
+        $this->mimes = $mimes;
+    }
+
     public function init()
     {
         \Eventy::addAction('aksara.init', [$this,'registerPostType'], 20);
@@ -92,39 +101,73 @@ class Media
         return true;
     }
 
+    private function isCrunchable($path)
+    {
+        $extension = \File::extension($path);
+        $mime = $this->mimes->getMimeType($extension);
+
+        $supported = [
+            'image/jpeg',
+            'image/png',
+            'image/gif',
+            'image/webp',
+        ];
+
+        if (in_array($mime, $supported)) {
+            return true;
+        }
+
+        return false;
+    }
+
     function generateImageSize($path)
     {
-         // Check if it is registered image
-         preg_match("/([0-9]*)x([0-9]*)./", $path, $matches);
-        //  dd($matches);
-         // not an custom image size pattern
-         if( !isset($matches[0]) )
+        if (!$this->isCrunchable($path)) {
             return false;
+        }
+
+        // Check if it is registered image
+        //preg_match("/([0-9]*)x([0-9]*)/", $path, $matches);
+        preg_match("/([0-9]*)x([0-9]*)(.*)\./", $path, $matches);
+
+        // not a custom image size pattern
+        if(!isset($matches[0])) {
+            return false;
+        }
 
         $pathExtraPart = $matches[0];
-        $pathExtraPart = str_replace(".","",$pathExtraPart);
+        $trail = $matches[2];
+        if (!empty($trail)) {
+            return false;
+        }
 
-        $originalPath = base_path().'/public/'.str_replace("-{$pathExtraPart}", "", $path);
-        $path = base_path().'/public/'.$path;
+        $originalPath = base_path()
+            .'/public/'
+            . str_replace("-{$pathExtraPart}", "", $path);
 
         // Check original file exist
-        if( !file_exists($originalPath) )
+        if( !file_exists($originalPath) ) {
             return false;
+        }
+
+        $path = base_path().'/public/'.$path;
 
         $matches = str_replace(".","",$matches[0]);
         $matches = explode("x", $matches);
 
         $imageSizes = \Config::get('aksara.post-type.image-sizes',[]);
-
         $imageSizeId = false;
 
-        foreach ($imageSizes as $imageSizeKey =>$imageSize) {
-            if( $imageSize['width'] == $matches[0] && $imageSize['height'] == $matches[1] )
+        foreach ($imageSizes as $imageSizeKey => $imageSize) {
+            if ($imageSize['width'] == $matches[0]
+                && $imageSize['height'] == $matches[1]) {
                 $imageSizeId = $imageSizeKey;
+            }
         }
 
-        if( !$imageSizeId )
+        if (!$imageSizeId) {
             return false;
+        }
 
         $aspectRatio = $imageSizes[$imageSizeId]['aspect_ratio'];
 

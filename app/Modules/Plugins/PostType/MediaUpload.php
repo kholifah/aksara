@@ -12,14 +12,26 @@ class MediaUpload
         $this->request = $request;
     }
 
-    function handle()
+    private function getSupportedMimesParam()
+    {
+        return implode(',',
+            array_merge(
+                config('mimes.image'),
+                config('mimes.document'),
+                config('mimes.video'),
+                config('mimes.audio')
+            )
+        );
+    }
+
+    public function handle()
     {
         $validator = Validator::make($this->request->all(),
             [
-                'file' => 'image',
+                'file' => 'mimetypes:' . $this->getSupportedMimesParam(),
             ],
             [
-                'file.image' => 'The file must be an image (jpeg, png, bmp, gif, or svg)'
+                'file.mimetypes' => 'Uploaded file format is not supported.'
             ]);
 
         if ($validator->fails())

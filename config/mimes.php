@@ -1,0 +1,48 @@
+<?php
+
+return [
+    'image' => [
+        'image/jpeg',
+        'image/png',
+        'image/bmp',
+        'image/gif',
+        'image/svg+xml',
+        'image/webp',
+        'image/x-icon',
+    ],
+    'document' => [
+        'application/pdf',
+        'application/msword',
+        'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+        'application/vnd.ms-powerpoint',
+        'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+        'application/vnd.openxmlformats-officedocument.presentationml.slideshow',
+        'application/vnd.oasis.opendocument.text',
+        'application/vnd.ms-excel',
+        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        'application/mspowerpoint',
+        'image/vnd.adobe.photoshop',
+    ],
+    'audio' => [
+        'audio/mpeg',
+        'audio/mpeg3',
+        'audio/x-mpeg-3',
+        'audio/mp4a-latm',
+        'application/ogg',
+        'audio/x-wav',
+    ],
+    'video' => [
+        'video/mp4',
+        'video/x-m4v',
+        'video/quicktime',
+        'video/x-ms-wmv',
+        'video/x-msvideo',
+        'application/x-troff-msvideo',
+        'video/avi',
+        'video/msvideo',
+        'video/mpeg',
+        'video/ogg',
+        'video/3gpp',
+        'video/3gpp2',
+    ],
+];

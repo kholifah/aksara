@@ -24,9 +24,7 @@ require __DIR__.'/vendor/autoload.php';
     return new \App\Modules\Plugins\PostType\MetaBox();
 });
 
-\App::singleton('App\Modules\Plugins\PostType\Media', function () {
-    return new \App\Modules\Plugins\PostType\Media();
-});
+\App::singleton('App\Modules\Plugins\PostType\Media');
 
 \App::singleton('App\Modules\Plugins\PostType\FrontEnd', function () {
     return new \App\Modules\Plugins\PostType\FrontEnd();
