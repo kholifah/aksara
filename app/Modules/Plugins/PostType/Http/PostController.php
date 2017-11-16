@@ -122,6 +122,7 @@ class PostController extends Controller
         $post->post_title = $request->input('post_title', '') == null ? "" : $request->input('post_title', '') ;
         $post->post_slug = $request->input('post_slug', '') == null ? "" : $request->input('post_slug', '') ;
         $post->post_content = $request->input('post_content', '') == null ? "" : $request->input('post_content', '') ;
+        //@TODO dihapus kolom dan datanya..
         $post->post_image = $data['post_image'];
         $post->save();
 

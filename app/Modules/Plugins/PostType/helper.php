@@ -79,7 +79,7 @@ function get_post_featured_image($post,$size=false)
     return get_post_image($postTumbnailId,$size);
 }
 
-function get_featured_image_id($postId,$size=false)
+function get_post_featured_image_id($postId,$size=false)
 {
     return get_post_meta($postId,'featured_image_post_id',false);
 }

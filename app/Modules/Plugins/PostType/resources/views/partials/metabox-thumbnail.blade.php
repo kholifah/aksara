@@ -19,7 +19,7 @@
             @endif
             <input type="file" id="file-media-uploader" style="display: none"/>
             <a href="#" data-tumbnail-id="({{ $post->id }})" class="btn btn-md btn-primary alignright" media-uploader-button >Set Foto Utama</a>
-            <input type="hidden" value="{{ get_post_featured_image($post) }}" name="post_thumbnail">
+            <input type="hidden" value="{{ get_post_featured_image_id($post->id) }}" name="post_thumbnail">
         </div>
     </div>
 </div>

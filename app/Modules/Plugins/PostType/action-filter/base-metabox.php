@@ -149,7 +149,7 @@ function render_metabox_title($post)
     else {
         $postPermalinkWithoutSlug = get_post_permalink($post);
         $postPermalinkWithoutSlug = explode('/',$postPermalinkWithoutSlug);
-        
+
         $sizeOfPermalinkSlug = sizeof($postPermalinkWithoutSlug);
         unset($postPermalinkWithoutSlug[$sizeOfPermalinkSlug-1]);
         $postPermalinkWithoutSlug = implode("/", $postPermalinkWithoutSlug);
