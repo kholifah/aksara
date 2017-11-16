@@ -4,10 +4,10 @@
     </div>
     <div class="card-box__body">
         <div class="form-img clearfix">
-            @if (get_post_featured_image($post))
+            @if (get_post_featured_image($post->id))
                 <div class="image-preview" style="display:block">
                     <a data-tumbnail-id="({{ $post->id }})" data-remove><i class="ti-trash"></i></a>
-                    <img src="{{ get_post_featured_image($post) }}">
+                    <img src="{{ get_post_featured_image($post->id) }}">
                 </div>
                 <p class="info" style="display:block">Klik icon pada gambar untuk menghapus</p>
             @else

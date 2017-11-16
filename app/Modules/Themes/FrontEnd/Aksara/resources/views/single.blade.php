@@ -2,8 +2,8 @@
 @section('content')
 <!-- Page Header -->
 <header class="masthead"
-    @if(get_post_featured_image($data['post']))
-        style="background-image: url('{{ get_post_featured_image($data['post'],'masthead') }}')"
+    @if(get_post_featured_image($data['post']->id))
+        style="background-image: url('{{ get_post_featured_image($data['post']->id,'masthead') }}')"
     @endif
 >
     <div class="container">
