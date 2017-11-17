@@ -34,7 +34,7 @@
 
     // get Image
     if( is_single() ) {
-        $ogImage =  get_post_featured_image($post,'small') ;
+        $ogImage =  get_post_featured_image($post->id,'small') ;
         echo '<meta property="og:type" content="'.\Eventy::filter('aksara.post-type.og-site-type','article').'" />';
     }
     else {
