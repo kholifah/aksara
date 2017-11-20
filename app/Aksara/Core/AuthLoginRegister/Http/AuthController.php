@@ -53,8 +53,11 @@ class AuthController extends Controller
 
         $credential = $request->only(['email','password']);
 
-        // if($user->active){
-        if (\Auth::attempt($credential)) {
+        if (\Auth::attempt($credential)) {         
+            if(!\Auth::user()->active){        
+              \Auth::logout();      
+              return redirect()->route('admin.login')->with('message', 'User Non Active');
+            }
             return redirect()->route('admin.root');
         } else {
             return redirect()->route('admin.login')->with('message', 'Login Gagal');
