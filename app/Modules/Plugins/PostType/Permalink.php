@@ -54,6 +54,7 @@ class Permalink
 
         $postPermalink = \Eventy::filter('aksara.post-type.front-end.post-permalink.before',$postPermalink,$post);
 
+        $postPermalink = str_replace("{post-type}", $post->post_type, $postPermalink);
         $postPermalink = str_replace("{slug}", $post->post_slug, $postPermalink);
         $postPermalink = str_replace("{year}", $post->post_date->format('Y'), $postPermalink);
         $postPermalink = str_replace("{month}", $post->post_date->format('m'), $postPermalink);
