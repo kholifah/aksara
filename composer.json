@@ -27,7 +27,8 @@
             "app/Helpers/helper.php"
         ],
         "psr-4": {
-            "App\\": "app/"
+            "App\\": "app/",
+            "Aksara\\": "aksara/src/"
         }
     },
     "autoload-dev": {

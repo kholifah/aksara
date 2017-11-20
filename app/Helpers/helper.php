@@ -23,12 +23,23 @@ function get_calback($callback)
     }
 }
 
-function aksara_slugify( $name )
+function aksara_slugify($name)
 {
-  $name = basename($name);
-  $name = strtolower(preg_replace(['/([a-z\d])([A-Z])/', '/([^_])([A-Z][a-z])/'], '$1-$2', $name));
+	$name = basename($name);
+	$name = strtolower(preg_replace(['/([a-z\d])([A-Z])/', '/([^_])([A-Z][a-z])/'], '$1-$2', $name));
 
-  return str_slug($name);
+	return str_slug($name);
+}
+
+function aksara_unslugify($string, $capitalizeFirstCharacter = false) 
+{
+    $str = str_replace(' ', '', ucwords(str_replace('-', ' ', $string)));
+
+    if (!$capitalizeFirstCharacter) {
+        $str[0] = strtolower($str[0]);
+    }
+
+    return $str;
 }
 
 // @todo segment ada cms berarti admin
