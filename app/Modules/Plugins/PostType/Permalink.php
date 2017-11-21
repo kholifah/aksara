@@ -32,20 +32,25 @@ class Permalink
 
     public function getPostPermalinkFormat($postType)
     {
-
+        $postPermalinkFormat = "";
         $options = get_options('website_options', []);
 
         // get from options
         if( isset($options['permalink']) && isset($options['permalink'][$postType]) ) {
-            return $options['permalink'][$postType];
+            $postPermalinkFormat = $options['permalink'][$postType];
+        }
+        // page and post special treatment for default value
+        elseif( $postType == 'post' || $postType == 'page' ) {
+            $postPermalinkFormat =  $this->options[3];
+        }
+        else {
+            // default
+            $postPermalinkFormat =  $this->options[0];
         }
 
-        // page and post special treatment for default value
-        if( $postType == 'post' || $postType == 'page' )
-            return $this->options[3];
 
-        // default
-        return $this->options[0];
+        // filter and return
+        return \Eventy::filter('aksara.post-type.front-end.post-permalink-format', $postPermalinkFormat);
     }
 
     public function getPermalink($post)
@@ -63,7 +68,7 @@ class Permalink
         return \Eventy::filter('aksara.post-type.front-end.post-permalink.after',$postPermalink,$post);
     }
 
-    public function getPostPermalinkRoute($postType)
+    public function getPostPermalinkRoutes($postType)
     {
         $format  = $this->getPostPermalinkFormat($postType);
 
@@ -76,28 +81,27 @@ class Permalink
         return $format;
     }
 
-    public function generatePostPermalinkRoute()
+    public function generatePostPermalinkRoutes()
     {
         $postTypes = \Config::get('aksara.post-type.post-types');
         foreach ($postTypes as $postType => $args) {
 
-            $format = $this->getPostPermalinkRoute($postType);
-
+            $format = $this->getPostPermalinkRoutes($postType);
             // register single route
             if( get_post_type_args('publicly_queryable',$postType) && $format != "{slug}" ) {
                 $route = \Route::get( $format, ['as' => 'aksara.post-type.front-end.single.'.$postType, 'uses' =>'\App\Modules\Plugins\PostType\Http\FrontEndController@serve']);
+                \Eventy::action('aksara.post-type.permalink.single', $format, 'aksara.post-type.front-end.single.'.$postType);
             }
 
             // register archive
             if( get_post_type_args('publicly_queryable',$postType) && get_post_type_args('has_archive',$postType) ) {
                 \Route::get( get_post_type_args('slug_plural',$postType), ['as' => 'aksara.post-type.front-end.archive-post-type.'.$postType, 'uses' =>'\App\Modules\Plugins\PostType\Http\FrontEndController@serve']);
+                \Eventy::action('aksara.post-type.permalink.archive-post-type', get_post_type_args('slug_plural',$postType), 'aksara.post-type.front-end.archive-post-type.'.$postType);
             }
-            # code...
         }
-
     }
 
-    public function generatePostArchivePermalinkRoute()
+    public function generatePostArchivePermalinkRoutes()
     {
         // Register Taxonomy
         $registeredTaxonomies = \Config::get('aksara.post-type.taxonomies');
@@ -105,8 +109,24 @@ class Permalink
         foreach ($registeredTaxonomies as $taxonomy => $taxonomyArgs) {
             if($taxonomyArgs['has_archive']) {
                 \Route::get( $taxonomyArgs['slug'], ['as' => 'aksara.post-type.front-end.archive-taxonomy.'.$taxonomy, 'uses' =>'\App\Modules\Plugins\PostType\Http\FrontEndController@serve']);
+                \Eventy::action('aksara.post-type.permalink.archive-taxonomy', $taxonomyArgs['slug'], 'aksara.post-type.front-end.archive-taxonomy.'.$taxonomy);
                 \Route::get( $taxonomyArgs['slug'].'/{term?}', ['as' => 'aksara.post-type.front-end.archive-taxonomy.'.$taxonomy, 'uses' =>'\App\Modules\Plugins\PostType\Http\FrontEndController@serve']);
+                \Eventy::action('aksara.post-type.permalink.archive-taxonomy-terms',  $taxonomyArgs['slug'].'/{term?}', 'aksara.post-type.front-end.archive-taxonomy.'.$taxonomy);
             }
         }
+    }
+
+    public function generateSearchRoute()
+    {
+        // Generate search
+        \Route::get( 'search', ['as' => 'aksara.post-type.front-end.search', 'uses' =>'\App\Modules\Plugins\PostType\Http\FrontEndController@serve']);
+        \Eventy::action('aksara.post-type.permalink.search', 'search', 'aksara.post-type.front-end.search');
+    }
+
+    public function generateHomeRoute()
+    {
+        // Generate home
+        \Route::get('/', ['as' => 'aksara.post-type.front-end.home', 'uses' =>'\App\Modules\Plugins\PostType\Http\FrontEndController@serve']);
+        \Eventy::action('aksara.post-type.permalink.home', '/', 'aksara.post-type.front-end.home');
     }
 }

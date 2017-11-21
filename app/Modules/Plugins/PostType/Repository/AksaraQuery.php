@@ -63,6 +63,7 @@ class AksaraQuery
     {
         $post = new Post();
 
+        //TODO ini buat kondisi apa lupa :(
         if( isset($this->args['post_type']) && $this->args['post_type'] !== false ) {
             if( ( $this->args['post_type'] == 'post' || $this->args['post_type'] == 'page') && isset($this->args['post_slug']) ) {
                 $post = $post->orWhereIn('post_type',['post','page']);
@@ -83,8 +84,8 @@ class AksaraQuery
             $post = $post->where('post_slug',$this->args['post_slug']);
         }
 
-        if( isset($this->args['post_id']) ) {
-            $post = $post->where('post_id',$this->args['post_slug']);
+        if( isset($this->args['id']) ) {
+            $post = $post->where('id',$this->args['id']);
         }
 
         if( isset($this->args['author_id']) ) {

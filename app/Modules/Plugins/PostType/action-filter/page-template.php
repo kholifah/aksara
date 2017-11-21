@@ -35,19 +35,21 @@
 },20,2);
 
 // Set post data
-\Eventy::addFilter('aksara.post-type.front-end.template.data', function($data) {
+\Eventy::addFilter('aksara.post-type.front-end.template.query-args', function($args) {
 
     $options = get_options('website_options', []);
 
     if( is_home() && isset($options['front_page']) && $options['front_page'] != 'default' ) {
 
-        $post = \App\Modules\Plugins\PostType\Model\Post::find($options['front_page']);
-        $data['post'] = $post;
+        // $post = \App\Modules\Plugins\PostType\Model\Post::find($options['front_page']);
+        // $data['post'] = $post;
         // Query default aksara loop dengan jenis post
-        $data['postType'] = 'post';
+        $args['post_type'] = 'page';
+        $args['id'] = $options['front_page'];
 
-        set_current_post($data['post']);
+        // set_current_post($data['post']);
+        \Config::set('aksara.post-type.front-end.template.is-single',true);
     }
 
-    return $data;
+    return $args;
 },20,2);

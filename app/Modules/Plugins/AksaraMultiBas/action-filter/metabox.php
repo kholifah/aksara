@@ -6,8 +6,6 @@
     foreach ($postTypes as $postType => $args) {
         add_meta_box('multibas', $postType, 'render_metabox_multibas', false, 'metabox-sidebar', 5);
     }
-
-
 });
 
 function render_metabox_multibas($post)

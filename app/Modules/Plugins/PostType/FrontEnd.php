@@ -11,17 +11,14 @@ class FrontEnd
     {
         \Eventy::addAction('aksara.routes.front_end',function(){
             $permalink = \App::make('App\Modules\Plugins\PostType\Permalink');
-            $permalink->generatePostPermalinkRoute();
-            $permalink->generatePostArchivePermalinkRoute();
 
-            // Search
-            \Route::get( 'search', ['as' => 'aksara.post-type.front-end.search.', 'uses' =>'\App\Modules\Plugins\PostType\Http\FrontEndController@serve']);
-
-            // Home
-            \Route::get( '/', ['as' => 'aksara.post-type.front-end.home.', 'uses' =>'\App\Modules\Plugins\PostType\Http\FrontEndController@serve']);
+            $permalink->generatePostPermalinkRoutes();
+            $permalink->generatePostArchivePermalinkRoutes();
+            $permalink->generateSearchRoute();
+            $permalink->generateHomeRoute();
 
             // Catch All Controller
-            \Route::get( '{slug}', ['as' => 'aksara.post-type.front-end.single.post', 'uses' =>'\App\Modules\Plugins\PostType\Http\FrontEndController@serve']);
+            \Route::get( '{slug}', ['as' => 'aksara.post-type.front-end.single.catch-all', 'uses' =>'\App\Modules\Plugins\PostType\Http\FrontEndController@serve']);
         },30);
     }
 }
