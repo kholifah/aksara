@@ -88,8 +88,13 @@ class Permalink
 
             $format = $this->getPostPermalinkRoutes($postType);
             // register single route
-            if( get_post_type_args('publicly_queryable',$postType) && $format != "{slug}" ) {
-                $route = \Route::get( $format, ['as' => 'aksara.post-type.front-end.single.'.$postType, 'uses' =>'\App\Modules\Plugins\PostType\Http\FrontEndController@serve']);
+            if( get_post_type_args('publicly_queryable',$postType) ) {
+
+                // Do not register catch all route again
+                if($format != "{slug}") {
+                    $route = \Route::get( $format, ['as' => 'aksara.post-type.front-end.single.'.$postType, 'uses' =>'\App\Modules\Plugins\PostType\Http\FrontEndController@serve']);
+                }
+
                 \Eventy::action('aksara.post-type.permalink.single', $format, 'aksara.post-type.front-end.single.'.$postType);
             }
 
