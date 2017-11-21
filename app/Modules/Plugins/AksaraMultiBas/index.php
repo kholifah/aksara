@@ -2,6 +2,7 @@
 require __DIR__.'/action-filter/table.php';
 require __DIR__.'/action-filter/query-filter.php';
 require __DIR__.'/action-filter/metabox.php';
+require __DIR__.'/action-filter/route.php';
 
 
 \Eventy::addAction('aksara.init', function () {
@@ -21,9 +22,9 @@ require __DIR__.'/action-filter/metabox.php';
 
     add_admin_sub_menu_route('aksara-menu-options',$optionIndex);
 
-    $languageSwitcher = new \App\Modules\Plugins\AksaraMultiBas\LanguageSwitcher();
-    $languageSwitcher->setLanguageFromParam();
-    \App::singleton('App\Modules\Plugins\AksaraMultiBas\LanguageSwitcher', $languageSwitcher);
+    // $languageSwitcher = new \App\Modules\Plugins\AksaraMultiBas\LanguageSwitcher();
+    // $languageSwitcher->setLanguageFromParam();
+    // \App::singleton('App\Modules\Plugins\AksaraMultiBas\LanguageSwitcher', $languageSwitcher);
 
 
 },200);

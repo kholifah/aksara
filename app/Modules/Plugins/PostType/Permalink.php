@@ -63,7 +63,7 @@ class Permalink
         return \Eventy::filter('aksara.post-type.front-end.post-permalink.after',$postPermalink,$post);
     }
 
-    public function getPostPermalinkRoute($postType)
+    public function getPostPermalinkRoutes($postType)
     {
         $format  = $this->getPostPermalinkFormat($postType);
 
@@ -76,28 +76,27 @@ class Permalink
         return $format;
     }
 
-    public function generatePostPermalinkRoute()
+    public function generatePostPermalinkRoutes()
     {
         $postTypes = \Config::get('aksara.post-type.post-types');
         foreach ($postTypes as $postType => $args) {
 
-            $format = $this->getPostPermalinkRoute($postType);
-
+            $format = $this->getPostPermalinkRoutes($postType);
             // register single route
             if( get_post_type_args('publicly_queryable',$postType) && $format != "{slug}" ) {
                 $route = \Route::get( $format, ['as' => 'aksara.post-type.front-end.single.'.$postType, 'uses' =>'\App\Modules\Plugins\PostType\Http\FrontEndController@serve']);
+                \Eventy::action('aksara.post-type.permalink.single', $format, 'aksara.post-type.front-end.single.'.$postType);
             }
 
             // register archive
             if( get_post_type_args('publicly_queryable',$postType) && get_post_type_args('has_archive',$postType) ) {
                 \Route::get( get_post_type_args('slug_plural',$postType), ['as' => 'aksara.post-type.front-end.archive-post-type.'.$postType, 'uses' =>'\App\Modules\Plugins\PostType\Http\FrontEndController@serve']);
+                \Eventy::action('aksara.post-type.permalink.archive-post-type', get_post_type_args('slug_plural',$postType), 'aksara.post-type.front-end.archive-post-type.'.$postType);
             }
-            # code...
         }
-
     }
 
-    public function generatePostArchivePermalinkRoute()
+    public function generatePostArchivePermalinkRoutes()
     {
         // Register Taxonomy
         $registeredTaxonomies = \Config::get('aksara.post-type.taxonomies');
@@ -108,5 +107,19 @@ class Permalink
                 \Route::get( $taxonomyArgs['slug'].'/{term?}', ['as' => 'aksara.post-type.front-end.archive-taxonomy.'.$taxonomy, 'uses' =>'\App\Modules\Plugins\PostType\Http\FrontEndController@serve']);
             }
         }
+    }
+
+    public function generateSearchRoute()
+    {
+        // Generate search
+        \Route::get( 'search', ['as' => 'aksara.post-type.front-end.search', 'uses' =>'\App\Modules\Plugins\PostType\Http\FrontEndController@serve']);
+        \Eventy::action('aksara.post-type.permalink.search', 'search', 'aksara.post-type.front-end.search');
+    }
+
+    public function generateHomeRoute()
+    {
+        // Generate home
+        \Route::get('/', ['as' => 'aksara.post-type.front-end.home', 'uses' =>'\App\Modules\Plugins\PostType\Http\FrontEndController@serve']);
+        \Eventy::action('aksara.post-type.permalink.home', '/', 'aksara.post-type.front-end.home');
     }
 }
