@@ -34,6 +34,8 @@ function set_multibas_language($lang=false)
 
 function get_current_multibas_language()
 {
-    $languageSwitcher = \App::make('App\Modules\Plugins\AksaraMultiBas\LanguageSwitcher');
-    return $languageSwitcher->getCurrentLanguage();
+    // @TODO
+    // $languageSwitcher = \App::make('App\Modules\Plugins\AksaraMultiBas\LanguageSwitcher');
+    // return $languageSwitcher->getCurrentLanguage();
+    return 'id';
 }
