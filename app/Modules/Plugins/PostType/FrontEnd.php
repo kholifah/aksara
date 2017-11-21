@@ -29,20 +29,18 @@ class FrontEnd
             //         \Route::get( $postTypeArgs['slug_plural'], ['as' => 'aksara.post-type.front-end.archive-post-type.'.$postType, 'uses' =>'\App\Modules\Plugins\PostType\Http\FrontEndController@serve']);
             //     }
             // }
-            $permalink->generatePostPermalinkRoute();
+            $permalink->generatePostPermalinkRoutes();
 
             // Taxonomy
             // foreach ($registeredTaxonomies as $taxonomy => $taxonomyArgs) {
             //     \Route::get( $taxonomyArgs['slug'].'/{term?}', ['as' => 'aksara.post-type.front-end.archive-taxonomy.'.$taxonomy, 'uses' =>'\App\Modules\Plugins\PostType\Http\FrontEndController@serve']);
             // }
-            $permalink->generatePostArchivePermalinkRoute();
-
-            \Route::get( 'search', ['as' => 'aksara.post-type.front-end.search.', 'uses' =>'\App\Modules\Plugins\PostType\Http\FrontEndController@serve']);
-
-            \Route::get( '/', ['as' => 'aksara.post-type.front-end.home.', 'uses' =>'\App\Modules\Plugins\PostType\Http\FrontEndController@serve']);
+            $permalink->generatePostArchivePermalinkRoutes();
+            $permalink->generateSearchRoute();
+            $permalink->generateHomeRoute();
 
             // Catch All Controller
-            \Route::get( '{slug}', ['as' => 'aksara.post-type.front-end.single.post', 'uses' =>'\App\Modules\Plugins\PostType\Http\FrontEndController@serve']);
+            \Route::get( '{slug}', ['as' => 'aksara.post-type.front-end.single.catch-all', 'uses' =>'\App\Modules\Plugins\PostType\Http\FrontEndController@serve']);
         },30);
     }
 }
