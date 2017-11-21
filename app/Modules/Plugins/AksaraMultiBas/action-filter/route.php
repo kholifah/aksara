@@ -3,7 +3,7 @@
 // modify post ordering
 \Eventy::addAction('aksara.init', function () {
     $countries = get_registered_languages();
-    
+
     foreach ($countries as $country) {
 
         if($country['default']) {
