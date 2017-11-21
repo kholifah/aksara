@@ -30,7 +30,6 @@ class FrontEnd
             //     }
             // }
             $permalink->generatePostPermalinkRoutes();
-
             $permalink->generatePostArchivePermalinkRoutes();
             $permalink->generateSearchRoute();
             $permalink->generateHomeRoute();

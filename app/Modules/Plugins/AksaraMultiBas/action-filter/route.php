@@ -22,6 +22,12 @@
         \Eventy::addAction('aksara.post-type.permalink.single', function($route, $routeName) use ($country) {
             \Route::get( $country['language_code'].'/'.$route, ['as' => $routeName.'.lang-'.$country['language_code'], 'uses' =>'\App\Modules\Plugins\PostType\Http\FrontEndController@serve']);
         }, 10, 2);
+        \Eventy::addAction('aksara.post-type.permalink.archive-taxonomy', function($route, $routeName) use ($country) {
+            \Route::get( $country['language_code'].'/'.$route, ['as' => $routeName.'.lang-'.$country['language_code'], 'uses' =>'\App\Modules\Plugins\PostType\Http\FrontEndController@serve']);
+        }, 10, 2);
+        \Eventy::addAction('aksara.post-type.permalink.archive-taxonomy-terms', function($route, $routeName) use ($country) {
+            \Route::get( $country['language_code'].'/'.$route, ['as' => $routeName.'.lang-'.$country['language_code'], 'uses' =>'\App\Modules\Plugins\PostType\Http\FrontEndController@serve']);
+        }, 10, 2);
 
     }
 

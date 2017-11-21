@@ -35,7 +35,10 @@ class OptionController extends Controller
         $pages = [];
         $pages['default'] = 'home.blade.php';
 
-        $pagesFromDB = \App\Modules\Plugins\PostType\Model\Post::where('post_status','publish')->where('post_type','page')->get()->pluck('post_title','id');
+        $pagesFromDB = \App\Modules\Plugins\PostType\Model\Post::where('post_status','publish')->where('post_type','page');
+        $pagesFromDB = \Eventy::filter('aksara.post-type.front-end.option.pages-query', $pagesFromDB);
+
+        $pagesFromDB = $pagesFromDB->get()->pluck('post_title','id');;
 
         foreach ( $pagesFromDB as $key => $val ) {
             $pages[$key] = $val;
