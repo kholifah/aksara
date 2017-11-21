@@ -3,7 +3,6 @@ require __DIR__.'/action-filter/table.php';
 require __DIR__.'/action-filter/query-filter.php';
 require __DIR__.'/action-filter/metabox.php';
 require __DIR__.'/action-filter/route.php';
-require __DIR__.'/action-filter/permalink.php';
 
 
 \Eventy::addAction('aksara.init', function () {
