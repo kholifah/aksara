@@ -105,6 +105,7 @@ class Permalink
         foreach ($registeredTaxonomies as $taxonomy => $taxonomyArgs) {
             if($taxonomyArgs['has_archive']) {
                 \Route::get( $taxonomyArgs['slug'], ['as' => 'aksara.post-type.front-end.archive-taxonomy.'.$taxonomy, 'uses' =>'\App\Modules\Plugins\PostType\Http\FrontEndController@serve']);
+                \Route::get( $taxonomyArgs['slug'].'/{term?}', ['as' => 'aksara.post-type.front-end.archive-taxonomy.'.$taxonomy, 'uses' =>'\App\Modules\Plugins\PostType\Http\FrontEndController@serve']);
             }
         }
     }
