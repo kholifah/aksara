@@ -127,23 +127,25 @@ class Media
         }
 
         // Check if it is registered image
-        //preg_match("/([0-9]*)x([0-9]*)/", $path, $matches);
         preg_match("/([0-9]*)x([0-9]*)(.*)\./", $path, $matches);
 
         // not a custom image size pattern
         if(!isset($matches[0])) {
             return false;
         }
-
         $pathExtraPart = $matches[0];
-        $trail = $matches[2];
+
+        $trail = $matches[3];
         if (!empty($trail)) {
             return false;
         }
 
         $originalPath = base_path()
             .'/public/'
-            . str_replace("-{$pathExtraPart}", "", $path);
+            . str_replace("-{$pathExtraPart}", ".", $path);
+
+        \Log::info("Extra: $pathExtraPart");
+        \Log::info("Original: $originalPath");
 
         // Check original file exist
         if( !file_exists($originalPath) ) {
