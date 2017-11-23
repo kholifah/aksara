@@ -40,7 +40,8 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-        return view('admin:aksara::auth.login')->render();
+        $loginPage = \Eventy::filter('aksara.auth-login-register.login.view', 'admin:aksara::auth.login');
+        return view($loginPage)->render();
     }
 
     //method extends untuk mengecek apakah akun sudah aktif
@@ -53,9 +54,9 @@ class AuthController extends Controller
 
         $credential = $request->only(['email','password']);
 
-        if (\Auth::attempt($credential)) {         
-            if(!\Auth::user()->active){        
-              \Auth::logout();      
+        if (\Auth::attempt($credential)) {
+            if(!\Auth::user()->active){
+              \Auth::logout();
               return redirect()->route('admin.login')->with('message', 'User Non Active');
             }
             return redirect()->route('admin.root');

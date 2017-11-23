@@ -1,5 +1,6 @@
 <?php
 
 \Eventy::addAction('aksara.routes.admin', function () {
-    \Route::get('/', ['as' => 'admin.root', 'uses' => '\App\Aksara\Core\Dashboard\Http\DashboardController@index']);
+    $dashboardController = \Eventy::filter('aksara.dashboard.controller', '\App\Aksara\Core\Dashboard\Http\DashboardController@index');
+    \Route::get('/', ['as' => 'admin.root', 'uses' => $dashboardController]);
 });
