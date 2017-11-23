@@ -28,12 +28,20 @@
             <i class="fa fa-search"></i>
         </div>
         <div class="lang">
-            <div class="lang-active">
-                <img src="{{url("assets/modules/FrontEnd/Aksara/img/ina.png")}}" alt="">
-            </div>
-            <div class="option">
-                <a href="#"><img src="{{url("assets/modules/FrontEnd/Aksara/img/eng.png")}}" alt=""></a>
-            </div>
+            @foreach(get_registered_locales() as $locale)
+                @if(get_current_multibas_locale()==$locale['language_code'])
+                    <div class="lang-active">
+                @else
+                    <div class="option">
+                @endif
+                @if(is_default_multibas_locale($locale['language_code']))
+                    <a href='{{url('/')}}'><span class="flag-icon flag-icon-{{$locale['language_code']}}"></span></a>
+                @else
+                    <a href='{{url('/'.$locale['language_code'])}}'><span class="flag-icon flag-icon-{{$locale['language_code']}}"></span></a>
+                @endif
+                {{-- Close class flag --}}
+                </div>
+            @endforeach
         </div>
     </div>
   </div>

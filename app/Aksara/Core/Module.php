@@ -38,8 +38,6 @@ class Module
         $viewFolder = $module['modulePath'].'/resources/views' ;
         $migrationFolder = $module['modulePath'].'/migrations' ;
 
-
-
         // Check if dependency not met
         $moduleDescription = \Config::get('aksara.modules', []);
         $moduleDescription = $moduleDescription[$type][$moduleName];

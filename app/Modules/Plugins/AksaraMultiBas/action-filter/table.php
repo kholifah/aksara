@@ -3,7 +3,7 @@
 // modify post ordering
 \Eventy::addAction('aksara.admin.init-completed', function () {
     $postTypes = \Config::get('aksara.post-type.post-types');
-    $languages = get_registered_languages();
+    $languages = get_registered_locales();
 
     foreach ($postTypes as $postType => $args) {
             \Eventy::addFilter('aksara.post-type.'.$postType.'.index.table.column', 'multibas_column', 1, 2);
@@ -13,7 +13,7 @@
 
 function multibas_column($cols, $postType) {
 
-    $languages = get_registered_languages();
+    $languages = get_registered_locales();
 
     foreach( $languages as $language ) {
         insert_after_array_key($cols, 'title',
@@ -33,7 +33,7 @@ function multibas_row($colsId, $post) {
         return;
     }
 
-    $languages = get_registered_languages();
+    $languages = get_registered_locales();
     $lang = str_replace("multibas-","",$colsId);
 
     foreach( $languages as $language ) {
