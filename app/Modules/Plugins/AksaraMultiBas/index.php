@@ -4,6 +4,7 @@ require __DIR__.'/action-filter/query-filter.php';
 require __DIR__.'/action-filter/metabox.php';
 require __DIR__.'/action-filter/route.php';
 require __DIR__.'/action-filter/permalink.php';
+require __DIR__.'/action-filter/header-meta.php';
 
 
 \Eventy::addAction('aksara.init', function () {
@@ -34,7 +35,7 @@ require __DIR__.'/action-filter/permalink.php';
  * Set correct language for front-end controller
  */
 \Eventy::addAction('aksara.post-type.front-end.before-query', function() {
-    
+
     $languageSwitcher = \App::make('App\Modules\Plugins\AksaraMultiBas\LocaleSwitcher');
     $languageSwitcher->setCurrentLanguange();
 });

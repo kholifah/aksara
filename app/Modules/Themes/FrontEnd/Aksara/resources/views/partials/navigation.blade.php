@@ -19,8 +19,13 @@
         @endforeach
       </ul>
       <div class="header-search active" id="header-search">
+          @if(is_default_multibas_locale())
           <form action="{{url('/search')}}">
-              <input type="text" name="query" placeholder="Ketik kata kunci pencarian Anda di sini." class="form-control">
+                  <input type="text" name="query" placeholder="Ketik kata kunci pencarian Anda di sini." class="form-control">
+          @else
+          <form action="{{url('/'.get_current_multibas_locale().'/search')}}">
+                  <input type="text" name="query" placeholder="Enter your search query" class="form-control">
+          @endif
               <button class="header-search__submit"><i class="fa fa-search"></i></button>
           </form>
       </div>
@@ -30,14 +35,14 @@
         <div class="lang">
             @foreach(get_registered_locales() as $locale)
                 @if(get_current_multibas_locale()==$locale['language_code'])
-                    <div class="lang-active">
+                <div class="lang-active">
                 @else
-                    <div class="option">
+                <div class="option">
                 @endif
                 @if(is_default_multibas_locale($locale['language_code']))
-                    <a href='{{url('/')}}'><span class="flag-icon flag-icon-{{$locale['language_code']}}"></span></a>
+                <a href='{{url('/')}}'><span class="flag-icon flag-icon-{{$locale['language_code']}}"></span></a>
                 @else
-                    <a href='{{url('/'.$locale['language_code'])}}'><span class="flag-icon flag-icon-{{$locale['language_code']}}"></span></a>
+                <a href='{{url('/'.$locale['language_code'])}}'><span class="flag-icon flag-icon-{{$locale['language_code']}}"></span></a>
                 @endif
                 {{-- Close class flag --}}
                 </div>
