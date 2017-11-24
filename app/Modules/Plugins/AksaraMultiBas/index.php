@@ -4,6 +4,7 @@ require __DIR__.'/action-filter/query-filter.php';
 require __DIR__.'/action-filter/metabox.php';
 require __DIR__.'/action-filter/route.php';
 require __DIR__.'/action-filter/permalink.php';
+require __DIR__.'/action-filter/header-meta.php';
 
 
 \Eventy::addAction('aksara.init', function () {
@@ -23,12 +24,22 @@ require __DIR__.'/action-filter/permalink.php';
 
     add_admin_sub_menu_route('aksara-menu-options',$optionIndex);
 
-    // $languageSwitcher = new \App\Modules\Plugins\AksaraMultiBas\LanguageSwitcher();
-    // $languageSwitcher->setLanguageFromParam();
-    // \App::singleton('App\Modules\Plugins\AksaraMultiBas\LanguageSwitcher', $languageSwitcher);
-
-
+    \App::singleton('App\Modules\Plugins\AksaraMultiBas\LocaleSwitcher', function(){
+        $LocaleSwitcher = new \App\Modules\Plugins\AksaraMultiBas\LocaleSwitcher();
+        $LocaleSwitcher->setCurrentLanguangeFromParam();
+        return $LocaleSwitcher;
+    });
 },200);
+
+/*
+ * Set correct language for front-end controller
+ */
+\Eventy::addAction('aksara.post-type.front-end.before-query', function() {
+
+    $languageSwitcher = \App::make('App\Modules\Plugins\AksaraMultiBas\LocaleSwitcher');
+    $languageSwitcher->setCurrentLanguange();
+});
+
 
 \Eventy::addAction('aksara.routes.admin',function(){
 

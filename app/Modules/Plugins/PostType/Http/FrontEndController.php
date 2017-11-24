@@ -8,10 +8,13 @@ use App\Modules\Plugins\PostType\Model\Post as Post;
 
 class FrontEndController extends Controller
 {
+    /*
+     * Serve all front end route ex: Post Type, Taxonomy, Author, home, 404 and search
+     */
     function serve()
     {
+        \Eventy::action('aksara.post-type.front-end.before-query');
         $routeName = \Request::route()->getName();
-
         // aksara.post-type.front-end.template.data
         $data = [];
         $data['posts'] = false;
@@ -109,11 +112,14 @@ class FrontEndController extends Controller
                 $aksaraQueryArgs['query'] = \Request::input('query');
         }
 
+        // Modifiying the generated AksaraQuery is possible using this filter
         $aksaraQueryArgs = \Eventy::filter('aksara.post-type.front-end.template.query-args', $aksaraQueryArgs);
 
         if( is_array($aksaraQueryArgs) ) {
 
             $aksaraQuery = new AksaraQuery($aksaraQueryArgs);
+
+            // Modifiying query builder
             $aksaraQuery = \Eventy::filter('aksara.post-type.front-end.template.query', $aksaraQuery);
             set_current_aksara_query($aksaraQuery);
 
@@ -130,7 +136,9 @@ class FrontEndController extends Controller
 
         get_current_aksara_query();
 
+        // Add or alter template data is possible
         $data = \Eventy::filter('aksara.post-type.front-end.template.data',$data);
+        // Alter the default view
         $viewPriorities = \Eventy::filter('aksara.post-type.front-end.template.view',$viewPriorities,$data);
 
         \Eventy::action('aksara.post-type.front-end.before-render',$data);
