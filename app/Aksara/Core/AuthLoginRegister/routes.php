@@ -1,8 +1,8 @@
 <?php
 
 \Eventy::addAction('aksara.routes.front_end', function () {
-    $loginRoute = Eventy::filter('aksara.route.login', 'auth/login');
-    $registerRoute = Eventy::filter('aksara.route.register', 'auth/register');
+    $loginRoute = Eventy::filter('aksara.routes.login', 'auth/login');
+    $registerRoute = Eventy::filter('aksara.routes.register', 'auth/register');
 
     // Authentication routes
     \Route::get($loginRoute, ['as' => 'admin.login', 'uses' =>'\App\Aksara\Core\AuthLoginRegister\Http\AuthController@login']);
