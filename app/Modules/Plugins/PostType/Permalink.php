@@ -87,21 +87,22 @@ class Permalink
         foreach ($postTypes as $postType => $args) {
 
             $format = $this->getPostPermalinkRoutes($postType);
+
+            // register archive
+            if( get_post_type_args('publicly_queryable',$postType) && get_post_type_args('has_archive',$postType) ) {
+                \Route::get( get_post_type_args('slug_plural',$postType), ['as' => 'aksara.post-type.front-end.archive-post-type.'.$postType, 'uses' =>'\App\Modules\Plugins\PostType\Http\FrontEndController@serve']);
+                \Eventy::action('aksara.post-type.permalink.archive-post-type', get_post_type_args('slug_plural',$postType), 'aksara.post-type.front-end.archive-post-type.'.$postType);
+            }
+
             // register single route
             if( get_post_type_args('publicly_queryable',$postType) ) {
 
                 // Do not register catch all route again
                 if($format != "{slug}") {
                     $route = \Route::get( $format, ['as' => 'aksara.post-type.front-end.single.'.$postType, 'uses' =>'\App\Modules\Plugins\PostType\Http\FrontEndController@serve']);
+                    \Eventy::action('aksara.post-type.permalink.single', $format, 'aksara.post-type.front-end.single.'.$postType);
                 }
 
-                \Eventy::action('aksara.post-type.permalink.single', $format, 'aksara.post-type.front-end.single.'.$postType);
-            }
-
-            // register archive
-            if( get_post_type_args('publicly_queryable',$postType) && get_post_type_args('has_archive',$postType) ) {
-                \Route::get( get_post_type_args('slug_plural',$postType), ['as' => 'aksara.post-type.front-end.archive-post-type.'.$postType, 'uses' =>'\App\Modules\Plugins\PostType\Http\FrontEndController@serve']);
-                \Eventy::action('aksara.post-type.permalink.archive-post-type', get_post_type_args('slug_plural',$postType), 'aksara.post-type.front-end.archive-post-type.'.$postType);
             }
         }
     }
@@ -124,14 +125,37 @@ class Permalink
     public function generateSearchRoute()
     {
         // Generate search
-        \Route::get( 'search', ['as' => 'aksara.post-type.front-end.search', 'uses' =>'\App\Modules\Plugins\PostType\Http\FrontEndController@serve']);
-        \Eventy::action('aksara.post-type.permalink.search', 'search', 'aksara.post-type.front-end.search');
+        $path = 'search';
+        \Route::get( $path, ['as' => 'aksara.post-type.front-end.search', 'uses' =>'\App\Modules\Plugins\PostType\Http\FrontEndController@serve']);
+        \Eventy::action('aksara.post-type.permalink.search', $path, 'aksara.post-type.front-end.search');
     }
 
     public function generateHomeRoute()
     {
         // Generate home
-        \Route::get('/', ['as' => 'aksara.post-type.front-end.home', 'uses' =>'\App\Modules\Plugins\PostType\Http\FrontEndController@serve']);
         \Eventy::action('aksara.post-type.permalink.home', '/', 'aksara.post-type.front-end.home');
+        \Route::get('/', ['as' => 'aksara.post-type.front-end.home', 'uses' =>'\App\Modules\Plugins\PostType\Http\FrontEndController@serve']);
     }
+
+    /*
+     * Catch All Remaining Route AKA `{slug}`
+     */
+    public function generateCatchAll()
+    {
+        // @TODO route `en/posts` is mistakenly routed to `en/{slug}`
+        \Eventy::addAction('aksara.routes.after', function() {
+            $routeParamsFrontEnd = \Eventy::filter('aksara.middleware.front_end', ['middleware' => ['web','csrf']]);
+
+            // Catch All Controller
+            $path = '{slug}';
+            $routeName = 'aksara.post-type.front-end.single.catch-all';
+
+            $routeParamsFrontEnd['as'] = $routeName;
+            $routeParamsFrontEnd['uses'] = '\App\Modules\Plugins\PostType\Http\FrontEndController@serve';
+
+            \Eventy::action('aksara.post-type.permalink.catch-all', $path, $routeParamsFrontEnd);
+            \Route::get( $path, $routeParamsFrontEnd);
+        },99);
+    }
+
 }

@@ -18,7 +18,6 @@ class AksaraServiceProvider extends ServiceProvider
             return;
         }
 
-        // $post = \App::make('post');
         $module = \App::make('module');
         $module->moduleStatusChangeListener();
 
@@ -42,20 +41,22 @@ class AksaraServiceProvider extends ServiceProvider
 
         \Eventy::action('aksara.routes.before');
 
-        $argsGroupAdmin = \Eventy::filter('aksara.middleware.admin', ['prefix' => 'admin', 'middleware' => ['web','csrf', 'auth']]);
+        $routeParamsFrontEnd = \Eventy::filter('aksara.middleware.admin', ['prefix' => 'admin', 'middleware' => ['web','csrf', 'auth']]);
 
-        \Route::group($argsGroupAdmin, function () {
+        \Route::group($routeParamsFrontEnd, function () {
             \Eventy::action('aksara.routes.admin');
         });
 
-        $argsGroupFrontEnd = \Eventy::filter('aksara.middleware.front_end', ['middleware' => ['web','csrf']]);
-        \Route::group($argsGroupFrontEnd, function () {
+        $routeParamsFrontEnd = \Eventy::filter('aksara.middleware.front_end', ['middleware' => ['web','csrf']]);
+        \Route::group($routeParamsFrontEnd, function () {
             \Eventy::action('aksara.routes.front_end');
         });
 
         \Eventy::action('aksara.routes.after');
 
         \Eventy::action('aksara.init-after-routes');
+
+
     }
 
     /**
@@ -65,7 +66,6 @@ class AksaraServiceProvider extends ServiceProvider
      */
     public function register()
     {
-
 
         \App::singleton('route', function () {
             return new \App\Aksara\Core\Route();
@@ -81,8 +81,8 @@ class AksaraServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    // public function map()
-    // {
-    //   echo "--|--";
-    // }
+    public function map()
+    {
+
+    }
 }
