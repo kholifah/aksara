@@ -13,8 +13,6 @@ class FrontEndController extends Controller
      */
     function serve()
     {
-        $routeCollection = \Route::getRoutes();
-
         \Eventy::action('aksara.post-type.front-end.before-query');
         $routeName = \Request::route()->getName();
 
