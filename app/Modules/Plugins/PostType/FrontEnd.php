@@ -12,9 +12,9 @@ class FrontEnd
         \Eventy::addAction('aksara.routes.front_end',function(){
             $permalink = \App::make('App\Modules\Plugins\PostType\Permalink');
 
-            $permalink->generatePostArchivePermalinkRoutes();
-            $permalink->generateSearchRoute();
-            $permalink->generateHomeRoute();
+            // $permalink->generatePostArchivePermalinkRoutes();
+            // $permalink->generateSearchRoute();
+            // $permalink->generateHomeRoute();
             $permalink->generatePostPermalinkRoutes();
 
             // Catch All Controller
