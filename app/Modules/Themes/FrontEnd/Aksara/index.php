@@ -60,4 +60,5 @@
 
     add_page_template('Contact Form', 'front-end:aksara::page-contact-form');
     add_page_template('About Us', 'front-end:aksara::page-about-us');
+
 });

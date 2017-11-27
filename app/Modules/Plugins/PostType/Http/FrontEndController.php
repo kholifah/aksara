@@ -15,6 +15,7 @@ class FrontEndController extends Controller
     {
         \Eventy::action('aksara.post-type.front-end.before-query');
         $routeName = \Request::route()->getName();
+
         // aksara.post-type.front-end.template.data
         $data = [];
         $data['posts'] = false;
