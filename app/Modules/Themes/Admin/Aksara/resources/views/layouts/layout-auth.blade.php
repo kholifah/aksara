@@ -35,27 +35,9 @@
 
 @yield('content')
 
-{{-- <script src="../../"></script> --}}
-{{-- <script src="../../bootstrap/js/bootstrap.min.js"></script> --}}
-{{-- <script src="../../"></script> --}}
+<script src="{{ asset('assets/js/jquery-2.2.0.min.js') }}"></script>
+<script src="{{ asset('assets/js/bootstrap.min.js') }}"></script>
 
-<!-- jQuery 2.2.0 -->
-<!-- Bootstrap 3.3.6 -->
-<!-- iCheck -->
-
-<script src="{{ asset('assets/js/jquery-2.2.0.js') }}"></script>
-<script src="{{ asset('assets/js/bootstrap.js') }}"></script>
-{{-- plugin iCheck adalah untuk membuat seleksi input seperti checkbox radio dengan diakses menggunakan javascript --}}
-{{-- <script src="{{ asset('assets/plugins/iCheck/icheck.min.js') }}"></script> --}}
-
-<!--<script>
-  $(function () {
-    $('input').iCheck({
-      checkboxClass: 'icheckbox_square-blue',
-      radioClass: 'iradio_square-blue',
-      increaseArea: '20%' // optional
-    });
-  });
 </script>-->
 </body>
 </html>
