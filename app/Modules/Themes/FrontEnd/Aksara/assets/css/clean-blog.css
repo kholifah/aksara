@@ -445,8 +445,24 @@ fieldset[disabled] .btn-primary:hover {
 #mainNav .lang img {
     display: block;
 }
+#mainNav .lang a {
+    display: block;
+    line-height: 1;
+}
+#mainNav .lang a:hover {
+    text-decoration: none;
+}
+#mainNav .lang .flag-icon {
+    display: block;
+    line-height: 15px;
+    width: 22px;
+    border: 1px solid transparent;
+}
+#mainNav .lang .flag-icon-id {
+    border-color: #e70011;
+}
 #mainNav .lang .lang-active {
-    padding: 6px 8px;
+    padding: 4px 8px;
     border: 1px solid rgba(255,255,255,0.5);
     cursor: pointer;
 }
@@ -482,7 +498,7 @@ fieldset[disabled] .btn-primary:hover {
 }
 #mainNav .lang .option > a {
     display: block;
-    padding: 6px 8px;
+    padding: 4px 8px;
 }
 #mainNav .lang:hover .option {
     -webkit-transform: translate(0, 0) scale(1, 1);
