@@ -1,14 +1,15 @@
 <td>
 	{{ $post->post_title }} 
-	<div class="row">
-		<div class="col-md-12" style="padding-left: 7px;">
+	<div class="table__actions">
 		@if($post->post_status == 'trash')
-	    <a href="{{ route('admin.'.get_current_post_type_args('route').'.restore', $post->id) }}" class="icon-edit sa-warning" style="font-size: .8rem;">Restore</a>
-	    <a onclick="return confirm('Yakin ingin menghapus data?');" href="{{ route('admin.'.get_current_post_type_args('route').'.destroy', $post->id) }}" class="icon-delete sa-warning" style="font-size: .8rem;">Delete</a>
-	    @else
-	    <a href="{{ route('admin.'.get_current_post_type_args('route').'.edit', $post->id) }}" class="icon-edit" style="font-size: .8rem;">Edit </a>
-	    <a onclick="return confirm('Yakin ingin memindahkan data ke trash?');" href="{{ route('admin.'.get_current_post_type_args('route').'.trash', $post->id) }}" class="icon-delete sa-warning" style="font-size: .8rem;">Trash</a>
-	    @endif
-		</div>
-	</div>
+        <span class="edit"><a href="{{ route('admin.'.get_current_post_type_args('route').'.restore', $post->id) }}">Restore</a> | </span>
+        <span class="edit"><a href="{{ route('admin.'.get_current_post_type_args('route').'.edit', $post->id) }}">Edit</a> | </span>
+        <span class="delete"><a onclick="return confirm('Yakin ingin menghapus data?');" href="{{ route('admin.'.get_current_post_type_args('route').'.destroy', $post->id) }}" class="sa-warning">Delete</a> | </span>
+        <span class="view"><a target="_BLANK" href="{!! $postPermalinkWithoutSlug !!}/{{ $post->post_slug }}">View</a></span>
+        @else
+        <span class="edit"><a href="{{ route('admin.'.get_current_post_type_args('route').'.edit', $post->id) }}">Edit</a> | </span>
+        <span class="delete"><a onclick="return confirm('Yakin ingin memindahkan data ke trash?');" href="{{ route('admin.'.get_current_post_type_args('route').'.trash', $post->id) }}" class="sa-warning">Trash</a> | </span>
+        <span class="view"><a target="_BLANK" href="{!! $postPermalinkWithoutSlug !!}/{{ $post->post_slug }}">View</a></span>
+        @endif
+    </div>
 </td>
