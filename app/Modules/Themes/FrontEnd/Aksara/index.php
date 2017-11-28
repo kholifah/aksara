@@ -50,7 +50,8 @@
     aksara_enqueue_style('https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic');
     aksara_enqueue_style('https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800');
     aksara_enqueue_style(url("assets/modules/FrontEnd/Aksara/css/clean-blog.css"));
-
+    aksara_enqueue_style(url("assets/modules/Plugins/AksaraMultiBas/css/flag-icon.min.css"), "flag-icon" , 25, true);
+    
     // Enqueue Script
     aksara_enqueue_script(url("assets/modules/FrontEnd/Aksara/vendor/jquery/jquery.min.js"));
     aksara_enqueue_script(url("assets/modules/FrontEnd/Aksara/vendor/popper/popper.min.js"));
