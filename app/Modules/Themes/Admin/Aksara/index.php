@@ -47,6 +47,7 @@
 
     // Load Jquery on Top
     aksara_admin_enqueue_script(url('assets/modules/Admin/Aksara/js/jquery.min.js'),'jquery',10,false);
+    aksara_admin_enqueue_script(url('assets/modules/Admin/Aksara/js/bootstrap.min.js'),'jquery',10,false);
 
     // Code Miror
     aksara_admin_enqueue_script(url('assets/modules/Admin/Aksara/lib/codemirror/js/codemirror.js'),'codemirror',10,true);
