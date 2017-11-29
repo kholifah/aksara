@@ -143,17 +143,5 @@ function render_metabox_editor($post)
 
 function render_metabox_title($post)
 {
-    if(  $post->post_slug == "" ) {
-        $postPermalinkWithoutSlug = "";
-    }
-    else {
-        $postPermalinkWithoutSlug = get_post_permalink($post);
-        $postPermalinkWithoutSlug = explode('/',$postPermalinkWithoutSlug);
-
-        $sizeOfPermalinkSlug = sizeof($postPermalinkWithoutSlug);
-        unset($postPermalinkWithoutSlug[$sizeOfPermalinkSlug-1]);
-        $postPermalinkWithoutSlug = implode("/", $postPermalinkWithoutSlug);
-    }
-
-    echo view('plugin:post-type::partials.metabox-title', compact('post','postPermalinkWithoutSlug'))->render();
+    echo view('plugin:post-type::partials.metabox-title', compact('post'))->render();
 }
