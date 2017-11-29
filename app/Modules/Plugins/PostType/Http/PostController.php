@@ -68,7 +68,7 @@ class PostController extends Controller
         $taxonomies = get_taxonomies(get_current_post_type());
 
         // Data
-        $data = \Eventy::filter('aksara.post-type.'.get_current_post_type().'.index.data', ['posts'=>$posts,'viewData'=>[]]);
+        $data = \Eventy::filter('aksara.post-type.'.get_current_post_type().'.index.data', ['posts'=>$posts, 'viewData'=>[], 'aksaraQuery'=>$aksaraQuery]);
         $posts = $data['posts'];
         $viewData = $data['viewData'];
 
