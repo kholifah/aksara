@@ -92,7 +92,7 @@ function post_type_index_filter_post_status($posts)
 {
     if (\Request::input('post_status')) {
         $posts->addQuery(function($query){
-            return $query->where('post_status', $viewData['post_status']);
+            return $query->where('post_status', \Request::input('post_status'));
         });
     } else {
         $posts->addQuery(function($query){
