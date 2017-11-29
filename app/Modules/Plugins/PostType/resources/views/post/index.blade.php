@@ -19,19 +19,19 @@
 <div class="content__body">
     <ul class="trash-sistem">
         <li>
-            <a href="{{ route('admin.'.get_current_post_type_args('slug').'.index') }}" <?php if ($viewData['post_status'] == '') echo 'class="current"' ?> >All <span class="count">({{ $viewData['count_post']['all'] }})</span></a> |
+            <a href="{{ route('admin.'.get_current_post_type_args('slug').'.index') }}" <?php if ($viewData['post_status'] == '') echo 'class="current"' ?> >All</a> |
         </li>
         <li>
-            <a href="{{ route('admin.'.get_current_post_type_args('slug').'.index') }}?post_status=publish" <?php if ($viewData['post_status'] == 'publish') echo 'class="current"' ?>>{{ status_post('publish',get_current_post_type()) }} <span class="count">({{ $viewData['count_post']['publish'] }})</span></a> |
+            <a href="{{ route('admin.'.get_current_post_type_args('slug').'.index') }}?post_status=publish" <?php if ($viewData['post_status'] == 'publish') echo 'class="current"' ?>>{{ status_post('publish',get_current_post_type()) }}</a> |
         </li>
         <li>
-            <a href="{{ route('admin.'.get_current_post_type_args('slug').'.index') }}?post_status=draft" <?php if ($viewData['post_status'] == 'draft') echo 'class="current"' ?>>{{ status_post('draft',get_current_post_type()) }} <span class="count">({{ $viewData['count_post']['draft'] }})</span></a> |
+            <a href="{{ route('admin.'.get_current_post_type_args('slug').'.index') }}?post_status=draft" <?php if ($viewData['post_status'] == 'draft') echo 'class="current"' ?>>{{ status_post('draft',get_current_post_type()) }}</a> |
         </li>
         <li>
-            <a href="{{ route('admin.'.get_current_post_type_args('slug').'.index') }}?post_status=pending" <?php if ($viewData['post_status'] == 'pending') echo 'class="current"' ?>>{{ status_post('pending',get_current_post_type()) }} <span class="count">({{ $viewData['count_post']['pending'] }})</span></a> |
+            <a href="{{ route('admin.'.get_current_post_type_args('slug').'.index') }}?post_status=pending" <?php if ($viewData['post_status'] == 'pending') echo 'class="current"' ?>>{{ status_post('pending',get_current_post_type()) }} </a> |
         </li>
         <li>
-            <a href="{{ route('admin.'.get_current_post_type_args('slug').'.index') }}?post_status=trash" <?php if ($viewData['post_status'] == 'trash') echo 'class="current"' ?>>{{ status_post('trash',get_current_post_type()) }} <span class="count">({{ $viewData['count_post']['trash'] }})</span></a>
+            <a href="{{ route('admin.'.get_current_post_type_args('slug').'.index') }}?post_status=trash" <?php if ($viewData['post_status'] == 'trash') echo 'class="current"' ?>>{{ status_post('trash',get_current_post_type()) }} </a>
         </li>
     </ul>
     <form action="" class="posts-filter clearfix">
