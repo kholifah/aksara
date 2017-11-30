@@ -198,13 +198,7 @@ class PostController extends Controller
     public function destroy($id)
     {
         $post = Post::find($id);
-        if ($post) {
-            if ($post->post_image != '') {
-                $destinationPath = 'img/'; // upload path
-                if (File::exists($destinationPath . $post->post_image)) {
-                    File::delete($destinationPath . $post->post_image);
-                }
-            }
+        if ($post) {            
             delete_post_meta($id);
             delete_post_term($id);
             $post->delete();
@@ -213,7 +207,7 @@ class PostController extends Controller
             admin_notice('danger', 'Tidak ada data yang dihapus.');
         }
 
-        \Eventy::action('aksara.post-type.'.get_current_post_type().'.destroy', $post, $request);
+        \Eventy::action('aksara.post-type.'.get_current_post_type().'.destroy', $post, $id);
 
         return redirect()->route('admin.'.get_current_post_type_args('route').'.index', ['post_status' => 'trash']);
     }
