@@ -36,7 +36,6 @@ class Post
 
             // @TODO rename route to post-type.admin.[$post-type].action
             \Route::get($postTypeArgs['route'].'/{id}/destroy', ['as' => 'admin.'.$postTypeArgs['route'].'.destroy', 'uses' =>'\App\Modules\Plugins\PostType\Http\PostController@destroy']);
-            // \Route::get($postType['route'].'/{id}/delete_img', ['as' => 'admin.'.$postType['route'].'.delete_img', 'uses' =>'\App\Modules\Plugins\PostType\Http\PostController@delete_img']);
             \Route::get($postTypeArgs['slug'].'/{id}/restore', ['as' => 'admin.'.$postTypeArgs['slug'].'.restore', 'uses' =>'\App\Modules\Plugins\PostType\Http\PostController@restore']);
             \Route::get($postTypeArgs['slug'].'/{id}/trash', ['as' => 'admin.'.$postTypeArgs['slug'].'.trash', 'uses' =>'\App\Modules\Plugins\PostType\Http\PostController@trash']);
 
