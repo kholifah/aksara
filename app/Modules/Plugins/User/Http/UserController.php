@@ -71,16 +71,16 @@ class UserController extends Controller
     {
         $user = new User();
 
-        // $validator = $user->validate($request->all(), false);
-        //
-        // if ($validator->fails()) {
-        //     foreach ($validator->messages()->toArray() as $v) {
-        //         admin_notice('danger', $v[0]);
-        //     }
-        //     return redirect('admin/user/create')
-        //                     ->withErrors($validator)
-        //                     ->withInput();
-        // }
+        $validator = $user->validate($request->all(), false);
+        
+        if ($validator->fails()) {
+            foreach ($validator->messages()->toArray() as $v) {
+                admin_notice('danger', $v[0]);
+            }
+             return back()
+                    ->withErrors($validator)
+                    ->withInput();
+        }
         $data = $request->all();
         $user->name = $data['name'];
         $user->email = $data['email'];
@@ -138,7 +138,9 @@ class UserController extends Controller
      */
     public function update(Request $request, $id = false)
     {
-        $user = $id === false ? \Auth::user() :  User::find($id);
+        $id === false ? $id = \Auth::user()->id : $id;
+
+        $user = User::find($id);
         
         if ($request->input('password') || $request->input('password_confirmation')) {
             $data = [
@@ -160,16 +162,16 @@ class UserController extends Controller
             ];
         }
 
-        // $validator = $user->validate($data, false);
-        //
-        // if ($validator->fails()) {
-        //     foreach ($validator->messages()->toArray() as $v) {
-        //         admin_notice('danger', $v[0]);
-        //     }
-        //     return redirect('admin/user/' . $id . '/edit')
-        //                     ->withErrors($validator)
-        //                     ->withInput();
-        // }
+         $validator = $user->validate($data, false);
+        
+        if ($validator->fails()) {
+            foreach ($validator->messages()->toArray() as $v) {
+                admin_notice('danger', $v[0]);
+            }
+            return back()
+                    ->withErrors($validator)
+                    ->withInput();
+        }
 
         if (isset($data['name'])) {
             $user->name = $data['name'];
@@ -189,7 +191,7 @@ class UserController extends Controller
         $user->save();
         admin_notice('success', 'Data berhasil diubah.');
 
-        if( $id === false ) {
+        if ($id === false) {
                 return redirect()->route('aksara.user.edit-profile');
         }
 
