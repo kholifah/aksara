@@ -36,6 +36,7 @@ class Module
         $moduleHelper = $module['modulePath'].'/helper.php';
         $moduleRoutes = $module['modulePath'].'/routes.php';
         $viewFolder = $module['modulePath'].'/resources/views' ;
+        $languageFolder = $module['modulePath'].'/resources/lang' ;
         $migrationFolder = $module['modulePath'].'/migrations' ;
 
         // Check if dependency not met
@@ -87,12 +88,14 @@ class Module
                 require_once($moduleRoutes);
             }
 
-            // register view
+            // Register view namespace
             if (is_dir($viewFolder)) {
-                // let's add /app/custom_views via namespace
                 view()->addNamespace($type.':'.$moduleName, $viewFolder);
-                // then:
-        // view('my_views::some.view.name') // /app/custom_views/some/view/name.blade.php
+            }
+
+            // Register language namesapce
+            if (is_dir($languageFolder)) {
+                \Lang::addNamespace($type.':'.$moduleName, $languageFolder);
             }
 
             // register migration

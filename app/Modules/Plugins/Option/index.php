@@ -1,8 +1,8 @@
 <?php
 \Eventy::addAction('aksara.init', function () {
     $optionIndex = [
-                    'page_title' => 'General Option',
-                    'menu_title' => 'General Option',
+                    'page_title' => __('plugin:option::messages.general_option'),
+                    'menu_title' => __('plugin:option::messages.general_option'),
                     'icon'       => 'ti-brush-alt',
                     'capability' => '',
                     'route'      => [
@@ -28,45 +28,70 @@
              ];
 
     $route->addRoute($optionSave);
+});
+
+/*
+ * Apply language
+ */
+\Eventy::addAction('aksara.init', function () {
+    $site_options = get_options('site_options', []);
+
+    if(isset($site_options['language'])) {
+        App::setLocale($site_options['language']);
+    }
+},1);
 
 
-    \Eventy::addFilter('aksara.application_name', function ($name) {
-        $site_options = get_options('site_options', []);
 
-        if (isset($site_options['application_name']) && $site_options['application_name'] !== "") {
-            return $site_options['application_name'];
-        }
+/*
+ *  Apply filter for application name
+ */
+\Eventy::addFilter('aksara.application_name', function ($name) {
+    $site_options = get_options('site_options', []);
 
-        return $name;
-    });
+    if (isset($site_options['application_name']) && $site_options['application_name'] !== "") {
+        return $site_options['application_name'];
+    }
 
-    \Eventy::addFilter('aksara.site-title', function ($name) {
-        $site_options = get_options('site_options', []);
+    return $name;
+});
 
-        if (isset($site_options['site_title']) && $site_options['site_title'] !== "") {
-            return $site_options['site_title'];
-        }
+/*
+ *  Apply filter for application title
+ */
+\Eventy::addFilter('aksara.site-title', function ($name) {
+    $site_options = get_options('site_options', []);
 
-        return $name;
-    });
+    if (isset($site_options['site_title']) && $site_options['site_title'] !== "") {
+        return $site_options['site_title'];
+    }
 
-    \Eventy::addFilter('aksara.admin_site_title', function ($name) {
-        $site_options = get_options('site_options', []);
+    return $name;
+});
 
-        if (isset($site_options['admin_site_title']) && $site_options['admin_site_title'] !== "") {
-            return $site_options['admin_site_title'];
-        }
 
-        return $name;
-    });
+/*
+ *  Apply filter for admin site title
+ */
+\Eventy::addFilter('aksara.admin_site_title', function ($name) {
+    $site_options = get_options('site_options', []);
 
-    \Eventy::addFilter('aksara.tagline', function ($name) {
-        $site_options = get_options('site_options', []);
+    if (isset($site_options['admin_site_title']) && $site_options['admin_site_title'] !== "") {
+        return $site_options['admin_site_title'];
+    }
 
-        if (isset($site_options['tagline']) && $site_options['tagline'] !== "") {
-            return $site_options['tagline'];
-        }
+    return $name;
+});
 
-        return $name;
-    });
+/*
+ *  Apply filter for site tagline
+ */
+\Eventy::addFilter('aksara.tagline', function ($name) {
+    $site_options = get_options('site_options', []);
+
+    if (isset($site_options['tagline']) && $site_options['tagline'] !== "") {
+        return $site_options['tagline'];
+    }
+
+    return $name;
 });
