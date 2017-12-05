@@ -54,4 +54,9 @@ class User extends Authenticatable
 
         return \Validator::make($data, $rules);
     }
+
+    public function setPasswordAttribute($value)
+    {
+        $this->attributes['password'] = bcrypt($value);
+    }
 }
