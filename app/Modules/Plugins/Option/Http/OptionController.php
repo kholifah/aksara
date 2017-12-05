@@ -22,7 +22,7 @@ class OptionController extends Controller
 
         set_options('site_options', $data['options']);
 
-        admin_notice('success', 'Data berhasil diubah.');
+        admin_notice('success', __('plugin:option::messages.notification_save_success'));
         return redirect()->route('aksara-option');
     }
 }

@@ -1,8 +1,8 @@
 <?php
 \Eventy::addAction('aksara.init', function () {
     $optionIndex = [
-                    'page_title' => 'General Option',
-                    'menu_title' => 'General Option',
+                    'page_title' => __('plugin:option::messages.general_option'),
+                    'menu_title' => __('plugin:option::messages.general_option'),
                     'icon'       => 'ti-brush-alt',
                     'capability' => '',
                     'route'      => [
@@ -39,7 +39,7 @@
     if(isset($site_options['language'])) {
         App::setLocale($site_options['language']);
     }
-});
+},1);
 
 
 

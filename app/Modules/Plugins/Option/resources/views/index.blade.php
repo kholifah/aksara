@@ -25,28 +25,28 @@
                             <div class="form-group row">
                                 <label class="col-sm-2 col-xs-4 col-xxs-12 col-form-label">{{ __('plugin:option::messages.application_name') }}</label>
                                 <div class="col-sm-10 col-xs-8 col-xxs-12">
-                                    {!! Form::text('options[application_name]', @$site_options['application_name'], ['class'=>'form-control', 'placeholder' => 'Judul Website']) !!}
+                                    {!! Form::text('options[application_name]', @$site_options['application_name'], ['class'=>'form-control', 'placeholder' => __('plugin:option::messages.application_name_placeholder') ]) !!}
                                 </div>
                             </div>
 
                             <div class="form-group row">
                                 <label class="col-sm-2 col-xs-4 col-xxs-12 col-form-label">{{ __('plugin:option::messages.website_title') }}</label>
                                 <div class="col-sm-10 col-xs-8 col-xxs-12">
-                                    {!! Form::text('options[site_title]', @$site_options['site_title'], ['class'=>'form-control', 'placeholder' => 'Judul Website']) !!}
+                                    {!! Form::text('options[site_title]', @$site_options['site_title'], ['class'=>'form-control', 'placeholder' =>  __('plugin:option::messages.website_title_placeholder') ]) !!}
                                 </div>
                             </div>
 
                             <div class="form-group row">
                                 <label class="col-sm-2 col-xs-4 col-xxs-12 col-form-label">{{ __('plugin:option::messages.admin_website_title') }}</label>
                                 <div class="col-sm-10 col-xs-8 col-xxs-12">
-                                    {!! Form::text('options[admin_site_title]', @$site_options['admin_site_title'], ['class'=>'form-control', 'placeholder' => 'Judul Website']) !!}
+                                    {!! Form::text('options[admin_site_title]', @$site_options['admin_site_title'], ['class'=>'form-control', 'placeholder' =>  __('plugin:option::messages.admin_website_title_placeholder') ]) !!}
                                 </div>
                             </div>
 
                             <div class="form-group row">
                                 <label class="col-sm-2 col-xs-4 col-xxs-12 col-form-label">{{ __('plugin:option::messages.tagline') }}</label>
                                 <div class="col-sm-10 col-xs-8 col-xxs-12">
-                                    {!! Form::text('options[tagline]', @$site_options['tagline'], ['class'=>'form-control', 'placeholder' => 'Tagline Website']) !!}
+                                    {!! Form::text('options[tagline]', @$site_options['tagline'], ['class'=>'form-control', 'placeholder' =>  __('plugin:option::messages.tagline_placholder') ]) !!}
                                 </div>
                             </div>
 

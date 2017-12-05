@@ -25,7 +25,7 @@
             </div>
 
             <ul class="nav navbar-nav pull-left navbar-title">
-                <li><span class="waves-effect waves-light ellips">@filter('aksara.tagline','CMS Mirip WordPress')</span></li>
+                <li><span class="waves-effect waves-light ellips">@filter('aksara.tagline','Aksara Framework')</span></li>
             </ul>
             <ul class="nav navbar-nav navbar-right pull-right">
                 <li class="dropdown top-menu-item-xs">
