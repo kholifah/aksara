@@ -85,7 +85,7 @@ class UserController extends Controller
         $user->name = $data['name'];
         $user->email = $data['email'];
         $user->password = $data['password'];
-        $user->role = $data['role'];
+        // $user->role = $data['role'];
         $user->active = $data['active'];
         $user->save();
         admin_notice('success', 'Data berhasil ditambah.');
@@ -149,7 +149,7 @@ class UserController extends Controller
                 'email' => $request->input('email'),
                 'password' => $request->input('password'),
                 'password_confirmation' => $request->input('password_confirmation'),
-                'role' => $request->input('role'),
+                //'role' => $request->input('role'),
                 'active' => $request->input('active')
             ];
         } else {
@@ -157,7 +157,7 @@ class UserController extends Controller
                 'id' => $id,
                 'name' => $request->input('name'),
                 'email' => $request->input('email'),
-                'role' => $request->input('role'),
+                //'role' => $request->input('role'),
                 'active' => $request->input('active')
             ];
         }
@@ -182,9 +182,9 @@ class UserController extends Controller
         if (isset($data['password'])) {
             $user->password = $data['password'];
         }
-        if (isset($data['role'])) {
-            $user->role = $data['role'];
-        }
+        // if (isset($data['role'])) {
+        //    $user->role = $data['role'];
+        // }
         if (isset($data['active'])) {
             $user->active = $data['active'];
         }
