@@ -5,6 +5,7 @@ use App\User;
 use App\DripEmailer;
 use Illuminate\Console\Command;
 use Illuminate\FileSystem\FileSystem;
+use Illuminate\Config\Repository as Config;
 
 class CoreMigrationCommand extends Command
 {
@@ -25,7 +26,8 @@ class CoreMigrationCommand extends Command
     private $fileSystem;
 
     public function __construct(
-        Config $config
+        Config $config,
+        FileSystem $fileSystem
     ){
         parent::__construct();
         $this->fileSystem = $fileSystem;
