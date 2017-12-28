@@ -15,8 +15,8 @@ class MakeMigrationCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'aksara:make:migration {type : type of the module}
-        {module-name : name of the module}
+    protected $signature = 'aksara:make:migration
+        {type-name : type and name of the module (type/module-name)}
         {name : The name of the migration.}
         {--create= : The table to be created.}
         {--table= : The table to migrate.}';
@@ -52,23 +52,48 @@ class MakeMigrationCommand extends Command
      */
     public function handle()
     {
-        $type = $this->argument('type');
+        $typeName = $this->argument('type-name');
+        $typeArray = explode('/', $typeName);
 
-        if (strtolower($type) == 'core') {
-            $this->error(
-                "Gunakan perintah 'aksara:make:migration:core' untuk membuat migrasi di core");
+        //if (empty($typeArray)) {
+            //$this->error('Format type-name tidak valid, gunakan format tipe/nama-modul');
+        //}
+
+        //if (count($typeArray) == 1 && strtolower($typeArray[0]) == 'core') {
+            //$this->makeCoreMigration();
+            //return;
+        //}
+
+        if (count($typeArray) != 2) {
+            $this->error('Format type-name tidak valid,
+                gunakan format tipe/nama-modul, untuk core tidak perlu nama-modul');
         }
-        $this->makeModuleMigration($type);
+
+        $this->makeModuleMigration($typeArray);
     }
 
-    private function makeModuleMigration($type)
+    private function makeCoreMigration()
     {
-        $moduleName = $this->argument('module-name');
+        $path = app_path('Aksara/Core/migrations');
+
+        if (!$this->fileSystem->exists($path)) {
+            $this->fileSystem->makeDirectory($path);
+        }
+        $path = str_replace(base_path(), "", $path);
+
+        $this->executeMakeMigration($path);
+    }
+
+    private function makeModuleMigration($typeArray)
+    {
+        $type = $typeArray[0];
+        $moduleName = $typeArray[1];
+
         $modules = $this->config->get('aksara.modules');
 
         if (!isset($modules[$type])) {
             $this->error('Jenis module '
-                .$type
+                . $type
                 .' tidak ada, gunakan [core,plugin,admin,front-end]');
         }
 

@@ -5,6 +5,7 @@ use App\User;
 use App\DripEmailer;
 use Illuminate\Console\Command;
 use Illuminate\Config\Repository as Config;
+use Illuminate\FileSystem\FileSystem;
 
 class MigrationCommand extends Command
 {
@@ -25,10 +26,12 @@ class MigrationCommand extends Command
     private $config;
 
     public function __construct(
-        Config $config
+        Config $config,
+        FileSystem $fileSystem
     ){
         parent::__construct();
         $this->config = $config;
+        $this->fileSystem = $fileSystem;
     }
 
     /**
@@ -38,6 +41,14 @@ class MigrationCommand extends Command
      */
     public function handle()
     {
+        $this->migrateCore();
+        $this->migrateModules();
+    }
+
+    private function migrateModules()
+    {
+        $this->info('Migrasi modul...');
+
         $modules = $this->config->get('aksara.modules');
 
         foreach ($modules as $type => $moduleList) {
@@ -58,5 +69,22 @@ class MigrationCommand extends Command
                 ]);
             }
         }
+    }
+
+    private function migrateCore()
+    {
+        $this->info('Migrasi core...');
+
+        $path = app_path('Aksara/Core/migrations');
+
+        if (!$this->fileSystem->exists($path)) {
+            $this->info('Core migration tidak ada');
+            return;
+        }
+        $path = str_replace(base_path(), "", $path);
+
+        $this->call('migrate', [
+            '--path' => $path
+        ]);
     }
 }
