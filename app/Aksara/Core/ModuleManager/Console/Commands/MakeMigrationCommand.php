@@ -55,33 +55,12 @@ class MakeMigrationCommand extends Command
         $typeName = $this->argument('type-name');
         $typeArray = explode('/', $typeName);
 
-        //if (empty($typeArray)) {
-            //$this->error('Format type-name tidak valid, gunakan format tipe/nama-modul');
-        //}
-
-        //if (count($typeArray) == 1 && strtolower($typeArray[0]) == 'core') {
-            //$this->makeCoreMigration();
-            //return;
-        //}
-
         if (count($typeArray) != 2) {
             $this->error('Format type-name tidak valid,
                 gunakan format tipe/nama-modul, untuk core tidak perlu nama-modul');
         }
 
         $this->makeModuleMigration($typeArray);
-    }
-
-    private function makeCoreMigration()
-    {
-        $path = app_path('Aksara/Core/migrations');
-
-        if (!$this->fileSystem->exists($path)) {
-            $this->fileSystem->makeDirectory($path);
-        }
-        $path = str_replace(base_path(), "", $path);
-
-        $this->executeMakeMigration($path);
     }
 
     private function makeModuleMigration($typeArray)

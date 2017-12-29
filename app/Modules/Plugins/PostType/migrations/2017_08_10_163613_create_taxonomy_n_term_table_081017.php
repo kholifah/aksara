@@ -78,11 +78,11 @@ class CreateTaxonomyNTermTable081017 extends Migration
      */
     public function down()
     {
-        Schema::drop('taxonomies');
-        Schema::drop('terms');
-        Schema::drop('term_relationships');
-        Schema::drop('post_meta');
-        Schema::drop('posts');
+        Schema::dropIfExists('term_relationships');
+        Schema::dropIfExists('taxonomies');
+        Schema::dropIfExists('terms');
+        Schema::dropIfExists('post_meta');
+        Schema::dropIfExists('posts');
     }
 
 }
