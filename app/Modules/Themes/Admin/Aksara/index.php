@@ -1,23 +1,6 @@
 <?php
 
 \Eventy::addAction('aksara.init', function () {
-    register_menu(
-      ['primary' => [
-                    'label' => 'Primary'
-                    ]]
-                  );
-
-    register_menu(
-      ['footer' => [
-                    'label' => 'Footer'
-                  ]]
-                );
-
-    register_menu(
-      ['top' => [
-                    'label' => 'Top'
-                  ]]
-                );
 
     // Load Jquery on Top
     aksara_admin_enqueue_script(url('assets/modules/Admin/Aksara/js/jquery.min.js'),'jquery',10,false);
