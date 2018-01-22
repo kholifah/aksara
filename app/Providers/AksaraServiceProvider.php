@@ -3,9 +3,14 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use App\Aksara\Core\ModuleManager\Console\Commands\MigrationStatusCommand;
 
 class AksaraServiceProvider extends ServiceProvider
 {
+    protected $commands = [
+        'AksaraMigrateStatus' => 'command.aksara.migrate.status',
+    ];
+
     /**
      * Bootstrap the application services.
      *
@@ -66,7 +71,6 @@ class AksaraServiceProvider extends ServiceProvider
      */
     public function register()
     {
-
         \App::singleton('route', function () {
             return new \App\Aksara\Core\Route();
         });
@@ -74,6 +78,25 @@ class AksaraServiceProvider extends ServiceProvider
         \App::singleton('module', function () {
             return new \App\Aksara\Core\Module();
         });
+
+        $this->registerCommands($this->commands);
+    }
+
+    /**
+     * Register the given commands.
+     *
+     * @param  array  $commands
+     * @return void
+     */
+    protected function registerCommands(array $commands)
+    {
+        foreach (array_keys($commands) as $command) {
+            $function = "register{$command}Command";
+            //dd($function);
+            call_user_func_array([$this, $function], []);
+        }
+
+        $this->commands(array_values($commands));
     }
 
     /**
@@ -84,5 +107,12 @@ class AksaraServiceProvider extends ServiceProvider
     public function map()
     {
 
+    }
+
+    protected function registerAksaraMigrateStatusCommand()
+    {
+        $this->app->singleton('command.aksara.migrate.status', function ($app) {
+            return new MigrationStatusCommand($app['migrator']);
+        });
     }
 }

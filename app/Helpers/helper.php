@@ -125,3 +125,47 @@ function get_country_code()
     $countries = file_get_contents(app_path().'/Aksara/Lib/locale_lang_flag.json');
     return collect(json_decode($countries,true));
 }
+
+if (!function_exists('migration_paths')) {
+    /**
+     * Get all path to migrations
+     *
+     * @return string
+     */
+    function migration_paths()
+    {
+        $moduleTypes = config('aksara.modules');
+        $dirs = [];
+        foreach ($moduleTypes as $typeItems) {
+            foreach ($typeItems as $module) {
+                if (isset($module['migrationPath'])) {
+                    $dirs[] = $module['migrationPath'];
+                }
+            }
+        }
+        return $dirs;
+    }
+}
+
+if (! function_exists('migration_files')) {
+    /**
+     * Get all migrations files in configured paths
+     *
+     * @param  string  $path
+     * @return string
+     */
+    function migration_files($dirs = [])
+    {
+        if (empty($dirs)) {
+            $dirs = migration_paths();
+        }
+        $files = [];
+        foreach ($dirs as $dir) {
+            $filesInDir = array_diff(scandir($dir), [ '.', '..', ]);
+            foreach ($filesInDir as $file) {
+                $files[] = $dir . '/' . $file;
+            }
+        }
+        return $files;
+    }
+}

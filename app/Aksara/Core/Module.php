@@ -302,7 +302,6 @@ class Module
         }
 
         $moduleDescription = $modulePath.'/description.php' ;
-        $migrationFolder = $modulePath.'/migrations' ;
         $moduleName =  $this->getModuleSlug($modulePath);
 
         if (file_exists($moduleDescription)) {
@@ -329,8 +328,14 @@ class Module
 
         $registeredModules[$type][$moduleName]['modulePath'] = $modulePath;
 
-        if (is_dir($migrationFolder)) {
-            $registeredModules[$type][$moduleName]['migrationPath'] = $migrationFolder;
+        //use config in description.php to determine migrationPath
+        if (!isset($registeredModules[$type][$moduleName]['migrationPath'])) {
+            //if not configured, use default in subdir /migrations
+            $migrationFolder = $modulePath.'/migrations' ;
+            if (is_dir($migrationFolder)) {
+                $registeredModules[$type][$moduleName]['migrationPath'] =
+                    $migrationFolder;
+            }
         }
 
         \Config::set('aksara.modules', $registeredModules);
