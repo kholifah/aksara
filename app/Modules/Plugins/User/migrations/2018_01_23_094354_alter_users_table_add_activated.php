@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class TestMigration extends Migration
+class AlterUsersTableAddActivated extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,9 @@ class TestMigration extends Migration
      */
     public function up()
     {
-         Schema::table('users', function (Blueprint $table) {
-              $table->boolean('activated')->default(false);
-          });
+        Schema::table('users', function (Blueprint $table) {
+            $table->boolean('activated')->default(false);
+        });
     }
 
     /**
@@ -25,7 +25,6 @@ class TestMigration extends Migration
      */
     public function down()
     {
-        //
         Schema::table('users', function (Blueprint $table) {
             $table->dropColumn('activated');
         });

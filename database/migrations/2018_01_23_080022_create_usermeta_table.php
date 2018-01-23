@@ -1,9 +1,10 @@
 <?php
 
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateUsermetaTable230817 extends Migration
+class CreateUsermetaTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,21 +13,11 @@ class CreateUsermetaTable230817 extends Migration
      */
     public function up()
     {
-        Schema::create('options', function (Blueprint $table)
-        {
-            $table->bigIncrements('id')->unsigned();
-            $table->string('key', 40)->unique();
-            $table->longText('value');
-
-        });
-
-        Schema::create('user_meta', function (Blueprint $table)
-        {
+        Schema::create('user_meta', function (Blueprint $table) {
             $table->bigIncrements('id')->unsigned();
             $table->string('meta_key', 40)->index();
             $table->longText('meta_value');
             $table->bigInteger('user_id')->unsigned()->index();
-
         });
     }
 
@@ -37,6 +28,6 @@ class CreateUsermetaTable230817 extends Migration
      */
     public function down()
     {
-        Schema::drop('user_meta');
+        Schema::dropIfExists('user_meta');
     }
 }
