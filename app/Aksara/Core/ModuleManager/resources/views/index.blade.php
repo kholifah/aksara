@@ -56,7 +56,17 @@
             @endif
             @if (!migration_complete('plugin', $moduleName))
                 <p>
-                Please run migration to enable activation:
+                Cannot activate module because of pending migration(s):
+                <code>
+                @foreach (migration_pending('plugin', $moduleName) as $migrationName)
+                    <br>{{ $migrationName }}
+                @endforeach
+                </code>
+                </p>
+            @endif
+            @if (!migration_complete('plugin', $moduleName))
+                <p>
+                Please run this migration command to enable activation:
                 <code>
                 @foreach (migration_path('plugin', $moduleName) as $migrationPath)
                     <br>php artisan migrate --path={{ str_replace(base_path() . '/', '', $migrationPath) }}
@@ -112,7 +122,17 @@
             @endif
             @if (!migration_complete('plugin', $moduleName))
                 <p>
-                Please run migration to enable activation:
+                Cannot activate module because of pending migration(s):
+                <code>
+                @foreach (migration_pending('plugin', $moduleName) as $migrationName)
+                    <br>{{ $migrationName }}
+                @endforeach
+                </code>
+                </p>
+            @endif
+            @if (!migration_complete('plugin', $moduleName))
+                <p>
+                Please run this migration command to enable activation:
                 <code>
                 @foreach (migration_path('plugin', $moduleName) as $migrationPath)
                     <br>php artisan migrate --path={{ str_replace(base_path() . '/', '', $migrationPath) }}

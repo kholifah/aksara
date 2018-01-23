@@ -137,15 +137,17 @@ if (!function_exists('migration_path')) {
         $moduleTypes = config('aksara.modules');
         $dirs = [];
         if (!empty($type) && !empty($moduleName)) {
-            if (!isset($moduleTypes[$type][$moduleName])) {
-                return [];
-            }
-            $module = $moduleTypes[$type][$moduleName];
-            if (isset($module['migrationPath'])) {
-                $dirs[] = $module['migrationPath'];
+            if (isset($moduleTypes[$type][$moduleName])) {
+                $module = $moduleTypes[$type][$moduleName];
+                if (isset($module['migrationPath'])) {
+                    $dirs[] = $module['migrationPath'];
+                }
             }
             return $dirs;
         }
+
+        $dirs[] = app()->databasePath().DIRECTORY_SEPARATOR.'migrations';
+
         foreach ($moduleTypes as $typeItems) {
             foreach ($typeItems as $module) {
                 if (isset($module['migrationPath'])) {
@@ -164,19 +166,50 @@ if (!function_exists('migration_files')) {
      * @param  string  $path
      * @return string
      */
-    function migration_files($dirs = [])
+    function migration_files($dirs)
     {
-        if (empty($dirs)) {
-            $dirs = migration_path();
-        }
-        $files = [];
-        foreach ($dirs as $dir) {
-            $filesInDir = array_diff(scandir($dir), [ '.', '..', ]);
-            foreach ($filesInDir as $file) {
-                $files[] = $dir . '/' . $file;
-            }
-        }
+        $migrator = app('migrator');
+        $files = $migrator->getMigrationFiles($dirs);
         return $files;
+    }
+}
+
+if (!function_exists('migration_ran')) {
+
+    /**
+     * Get migration already ran
+     *
+     * @return array
+     */
+    function migration_ran()
+    {
+        $migrator = app('migrator');
+        $ran = $migrator->getRepository()->getRan();
+        return $ran;
+    }
+}
+
+if (!function_exists('migration_names')) {
+    /**
+     * Get migration names
+     *
+     * @param string $type
+     * @param string $moduleName
+     * @return Collection
+     */
+    function migration_names($type = '', $moduleName = '')
+    {
+        $paths = migration_path($type, $moduleName);
+        $files = migration_files($paths);
+
+        $migrator = app('migrator');
+        $collection = collect($files);
+
+        $migrationNames = $collection->map(function ($migration) use ($migrator) {
+            $migrationName = $migrator->getMigrationName($migration);
+            return $migrationName;
+        });
+        return $migrationNames->values();
     }
 }
 
@@ -191,17 +224,8 @@ if (!function_exists('migration_complete')) {
      */
     function migration_complete($type = '', $moduleName = '')
     {
-        $paths = migration_path($type, $moduleName);
-        $migrator = app('migrator');
-
-        $files = $migrator->getMigrationFiles($paths);
-        $ran = $migrator->getRepository()->getRan();
-
-        $collection = collect($files);
-        $migrationNames = $collection->map(function ($migration) use ($migrator) {
-            $migrationName = $migrator->getMigrationName($migration);
-            return $migrationName;
-        });
+        $ran = migration_ran();
+        $migrationNames = migration_names($type, $moduleName);
 
         foreach ($migrationNames as $migrationName) {
             if (!in_array($migrationName, $ran)) {
@@ -212,3 +236,29 @@ if (!function_exists('migration_complete')) {
         return true;
     }
 }
+
+if (!function_exists('migration_pending')) {
+
+    /**
+     * Get list of pending migrations
+     *
+     * @param string $type
+     * @param string $moduleName
+     * @return array
+     */
+    function migration_pending($type = '', $moduleName = '')
+    {
+        $ran = migration_ran();
+        $migrationNames = migration_names($type, $moduleName);
+
+        $pendings = [];
+        foreach ($migrationNames as $migrationName) {
+            if (!in_array($migrationName, $ran)) {
+                $pendings[] = $migrationName;
+            }
+        }
+
+        return $pendings;
+    }
+}
+

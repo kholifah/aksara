@@ -5,12 +5,14 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use App\Aksara\Core\ModuleManager\Console\Commands\MigrationStatusCommand;
 use App\Aksara\Core\ModuleManager\Console\Commands\MigrationCheckCommand;
+use App\Aksara\Core\ModuleManager\Console\Commands\MigrationPendingCommand;
 
 class AksaraServiceProvider extends ServiceProvider
 {
     protected $commands = [
         'AksaraMigrateStatus' => 'command.aksara.migrate.status',
         'AksaraMigrateCheck' => 'command.aksara.migrate.check',
+        'AksaraMigratePending' => 'command.aksara.migrate.pending',
     ];
 
     /**
@@ -120,7 +122,14 @@ class AksaraServiceProvider extends ServiceProvider
     protected function registerAksaraMigrateCheckCommand()
     {
         $this->app->singleton('command.aksara.migrate.check', function ($app) {
-            return new MigrationCheckCommand($app['migrator']);
+            return new MigrationCheckCommand();
+        });
+    }
+
+    protected function registerAksaraMigratePendingCommand()
+    {
+        $this->app->singleton('command.aksara.migrate.pending', function ($app) {
+            return new MigrationPendingCommand();
         });
     }
 }
