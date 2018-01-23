@@ -4,11 +4,13 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use App\Aksara\Core\ModuleManager\Console\Commands\MigrationStatusCommand;
+use App\Aksara\Core\ModuleManager\Console\Commands\MigrationCheckCommand;
 
 class AksaraServiceProvider extends ServiceProvider
 {
     protected $commands = [
         'AksaraMigrateStatus' => 'command.aksara.migrate.status',
+        'AksaraMigrateCheck' => 'command.aksara.migrate.check',
     ];
 
     /**
@@ -92,7 +94,6 @@ class AksaraServiceProvider extends ServiceProvider
     {
         foreach (array_keys($commands) as $command) {
             $function = "register{$command}Command";
-            //dd($function);
             call_user_func_array([$this, $function], []);
         }
 
@@ -113,6 +114,13 @@ class AksaraServiceProvider extends ServiceProvider
     {
         $this->app->singleton('command.aksara.migrate.status', function ($app) {
             return new MigrationStatusCommand($app['migrator']);
+        });
+    }
+
+    protected function registerAksaraMigrateCheckCommand()
+    {
+        $this->app->singleton('command.aksara.migrate.check', function ($app) {
+            return new MigrationCheckCommand($app['migrator']);
         });
     }
 }

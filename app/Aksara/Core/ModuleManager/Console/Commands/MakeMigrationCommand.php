@@ -57,7 +57,7 @@ class MakeMigrationCommand extends Command
 
         if (count($typeArray) != 2) {
             $this->error('Format type-name tidak valid,
-                gunakan format tipe/nama-modul, untuk core tidak perlu nama-modul');
+                gunakan format tipe/nama-modul');
         }
 
         $this->makeModuleMigration($typeArray);

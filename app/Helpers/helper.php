@@ -31,7 +31,7 @@ function aksara_slugify($name)
 	return str_slug($name);
 }
 
-function aksara_unslugify($string, $capitalizeFirstCharacter = false) 
+function aksara_unslugify($string, $capitalizeFirstCharacter = false)
 {
     $str = str_replace(' ', '', ucwords(str_replace('-', ' ', $string)));
 
@@ -126,16 +126,24 @@ function get_country_code()
     return collect(json_decode($countries,true));
 }
 
-if (!function_exists('migration_paths')) {
+if (!function_exists('migration_path')) {
     /**
      * Get all path to migrations
      *
-     * @return string
+     * @return array
      */
-    function migration_paths()
+    function migration_path($type = '', $moduleName = '')
     {
         $moduleTypes = config('aksara.modules');
         $dirs = [];
+        if (!empty($type) && !empty($moduleName)) {
+            if (!isset($moduleTypes[$type][$moduleName])) {
+                return [];
+            }
+            $module = $moduleTypes[$type][$moduleName];
+            $dirs[] = $module['migrationPath'];
+            return $dirs;
+        }
         foreach ($moduleTypes as $typeItems) {
             foreach ($typeItems as $module) {
                 if (isset($module['migrationPath'])) {
@@ -147,7 +155,7 @@ if (!function_exists('migration_paths')) {
     }
 }
 
-if (! function_exists('migration_files')) {
+if (!function_exists('migration_files')) {
     /**
      * Get all migrations files in configured paths
      *
@@ -157,7 +165,7 @@ if (! function_exists('migration_files')) {
     function migration_files($dirs = [])
     {
         if (empty($dirs)) {
-            $dirs = migration_paths();
+            $dirs = migration_path();
         }
         $files = [];
         foreach ($dirs as $dir) {
@@ -167,5 +175,38 @@ if (! function_exists('migration_files')) {
             }
         }
         return $files;
+    }
+}
+
+if (!function_exists('migration_complete')) {
+
+    /**
+     * Check migration status of module
+     *
+     * @param string $type
+     * @param string $moduleName
+     * @return bool
+     */
+    function migration_complete($type = '', $moduleName = '')
+    {
+        $paths = migration_path($type, $moduleName);
+        $migrator = app('migrator');
+
+        $files = $migrator->getMigrationFiles($paths);
+        $ran = $migrator->getRepository()->getRan();
+
+        $collection = collect($files);
+        $migrationNames = $collection->map(function ($migration) use ($migrator) {
+            $migrationName = $migrator->getMigrationName($migration);
+            return $migrationName;
+        });
+
+        foreach ($migrationNames as $migrationName) {
+            if (!in_array($migrationName, $ran)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

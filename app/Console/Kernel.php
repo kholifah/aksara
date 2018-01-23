@@ -14,7 +14,6 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         \App\Aksara\Core\ModuleManager\Console\Commands\MakeMigrationCommand::class,
-        \App\Console\Commands\LinkModuleAssetCommand::class
     ];
 
     /**

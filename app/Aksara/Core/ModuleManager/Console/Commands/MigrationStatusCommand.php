@@ -4,11 +4,11 @@ namespace App\Aksara\Core\ModuleManager\Console\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Database\Migrations\Migrator;
 use Illuminate\Support\Collection;
-use Symfony\Component\Console\Input\InputOption;
 
 class MigrationStatusCommand extends Command
 {
     protected $signature = 'aksara:migrate:status
+        {type?} {moduleName?}
         {--database= : The database connection to use}
         {--path= : The path to migration files to use}';
 
@@ -35,7 +35,10 @@ class MigrationStatusCommand extends Command
             return $this->error('No migrations found.');
         }
 
-        $paths = migration_paths();
+        $type = $this->argument('type') ?? '';
+        $moduleName = $this->argument('moduleName') ?? '';
+
+        $paths = migration_path($type, $moduleName);
 
         if (count($migrations = $this->getStatusFor($paths)) > 0) {
             $this->table(['Ran?', 'Migration'], $migrations);
