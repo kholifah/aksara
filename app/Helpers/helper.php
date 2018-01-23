@@ -141,7 +141,9 @@ if (!function_exists('migration_path')) {
                 return [];
             }
             $module = $moduleTypes[$type][$moduleName];
-            $dirs[] = $module['migrationPath'];
+            if (isset($module['migrationPath'])) {
+                $dirs[] = $module['migrationPath'];
+            }
             return $dirs;
         }
         foreach ($moduleTypes as $typeItems) {

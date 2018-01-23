@@ -43,7 +43,8 @@
               <form method='POST' action="{{ route('module-manager.activate',['slug'=>$moduleName,'type'=>'plugin']) }}">
                 {{ csrf_field() }}
 
-                <input class='btn btn-xs btn-primary' type='submit' value="activate" >
+                <input class='btn btn-xs btn-primary' type='submit' value="activate"
+                {{ migration_complete('plugin', $moduleName) ? '' : 'disabled' }}>
               </form>
             @endif
           </td>
@@ -52,6 +53,16 @@
             <p>Description : {{ $moduleDescription['description'] }}</p>
             @if( sizeof($moduleDescription['dependencies']) >0 )
             <p>Dependencies : {{ implode(',',$moduleDescription['dependencies'] ) }}</p>
+            @endif
+            @if (!migration_complete('plugin', $moduleName))
+                <p>
+                Please run migration to enable activation:
+                <code>
+                @foreach (migration_path('plugin', $moduleName) as $migrationPath)
+                    <br>php artisan migrate --path={{ str_replace(base_path() . '/', '', $migrationPath) }}
+                @endforeach
+                </code>
+                </p>
             @endif
           </td>
         </tr>
@@ -88,7 +99,8 @@
               <form method='POST' action="{{ route('module-manager.activate',['slug'=>$moduleName,'type'=>'front-end']) }}">
                 {{ csrf_field() }}
 
-                <input class='btn btn-xs btn-primary' type='submit' value="activate" >
+                <input class='btn btn-xs btn-primary' type='submit' value="activate"
+                {{ migration_complete('plugin', $moduleName) ? '' : 'disabled' }}>
               </form>
             @endif
           </td>
@@ -97,6 +109,16 @@
             <p>Description : {{ $moduleDescription['description'] }}</p>
             @if( sizeof($moduleDescription['dependencies']) >0 )
             <p>Dependencies : {{ implode(',',$moduleDescription['dependencies'] ) }}</p>
+            @endif
+            @if (!migration_complete('plugin', $moduleName))
+                <p>
+                Please run migration to enable activation:
+                <code>
+                @foreach (migration_path('plugin', $moduleName) as $migrationPath)
+                    <br>php artisan migrate --path={{ str_replace(base_path() . '/', '', $migrationPath) }}
+                @endforeach
+                </code>
+                </p>
             @endif
           </td>
         </tr>

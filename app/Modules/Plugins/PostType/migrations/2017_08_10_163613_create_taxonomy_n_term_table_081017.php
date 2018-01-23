@@ -59,13 +59,12 @@ class CreateTaxonomyNTermTable081017 extends Migration
             $table->bigInteger('term_id')->unsigned();
             $table->foreign('term_id')
                     ->references('id')
-                    ->on('term_id')
+                    ->on('terms')
                     ->onDelete('cascade');
             $table->bigInteger('post_id')->unsigned()->index();
-            $table->bigInteger('post_id')->unsigned();
             $table->foreign('post_id')
                     ->references('id')
-                    ->on('post_id')
+                    ->on('posts')
                     ->onDelete('cascade');
 
         });
