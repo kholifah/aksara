@@ -51,25 +51,37 @@ class ModuleManagerController extends Controller
         return [];
     }
 
+    private function getMigrations($type, $slug, $dependencies)
+    {
+        $selfMigrations = migration_path($type, $slug);
+        $depsMigrations = [];
+
+        foreach ($dependencies as $dependency) {
+            $depsMigration = migration_path('plugin', $dependency);
+            $depsMigrations = array_merge($depsMigrations, $depsMigration);
+        }
+
+        return array_merge($selfMigrations, $depsMigrations);
+    }
+
     public function activationCheck($type, $slug)
     {
         $modules = config('aksara.modules');
+
         if (!isset($modules[$type][$slug])) {
             throw new NotFoundHttpException('Module not found');
         }
-        $dependencies = $this->resolveDependency($modules, $type, $slug);
 
-        //TODO get migration commands recursively
-        $migrations = [];
+        $dependencies = $this->resolveDependency($modules, $type, $slug);
+        $migrations = $this->getMigrations($type, $slug, $dependencies);
 
         $data = new ModuleActivationCheckInfo(
             $type,
             $slug,
             $dependencies,
-            []
+            $migrations
         );
 
-        //render activation-check page
         return view('core:module-manager::activation-check', $data->toArray());
     }
 

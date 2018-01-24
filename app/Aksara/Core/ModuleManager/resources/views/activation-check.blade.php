@@ -30,6 +30,10 @@
         <h3>Pending Migrations</h3>
         <p>Please run the following migration(s)</p>
         <!-- migration pending -->
+          @foreach($migrations as $migration)
+            <br><code>php artisan migrate --path={{ str_replace(base_path() . '/', '', $migration) }}</code>
+          @endforeach
+        </ul>
       </div>
       <div class="row">
         <div class="col-md-12 text-right">
@@ -38,7 +42,7 @@
 
             <input class='btn btn-xs btn-primary'
               type='submit' value="Next"
-              {{ migration_complete('plugin', $slug) ? '' : 'disabled' }}>
+              {{ count($migrations) == 0 ? '' : 'disabled' }}>
           </form>
         </div>
 
