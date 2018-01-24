@@ -344,10 +344,10 @@ class Module
     public function initActivation($slug,$type='plugin')
     {
         \set_options('module_activation', [
-        'moduleType' => $type,
-        'moduleName' => $slug,
-        'counter' => 0
-    ]);
+            'moduleType' => $type,
+            'moduleName' => $slug,
+            'counter' => 0
+        ]);
 
         //@todo
         $this->activateModule($type, $slug);

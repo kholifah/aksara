@@ -3,12 +3,20 @@ namespace App\Aksara\Core\ModuleManager\Http;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Aksara\Core\Module;
 
 class ModuleManagerController extends Controller
 {
+    private $module;
+
+    public function __construct(Module $module)
+    {
+        $this->module = $module;
+    }
+
     public function index()
     {
-        $module = \App::make('module');
+        $module = $this->module;
         $module->moduleStatusChangeListener();
 
         $param = compact('module');
@@ -18,35 +26,34 @@ class ModuleManagerController extends Controller
 
     public function activate($type, $slug)
     {
-        $module = \App::make('module');
+        $this->module->initActivation($slug,$type);
 
-        $module->initActivation($slug,$type);
-
-        return redirect()->route('module-manager.activation-info', ['slug'=>$slug,'type'=>$type]);
+        return redirect()->route('module-manager.activation-info', [
+            'slug'=>$slug,'type'=>$type]);
     }
 
     // Test plugin activation and admin rendering
     public function activationInfo($type, $slug)
     {
         $activatedModule = \get_options('module_activation', false);
-
-        $module = \App::make('module');
-        $module->moduleStatusChangeListener();
+        $this->module->moduleStatusChangeListener();
 
         // failed
-        if (!$activatedModule || !$module->getModuleStatus($activatedModule['moduleType'], $activatedModule['moduleName'])) {
+        if (!$activatedModule || !$this->module->getModuleStatus(
+            $activatedModule['moduleType'],
+            $activatedModule['moduleName'])
+        ){
             return redirect()->route('module-manager.index');
         }
 
         // success
-        return view('core:module-manager::activation-info', compact('activatedModule'))->render();
+        return view('core:module-manager::activation-info',
+            compact('activatedModule'))->render();
     }
 
     public function deactivate($type,$slug)
     {
-        $module = \App::make('module');
-
-        $module->initDeactivation($slug, $type);
+        $this->module->initDeactivation($slug, $type);
 
         return redirect()->route('module-manager.index');
     }
