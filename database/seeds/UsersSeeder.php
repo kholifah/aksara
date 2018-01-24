@@ -20,7 +20,8 @@ class UsersSeeder extends Seeder
         App\User::create([
             'name' => 'admin',
             'email' => 'admin@gmail.com',
-            'password' => bcrypt('123456')
+            'password' => bcrypt('123456'),
+            'active' => true,
         ]);
     }
 
