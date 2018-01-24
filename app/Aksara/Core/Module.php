@@ -356,10 +356,10 @@ class Module
     public function initDeactivation($slug,$type='plugin')
     {
         \set_options('module_deactivation', [
-        'moduleType' => $type,
-        'moduleName' => $slug,
-        'counter' => 0
-    ]);
+            'moduleType' => $type,
+            'moduleName' => $slug,
+            'counter' => 0
+        ]);
 
         //@todo
         $this->deactivateModule($type, $slug);

@@ -35,4 +35,15 @@
              ];
 
     $route->addRoute($moduleManagerInfo);
+
+    $moduleManagerCheck = [
+             'slug' => '/aksara-module-manager/check/{type}/{slug}',
+             'method' => 'GET',
+             'args' => [
+                          'as' => 'module-manager.activation-check',
+                          'uses' => '\App\Aksara\Core\ModuleManager\Http\ModuleManagerController@activationCheck',
+                        ],
+             ];
+
+    $route->addRoute($moduleManagerCheck);
 });
