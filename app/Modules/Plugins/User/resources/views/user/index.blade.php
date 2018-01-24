@@ -41,8 +41,7 @@
                                     </div>
                                 </th>
                                 <th>Nama</th>
-                                <th>Email</th>
-                                <th>Role</th>
+                                <th>Email</th>                              
                                 <th>Active</th>
                                 <th class="no-sort" width="100">Edit</th>
                             </tr>
@@ -58,8 +57,7 @@
                                     </div>
                                 </td>
                                 <td>{{ $user->name }}</td>
-                                <td>{{ $user->email }}</td>
-                                <td>{{ $user->role }}</td>
+                                <td>{{ $user->email }}</td>                               
                                 <td>
                                     @if($user->active == 1)
                                     Active
