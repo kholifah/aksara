@@ -101,12 +101,7 @@
                 <input type='submit' class='btn btn-xs btn-default' value="deactivate" >
               </form>
             @else
-              <form method='POST' action="{{ route('module-manager.activate',['slug'=>$moduleName,'type'=>'front-end']) }}">
-                {{ csrf_field() }}
-
-                <input class='btn btn-xs btn-primary' type='submit' value="activate"
-                {{ migration_complete('plugin', $moduleName) ? '' : 'disabled' }}>
-              </form>
+              <a class='btn btn-xs btn-primany' href="{{ route('module-manager.activation-check', [ 'slug' => $moduleName, 'type' => 'front-end', ]) }}">Activate</a>
             @endif
           </td>
           <td>
