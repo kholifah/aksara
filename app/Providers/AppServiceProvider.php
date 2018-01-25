@@ -38,5 +38,10 @@ class AppServiceProvider extends ServiceProvider
             \Aksara\ModuleStatus\ModuleStatus::class,
             \Aksara\ModuleStatus\Interactor::class
         );
+
+        $this->app->bind(
+            \Aksara\ModuleDependency\PluginRequiredBy::class,
+            \Aksara\ModuleDependency\PluginRequiredByInteractor::class
+        );
     }
 }

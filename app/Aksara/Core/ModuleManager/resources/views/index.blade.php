@@ -37,7 +37,7 @@
               <form method='POST' action="{{ route('module-manager.deactivate',['slug'=>$moduleName,'type'=>'plugin']) }}">
                 {{ csrf_field() }}
 
-                <input type='submit' class='btn btn-xs btn-default' value="deactivate" >
+                <input type='submit' class='btn btn-xs btn-default' value="deactivate" {{ $pluginRequiredBy->isRequired($moduleName) ? 'disabled' : '' }}>
               </form>
             @else
               <a class='btn btn-xs btn-primany' href="{{ route('module-manager.activation-check', [ 'slug' => $moduleName, 'type' => 'plugin', ]) }}">Activate</a>
@@ -49,25 +49,11 @@
             @if( sizeof($moduleDescription['dependencies']) >0 )
             <p>Dependencies : {{ implode(',',$moduleDescription['dependencies'] ) }}</p>
             @endif
-            @if (!migration_complete('plugin', $moduleName))
-                <p>
-                Cannot activate module because of pending migration(s):
-                <code>
-                @foreach (migration_pending('plugin', $moduleName) as $migrationName)
-                    <br>{{ $migrationName }}
-                @endforeach
-                </code>
-                </p>
-            @endif
-            @if (!migration_complete('plugin', $moduleName))
-                <p>
-                Please run this migration command to enable activation:
-                <code>
-                @foreach (migration_path('plugin', $moduleName) as $migrationPath)
-                    <br>php artisan migrate --path={{ str_replace(base_path() . '/', '', $migrationPath) }}
-                @endforeach
-                </code>
-                </p>
+            @if ($pluginRequiredBy->isRequired($moduleName))
+              Currently used by:
+              @foreach ($pluginRequiredBy->getRequiredBy($moduleName) as $requiredByItem)
+                {{ $requiredByItem }}
+              @endforeach
             @endif
           </td>
         </tr>
@@ -109,26 +95,6 @@
             <p>Description : {{ $moduleDescription['description'] }}</p>
             @if( sizeof($moduleDescription['dependencies']) >0 )
             <p>Dependencies : {{ implode(',',$moduleDescription['dependencies'] ) }}</p>
-            @endif
-            @if (!migration_complete('plugin', $moduleName))
-                <p>
-                Cannot activate module because of pending migration(s):
-                <code>
-                @foreach (migration_pending('plugin', $moduleName) as $migrationName)
-                    <br>{{ $migrationName }}
-                @endforeach
-                </code>
-                </p>
-            @endif
-            @if (!migration_complete('plugin', $moduleName))
-                <p>
-                Please run this migration command to enable activation:
-                <code>
-                @foreach (migration_path('plugin', $moduleName) as $migrationPath)
-                    <br>php artisan migrate --path={{ str_replace(base_path() . '/', '', $migrationPath) }}
-                @endforeach
-                </code>
-                </p>
             @endif
           </td>
         </tr>

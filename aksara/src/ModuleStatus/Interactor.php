@@ -43,7 +43,7 @@ class Interactor implements ModuleStatus
         return isset($registeredModules[$type][$moduleName]);
     }
 
-    private function isActive($type, $moduleName) : bool
+    public function isActive($type, $moduleName) : bool
     {
         // @TODO if front-end / admin should check first
         if ( $type =='admin' || $type == 'core') {

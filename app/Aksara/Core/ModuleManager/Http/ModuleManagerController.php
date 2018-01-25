@@ -7,18 +7,22 @@ use App\Aksara\Core\Module;
 use Aksara\ModuleActivationCheckInfo;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Aksara\ModuleStatus\ModuleStatus;
+use Aksara\ModuleDependency\PluginRequiredBy;
 
 class ModuleManagerController extends Controller
 {
     private $module;
     private $moduleStatus;
+    private $pluginRequiredBy;
 
     public function __construct(
         Module $module,
-        ModuleStatus $moduleStatus
+        ModuleStatus $moduleStatus,
+        PluginRequiredBy $pluginRequiredBy
     ){
         $this->module = $module;
         $this->moduleStatus = $moduleStatus;
+        $this->pluginRequiredBy = $pluginRequiredBy;
     }
 
     public function index()
@@ -26,7 +30,9 @@ class ModuleManagerController extends Controller
         $module = $this->module;
         $module->moduleStatusChangeListener();
 
-        $param = compact('module');
+        $pluginRequiredBy = $this->pluginRequiredBy;
+
+        $param = compact('module', 'pluginRequiredBy');
 
         return view('core:module-manager::index', $param)->render();
     }
@@ -234,10 +240,28 @@ class ModuleManagerController extends Controller
             compact('activatedModule'))->render();
     }
 
-    public function deactivate($type,$slug)
+    public function deactivate($type, $slug)
     {
-        $this->module->initDeactivation($slug, $type);
+        try {
+            if (strtolower($type) == 'plugin') {
+                if ($this->pluginRequiredBy->isRequired($slug)) {
+                    throw new \Exception(
+                        'Cannot deactivate ' . $type . ' - ' . $slug .
+                        ' because used in another module(s)'
+                    );
+                }
+            }
+            $this->module->initDeactivation($slug, $type);
 
-        return redirect()->route('module-manager.index');
+            return redirect()->route('module-manager.index');
+        } catch (\Exception $e) {
+            admin_notice('warning',
+                $type .
+                ' - ' .
+                $slug .
+                ' gagal diaktifkan:' . $e->getMessage()
+            );
+            return redirect()->route('module-manager.index');
+        }
     }
 }
