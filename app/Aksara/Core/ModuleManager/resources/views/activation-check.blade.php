@@ -17,11 +17,11 @@
       <!-- dependencies -->
       <h3>Activating {{ $type }} : {{ $slug }}</h3>
       <p>
-      The following plugin(s) will be activated because of dependency
+      The following plugin(s) will be activated if inactive because of dependency
       </p>
       <ul>
         @foreach($dependencies as $dependency)
-          <li>{{ $dependency }}</li>
+          <li>{{ $dependency->getModuleName() }} ({{ !$dependency->getIsRegistered() ? 'Unregistered' : ($dependency->getIsActive() ? 'Active' : 'Inactive') }}) </li>
         @endforeach
       </ul>
     </div>
@@ -37,12 +37,12 @@
       </div>
       <div class="row">
         <div class="col-md-12 text-right">
-          <form method='POST' action="{{ route('module-manager.activate',['slug'=> $slug,'type'=>$type]) }}">
+          <form method='POST' action="{{ route('module-manager.activate-recursive',['slug'=> $slug,'type'=>$type]) }}">
             {{ csrf_field() }}
 
             <input class='btn btn-xs btn-primary'
               type='submit' value="Next"
-              {{ count($migrations) == 0 ? '' : 'disabled' }}>
+              {{ $allow_activation ? '' : 'disabled' }}>
           </form>
         </div>
 

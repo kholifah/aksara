@@ -37,7 +37,7 @@
               <form method='POST' action="{{ route('module-manager.deactivate',['slug'=>$moduleName,'type'=>'plugin']) }}">
                 {{ csrf_field() }}
 
-                <input type='submit' class='btn btn-xs btn-default' value="deactivate-old" >
+                <input type='submit' class='btn btn-xs btn-default' value="deactivate" >
               </form>
             @else
               <a class='btn btn-xs btn-primany' href="{{ route('module-manager.activation-check', [ 'slug' => $moduleName, 'type' => 'plugin', ]) }}">Activate</a>
@@ -98,13 +98,13 @@
               <form method='POST' action="{{ route('module-manager.deactivate',['slug'=>$moduleName,'type'=>'front-end']) }}">
                 {{ csrf_field() }}
 
-                <input type='submit' class='btn btn-xs btn-default' value="deactivate-old" >
+                <input type='submit' class='btn btn-xs btn-default' value="deactivate" >
               </form>
             @else
               <form method='POST' action="{{ route('module-manager.activate',['slug'=>$moduleName,'type'=>'front-end']) }}">
                 {{ csrf_field() }}
 
-                <input class='btn btn-xs btn-primary' type='submit' value="activate-old"
+                <input class='btn btn-xs btn-primary' type='submit' value="activate"
                 {{ migration_complete('plugin', $moduleName) ? '' : 'disabled' }}>
               </form>
             @endif
