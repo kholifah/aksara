@@ -23,14 +23,6 @@
     </div>
 </div>
 
-<div class="form-group form-group--table {!! $errors->has('role') ? 'error' : '' !!}">
-    <label class="col-form-label">Role</label>
-    <div class="col-form-input">
-        {!! Form::select('role', $user_role, $user->role, ['class'=>'form-control']) !!}
-        {!! $errors->first('role', '<p class="help-block">:message</p>') !!}
-    </div>
-</div>
-
 <div class="form-group form-group--table {!! $errors->has('password') ? 'error' : '' !!}">
     <label class="col-form-label">Password</label>
     <div class="col-form-input">
