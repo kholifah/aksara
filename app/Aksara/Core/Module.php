@@ -1,6 +1,9 @@
 <?php
 namespace App\Aksara\Core;
 
+use Aksara\Exceptions\LoadModuleException;
+use Aksara\ModuleKey;
+
 class Module
 {
     // $type = front-end, plugin, admin,core
@@ -26,92 +29,108 @@ class Module
     // $type = front-end, plugin, cms
     public function loadModule($type, $moduleName)
     {
-        $module =  \Config::get('aksara.modules.'.$type.'.'.$moduleName, false);
+        try {
+            $module =  \Config::get('aksara.modules.'.$type.'.'.$moduleName, false);
 
-        if (!$module) {
-            return false;
-        }
+            if (!$module) {
+                return false;
+            }
 
-        $moduleIndex = $module['modulePath'].'/index.php' ;
-        $moduleHelper = $module['modulePath'].'/helper.php';
-        $moduleRoutes = $module['modulePath'].'/routes.php';
-        $viewFolder = $module['modulePath'].'/resources/views' ;
-        $languageFolder = $module['modulePath'].'/resources/lang' ;
-        $migrationFolder = $module['modulePath'].'/migrations' ;
+            $moduleIndex = $module['modulePath'].'/index.php' ;
+            $moduleHelper = $module['modulePath'].'/helper.php';
+            $moduleRoutes = $module['modulePath'].'/routes.php';
+            $viewFolder = $module['modulePath'].'/resources/views' ;
+            $languageFolder = $module['modulePath'].'/resources/lang' ;
+            $migrationFolder = $module['modulePath'].'/migrations' ;
 
-        // Check if dependency not met
-        $moduleDescription = \Config::get('aksara.modules', []);
-        $moduleDescription = $moduleDescription[$type][$moduleName];
-        // modules-> not found dependencies -> notice
-        // - disable modules (plugin)
-        // - force enable modules (front-end/admin)
-        if ($type != 'core') {
-            if (isset($moduleDescription['dependencies'])) {
-                // Create dependencies array
-                if (is_string($moduleDescription['dependencies'])) {
-                    $dependencies[] = $moduleDescription['dependencies'];
-                } elseif (is_array($moduleDescription['dependencies'])) {
-                    $dependencies = $moduleDescription['dependencies'];
-                } else {
-                    $dependencies = [];
-                }
+            // Check if dependency not met
+            $moduleDescription = \Config::get('aksara.modules', []);
+            $moduleDescription = $moduleDescription[$type][$moduleName];
+            // modules-> not found dependencies -> notice
+            // - disable modules (plugin)
+            // - force enable modules (front-end/admin)
+            if ($type != 'core') {
+                if (isset($moduleDescription['dependencies'])) {
+                    // Create dependencies array
+                    if (is_string($moduleDescription['dependencies'])) {
+                        $dependencies[] = $moduleDescription['dependencies'];
+                    } elseif (is_array($moduleDescription['dependencies'])) {
+                        $dependencies = $moduleDescription['dependencies'];
+                    } else {
+                        $dependencies = [];
+                    }
 
-                foreach ($dependencies as $dependency) {
-                    if (!$this->getModuleStatus('plugin', $dependency)) {
-                        if ($type == 'plugin') {
-                            admin_notice('danger', 'Plugin '.$moduleDescription['name'].' di-nonaktifkan karena dependency '.$dependency.' tidak aktif.');
-                            $this->deactivateModule($type, $moduleName);
-                            return false;
-                        } else {
-                            $successActivate = $this->activateModule('plugin', $dependency);
-                            $this->loadModule('plugin', $dependency);
-                            if (!$successActivate) {
-                                admin_notice('danger', 'Plugin '.$dependency.' tidak ada dalam sistem.');
+                    foreach ($dependencies as $dependency) {
+                        if (!$this->getModuleStatus('plugin', $dependency)) {
+                            if ($type == 'plugin') {
+                                admin_notice('danger', 'Plugin '.$moduleDescription['name'].' di-nonaktifkan karena dependency '.$dependency.' tidak aktif.');
+                                $this->deactivateModule($type, $moduleName);
                                 return false;
                             } else {
-                                admin_notice('danger', 'Plugin '.$dependency.' diaktifkan karena merupakan dependency dari '.$moduleName);
+                                $successActivate = $this->activateModule('plugin', $dependency);
+                                $this->loadModule('plugin', $dependency);
+                                if (!$successActivate) {
+                                    admin_notice('danger', 'Plugin '.$dependency.' tidak ada dalam sistem.');
+                                    return false;
+                                } else {
+                                    admin_notice('danger', 'Plugin '.$dependency.' diaktifkan karena merupakan dependency dari '.$moduleName);
+                                }
                             }
                         }
                     }
                 }
             }
+
+            // register index
+            if (file_exists($moduleIndex)) {
+
+                if (file_exists($moduleHelper)) {
+                    require_once($moduleHelper);
+                }
+
+                if (file_exists($moduleRoutes)) {
+                    require_once($moduleRoutes);
+                }
+
+                // Register view namespace
+                if (is_dir($viewFolder)) {
+                    view()->addNamespace($type.':'.$moduleName, $viewFolder);
+                }
+
+                // Register language namesapce
+                if (is_dir($languageFolder)) {
+                    \Lang::addNamespace($type.':'.$moduleName, $languageFolder);
+                }
+
+                // register migration
+                // @TODO Migration
+                if (is_dir($migrationFolder)) {
+                    app()->afterResolving('migrator', function ($migrator) use ($migrationFolder) {
+                        $migrator->path($migrationFolder);
+                    });
+                }
+
+                require_once($moduleIndex);
+
+                //module successfully loaded, remove any init vars
+                if (session()->has('activating_module')) {
+                    session()->forget('activating_module');
+                }
+                if (session()->has('deactivating_module')) {
+                    session()->forget('deactivating_module');
+                }
+
+                return true;
+            }
+
+            return false;
+        } catch (\Exception $e) {
+            throw new LoadModuleException(
+                new ModuleKey(
+                    $type,
+                    $moduleName
+                ));
         }
-
-        // register index
-        if (file_exists($moduleIndex)) {
-
-            if (file_exists($moduleHelper)) {
-                require_once($moduleHelper);
-            }
-
-            if (file_exists($moduleRoutes)) {
-                require_once($moduleRoutes);
-            }
-
-            // Register view namespace
-            if (is_dir($viewFolder)) {
-                view()->addNamespace($type.':'.$moduleName, $viewFolder);
-            }
-
-            // Register language namesapce
-            if (is_dir($languageFolder)) {
-                \Lang::addNamespace($type.':'.$moduleName, $languageFolder);
-            }
-
-            // register migration
-            // @TODO Migration
-            if (is_dir($migrationFolder)) {
-                app()->afterResolving('migrator', function ($migrator) use ($migrationFolder) {
-                    $migrator->path($migrationFolder);
-                });
-            }
-
-            require_once($moduleIndex);
-
-            return true;
-        }
-
-        return false;
     }
 
     // @TODO module_activation seharusnya dihapus pada saat laravel berhasil clean shutdown, tapi karena tidak ada hook shutdown pada laravel maka caranya adalah dicek, jika counter sudah 2 dihapus

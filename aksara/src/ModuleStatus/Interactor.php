@@ -31,10 +31,9 @@ class Interactor implements ModuleStatus
         );
     }
 
-    private function isRegistered($type, $moduleName)
+    public function isRegistered($type, $moduleName) : bool
     {
         $registeredModules = $this->configRepo->get('aksara.modules', []);
-
 
         if (!isset($registeredModules[$type])) {
             return false;

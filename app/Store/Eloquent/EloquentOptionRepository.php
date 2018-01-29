@@ -13,9 +13,14 @@ class EloquentOptionRepository implements OptionRepository
         $this->model = $model;
     }
 
-    public function getOptions($key, $default = null)
+    public function getOptions($key = false, $default = null)
     {
         return $this->model->get_options($key, $default);
+    }
+
+    public function setOptions($key = false, $value = null)
+    {
+        return $this->model->set_options($key, $value);
     }
 }
 

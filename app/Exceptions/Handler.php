@@ -4,10 +4,14 @@ namespace App\Exceptions;
 
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Contracts\Container\Container;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Aksara\Exceptions\LoadModuleException;
+use Aksara\ErrorLoadModule\ErrorLoadModuleHandler;
 
 class Handler extends ExceptionHandler
 {
+
     /**
      * A list of the exception types that are not reported.
      *
@@ -27,6 +31,16 @@ class Handler extends ExceptionHandler
         'password_confirmation',
     ];
 
+    private $loadModuleHandler;
+
+    public function __construct(
+        Container $container,
+        ErrorLoadModuleHandler $loadModuleHandler
+    ){
+        $this->loadModuleHandler = $loadModuleHandler;
+        parent::__construct($container);
+    }
+
     /**
      * Report or log an exception.
      *
@@ -37,12 +51,6 @@ class Handler extends ExceptionHandler
      */
     public function report(Exception $exception)
     {
-
-        //Illuminate\Foundation\Bootstrap\HandleExceptions::handleException 73
-        //@todo
-        // Need to disable the last activated plugin...
-        // $module = app('module');
-        // $module->moduleActivationErrorHandler($exception);
         parent::report($exception);
     }
 
@@ -55,6 +63,22 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
+        if ($exception instanceof LoadModuleException) {
+            $this->loadModuleHandler->handle($exception);
+
+            //TODO flash session tidak tampil
+            $redir = redirect('admin/aksara-module-manager')->with(
+                'admin_notice',
+                [
+                    [
+                        'labelClass' => 'warning',
+                        'content' => $exception->getMessage(),
+                    ],
+                ]
+            );
+            //dd($redir);
+            return $redir;
+        }
         return parent::render($request, $exception);
     }
 

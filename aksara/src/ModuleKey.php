@@ -3,7 +3,7 @@ namespace Aksara;
 
 use Illuminate\Contracts\Support\Arrayable;
 
-class ModuleKey implements Arrayable
+class ModuleKey implements Arrayable, ModuleIdentifier
 {
     private $type;
     private $moduleName;

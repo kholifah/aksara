@@ -8,21 +8,26 @@ use Aksara\ModuleActivationCheckInfo;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Aksara\ModuleStatus\ModuleStatus;
 use Aksara\ModuleDependency\PluginRequiredBy;
+use Aksara\ModuleKey;
+use Aksara\UpdateModuleStatus\UpdateModuleStatusHandler;
 
 class ModuleManagerController extends Controller
 {
     private $module;
     private $moduleStatus;
     private $pluginRequiredBy;
+    private $updateModuleStatus;
 
     public function __construct(
         Module $module,
         ModuleStatus $moduleStatus,
-        PluginRequiredBy $pluginRequiredBy
+        PluginRequiredBy $pluginRequiredBy,
+        UpdateModuleStatusHandler $updateModuleStatus
     ){
         $this->module = $module;
         $this->moduleStatus = $moduleStatus;
         $this->pluginRequiredBy = $pluginRequiredBy;
+        $this->updateModuleStatus = $updateModuleStatus;
     }
 
     public function index()
@@ -176,15 +181,19 @@ class ModuleManagerController extends Controller
             $activated = [];
 
             foreach ($toBeActivated as $itemToBeActivated) {
-                if (!$this->module->activateModule(
-                    $itemToBeActivated->getType(),
-                    $itemToBeActivated->getModuleName())
+                if (!$this->updateModuleStatus->activate(
+                    new ModuleKey(
+                        $itemToBeActivated->getType(),
+                        $itemToBeActivated->getModuleName())
+                    )
                 ){
                     //rollback
                     foreach ($activated as $itemActivated) {
-                        $this->module->deactivateModule(
-                            $itemActivated->getType(),
-                            $itemActivated->getModuleName()
+                        $this->updateModuleStatus->deactivate(
+                            new ModuleKey(
+                                $itemActivated->getType(),
+                                $itemActivated->getModuleName()
+                            )
                         );
                     }
                     //raise error
@@ -193,14 +202,8 @@ class ModuleManagerController extends Controller
                 $activated[] = $itemToBeActivated;
             }
 
-            foreach ($activated as $itemActivated) {
-                admin_notice('success',
-                    $itemActivated->getType() .
-                    ' - ' .
-                    $itemActivated->getModuleName() .
-                    ' berhasil diaktifkan.'
-                );
-            }
+            session()->put('activating_module', $activated);
+
             return redirect()->route('module-manager.index');
         } catch (\Exception $e) {
             admin_notice('warning',
@@ -211,33 +214,6 @@ class ModuleManagerController extends Controller
             );
             return redirect()->route('module-manager.index');
         }
-    }
-
-    public function activate($type, $slug)
-    {
-        $this->module->initActivation($slug,$type);
-
-        return redirect()->route('module-manager.activation-info', [
-            'slug'=>$slug,'type'=>$type]);
-    }
-
-    // Test plugin activation and admin rendering
-    public function activationInfo($type, $slug)
-    {
-        $activatedModule = \get_options('module_activation', false);
-        $this->module->moduleStatusChangeListener();
-
-        // failed
-        if (!$activatedModule || !$this->module->getModuleStatus(
-            $activatedModule['moduleType'],
-            $activatedModule['moduleName'])
-        ){
-            return redirect()->route('module-manager.index');
-        }
-
-        // success
-        return view('core:module-manager::activation-info',
-            compact('activatedModule'))->render();
     }
 
     public function deactivate($type, $slug)
@@ -251,7 +227,8 @@ class ModuleManagerController extends Controller
                     );
                 }
             }
-            $this->module->initDeactivation($slug, $type);
+            $this->updateModuleStatus->deactivate(new ModuleKey($type, $slug));
+            session()->put('deactivating_module', new ModuleKey($type, $slug));
 
             return redirect()->route('module-manager.index');
         } catch (\Exception $e) {

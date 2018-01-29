@@ -15,7 +15,7 @@
     </div>
     <div class="col-md-6">
       <!-- dependencies -->
-      <h3>Activating {{ $type }} : {{ $slug }}</h3>
+      <h3>Activating {{ $type }} : {{ $module_name }}</h3>
       <p>
       The following plugin(s) will be activated if inactive because of dependency
       </p>
@@ -37,7 +37,7 @@
       </div>
       <div class="row">
         <div class="col-md-12 text-right">
-          <form method='POST' action="{{ route('module-manager.activate-recursive',['slug'=> $slug,'type'=>$type]) }}">
+          <form method='POST' action="{{ route('module-manager.activate-recursive',['slug'=> $module_name,'type'=>$type]) }}">
             {{ csrf_field() }}
 
             <input class='btn btn-xs btn-primary'

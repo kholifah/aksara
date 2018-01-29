@@ -3,21 +3,21 @@ namespace Aksara;
 
 use Illuminate\Contracts\Support\Arrayable;
 
-class ModuleActivationCheckInfo implements Arrayable
+class ModuleActivationCheckInfo implements Arrayable, ModuleIdentifier
 {
     private $type;
-    private $slug;
+    private $moduleName;
     private $dependencies;
     private $migrations;
 
     public function __construct(
         string $type,
-        string $slug,
+        string $moduleName,
         array $dependencies = [],
         array $migrations = []
     ){
         $this->type = $type;
-        $this->slug = $slug;
+        $this->moduleName = $moduleName;
         $this->dependencies = $dependencies;
         $this->migrations = $migrations;
     }
@@ -27,9 +27,9 @@ class ModuleActivationCheckInfo implements Arrayable
         return $this->type;
     }
 
-    public function getSlug() : string
+    public function getModuleName() : string
     {
-        return $this->slug;
+        return $this->moduleName;
     }
 
     public function getDependencies() : array
@@ -61,7 +61,7 @@ class ModuleActivationCheckInfo implements Arrayable
     {
         return [
             'type' => $this->type,
-            'slug' => $this->slug,
+            'module_name' => $this->moduleName,
             'dependencies' => $this->dependencies,
             'migrations' => $this->migrations,
             'allow_activation' => $this->allowActivation(),
