@@ -20,12 +20,17 @@
                 </ul>
 
                 <div class="header-search active" id="header-search">
-                    @if(is_default_multibas_locale())
-                    <form action="{{url('/search')}}">
-                            <input type="text" name="query" placeholder="Ketik kata kunci pencarian Anda di sini." class="form-control">
+                    @if(function_exists('is_default_multibas_locale'))
+                        @if(is_default_multibas_locale())
+                        <form action="{{url('/search')}}">
+                                <input type="text" name="query" placeholder="Ketik kata kunci pencarian Anda di sini." class="form-control">
+                        @else
+                        <form action="{{url('/'.get_current_multibas_locale().'/search')}}">
+                                <input type="text" name="query" placeholder="Enter your search query" class="form-control">
+                        @endif
                     @else
-                    <form action="{{url('/'.get_current_multibas_locale().'/search')}}">
-                            <input type="text" name="query" placeholder="Enter your search query" class="form-control">
+                        <form action="{{url('/search')}}">
+                            <input type="text" name="query" placeholder="Ketik kata kunci pencarian Anda di sini." class="form-control">
                     @endif
                         <button class="header-search__submit"><i class="fa fa-search"></i></button>
                     </form>
@@ -35,6 +40,7 @@
             <div class="search-toggle">
                 <i class="fa fa-search"></i>
             </div>
+            @if(function_exists('is_default_multibas_locale'))
             <div class="lang">
                 @foreach(get_registered_locales() as $locale)
                     @if(get_current_multibas_locale()==$locale['language_code'])
@@ -51,5 +57,6 @@
                         </div>
                 @endforeach
             </div>
+            @endif
         </div>
     </nav>

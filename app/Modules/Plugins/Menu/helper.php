@@ -37,7 +37,7 @@ function get_menu($menuId, $json = false)
     $menus =  get_options('aksara.menu.menus', []);
 
     if( !isset($menus[$menuId]) )
-        return false;
+        return [];
 
     if (!$json) {
         return $menus[$menuId] = json_decode($menus[$menuId],true);
