@@ -557,7 +557,7 @@ fieldset[disabled] .btn-primary:hover {
     -o-transition: color 0.3s;
     transition: color 0.3s;
     position: absolute;
-    top: 50%;
+    top: 25px;
     transform: translateY(-50%);
     -webkit-transform: translateY(-50%);
     -moz-transform: translateY(-50%);
