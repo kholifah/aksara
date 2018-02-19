@@ -17,24 +17,14 @@
                             @endif
                         </li>
                     @endforeach
-                </ul>
-
-                <div class="header-search active" id="header-search">
-                    @if(is_default_multibas_locale())
-                    <form action="{{url('/search')}}">
-                            <input type="text" name="query" placeholder="Ketik kata kunci pencarian Anda di sini." class="form-control">
-                    @else
-                    <form action="{{url('/'.get_current_multibas_locale().'/search')}}">
-                            <input type="text" name="query" placeholder="Enter your search query" class="form-control">
-                    @endif
-                        <button class="header-search__submit"><i class="fa fa-search"></i></button>
-                    </form>
-                </div>
+                </ul>                
             </div>
 
             <div class="search-toggle">
                 <i class="fa fa-search"></i>
             </div>
+            @if(function_exists('is_default_multibas_locale'))
+            @if(count(get_registered_locales()))
             <div class="lang">
                 @foreach(get_registered_locales() as $locale)
                     @if(get_current_multibas_locale()==$locale['language_code'])
@@ -50,6 +40,24 @@
                         {{-- Close class flag --}}
                         </div>
                 @endforeach
+            </div>
+            @endif
+            @endif
+            <div class="header-search active" id="header-search">
+                @if(function_exists('is_default_multibas_locale'))
+                    @if(is_default_multibas_locale())
+                    <form action="{{url('/search')}}">
+                            <input type="text" name="query" placeholder="Ketik kata kunci pencarian Anda di sini." class="form-control">
+                    @else
+                    <form action="{{url('/'.get_current_multibas_locale().'/search')}}">
+                            <input type="text" name="query" placeholder="Enter your search query" class="form-control">
+                    @endif
+                @else
+                    <form action="{{url('/search')}}">
+                        <input type="text" name="query" placeholder="Ketik kata kunci pencarian Anda di sini." class="form-control">
+                @endif
+                    <button class="header-search__submit"><i class="fa fa-search"></i></button>
+                </form>
             </div>
         </div>
     </nav>
