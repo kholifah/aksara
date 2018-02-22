@@ -24,6 +24,15 @@ class Module
             }
             $this->loadModule($type, $moduleName);
         }
+
+        //module successfully loaded, remove any init vars
+        if (session()->has('activating_module')) {
+            session()->forget('activating_module');
+        }
+        if (session()->has('deactivating_module')) {
+            session()->forget('deactivating_module');
+        }
+
     }
 
     // $type = front-end, plugin, cms
@@ -111,14 +120,6 @@ class Module
                 }
 
                 require_once($moduleIndex);
-
-                //module successfully loaded, remove any init vars
-                if (session()->has('activating_module')) {
-                    session()->forget('activating_module');
-                }
-                if (session()->has('deactivating_module')) {
-                    session()->forget('deactivating_module');
-                }
 
                 return true;
             }

@@ -42,29 +42,32 @@ class Interactor implements UpdateModuleStatusHandler
 
         $this->optionRepo->setOptions('aksara.modules.actives', $activeModules);
 
-        $this->notify($key);
+        $this->successNotify($key);
 
         return true;
     }
 
+    private function successNotify(ModuleIdentifier $key, $active = true)
+    {
+        $notice = [
+            'labelClass' => 'success',
+            'content' => $key->getType() .
+            ' - ' . $key->getModuleName() .
+            ' berhasil ' . ($active ? 'diaktifkan' : 'di non-aktifkan')
+        ];
+
+        $this->flashNotify($notice);
+    }
+
     //TODO refactor this to: admin_notifier
-    //TODO rapikan fungsi
-    private function notify(ModuleIdentifier $key, $active = true)
+    private function flashNotify($notice)
     {
         if ($this->sessionRepo->has('admin_notice')) {
-            $this->sessionRepo->push('admin_notice', [
-                'labelClass' => 'success',
-                'content' => $key->getType() .
-                ' - ' . $key->getModuleName() .
-                ' berhasil ' . ($active ? 'diaktifkan' : 'di non-aktifkan')
-            ]);
+            $messages = $this->sessionRepo->get('admin_notice');
+            array_push($messages, $notice);
+            $this->sessionRepo->flash('admin_notice', $messages);
         } else {
-            $this->sessionRepo->flash('admin_notice', [[
-                'labelClass' => 'success',
-                'content' => $key->getType() .
-                ' - ' . $key->getModuleName() .
-                ' berhasil ' . ($active ? 'diaktifkan' : 'di non-aktifkan')
-            ]]);
+            $this->sessionRepo->flash('admin_notice', [ $notice ]);
         }
     }
 
@@ -86,7 +89,7 @@ class Interactor implements UpdateModuleStatusHandler
         }
 
         $this->optionRepo->setOptions('aksara.modules.actives', $activeModules);
-        $this->notify($moduleId, false);
+        $this->successNotify($moduleId, false);
 
         return true;
     }

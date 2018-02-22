@@ -31,13 +31,13 @@ class Handler extends ExceptionHandler
         'password_confirmation',
     ];
 
-    private $loadModuleHandler;
+    private $moduleErrorHandler;
 
     public function __construct(
         Container $container,
-        ErrorLoadModuleHandler $loadModuleHandler
+        ErrorLoadModuleHandler $moduleErrorHandler
     ){
-        $this->loadModuleHandler = $loadModuleHandler;
+        $this->moduleErrorHandler = $moduleErrorHandler;
         parent::__construct($container);
     }
 
@@ -64,20 +64,17 @@ class Handler extends ExceptionHandler
     public function render($request, Exception $exception)
     {
         if ($exception instanceof LoadModuleException) {
-            $this->loadModuleHandler->handle($exception);
+            $handlerResponse = $this->moduleErrorHandler->handle($exception);
 
-            //TODO flash session tidak tampil
-            $redir = redirect('admin/aksara-module-manager')->with(
-                'admin_notice',
-                [
-                    [
-                        'labelClass' => 'warning',
-                        'content' => $exception->getMessage(),
-                    ],
-                ]
-            );
-            //dd($redir);
-            return $redir;
+            if (is_admin()) {
+                $queryParams = [
+                    'msg' => $handlerResponse->getMessage(),
+                    'link_name' => 'Back to module manager index',
+                    'link_url' => url('/admin/aksara-module-manager'),
+                ];
+                $query = http_build_query($queryParams);
+                return redirect('error-fallback?' . $query);
+            }
         }
         return parent::render($request, $exception);
     }
@@ -87,8 +84,6 @@ class Handler extends ExceptionHandler
         if ($request->expectsJson()) {
             return response()->json(['error' => 'Unauthenticated.'], 401);
         }
-      return redirect(route('admin.login'));
+        return redirect(route('admin.login'));
     }
-
-
 }

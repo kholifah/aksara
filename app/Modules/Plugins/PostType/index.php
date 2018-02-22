@@ -13,10 +13,6 @@ require __DIR__.'/action-filter/query-filter.php';
 require __DIR__.'/action-filter/robots.php';
 require __DIR__.'/vendor/autoload.php';
 
-//TODO remove this after feature done
-//(new activation)
-//throw new \Exception('Error ngasal');
-
 // return;
 \App::singleton('post', function () {
     $post =  new \App\Modules\Plugins\PostType\Post();

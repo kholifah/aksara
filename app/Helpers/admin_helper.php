@@ -9,36 +9,33 @@ function render_admin_menu()
     $menu->render();
 }
 
-function admin_notice( $labelClass, $content )
+function admin_notice($labelClass, $content)
 {
-    $adminNotices = session()->get('admin_notice');
-
-    if(!is_array($adminNotices)) {
-        $adminNotices = [];
-    }
-
-    array_push($adminNotices,[
+    $notices = [];
+    $message = [
         'labelClass' => $labelClass,
         'content' => $content
-    ]);
+    ];
 
-    session()->flash('admin_notice', $adminNotices);
+    if (session()->has('admin_notice')) {
+        session()->push('admin_notice', $message);
+    } else {
+        session()->flash('admin_notice', [ $message ]);
+    }
 }
 
 function render_admin_notice()
 {
-    $adminNotices = session()->get('admin_notice');
+    $notices = [];
 
-    if(!is_array($adminNotices)) {
-        return;
+    if (session()->has('admin_notice')) {
+        $notices = session()->get('admin_notice');
     }
 
-    foreach ($adminNotices as $data) {
+    foreach ($notices as $data) {
         echo view('admin:aksara::partials.notice', $data)->render();
     }
 }
-
-
 
 function render_paging($data = FALSE, $filters = FALSE)
 {

@@ -5,5 +5,5 @@ use Aksara\Exceptions\LoadModuleException;
 
 interface ErrorLoadModuleHandler
 {
-    public function handle(LoadModuleException $exception);
+    public function handle(LoadModuleException $exception) : ErrorLoadModuleResponse;
 }
