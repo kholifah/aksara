@@ -58,5 +58,10 @@ class AppServiceProvider extends ServiceProvider
             \Aksara\UpdateModuleStatus\UpdateModuleStatusHandler::class,
             \Aksara\UpdateModuleStatus\Interactor::class
         );
+
+        $this->app->bind(
+            \Aksara\AdminNotif\AdminNotifHandler::class,
+            \Aksara\AdminNotif\Interactor::class
+        );
     }
 }

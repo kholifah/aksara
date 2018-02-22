@@ -4,22 +4,23 @@ namespace Aksara\UpdateModuleStatus;
 use Aksara\ModuleIdentifier;
 use Aksara\ModuleStatus\ModuleStatus;
 use Aksara\Repository\OptionRepository;
-use Aksara\Repository\SessionRepository;
+use Aksara\AdminNotif\AdminNotifRequest;
+use Aksara\AdminNotif\AdminNotifHandler;
 
 class Interactor implements UpdateModuleStatusHandler
 {
     private $moduleStatus;
     private $optionRepo;
-    private $sessionRepo;
+    private $notifHandler;
 
     public function __construct(
         ModuleStatus $moduleStatus,
         OptionRepository $optionRepo,
-        SessionRepository $sessionRepo
+        AdminNotifHandler $notifHandler
     ){
         $this->moduleStatus = $moduleStatus;
         $this->optionRepo = $optionRepo;
-        $this->sessionRepo = $sessionRepo;
+        $this->notifHandler = $notifHandler;
     }
 
     public function activate(ModuleIdentifier $key)
@@ -49,26 +50,14 @@ class Interactor implements UpdateModuleStatusHandler
 
     private function successNotify(ModuleIdentifier $key, $active = true)
     {
-        $notice = [
-            'labelClass' => 'success',
-            'content' => $key->getType() .
-            ' - ' . $key->getModuleName() .
-            ' berhasil ' . ($active ? 'diaktifkan' : 'di non-aktifkan')
-        ];
+        $notifRequest = new AdminNotifRequest(
+            'success',
+            $key->getType() .
+                ' - ' . $key->getModuleName() .
+                ' berhasil ' . ($active ? 'diaktifkan' : 'di non-aktifkan')
+        );
 
-        $this->flashNotify($notice);
-    }
-
-    //TODO refactor this to: admin_notifier
-    private function flashNotify($notice)
-    {
-        if ($this->sessionRepo->has('admin_notice')) {
-            $messages = $this->sessionRepo->get('admin_notice');
-            array_push($messages, $notice);
-            $this->sessionRepo->flash('admin_notice', $messages);
-        } else {
-            $this->sessionRepo->flash('admin_notice', [ $notice ]);
-        }
+        $this->notifHandler->handle($notifRequest);
     }
 
     public function deactivate(ModuleIdentifier $moduleId)
