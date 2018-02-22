@@ -9,7 +9,7 @@ class LoadModuleException extends AppException
 
     public function __construct(ModuleIdentifier $key)
     {
-        $message = sprintf('Failed to load module: %s-%s.', 
+        $message = sprintf('Failed to load module: %s-%s. Will be disabled.',
             $key->getType(),
             $key->getModuleName()
         );

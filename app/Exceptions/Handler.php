@@ -64,11 +64,9 @@ class Handler extends ExceptionHandler
     public function render($request, Exception $exception)
     {
         if ($exception instanceof LoadModuleException) {
-            $handlerResponse = $this->moduleErrorHandler->handle($exception);
-
             if (is_admin()) {
                 $queryParams = [
-                    'msg' => $handlerResponse->getMessage(),
+                    'msg' => $exception->getMessage(),
                     'link_name' => 'Back to module manager index',
                     'link_url' => url('/admin/aksara-module-manager'),
                 ];
