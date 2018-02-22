@@ -12,15 +12,17 @@ function render_admin_menu()
 function admin_notice($labelClass, $content)
 {
     $notices = [];
-    $message = [
+    $notice = [
         'labelClass' => $labelClass,
         'content' => $content
     ];
 
     if (session()->has('admin_notice')) {
-        session()->push('admin_notice', $message);
+        $messages = session('admin_notice');
+        array_push($messages, $notice);
+        session()->flash('admin_notice', $messages);
     } else {
-        session()->flash('admin_notice', [ $message ]);
+        session()->flash('admin_notice', [ $notice ]);
     }
 }
 
@@ -35,6 +37,8 @@ function render_admin_notice()
     foreach ($notices as $data) {
         echo view('admin:aksara::partials.notice', $data)->render();
     }
+
+    session()->forget('admin_notice');
 }
 
 function render_paging($data = FALSE, $filters = FALSE)
