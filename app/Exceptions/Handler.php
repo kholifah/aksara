@@ -4,9 +4,14 @@ namespace App\Exceptions;
 
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Contracts\Container\Container;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Aksara\Exceptions\LoadModuleException;
+use Aksara\ErrorLoadModule\ErrorLoadModuleHandler;
 
 class Handler extends ExceptionHandler
 {
+
     /**
      * A list of the exception types that are not reported.
      *
@@ -26,6 +31,16 @@ class Handler extends ExceptionHandler
         'password_confirmation',
     ];
 
+    private $moduleErrorHandler;
+
+    public function __construct(
+        Container $container,
+        ErrorLoadModuleHandler $moduleErrorHandler
+    ){
+        $this->moduleErrorHandler = $moduleErrorHandler;
+        parent::__construct($container);
+    }
+
     /**
      * Report or log an exception.
      *
@@ -36,12 +51,6 @@ class Handler extends ExceptionHandler
      */
     public function report(Exception $exception)
     {
-
-        //Illuminate\Foundation\Bootstrap\HandleExceptions::handleException 73
-        //@todo
-        // Need to disable the last activated plugin...
-        // $module = app('module');
-        // $module->moduleActivationErrorHandler($exception);
         parent::report($exception);
     }
 
@@ -54,6 +63,17 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
+        if ($exception instanceof LoadModuleException) {
+            if (is_admin()) {
+                $queryParams = [
+                    'msg' => $exception->getMessage(),
+                    'link_name' => 'Back to module manager index',
+                    'link_url' => url('/admin/aksara-module-manager'),
+                ];
+                $query = http_build_query($queryParams);
+                return redirect('error-fallback?' . $query);
+            }
+        }
         return parent::render($request, $exception);
     }
 
@@ -62,8 +82,6 @@ class Handler extends ExceptionHandler
         if ($request->expectsJson()) {
             return response()->json(['error' => 'Unauthenticated.'], 401);
         }
-      return redirect(route('admin.login'));
+        return redirect(route('admin.login'));
     }
-
-
 }

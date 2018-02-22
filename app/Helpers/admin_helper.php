@@ -5,51 +5,47 @@ use \App\Aksara\Core\Menu as Menu;
 
 function render_admin_menu()
 {
-  $menu = new \App\Aksara\Core\AdminMenu\AdminMenu();
-  $menu->render();
+    $menu = new \App\Aksara\Core\AdminMenu\AdminMenu();
+    $menu->render();
 }
 
-function admin_notice( $labelClass, $content )
+function admin_notice($labelClass, $content)
 {
-  $adminNotices = Session::get('message');
+    $notices = [];
+    $notice = [
+        'labelClass' => $labelClass,
+        'content' => $content
+    ];
 
-  if( !is_array( $adminNotices ) )
-    $adminNotices = [];
-
-  array_push($adminNotices,[
-    'labelClass' => $labelClass,
-    'content' => $content
-  ]);
-
-  Session::put('message', $adminNotices);
-
+    if (session()->has('admin_notice')) {
+        $messages = session('admin_notice');
+        array_push($messages, $notice);
+        session()->flash('admin_notice', $messages);
+    } else {
+        session()->flash('admin_notice', [ $notice ]);
+    }
 }
 
 function render_admin_notice()
 {
-  $value = Session::get('message');
-  if( !is_array($value) )
-    return;
+    $notices = [];
 
-  foreach ($value as $data)
-  {
-    $parameters = [];
-    $parameters['labelClass'] = $data['labelClass'];
-    $parameters['content'] = $data['content'];
+    if (session()->has('admin_notice')) {
+        $notices = session()->get('admin_notice');
+    }
 
-    echo view('admin:aksara::partials.notice', $parameters )->render();
-  }
-  Session::forget('message');
+    foreach ($notices as $data) {
+        echo view('admin:aksara::partials.notice', $data)->render();
+    }
+
+    session()->forget('admin_notice');
 }
-
-
 
 function render_paging($data = FALSE, $filters = FALSE)
 {
     if($data)
     {
-        if($filters)
-        {
+        if($filters) {
             return with(new App\Aksara\Core\Pagination($data->appends($filters)))->render();
         } else {
             return with(new App\Aksara\Core\Pagination($data))->render();

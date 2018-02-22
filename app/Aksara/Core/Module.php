@@ -1,117 +1,144 @@
 <?php
 namespace App\Aksara\Core;
 
+use Aksara\Exceptions\LoadModuleException;
+use Aksara\ModuleKey;
+use Aksara\ErrorLoadModule\ErrorLoadModuleHandler;
+
 class Module
 {
     // $type = front-end, plugin, admin,core
     public function loadModules($type, $path)
     {
-        $modules = \File::directories($path);
+        try {
+            $modules = \File::directories($path);
 
-        foreach ($modules as $modulePath) {
-            $this->registerModule($type, $modulePath);
-        }
-
-        foreach ($modules as $modulePath) {
-            // non active module don't need to be loaded
-            $moduleName = $this->getModuleSlug($modulePath);
-
-            if (!$this->getModuleStatus($type, $moduleName)) {
-                continue;
+            foreach ($modules as $modulePath) {
+                $this->registerModule($type, $modulePath);
             }
-            $this->loadModule($type, $moduleName);
+
+            foreach ($modules as $modulePath) {
+                // non active module don't need to be loaded
+                $moduleName = $this->getModuleSlug($modulePath);
+
+                if (!$this->getModuleStatus($type, $moduleName)) {
+                    continue;
+                }
+                $this->loadModule($type, $moduleName);
+            }
+
+            //module successfully loaded, remove any init vars
+            if (session()->has('activating_module')) {
+                session()->forget('activating_module');
+            }
+            if (session()->has('deactivating_module')) {
+                session()->forget('deactivating_module');
+            }
+        } catch (LoadModuleException $e) {
+            $handler = app(ErrorLoadModuleHandler::class);
+            $handler->handle($e);
+            throw $e;
         }
+
     }
 
     // $type = front-end, plugin, cms
     public function loadModule($type, $moduleName)
     {
-        $module =  \Config::get('aksara.modules.'.$type.'.'.$moduleName, false);
+        try {
+            $module =  \Config::get('aksara.modules.'.$type.'.'.$moduleName, false);
 
-        if (!$module) {
-            return false;
-        }
+            if (!$module) {
+                return false;
+            }
 
-        $moduleIndex = $module['modulePath'].'/index.php' ;
-        $moduleHelper = $module['modulePath'].'/helper.php';
-        $moduleRoutes = $module['modulePath'].'/routes.php';
-        $viewFolder = $module['modulePath'].'/resources/views' ;
-        $languageFolder = $module['modulePath'].'/resources/lang' ;
-        $migrationFolder = $module['modulePath'].'/migrations' ;
+            $moduleIndex = $module['modulePath'].'/index.php' ;
+            $moduleHelper = $module['modulePath'].'/helper.php';
+            $moduleRoutes = $module['modulePath'].'/routes.php';
+            $viewFolder = $module['modulePath'].'/resources/views' ;
+            $languageFolder = $module['modulePath'].'/resources/lang' ;
+            $migrationFolder = $module['modulePath'].'/migrations' ;
 
-        // Check if dependency not met
-        $moduleDescription = \Config::get('aksara.modules', []);
-        $moduleDescription = $moduleDescription[$type][$moduleName];
-        // modules-> not found dependencies -> notice
-        // - disable modules (plugin)
-        // - force enable modules (front-end/admin)
-        if ($type != 'core') {
-            if (isset($moduleDescription['dependencies'])) {
-                // Create dependencies array
-                if (is_string($moduleDescription['dependencies'])) {
-                    $dependencies[] = $moduleDescription['dependencies'];
-                } elseif (is_array($moduleDescription['dependencies'])) {
-                    $dependencies = $moduleDescription['dependencies'];
-                } else {
-                    $dependencies = [];
-                }
+            // Check if dependency not met
+            $moduleDescription = \Config::get('aksara.modules', []);
+            $moduleDescription = $moduleDescription[$type][$moduleName];
+            // modules-> not found dependencies -> notice
+            // - disable modules (plugin)
+            // - force enable modules (front-end/admin)
+            if ($type != 'core') {
+                if (isset($moduleDescription['dependencies'])) {
+                    // Create dependencies array
+                    if (is_string($moduleDescription['dependencies'])) {
+                        $dependencies[] = $moduleDescription['dependencies'];
+                    } elseif (is_array($moduleDescription['dependencies'])) {
+                        $dependencies = $moduleDescription['dependencies'];
+                    } else {
+                        $dependencies = [];
+                    }
 
-                foreach ($dependencies as $dependency) {
-                    if (!$this->getModuleStatus('plugin', $dependency)) {
-                        if ($type == 'plugin') {
-                            admin_notice('danger', 'Plugin '.$moduleDescription['name'].' di-nonaktifkan karena dependency '.$dependency.' tidak aktif.');
-                            $this->deactivateModule($type, $moduleName);
-                            return false;
-                        } else {
-                            $successActivate = $this->activateModule('plugin', $dependency);
-                            $this->loadModule('plugin', $dependency);
-                            if (!$successActivate) {
-                                admin_notice('danger', 'Plugin '.$dependency.' tidak ada dalam sistem.');
+                    foreach ($dependencies as $dependency) {
+                        if (!$this->getModuleStatus('plugin', $dependency)) {
+                            if ($type == 'plugin') {
+                                admin_notice('danger', 'Plugin '.$moduleDescription['name'].' di-nonaktifkan karena dependency '.$dependency.' tidak aktif.');
+                                $this->deactivateModule($type, $moduleName);
                                 return false;
                             } else {
-                                admin_notice('danger', 'Plugin '.$dependency.' diaktifkan karena merupakan dependency dari '.$moduleName);
+                                $successActivate = $this->activateModule('plugin', $dependency);
+                                $this->loadModule('plugin', $dependency);
+                                if (!$successActivate) {
+                                    admin_notice('danger', 'Plugin '.$dependency.' tidak ada dalam sistem.');
+                                    return false;
+                                } else {
+                                    admin_notice('danger', 'Plugin '.$dependency.' diaktifkan karena merupakan dependency dari '.$moduleName);
+                                }
                             }
                         }
                     }
                 }
             }
+
+            // register index
+            if (file_exists($moduleIndex)) {
+
+                if (file_exists($moduleHelper)) {
+                    require_once($moduleHelper);
+                }
+
+                if (file_exists($moduleRoutes)) {
+                    require_once($moduleRoutes);
+                }
+
+                // Register view namespace
+                if (is_dir($viewFolder)) {
+                    view()->addNamespace($type.':'.$moduleName, $viewFolder);
+                }
+
+                // Register language namesapce
+                if (is_dir($languageFolder)) {
+                    \Lang::addNamespace($type.':'.$moduleName, $languageFolder);
+                }
+
+                // register migration
+                // @TODO Migration
+                if (is_dir($migrationFolder)) {
+                    app()->afterResolving('migrator', function ($migrator) use ($migrationFolder) {
+                        $migrator->path($migrationFolder);
+                    });
+                }
+
+                require_once($moduleIndex);
+
+                return true;
+            }
+
+            return false;
+        } catch (\Error $e) {
+            throw new LoadModuleException(
+                new ModuleKey(
+                    $type,
+                    $moduleName
+                ));
         }
-
-        // register index
-        if (file_exists($moduleIndex)) {
-
-            if (file_exists($moduleHelper)) {
-                require_once($moduleHelper);
-            }
-
-            if (file_exists($moduleRoutes)) {
-                require_once($moduleRoutes);
-            }
-
-            // Register view namespace
-            if (is_dir($viewFolder)) {
-                view()->addNamespace($type.':'.$moduleName, $viewFolder);
-            }
-
-            // Register language namesapce
-            if (is_dir($languageFolder)) {
-                \Lang::addNamespace($type.':'.$moduleName, $languageFolder);
-            }
-
-            // register migration
-            // @TODO Migration
-            if (is_dir($migrationFolder)) {
-                app()->afterResolving('migrator', function ($migrator) use ($migrationFolder) {
-                    $migrator->path($migrationFolder);
-                });
-            }
-
-            require_once($moduleIndex);
-
-            return true;
-        }
-
-        return false;
     }
 
     // @TODO module_activation seharusnya dihapus pada saat laravel berhasil clean shutdown, tapi karena tidak ada hook shutdown pada laravel maka caranya adalah dicek, jika counter sudah 2 dihapus
@@ -344,10 +371,10 @@ class Module
     public function initActivation($slug,$type='plugin')
     {
         \set_options('module_activation', [
-        'moduleType' => $type,
-        'moduleName' => $slug,
-        'counter' => 0
-    ]);
+            'moduleType' => $type,
+            'moduleName' => $slug,
+            'counter' => 0
+        ]);
 
         //@todo
         $this->activateModule($type, $slug);
@@ -356,10 +383,10 @@ class Module
     public function initDeactivation($slug,$type='plugin')
     {
         \set_options('module_deactivation', [
-        'moduleType' => $type,
-        'moduleName' => $slug,
-        'counter' => 0
-    ]);
+            'moduleType' => $type,
+            'moduleName' => $slug,
+            'counter' => 0
+        ]);
 
         //@todo
         $this->deactivateModule($type, $slug);

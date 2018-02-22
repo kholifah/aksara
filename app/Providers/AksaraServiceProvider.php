@@ -50,13 +50,20 @@ class AksaraServiceProvider extends ServiceProvider
 
         \Eventy::action('aksara.routes.before');
 
-        $routeParamsFrontEnd = \Eventy::filter('aksara.middleware.admin', ['prefix' => 'admin', 'middleware' => ['web','csrf', 'auth']]);
+        $routeParamsAdmin = \Eventy::filter('aksara.middleware.admin', ['prefix' => 'admin', 'middleware' => [
+            'web',
+            'csrf',
+            'auth'
+        ]]);
 
-        \Route::group($routeParamsFrontEnd, function () {
+        \Route::group($routeParamsAdmin, function () {
             \Eventy::action('aksara.routes.admin');
         });
 
-        $routeParamsFrontEnd = \Eventy::filter('aksara.middleware.front_end', ['middleware' => ['web','csrf']]);
+        $routeParamsFrontEnd = \Eventy::filter('aksara.middleware.front_end', ['middleware' => [
+            'web',
+            'csrf'
+        ]]);
         \Route::group($routeParamsFrontEnd, function () {
             \Eventy::action('aksara.routes.front_end');
         });
