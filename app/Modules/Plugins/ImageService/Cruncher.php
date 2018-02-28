@@ -1,73 +1,25 @@
 <?php
-namespace App\Modules\Plugins\PostType;
+namespace App\Modules\Plugins\ImageService;
 
-use Aksara\Repository\ConfigRepository;
 use Intervention\Image\ImageManager;
 use Mimey\MimeTypes;
 
-class AksaraImageResize
+class Cruncher
 {
     private $mimes;
     private $imgManager;
+    private $imgConfig;
 
     public function __construct(
         MimeTypes $mimes,
         ImageManager $imgManager,
-        ConfigRepository $config
+        ImageSizeConfig $imgConfig
     ){
         $this->mimes = $mimes;
         $this->imgManager = $imgManager;
-        $this->config = $config;
+        $this->imgConfig = $imgConfig;
     }
 
-    public function registerRoute()
-    {
-        $pathArray = [];
-
-        // register assets path with depth of 10 folder
-        for ($i=1;$i<=10;$i++) {
-            $path = '{path_'.$i.'}';
-
-            array_push($pathArray, $path);
-
-            $pathRegisterRoute = implode('/', $pathArray);
-
-            $serveImagePath = '/uploads/'.$pathRegisterRoute;
-
-            \Route::get($serveImagePath, '\App\Modules\Plugins\PostType\Http\MediaController@serveImage');
-        }
-    }
-
-    /**
-     * [registerImageSize description]
-     * @param  string  $name   Image size id
-     * @param  integer $width  Image width
-     * @param  integer $height Image height
-     * @param  boolean $crop   Crop center on Image
-     * @param  boolean $aspectRatio   Preserve aspect ratio
-     * @return boolean
-     */
-    public function registerImageSize($name, $width = 0, $height = 0, $crop = true, $aspectRatio = true)
-    {
-        $imageSizes = $this->config->get('aksara.post-type.image-sizes',[]);
-
-        if( $width == 0 && $height == 0 ) {
-            throw new \Exception('Width and height of image size must be greater than 0');
-        }
-
-        $name = aksara_slugify($name);
-
-        $imageSizes[$name] = [
-            'width' => $width,
-            'height' => $height,
-            'crop'  => $crop,
-            'aspect_ratio'=> $aspectRatio
-        ];
-
-        $this->config->set('aksara.post-type.image-sizes',$imageSizes);
-
-        return true;
-    }
 
     private function isCrunchable($path)
     {
@@ -88,7 +40,7 @@ class AksaraImageResize
         return false;
     }
 
-    public function resize($path)
+    public function crunch($path)
     {
         if (!$this->isCrunchable($path)) {
             return false;
@@ -112,9 +64,6 @@ class AksaraImageResize
             .'/public/'
             . str_replace("-{$pathExtraPart}", ".", $path);
 
-        \Log::info("Extra: $pathExtraPart");
-        \Log::info("Original: $originalPath");
-
         // Check original file exist
         if( !file_exists($originalPath) ) {
             return false;
@@ -125,15 +74,10 @@ class AksaraImageResize
         $matches = str_replace(".","",$matches[0]);
         $matches = explode("x", $matches);
 
-        $imageSizes = $this->config->get('aksara.post-type.image-sizes',[]);
-        $imageSizeId = false;
+        $width = $matches[0];
+        $height = $matches[1];
 
-        foreach ($imageSizes as $imageSizeKey => $imageSize) {
-            if ($imageSize['width'] == $matches[0]
-                && $imageSize['height'] == $matches[1]) {
-                $imageSizeId = $imageSizeKey;
-            }
-        }
+        list($imageSizes, $imageSizeId) = $this->imgConfig->getRegisteredImage($width, $height);
 
         if (!$imageSizeId) {
             return false;
@@ -183,3 +127,4 @@ class AksaraImageResize
 
     }
 }
+
