@@ -1,7 +1,8 @@
 <?php
-namespace App\Modules\Plugins\ImageService;
+namespace App\Modules\Plugins\ImageService\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Modules\Plugins\ImageService\Resizer;
 use Illuminate\Http\Request;
 
 class ImageServiceController extends Controller

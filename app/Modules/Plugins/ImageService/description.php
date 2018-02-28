@@ -2,6 +2,6 @@
 
 return [
   'name' => 'Image Service',
-  'description' => 'Plugin for serving image with size optimization',
+  'description' => 'Plugin for serving image with optimization',
   'dependencies'=> []
 ];

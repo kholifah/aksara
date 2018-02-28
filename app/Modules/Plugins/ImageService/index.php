@@ -1,7 +1,7 @@
 <?php
 require __DIR__.'/vendor/autoload.php';
 
-use App\Modules\Plugins\ImageService\ImageServiceController;
+use App\Modules\Plugins\ImageService\Http\Controllers\ImageServiceController;
 
 \Eventy::addAction('aksara.init', function () {
     $pathArray = [];
