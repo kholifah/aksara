@@ -11,7 +11,6 @@ require __DIR__.'/action-filter/custom-script-css.php';
 require __DIR__.'/action-filter/front-end-admin-toolbar.php';
 require __DIR__.'/action-filter/query-filter.php';
 require __DIR__.'/action-filter/robots.php';
-require __DIR__.'/vendor/autoload.php';
 
 // return;
 \App::singleton('post', function () {
