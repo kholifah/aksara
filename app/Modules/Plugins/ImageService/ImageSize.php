@@ -23,31 +23,6 @@ class ImageSize
         $this->aspectRatio = $aspectRatio;
     }
 
-    public function setName($name)
-    {
-        $this->name = $name;
-    }
-
-    public function setWidth($width)
-    {
-        $this->width = $width;
-    }
-
-    public function setHeight($height)
-    {
-        $this->height = $height;
-    }
-
-    public function setCrop($crop)
-    {
-        $this->crop = $crop;
-    }
-
-    public function setAspectRatio($aspectRatio)
-    {
-        $this->aspectRatio = $aspectRatio;
-    }
-
     public function getName()
     {
         return $this->name;

@@ -20,6 +20,34 @@ class Resizer
         $this->imgConfig = $imgConfig;
     }
 
+    public function resize(string $urlPath)
+    {
+        $imgPath = ImagePath::fromUrlPath($urlPath);
+
+        if (!$imgPath) {
+            return false;
+        }
+
+        // Check original file exist
+        if( !file_exists($imgPath->getOriginalPath()) ) {
+            return false;
+        }
+
+        $config = $this->imgConfig->getRegisteredImage(
+            $imgPath->getRequestWidth(),
+            $imgPath->getRequestHeight()
+        );
+
+        if (!$config) {
+            return false;
+        }
+
+        if (!$this->createResizedImage($imgPath, $config)) {
+            return false;
+        }
+
+        return $urlPath;
+    }
 
     private function isSupported($path)
     {
@@ -40,53 +68,16 @@ class Resizer
         return false;
     }
 
-    public function resize($path)
+    private function createResizedImage($imgPath, $config)
     {
-        if (!$this->isSupported($path)) {
-            return false;
-        }
-
-        // Check if it is registered image
-        preg_match("/([0-9]*)x([0-9]*)(.*)\./", $path, $matches);
-
-        // not a custom image size pattern
-        if(!isset($matches[0])) {
-            return false;
-        }
-        $pathExtraPart = $matches[0];
-
-        $trail = $matches[3];
-        if (!empty($trail)) {
-            return false;
-        }
-
-        $originalPath = base_path()
-            .'/public/'
-            . str_replace("-{$pathExtraPart}", ".", $path);
-
-        // Check original file exist
-        if( !file_exists($originalPath) ) {
-            return false;
-        }
-
-        $path = base_path().'/public/'.$path;
-
-        $matches = str_replace(".","",$matches[0]);
-        $matches = explode("x", $matches);
-
-        $width = $matches[0];
-        $height = $matches[1];
-
-        $config = $this->imgConfig->getRegisteredImage($width, $height);
-
-        if (!$config) {
-            return false;
-        }
-
-        // Mulai INTERVENSI :D
         try {
-            $image = $this->imgManager->make($originalPath);
-            // Hard Crop
+
+            if (!$this->isSupported($imgPath->getOriginalPath())) {
+                return false;
+            }
+
+            $image = $this->imgManager->make($imgPath->getOriginalPath());
+
             if ($config->getAspectRatio()) {
                 $image->resize(
                     $config->getWidth(),
@@ -96,7 +87,7 @@ class Resizer
                         $constraint->upsize();
                     });
             }
-            elseif ($config->getCrop() == true) {
+            elseif ($config->getCrop()) {
                 $image->fit(
                     $config->getWidth(),
                     $config->getHeight(),
@@ -114,15 +105,12 @@ class Resizer
             }
 
 
-            // finally we save the image as a new file
-            $image->save($path);
+            $image->save($imgPath->getStoragePath());
+            return true;
         }
         catch (\Exception $e) {
             throw new \Exception("Image resize failed : $e");
         }
-
-        return $path;
-
     }
 }
 
