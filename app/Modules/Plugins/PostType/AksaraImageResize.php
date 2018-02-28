@@ -32,7 +32,9 @@ class AksaraImageResize
 
             $pathRegisterRoute = implode('/', $pathArray);
 
-            \Route::get('/uploads/{year}/{month}/'.$pathRegisterRoute, '\App\Modules\Plugins\PostType\Http\MediaController@serveImage');
+            $serveImagePath = '/uploads/'.$pathRegisterRoute;
+
+            \Route::get($serveImagePath, '\App\Modules\Plugins\PostType\Http\MediaController@serveImage');
         }
     }
 
