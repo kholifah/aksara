@@ -34,8 +34,7 @@ class Resizer
         }
 
         $config = $this->imgConfig->getRegisteredImage(
-            $imgPath->getRequestWidth(),
-            $imgPath->getRequestHeight()
+            $imgPath->getSize()
         );
 
         if (!$config) {

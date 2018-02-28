@@ -52,14 +52,17 @@ class ImageSizeConfig
             substr($imageUrl, $pos);
     }
 
-    public function getRegisteredImage(string $width, string $height)
+    public function getRegisteredImage(Size $size)
     {
+        $width = $size->getWidth();
+        $height = $size->getHeight();
+
         $imageSizes = $this->config->get('aksara.post-type.image-sizes',[]);
         $imageSizeId = false;
 
         foreach ($imageSizes as $imageSizeKey => $imageSize) {
-            if ($imageSize['width'] == $width
-                && $imageSize['height'] == $height) {
+            if ($imageSize['width'] == $size->getWidth()
+                && $imageSize['height'] == $size->getHeight()) {
                 $imageSizeId = $imageSizeKey;
             }
         }

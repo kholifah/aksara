@@ -5,19 +5,21 @@ class ImagePath
 {
     private $storagePath;
     private $originalPath;
-    private $requestWidth;
-    private $requestHeight;
+    private $size;
 
     private function __construct(
         string $storagePath,
         string $originalPath,
-        int $requestWidth,
-        int $requestHeight
+        Size $size
     ){
         $this->storagePath = $storagePath;
         $this->originalPath = $originalPath;
-        $this->requestWidth = $requestWidth;
-        $this->requestHeight = $requestHeight;
+        $this->size = $size;
+    }
+
+    public function getSize()
+    {
+        return $this->size;
     }
 
     public static function fromUrlPath(string $urlPath)
@@ -43,13 +45,14 @@ class ImagePath
 
         $storagePath = base_path().'/public/' . $urlPath;
 
-        $matches = str_replace(".","",$matches[0]);
-        $matches = explode("x", $matches);
+        $sizeStr = str_replace(".","",$matches[0]);
+        $size = Size::fromSizeStr($sizeStr);
 
-        $width = $matches[0];
-        $height = $matches[1];
-
-        return new static($storagePath, $originalPath, $width, $height);
+        return new static(
+            $storagePath,
+            $originalPath,
+            $size
+        );
     }
 
     public function getStoragePath()
@@ -60,15 +63,5 @@ class ImagePath
     public function getOriginalPath()
     {
         return $this->originalPath;
-    }
-
-    public function getRequestWidth()
-    {
-        return $this->requestWidth;
-    }
-
-    public function getRequestHeight()
-    {
-        return $this->requestHeight;
     }
 }
