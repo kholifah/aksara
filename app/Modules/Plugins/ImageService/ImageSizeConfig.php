@@ -22,24 +22,20 @@ class ImageSizeConfig
      * @param  boolean $aspectRatio   Preserve aspect ratio
      * @return boolean
      */
-    public function registerImageSize($name, $width = 0, $height = 0, $crop = true, $aspectRatio = true)
+    public function registerImageSize(ImageSize $size)
     {
         $imageSizes = $this->config->get('aksara.post-type.image-sizes',[]);
 
-        if( $width == 0 && $height == 0 ) {
-            throw new \Exception('Width and height of image size must be greater than 0');
+        if ($size->getWidth() == 0 && $size->getHeight() == 0) {
+            throw new \Exception(
+                'Width and height of image size must be greater than 0');
         }
 
-        $name = aksara_slugify($name);
+        $sizeArray = $size->toArray();
 
-        $imageSizes[$name] = [
-            'width' => $width,
-            'height' => $height,
-            'crop'  => $crop,
-            'aspect_ratio'=> $aspectRatio
-        ];
-
-        $this->config->set('aksara.post-type.image-sizes',$imageSizes);
+        $this->config->set('aksara.post-type.image-sizes',
+            array_merge($imageSizes, $sizeArray)
+        );
 
         return true;
     }
@@ -72,6 +68,6 @@ class ImageSizeConfig
             return false;
         }
 
-        return array ($imageSizes, $imageSizeId);
+        return ImageSize::fromArray($imageSizeId, $imageSizes[$imageSizeId]);
     }
 }

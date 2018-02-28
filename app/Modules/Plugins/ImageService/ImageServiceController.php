@@ -10,14 +10,14 @@ class ImageServiceController extends Controller
 {
     /** @var Media */
     private $mimes;
-    private $cruncher;
+    private $resizer;
 
     public function __construct(
         MimeTypes $mimes,
-        Cruncher $cruncher
+        Resizer $resizer
     ){
         $this->mimes = $mimes;
-        $this->cruncher = $cruncher;
+        $this->resizer = $resizer;
     }
 
     public function serve(Request $request)
@@ -26,7 +26,7 @@ class ImageServiceController extends Controller
 
         $extension = \File::extension($path);
         $mime = $this->mimes->getMimeType($extension);
-        $path = $this->cruncher->crunch($path);
+        $path = $this->resizer->resize($path);
 
         if (!file_exists($path)) {
             abort(404,'file not found');

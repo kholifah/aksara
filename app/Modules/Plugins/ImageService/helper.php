@@ -15,7 +15,8 @@ use App\Modules\Plugins\ImageService\ImageSizeConfig;
 function register_image_size($name, $width = 0, $height = 0, $crop = true, $aspectRatio = true)
 {
     $config = app(ImageSizeConfig::class);
-    return $config->registerImageSize($name, $width, $height, $crop, $aspectRatio );
+    $size = new ImageSize($name, $width, $height, $crop, $aspectRatio);
+    return $config->registerImageSize($size);
 }
 
 function get_image_size($id, $imageUrl)
