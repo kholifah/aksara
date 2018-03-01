@@ -63,12 +63,5 @@ class AppServiceProvider extends ServiceProvider
             \Aksara\AdminNotif\AdminNotifHandler::class,
             \Aksara\AdminNotif\Interactor::class
         );
-
-        $this->app->bind(
-            \Intervention\Image\ImageManager::class,
-            function () {
-                return new \Intervention\Image\ImageManager(array('driver' => 'gd'));
-            }
-        );
     }
 }

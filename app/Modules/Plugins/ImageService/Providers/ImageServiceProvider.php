@@ -17,5 +17,12 @@ class ImageServiceProvider extends ServiceProvider
             \App\Modules\Plugins\ImageService\Facades\ImageConfig::class,
             \App\Modules\Plugins\ImageService\ImageSizeConfig::class
         );
+
+        $this->app->bind(
+            \Intervention\Image\ImageManager::class,
+            function () {
+                return new \Intervention\Image\ImageManager(array('driver' => 'gd'));
+            }
+        );
     }
 }
