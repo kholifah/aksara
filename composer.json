@@ -29,7 +29,8 @@
         ],
         "psr-4": {
             "App\\": "app/",
-            "Aksara\\": "aksara/src/"
+            "Aksara\\": "aksara/src/",
+            "Plugins\\ImageService\\": "aksara-plugins/image-service/src"
         }
     },
     "autoload-dev": {

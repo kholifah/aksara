@@ -1,13 +1,12 @@
 <?php
-namespace App\Modules\Plugins\ImageService\Facades;
+namespace Plugins\ImageService\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
-class ImageService extends Facade
+class ImageConfig extends Facade
 {
     protected static function getFacadeAccessor()
     {
         return self::class;
     }
 }
-

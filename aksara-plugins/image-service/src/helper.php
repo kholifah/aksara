@@ -1,9 +1,9 @@
 <?php
 
-use App\Modules\Plugins\ImageService\ImageSize;
-use App\Modules\Plugins\ImageService\ImageSizeConfig;
-use App\Modules\Plugins\ImageService\Facades\ImageConfig;
-use App\Modules\Plugins\ImageService\Facades\ImageService;
+use Plugins\ImageService\ImageSize;
+use Plugins\ImageService\ImageSizeConfig;
+use Plugins\ImageService\Facades\ImageConfig;
+use Plugins\ImageService\Facades\ImageService;
 
 /**
  * [registerImageSize description]

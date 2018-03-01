@@ -1,7 +1,7 @@
 <?php
-namespace App\Modules\Plugins\ImageService\Drivers;
+namespace Plugins\ImageService\Drivers;
 
-use App\Modules\Plugins\ImageService\ConfigRepository;
+use Plugins\ImageService\ConfigRepository;
 use Illuminate\Config\Repository as Config;
 
 class LaravelConfig implements ConfigRepository

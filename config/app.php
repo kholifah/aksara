@@ -167,7 +167,7 @@ return [
         /*
          * Package Service Providers...
          */
-        App\Modules\Plugins\ImageService\Providers\ImageServiceProvider::class,
+        Plugins\ImageService\Providers\ImageServiceProvider::class,
 
         /*
          * Application Service Providers...

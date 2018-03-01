@@ -5,9 +5,7 @@ namespace App\Exceptions;
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Contracts\Container\Container;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Aksara\Exceptions\LoadModuleException;
-use Aksara\ErrorLoadModule\ErrorLoadModuleHandler;
 
 class Handler extends ExceptionHandler
 {
@@ -31,13 +29,10 @@ class Handler extends ExceptionHandler
         'password_confirmation',
     ];
 
-    private $moduleErrorHandler;
 
     public function __construct(
-        Container $container,
-        ErrorLoadModuleHandler $moduleErrorHandler
+        Container $container
     ){
-        $this->moduleErrorHandler = $moduleErrorHandler;
         parent::__construct($container);
     }
 

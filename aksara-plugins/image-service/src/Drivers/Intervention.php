@@ -1,7 +1,7 @@
 <?php
-namespace App\Modules\Plugins\ImageService\Drivers;
+namespace Plugins\ImageService\Drivers;
 
-use App\Modules\Plugins\ImageService\ImageManagerContract;
+use Plugins\ImageService\ImageManagerContract;
 use Intervention\Image\ImageManager;
 use Mimey\MimeTypes;
 

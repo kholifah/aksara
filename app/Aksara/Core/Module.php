@@ -7,6 +7,8 @@ use Aksara\ErrorLoadModule\ErrorLoadModuleHandler;
 
 class Module
 {
+    const PLUGIN_FOLDER = 'aksara-plugins';
+
     // $type = front-end, plugin, admin,core
     public function loadModules($type, $path)
     {
@@ -14,6 +16,11 @@ class Module
             $modules = \File::directories($path);
 
             foreach ($modules as $modulePath) {
+                //TODO need refactor here
+                //properly load from aksara-plugins/[plugin-name]/src
+                if (strpos($modulePath, self::PLUGIN_FOLDER) !== false) {
+                    $modulePath .= '/src';
+                }
                 $this->registerModule($type, $modulePath);
             }
 
@@ -329,7 +336,15 @@ class Module
         }
 
         $moduleDescription = $modulePath.'/description.php' ;
-        $moduleName =  $this->getModuleSlug($modulePath);
+
+        //TODO need refactor here
+        //use [plugin-name] from aksara-plugins/[plugin-name]/src
+        if (strpos($modulePath, self::PLUGIN_FOLDER) !== false) {
+            $pos = strpos($modulePath, self::PLUGIN_FOLDER) + strlen(self::PLUGIN_FOLDER);
+            $moduleName = explode('/', substr($modulePath, $pos))[1];
+        } else {
+            $moduleName =  $this->getModuleSlug($modulePath);
+        }
 
         if (file_exists($moduleDescription)) {
             $registeredModules[$type][$moduleName] =  require $moduleDescription;

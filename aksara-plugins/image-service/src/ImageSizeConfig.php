@@ -1,5 +1,5 @@
 <?php
-namespace App\Modules\Plugins\ImageService;
+namespace Plugins\ImageService;
 
 class ImageSizeConfig
 {

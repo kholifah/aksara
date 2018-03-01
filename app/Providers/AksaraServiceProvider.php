@@ -35,6 +35,7 @@ class AksaraServiceProvider extends ServiceProvider
 
         // Load Plugin
         $module->loadModules('plugin', app_path('Modules/Plugins'));
+        $module->loadModules('plugin', base_path('aksara-plugins'));
 
         // Load Front End Themes
         $module->loadModules('front-end', app_path('Modules/Themes/FrontEnd'));
