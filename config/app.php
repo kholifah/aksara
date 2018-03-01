@@ -167,6 +167,7 @@ return [
         /*
          * Package Service Providers...
          */
+        App\Modules\Plugins\ImageService\Providers\ImageServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -179,7 +180,6 @@ return [
         Collective\Html\HtmlServiceProvider::class,
         'App\Aksara\Core\Eventy\EventServiceProvider',
         'App\Providers\AksaraServiceProvider',
-        App\Modules\Plugins\ImageService\Providers\ImageServiceProvider::class,
     ],
 
     /*

@@ -3,6 +3,7 @@
 use App\Modules\Plugins\ImageService\ImageSize;
 use App\Modules\Plugins\ImageService\ImageSizeConfig;
 use App\Modules\Plugins\ImageService\Facades\ImageConfig;
+use App\Modules\Plugins\ImageService\Facades\ImageService;
 
 /**
  * [registerImageSize description]
@@ -22,5 +23,10 @@ function register_image_size($name, $width = 0, $height = 0, $crop = true, $aspe
 function get_image_size($id, $imageUrl)
 {
     return ImageConfig::getImageSize($id, $imageUrl);
+}
+
+function get_resized_image($url)
+{
+    return ImageService::resize($url);
 }
 
