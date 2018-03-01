@@ -1,21 +1,15 @@
 <?php
 namespace App\Modules\Plugins\ImageService;
 
-use Intervention\Image\ImageManager;
-use Mimey\MimeTypes;
-
 class Resizer
 {
-    private $mimes;
     private $imgManager;
     private $imgConfig;
 
     public function __construct(
-        MimeTypes $mimes,
-        ImageManager $imgManager,
+        ImageManagerContract $imgManager,
         ImageSizeConfig $imgConfig
     ){
-        $this->mimes = $mimes;
         $this->imgManager = $imgManager;
         $this->imgConfig = $imgConfig;
     }
@@ -48,34 +42,14 @@ class Resizer
         return $urlPath;
     }
 
-    private function isSupported($path)
-    {
-        $extension = \File::extension($path);
-        $mime = $this->mimes->getMimeType($extension);
-
-        $supported = [
-            'image/jpeg',
-            'image/png',
-            'image/gif',
-            'image/webp',
-        ];
-
-        if (in_array($mime, $supported)) {
-            return true;
-        }
-
-        return false;
-    }
-
     private function createResizedImage($imgPath, $config)
     {
         try {
+            $image = $this->imgManager->make($imgPath->getOriginalPath());
 
-            if (!$this->isSupported($imgPath->getOriginalPath())) {
+            if (!$image) {
                 return false;
             }
-
-            $image = $this->imgManager->make($imgPath->getOriginalPath());
 
             if ($config->getAspectRatio()) {
                 $image->resize(

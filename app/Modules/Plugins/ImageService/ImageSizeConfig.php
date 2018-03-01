@@ -1,8 +1,6 @@
 <?php
 namespace App\Modules\Plugins\ImageService;
 
-use Aksara\Repository\ConfigRepository;
-
 class ImageSizeConfig
 {
     private $config;
