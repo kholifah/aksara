@@ -2,6 +2,7 @@
 
 use App\Modules\Plugins\ImageService\ImageSize;
 use App\Modules\Plugins\ImageService\ImageSizeConfig;
+use App\Modules\Plugins\ImageService\Facades\ImageConfig;
 
 /**
  * [registerImageSize description]
@@ -14,14 +15,12 @@ use App\Modules\Plugins\ImageService\ImageSizeConfig;
  */
 function register_image_size($name, $width = 0, $height = 0, $crop = true, $aspectRatio = true)
 {
-    $config = app(ImageSizeConfig::class);
     $size = new ImageSize($name, $width, $height, $crop, $aspectRatio);
-    return $config->registerImageSize($size);
+    return ImageConfig::registerImageSize($size);
 }
 
 function get_image_size($id, $imageUrl)
 {
-    $config = app(ImageSizeConfig::class);
-    return $config->getImageSize($id, $imageUrl);
+    return ImageConfig::getImageSize($id, $imageUrl);
 }
 

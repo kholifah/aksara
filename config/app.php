@@ -179,7 +179,7 @@ return [
         Collective\Html\HtmlServiceProvider::class,
         'App\Aksara\Core\Eventy\EventServiceProvider',
         'App\Providers\AksaraServiceProvider',
-
+        App\Modules\Plugins\ImageService\Providers\ImageServiceProvider::class,
     ],
 
     /*
