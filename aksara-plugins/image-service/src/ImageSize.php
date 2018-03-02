@@ -16,7 +16,7 @@ class ImageSize
         $crop = false,
         $aspectRatio = false
     ){
-        $this->name = aksara_slugify($name);
+        $this->name = $name;
         $this->width = $width;
         $this->height = $height;
         $this->crop = $crop;
