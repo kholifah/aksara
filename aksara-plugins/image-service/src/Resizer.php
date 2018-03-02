@@ -39,7 +39,7 @@ class Resizer
             return false;
         }
 
-        return $urlPath;
+        return true;
     }
 
     private function createResizedImage($imgPath, $config)

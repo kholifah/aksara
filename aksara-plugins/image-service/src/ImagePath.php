@@ -3,16 +3,16 @@ namespace Plugins\ImageService;
 
 class ImagePath
 {
-    private $storagePath;
+    private $publicPath;
     private $originalPath;
     private $size;
 
     private function __construct(
-        string $storagePath,
+        string $publicPath,
         string $originalPath,
         Size $size
     ){
-        $this->storagePath = $storagePath;
+        $this->publicPath = $publicPath;
         $this->originalPath = $originalPath;
         $this->size = $size;
     }
@@ -22,10 +22,10 @@ class ImagePath
         return $this->size;
     }
 
-    public static function fromUrlPath(string $urlPath)
+    public static function fromUrlPath(string $publicPath)
     {
         // Check if it is registered image
-        preg_match("/([0-9]*)x([0-9]*)(.*)\./", $urlPath, $matches);
+        preg_match("/([0-9]*)x([0-9]*)(.*)\./", $publicPath, $matches);
 
         // not a custom image size pattern
         if(!isset($matches[0])) {
@@ -39,25 +39,21 @@ class ImagePath
             return false;
         }
 
-        $originalPath = base_path()
-            .'/public/'
-            . str_replace("-{$pathExtraPart}", ".", $urlPath);
-
-        $storagePath = base_path().'/public/' . $urlPath;
+        $originalPath = str_replace("-{$pathExtraPart}", ".", $publicPath);
 
         $sizeStr = str_replace(".","",$matches[0]);
         $size = Size::fromSizeStr($sizeStr);
 
         return new static(
-            $storagePath,
+            $publicPath,
             $originalPath,
             $size
         );
     }
 
-    public function getStoragePath()
+    public function getPublicPath()
     {
-        return $this->storagePath;
+        return $this->publicPath;
     }
 
     public function getOriginalPath()

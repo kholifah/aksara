@@ -19,13 +19,13 @@ class ImageServiceController extends Controller
     public function serve(Request $request)
     {
         $path = $request->path();
-        $resized = $this->resizer->resize($path);
 
-        if (!file_exists($resized)) {
+        //TODO proper file driver
+        if($this->resizer->resize(public_path($path))) {
             abort(404,'file not found');
         }
 
-        return redirect($resized);
+        return redirect($path);
     }
 }
 
