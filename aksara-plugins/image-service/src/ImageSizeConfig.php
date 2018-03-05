@@ -22,7 +22,7 @@ class ImageSizeConfig
      */
     public function registerImageSize(ImageSize $size)
     {
-        $imageSizes = $this->config->get('aksara.post-type.image-sizes',[]);
+        $imageSizes = $this->config->get('aksara.image-service.image-sizes',[]);
 
         if ($size->getWidth() == 0 && $size->getHeight() == 0) {
             throw new \Exception(
@@ -31,7 +31,7 @@ class ImageSizeConfig
 
         $sizeArray = $size->toArray();
 
-        $this->config->set('aksara.post-type.image-sizes',
+        $this->config->set('aksara.image-service.image-sizes',
             array_merge($imageSizes, $sizeArray)
         );
 
@@ -40,7 +40,7 @@ class ImageSizeConfig
 
     public function getImageSize($id, $imageUrl)
     {
-        $imageSizes = $this->config->get('aksara.post-type.image-sizes',[]);
+        $imageSizes = $this->config->get('aksara.image-service.image-sizes',[]);
         if( !isset($imageSizes[$id]) )
             return $imageUrl;
 
@@ -55,7 +55,7 @@ class ImageSizeConfig
         $width = $size->getWidth();
         $height = $size->getHeight();
 
-        $imageSizes = $this->config->get('aksara.post-type.image-sizes',[]);
+        $imageSizes = $this->config->get('aksara.image-service.image-sizes',[]);
         $imageSizeId = false;
 
         foreach ($imageSizes as $imageSizeKey => $imageSize) {

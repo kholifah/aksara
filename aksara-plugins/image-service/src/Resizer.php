@@ -77,7 +77,7 @@ class Resizer
                     });
             }
 
-            $image->save($imgPath->getStoragePath());
+            $image->save($imgPath->getPublicPath());
 
             return true;
         }

@@ -21,7 +21,7 @@ class ImageServiceController extends Controller
         $path = $request->path();
 
         //TODO proper file driver
-        if($this->resizer->resize(public_path($path))) {
+        if(!$this->resizer->resize(public_path($path))) {
             abort(404,'file not found');
         }
 
