@@ -2,6 +2,7 @@
 namespace Plugins\ImageService\Drivers;
 
 use Plugins\ImageService\ImageManagerContract;
+use Plugins\ImageService\FileContract;
 use Intervention\Image\ImageManager;
 use Mimey\MimeTypes;
 
@@ -9,13 +10,16 @@ class Intervention implements ImageManagerContract
 {
     private $mimes;
     private $imgManager;
+    private $file;
 
     public function __construct(
         MimeTypes $mimes,
-        ImageManager $imgManager
+        ImageManager $imgManager,
+        FileContract $file
     ){
         $this->mimes = $mimes;
         $this->imgManager = $imgManager;
+        $this->file = $file;
     }
 
     public function make($imagePath)
@@ -29,7 +33,7 @@ class Intervention implements ImageManagerContract
 
     private function isSupported($path)
     {
-        $extension = \File::extension($path);
+        $extension = $this->file->extension($path);
         $mime = $this->mimes->getMimeType($extension);
 
         $supported = [

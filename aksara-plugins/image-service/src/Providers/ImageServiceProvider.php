@@ -41,6 +41,11 @@ class ImageServiceProvider extends ServiceProvider
         );
 
         $this->app->bind(
+            \Plugins\ImageService\FileContract::class,
+            \Plugins\ImageService\Drivers\LaravelFile::class
+        );
+
+        $this->app->bind(
             \Intervention\Image\ImageManager::class,
             function () {
                 return new \Intervention\Image\ImageManager(array('driver' => 'gd'));
