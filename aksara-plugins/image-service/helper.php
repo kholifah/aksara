@@ -2,8 +2,6 @@
 
 use Plugins\ImageService\ImageSize;
 use Plugins\ImageService\ImageSizeConfig;
-use Plugins\ImageService\Facades\ImageConfig;
-use Plugins\ImageService\Facades\ImageService;
 
 /**
  * [registerImageSize description]

@@ -26,12 +26,12 @@ class ImageServiceProvider extends ServiceProvider
         );
 
         $this->app->bind(
-            \Plugins\ImageService\Facades\ImageConfig::class,
+            'imageconfig',
             \Plugins\ImageService\ImageSizeConfig::class
         );
 
         $this->app->bind(
-            \Plugins\ImageService\Facades\ImageService::class,
+            'imageservice',
             \Plugins\ImageService\Resizer::class
         );
 

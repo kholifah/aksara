@@ -7,6 +7,6 @@ class ImageConfig extends Facade
 {
     protected static function getFacadeAccessor()
     {
-        return self::class;
+        return 'imageconfig';
     }
 }
