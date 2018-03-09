@@ -63,5 +63,10 @@ class AppServiceProvider extends ServiceProvider
             \Aksara\AdminNotif\AdminNotifHandler::class,
             \Aksara\AdminNotif\Interactor::class
         );
+
+        $this->app->bind(
+            \Aksara\PluginRegistry\PluginRegistryHandler::class,
+            \Aksara\PluginRegistry\Interactor::class
+        );
     }
 }

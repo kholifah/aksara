@@ -178,6 +178,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         Collective\Html\HtmlServiceProvider::class,
         'App\Aksara\Core\Eventy\EventServiceProvider',
+        App\Providers\PluginServiceProvider::class,
         'App\Providers\AksaraServiceProvider',
     ],
 

@@ -35,7 +35,6 @@ class AksaraServiceProvider extends ServiceProvider
 
         // Load Plugin
         $module->loadModules('plugin', app_path('Modules/Plugins'));
-        $module->loadModules('plugin', base_path('aksara-plugins'));
 
         // Load Front End Themes
         $module->loadModules('front-end', app_path('Modules/Themes/FrontEnd'));
@@ -83,13 +82,8 @@ class AksaraServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        \App::singleton('route', function () {
-            return new \App\Aksara\Core\Route();
-        });
-
-        \App::singleton('module', function () {
-            return new \App\Aksara\Core\Module();
-        });
+        \App::singleton('route', \App\Aksara\Core\Route::class);
+        \App::singleton('module', \App\Aksara\Core\Module::class);
 
         $this->registerCommands($this->commands);
     }

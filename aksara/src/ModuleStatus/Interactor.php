@@ -4,31 +4,49 @@ namespace Aksara\ModuleStatus;
 use Aksara\Repository\ConfigRepository;
 use Aksara\Repository\OptionRepository;
 use Aksara\ModuleStatusInfo;
+use Aksara\PluginRegistry\PluginRegistryHandler;
 
 class Interactor implements ModuleStatus
 {
     private $configRepo;
     private $optionRepo;
+    private $pluginRegistry;
 
     public function __construct(
         ConfigRepository $configRepo,
-        OptionRepository $optionRepo
+        OptionRepository $optionRepo,
+        PluginRegistryHandler $pluginRegistry
     ){
         $this->configRepo = $configRepo;
         $this->optionRepo = $optionRepo;
+        $this->pluginRegistry = $pluginRegistry;
     }
 
     public function getStatus($type, $moduleName) : ModuleStatusInfo
     {
         $isActive = $this->isActive($type, $moduleName);
         $isRegistered = $this->isRegistered($type, $moduleName);
+        $version = $this->getVersion($type, $moduleName);
 
         return new ModuleStatusInfo(
             $type,
             $moduleName,
             $isActive,
-            $isRegistered
+            $isRegistered,
+            $version
         );
+    }
+
+    public function getVersion($type, $moduleName) : int
+    {
+        if (strtolower($type) == 'plugin') {
+            $pluginRegistered = $this->pluginRegistry->isRegistered($moduleName);
+
+            if ($pluginRegistered) {
+                return 2;
+            }
+        }
+        return 1;
     }
 
     public function isRegistered($type, $moduleName) : bool
@@ -39,7 +57,20 @@ class Interactor implements ModuleStatus
             return false;
         }
 
-        return isset($registeredModules[$type][$moduleName]);
+        if (isset($registeredModules[$type][$moduleName])) {
+            return true;
+        }
+
+        if (strtolower($type) == 'plugin') {
+            $pluginRegistered = $this->pluginRegistry->isRegistered($moduleName);
+
+            if ($pluginRegistered) {
+                return true;
+            }
+        }
+
+        //not registered in any registry
+        return false;
     }
 
     public function isActive($type, $moduleName) : bool
@@ -64,6 +95,14 @@ class Interactor implements ModuleStatus
 
         if (in_array($moduleName, $activeModules[$type])) {
             return true;
+        }
+
+        if (strtolower($type) == 'plugin') {
+            $pluginActive = $this->pluginRegistry->isActive($moduleName);
+
+            if ($pluginActive) {
+                return true;
+            }
         }
 
         return false;

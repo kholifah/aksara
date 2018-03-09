@@ -4,18 +4,22 @@ namespace Aksara\ModuleDependency;
 use Aksara\ModuleKey;
 use Aksara\Repository\ConfigRepository;
 use Aksara\ModuleStatus\ModuleStatus;
+use Aksara\PluginRegistry\PluginRegistryHandler;
 
 class PluginRequiredByInteractor implements PluginRequiredBy
 {
     private $configRepo;
     private $moduleStatus;
+    private $pluginRegistry;
 
     public function __construct(
         ConfigRepository $configRepo,
-        ModuleStatus $moduleStatus
+        ModuleStatus $moduleStatus,
+        PluginRegistryHandler $pluginRegistry
     ){
         $this->configRepo = $configRepo;
         $this->moduleStatus = $moduleStatus;
+        $this->pluginRegistry = $pluginRegistry;
     }
 
     public function isRequired(string $pluginName) : bool
@@ -27,11 +31,11 @@ class PluginRequiredByInteractor implements PluginRequiredBy
     public function getRequiredBy(string $pluginName) : array
     {
         //get all modules from config aksara.modules
-        $modules = $this->configRepo->get('aksara.modules');
+        $modulesV1 = $this->configRepo->get('aksara.modules');
 
         //loop through all which has dependency to this module
         $requiredBy = [];
-        foreach ($modules as $moduleType => $moduleTypeItems) {
+        foreach ($modulesV1 as $moduleType => $moduleTypeItems) {
             foreach ($moduleTypeItems as $slug => $module) {
                 if (!isset($module['dependencies'])) {
                     continue;
@@ -45,6 +49,15 @@ class PluginRequiredByInteractor implements PluginRequiredBy
                 $requiredBy[] = new ModuleKey($moduleType, $slug);
             }
         }
+
+        $plugins = $this->pluginRegistry->getActivePlugins();
+        foreach ($plugins as $plugin) {
+            if (!in_array($pluginName, $plugin->getDependencies())) {
+                continue;
+            }
+            $requiredBy[] = new ModuleKey('plugin', $plugin->getName());
+        }
+
         return $requiredBy;
     }
 }

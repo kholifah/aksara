@@ -4,10 +4,18 @@ namespace App\Aksara\Core;
 use Aksara\Exceptions\LoadModuleException;
 use Aksara\ModuleKey;
 use Aksara\ErrorLoadModule\ErrorLoadModuleHandler;
+use Aksara\ModuleStatus\ModuleStatus;
 
 class Module
 {
     const PLUGIN_FOLDER = 'aksara-plugins';
+
+    private $moduleStatus;
+
+    public function __construct(ModuleStatus $moduleStatus)
+    {
+        $this->moduleStatus = $moduleStatus;
+    }
 
     // $type = front-end, plugin, admin,core
     public function loadModules($type, $path)
@@ -280,27 +288,7 @@ class Module
     // cek module status (activated or not)
     public function getModuleStatus($type, $moduleName)
     {
-        // @TODO if front-end / admin should check first
-        if ( $type =='admin' || $type == 'core') {
-            return true;
-        }
-
-        if (\Config::get('aksara.module_manager.load_all', false)) {
-            return true;
-        }
-
-        // get module status from databases
-        $activeModules = \get_options('aksara.modules.actives', []);
-
-        if (!isset($activeModules[$type])) {
-            return false;
-        }
-
-        if (in_array($moduleName, $activeModules[$type])) {
-            return true;
-        }
-
-        return false;
+        return $this->moduleStatus->isActive($type, $moduleName);
     }
 
     // convert name into slug
@@ -332,15 +320,7 @@ class Module
 
         $moduleDescription = $modulePath.'/description.php' ;
 
-        //TODO need refactor here
-        //if path contains aksara-plugins
-        if (strpos($modulePath, self::PLUGIN_FOLDER) !== false) {
-            //use [plugin-name] from aksara-plugins/[plugin-name]
-            $pos = strpos($modulePath, self::PLUGIN_FOLDER) + strlen(self::PLUGIN_FOLDER);
-            $moduleName = explode('/', substr($modulePath, $pos))[1];
-        } else {
-            $moduleName =  $this->getModuleSlug($modulePath);
-        }
+        $moduleName =  $this->getModuleSlug($modulePath);
 
         if (file_exists($moduleDescription)) {
             $registeredModules[$type][$moduleName] =  require $moduleDescription;

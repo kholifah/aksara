@@ -2,15 +2,22 @@
 namespace Plugins\ImageService\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Plugins\ImageService\Http\Controllers\ImageServiceController;
 
 class ImageServiceProvider extends ServiceProvider
 {
     public function boot()
     {
-        //potentially confusing with aksara's module loading sequence
-        //don't boot anything here
-        //leave it empty or don't create the method at all
-        //boot anything necessary in index.php
+        $pathArray = [];
+
+        // register assets path with depth of 10 folder
+        for ($i=1;$i<=10;$i++) {
+            $path = '{path_'.$i.'}';
+            array_push($pathArray, $path);
+            $pathRegisterRoute = implode('/', $pathArray);
+            $serveImagePath = '/uploads/'.$pathRegisterRoute;
+            \Route::get($serveImagePath, ImageServiceController::class . '@serve');
+        }
     }
 
     /**

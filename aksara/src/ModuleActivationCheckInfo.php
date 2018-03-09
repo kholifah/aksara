@@ -16,7 +16,7 @@ class ModuleActivationCheckInfo implements Arrayable, ModuleIdentifier
         array $dependencies = [],
         array $migrations = []
     ){
-        $this->type = $type;
+        $this->type = strtolower($type);
         $this->moduleName = $moduleName;
         $this->dependencies = $dependencies;
         $this->migrations = $migrations;

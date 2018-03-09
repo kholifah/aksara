@@ -9,17 +9,25 @@ class ModuleStatusInfo implements Arrayable
     private $moduleName;
     private $isActive;
     private $isRegistered;
+    private $version;
 
     public function __construct(
         string $type,
         string $moduleName,
         bool $isActive,
-        bool $isRegistered
+        bool $isRegistered,
+        int $version = 1
     ){
         $this->type = $type;
         $this->moduleName = $moduleName;
         $this->isActive = $isActive;
         $this->isRegistered = $isRegistered;
+        $this->version = $version;
+    }
+
+    public function getVersion() : int
+    {
+        return $this->version;
     }
 
     public function toArray()
@@ -29,6 +37,7 @@ class ModuleStatusInfo implements Arrayable
             'module_name' => $this->moduleName,
             'is_active' => $this->isActive,
             'is_registered' => $this->isRegistered,
+            'version' => $this->version,
         ];
     }
 

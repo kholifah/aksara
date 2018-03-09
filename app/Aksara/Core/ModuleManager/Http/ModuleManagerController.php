@@ -10,6 +10,7 @@ use Aksara\ModuleStatus\ModuleStatus;
 use Aksara\ModuleDependency\PluginRequiredBy;
 use Aksara\ModuleKey;
 use Aksara\UpdateModuleStatus\UpdateModuleStatusHandler;
+use Aksara\PluginRegistry\PluginRegistryHandler;
 
 class ModuleManagerController extends Controller
 {
@@ -17,17 +18,50 @@ class ModuleManagerController extends Controller
     private $moduleStatus;
     private $pluginRequiredBy;
     private $updateModuleStatus;
+    private $pluginRegistry;
 
     public function __construct(
         Module $module,
         ModuleStatus $moduleStatus,
         PluginRequiredBy $pluginRequiredBy,
-        UpdateModuleStatusHandler $updateModuleStatus
+        UpdateModuleStatusHandler $updateModuleStatus,
+        PluginRegistryHandler $pluginRegistry
     ){
         $this->module = $module;
         $this->moduleStatus = $moduleStatus;
         $this->pluginRequiredBy = $pluginRequiredBy;
         $this->updateModuleStatus = $updateModuleStatus;
+        $this->pluginRegistry = $pluginRegistry;
+    }
+
+    private function getModulesMerged()
+    {
+        //Modules V1
+        $modules = config('aksara.modules');
+
+        foreach ($modules as &$type) {
+            foreach ($type as &$module) {
+                $module['version'] = 1;
+            }
+        }
+
+        //Plugins V2
+        $plugins = $this->pluginRegistry->getRegisteredPlugins();
+        $pluginsArray =  array_map(function ($item) {
+            $arrayItem = $item->toManifestArray();
+            $arrayItem[$item->getName()]['version'] = 2;
+            return $arrayItem;
+        }, $plugins);
+
+        $pluginsArray = array();
+        foreach ($plugins as $plugin) {
+            $arrayItem = $plugin->toManifestArray();
+            $arrayItem[$plugin->getName()]['version'] = 2;
+            $pluginsArray = array_merge($pluginsArray, $arrayItem);
+        }
+
+        $modules['plugin'] = array_merge($modules['plugin'], $pluginsArray);
+        return $modules;
     }
 
     public function index()
@@ -37,14 +71,16 @@ class ModuleManagerController extends Controller
 
         $pluginRequiredBy = $this->pluginRequiredBy;
 
-        $param = compact('module', 'pluginRequiredBy');
+        $plugins = $this->pluginRegistry->getRegisteredPlugins();
+
+        $param = compact('module', 'pluginRequiredBy', 'plugins');
 
         return view('core:module-manager::index', $param)->render();
     }
 
     public function activationCheck($type, $slug)
     {
-        $modules = config('aksara.modules');
+        $modules = $this->getModulesMerged();
 
         if (!isset($modules[$type][$slug])) {
             throw new NotFoundHttpException('Module not found');
@@ -139,7 +175,7 @@ class ModuleManagerController extends Controller
     public function recursiveActivate($type, $slug)
     {
         try {
-            $modules = config('aksara.modules');
+            $modules = $this->getModulesMerged();
 
             if (!isset($modules[$type][$slug])) {
                 throw new NotFoundHttpException('Module not found');
@@ -181,23 +217,30 @@ class ModuleManagerController extends Controller
             $activated = [];
 
             foreach ($toBeActivated as $itemToBeActivated) {
-                if (!$this->updateModuleStatus->activate(
-                    new ModuleKey(
-                        $itemToBeActivated->getType(),
-                        $itemToBeActivated->getModuleName())
-                    )
-                ){
-                    //rollback
-                    foreach ($activated as $itemActivated) {
-                        $this->updateModuleStatus->deactivate(
-                            new ModuleKey(
-                                $itemActivated->getType(),
-                                $itemActivated->getModuleName()
-                            )
-                        );
+                if ($itemToBeActivated->getVersion() == 1) {
+                    if (!$this->updateModuleStatus->activate(
+                        new ModuleKey(
+                            $itemToBeActivated->getType(),
+                            $itemToBeActivated->getModuleName())
+                        )
+                    ){
+                        //rollback
+                        foreach ($activated as $itemActivated) {
+                            $this->updateModuleStatus->deactivate(
+                                new ModuleKey(
+                                    $itemActivated->getType(),
+                                    $itemActivated->getModuleName()
+                                )
+                            );
+                        }
+                        //raise error
+                        throw new \Exception('Error occured when activating module');
                     }
-                    //raise error
-                    throw new \Exception('Error occured when activating module');
+                } else {
+                    if ($itemToBeActivated->getType() == 'plugin') {
+                        $this->pluginRegistry->activatePlugin(
+                            $itemToBeActivated->getModuleName());
+                    }
                 }
                 $activated[] = $itemToBeActivated;
             }
@@ -227,7 +270,13 @@ class ModuleManagerController extends Controller
                     );
                 }
             }
-            $this->updateModuleStatus->deactivate(new ModuleKey($type, $slug));
+            if ($this->moduleStatus->getVersion($type, $slug) == 1) {
+                $this->updateModuleStatus->deactivate(new ModuleKey($type, $slug));
+            } else {
+                if (strtolower($type) == 'plugin') {
+                    $this->pluginRegistry->deactivatePlugin($slug);
+                }
+            }
             session()->put('deactivating_module', new ModuleKey($type, $slug));
 
             return redirect()->route('module-manager.index');

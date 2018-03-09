@@ -15,20 +15,6 @@
     "autoload": {
         "psr-4": {
             "Plugins\\ImageService\\": "src/"
-        },
-        "files": [
-            "helper.php"
-        ]
-    },
-    "extra": {
-        "laravel": {
-            "providers": [
-                "Plugins\\ImageService\\Providers\\ImageServiceProvider"
-            ],
-            "aliases": {
-                "ImageService": "Plugins\\ImageService\\Facades\\ImageService",
-                "ImageConfig": "Plugins\\ImageService\\Facades\\ImageConfig"
-            }
         }
     }
 }

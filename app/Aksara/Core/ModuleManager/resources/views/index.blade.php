@@ -60,6 +60,52 @@
         @endforeach
       </table>
     </div>
+    <div>
+      <h3>Plugins V2</h3>
+      <table class='table'>
+        <tr>
+          <th style="width:100px">Status</th>
+          <th style="width:150px">Action</th>
+          <th>Name</th>
+        </tr>
+        @foreach($plugins as $plugin)
+        <tr>
+          <td>
+          @if($plugin->getActive())
+            <span class="label label-success">Active</span>
+          @else
+            <span class="label label-danger">Not Active</span>
+          @endif
+          </td>
+          <td>
+
+              @if($plugin->getActive())
+                  <form method='POST' action="{{ route('module-manager.deactivate',['slug'=>$plugin->getName(),'type'=>'plugin']) }}">
+                {{ csrf_field() }}
+
+                <input type='submit' class='btn btn-xs btn-default' value="deactivate" {{ $pluginRequiredBy->isRequired($plugin->getName()) ? 'disabled' : '' }}>
+              </form>
+            @else
+                <a class='btn btn-xs btn-primany' href="{{ route('module-manager.activation-check', [ 'slug' => $plugin->getName(), 'type' => 'plugin', ]) }}">Activate</a>
+            @endif
+          </td>
+          <td>
+              <p>{{ $plugin->getName() }}</p>
+              <p>Description : {{ $plugin->getDescription() }}</p>
+              @if( sizeof($plugin->getDependencies()) >0 )
+                  <p>Dependencies : {{ implode(',',$plugin->getDependencies() ) }}</p>
+            @endif
+            @if ($pluginRequiredBy->isRequired($plugin->getName()))
+              Currently used by:
+              @foreach ($pluginRequiredBy->getRequiredBy($plugin->getName()) as $requiredByItem)
+                {{ $requiredByItem }}
+              @endforeach
+            @endif
+          </td>
+        </tr>
+        @endforeach
+      </table>
+    </div>
     {{-- End Plugin --}}
     <div>
       <h3>Front End</h3>
