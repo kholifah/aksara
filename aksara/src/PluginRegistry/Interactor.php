@@ -3,7 +3,7 @@
 namespace Aksara\PluginRegistry;
 
 use Illuminate\Filesystem\Filesystem;
-use Aksara\Plugin;
+use Aksara\PluginManifest;
 use Aksara\ModuleIdentifier;
 use Aksara\AdminNotif\AdminNotifRequest;
 use Aksara\AdminNotif\AdminNotifHandler;
@@ -12,7 +12,7 @@ class Interactor implements PluginRegistryHandler
 {
     private $filesystem;
     private $pluginRoot;
-    private $manifestPath;
+    private $activeManifestPath;
 
     public function __construct(
         FileSystem $filesystem,
@@ -20,7 +20,7 @@ class Interactor implements PluginRegistryHandler
     ){
         $this->filesystem = $filesystem;
         $this->pluginRoot = base_path() . '/aksara-plugins';
-        $this->manifestPath = $this->pluginRoot . '/manifest.php';
+        $this->activeManifestPath = $this->pluginRoot . '/active_manifest.php';
         $this->notifHandler = $notifHandler;
     }
 
@@ -51,10 +51,10 @@ class Interactor implements PluginRegistryHandler
 
     private function getActiveManifest()
     {
-        if (!file_exists($this->manifestPath)) {
+        if (!file_exists($this->activeManifestPath)) {
             return [];
         }
-        $activeManifest = $this->filesystem->getRequire($this->manifestPath);
+        $activeManifest = $this->filesystem->getRequire($this->activeManifestPath);
         return $activeManifest;
     }
 
@@ -73,9 +73,9 @@ class Interactor implements PluginRegistryHandler
     private function loadPluginConfig($pluginManifest, $active)
     {
         if (!file_exists($pluginManifest)) {
-            throw new \Exception('Plugin manifest not defined');
+            throw new \Exception('Plugin manifest file not found');
         }
-        $plugin = Plugin::fromPluginConfig(
+        $plugin = PluginManifest::fromPluginConfig(
             $this->filesystem->getRequire($pluginManifest)
         );
         if (is_null($active)) {
@@ -103,15 +103,15 @@ class Interactor implements PluginRegistryHandler
         if (!in_array($name, $activeManifest)) {
             $activeManifest[] = $name;
         }
-        $this->write($activeManifest);
+        $this->writeActiveManifest($activeManifest);
         $this->successNotify($name);
     }
 
     public function deactivatePlugin($name)
     {
-        $activeManifest = $this->filesystem->getRequire($this->manifestPath);
+        $activeManifest = $this->filesystem->getRequire($this->activeManifestPath);
         $newManifest = array_diff($activeManifest, [ $name ]);
-        $this->write($newManifest);
+        $this->writeActiveManifest($newManifest);
         $this->successNotify($name, false);
     }
 
@@ -126,16 +126,16 @@ class Interactor implements PluginRegistryHandler
         $this->notifHandler->handle($notifRequest);
     }
 
-    private function write(array $manifest)
+    private function writeActiveManifest(array $manifest)
     {
-        if (!is_writable(dirname($this->manifestPath))) {
+        if (!is_writable(dirname($this->activeManifestPath))) {
             throw new \Exception(
-                'The '.dirname($this->manifestPath).
+                'The '.dirname($this->activeManifestPath).
                 ' directory must be present and writable.');
         }
 
         $this->filesystem->put(
-            $this->manifestPath, '<?php return '.var_export($manifest, true).';'
+            $this->activeManifestPath, '<?php return '.var_export($manifest, true).';'
         );
     }
 

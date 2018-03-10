@@ -47,13 +47,8 @@ class ModuleManagerController extends Controller
 
         //Plugins V2
         $plugins = $this->pluginRegistry->getRegisteredPlugins();
-        $pluginsArray =  array_map(function ($item) {
-            $arrayItem = $item->toManifestArray();
-            $arrayItem[$item->getName()]['version'] = 2;
-            return $arrayItem;
-        }, $plugins);
-
         $pluginsArray = array();
+
         foreach ($plugins as $plugin) {
             $arrayItem = $plugin->toManifestArray();
             $arrayItem[$plugin->getName()]['version'] = 2;

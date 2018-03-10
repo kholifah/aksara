@@ -38,22 +38,19 @@ class PluginServiceProvider extends ServiceProvider
         $activePlugins = $pluginRegistry->getActivePlugins();
         $pluginRoot = $pluginRegistry->getPluginRoot();
 
-        //register providers
         foreach ($activePlugins as $plugin) {
+
+            //register providers
             $providers = $plugin->getProviders();
             foreach ($providers as $provider) {
                 $this->app->register($provider);
             }
-        }
 
-        //register aliases
-        foreach ($activePlugins as $plugin) {
+            //register aliases
             $aliases = $plugin->getAliases();
             AliasLoader::getInstance($aliases)->register();
-        }
 
-        //load helpers
-        foreach ($activePlugins as $plugin) {
+            //load helpers
             $name = $plugin->getName();
             $helpers = $plugin->getHelpers();
             foreach ($helpers as $helper) {

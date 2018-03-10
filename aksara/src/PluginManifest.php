@@ -1,7 +1,7 @@
 <?php
 namespace Aksara;
 
-class Plugin
+class PluginManifest
 {
     private $name;
     private $description;

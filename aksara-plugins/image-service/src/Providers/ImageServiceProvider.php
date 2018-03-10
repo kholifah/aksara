@@ -6,6 +6,11 @@ use Plugins\ImageService\Http\Controllers\ImageServiceController;
 
 class ImageServiceProvider extends ServiceProvider
 {
+    /**
+     * Boot application services
+     *
+     * e.g, route, anything needs to be preload
+     */
     public function boot()
     {
         $pathArray = [];
