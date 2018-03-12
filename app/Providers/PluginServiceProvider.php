@@ -36,7 +36,6 @@ class PluginServiceProvider extends ServiceProvider
 
         $pluginRegistry = app(PluginRegistryHandler::class);
         $activePlugins = $pluginRegistry->getActivePlugins();
-        $pluginRoot = $pluginRegistry->getPluginRoot();
 
         foreach ($activePlugins as $plugin) {
 
@@ -49,16 +48,6 @@ class PluginServiceProvider extends ServiceProvider
             //register aliases
             $aliases = $plugin->getAliases();
             AliasLoader::getInstance($aliases)->register();
-
-            //load helpers
-            $name = $plugin->getName();
-            $helpers = $plugin->getHelpers();
-            foreach ($helpers as $helper) {
-                $pluginPath = $pluginRoot."/$name/$helper";
-                if (file_exists($pluginPath)) {
-                    require_once($pluginPath);
-                }
-            }
         }
     }
 }
