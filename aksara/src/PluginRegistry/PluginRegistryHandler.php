@@ -10,5 +10,4 @@ interface PluginRegistryHandler
     public function isRegistered($name);
     public function activatePlugin($name);
     public function deactivatePlugin($name);
-    public function getPluginRoot();
 }

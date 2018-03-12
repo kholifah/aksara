@@ -51,7 +51,7 @@ class Interactor implements PluginRegistryHandler
 
     private function getActiveManifest()
     {
-        if (!file_exists($this->activeManifestPath)) {
+        if (!$this->filesystem->exists($this->activeManifestPath)) {
             return [];
         }
         $activeManifest = $this->filesystem->getRequire($this->activeManifestPath);
@@ -138,11 +138,5 @@ class Interactor implements PluginRegistryHandler
             $this->activeManifestPath, '<?php return '.var_export($manifest, true).';'
         );
     }
-
-    public function getPluginRoot()
-    {
-        return $this->pluginRoot;
-    }
-
 }
 
