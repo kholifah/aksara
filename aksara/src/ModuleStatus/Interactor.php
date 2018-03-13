@@ -51,6 +51,15 @@ class Interactor implements ModuleStatus
 
     public function isRegistered($type, $moduleName) : bool
     {
+        //check V2 first
+        if (strtolower($type) == 'plugin') {
+            $pluginRegistered = $this->pluginRegistry->isRegistered($moduleName);
+
+            if ($pluginRegistered) {
+                return true;
+            }
+        }
+
         $registeredModules = $this->configRepo->get('aksara.modules', []);
 
         if (!isset($registeredModules[$type])) {
@@ -61,20 +70,21 @@ class Interactor implements ModuleStatus
             return true;
         }
 
-        if (strtolower($type) == 'plugin') {
-            $pluginRegistered = $this->pluginRegistry->isRegistered($moduleName);
-
-            if ($pluginRegistered) {
-                return true;
-            }
-        }
-
         //not registered in any registry
         return false;
     }
 
     public function isActive($type, $moduleName) : bool
     {
+        //check V2 first
+        if (strtolower($type) == 'plugin') {
+            $pluginActive = $this->pluginRegistry->isActive($moduleName);
+
+            if ($pluginActive) {
+                return true;
+            }
+        }
+
         // @TODO if front-end / admin should check first
         if ( $type =='admin' || $type == 'core') {
             return true;
@@ -95,14 +105,6 @@ class Interactor implements ModuleStatus
 
         if (in_array($moduleName, $activeModules[$type])) {
             return true;
-        }
-
-        if (strtolower($type) == 'plugin') {
-            $pluginActive = $this->pluginRegistry->isActive($moduleName);
-
-            if ($pluginActive) {
-                return true;
-            }
         }
 
         return false;

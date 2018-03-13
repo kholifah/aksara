@@ -25,6 +25,11 @@ class AppServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->bind(
+            \Aksara\Application\ApplicationInterface::class,
+            \Aksara\Application\Laravel\LaravelApplication::class
+        );
+
+        $this->app->bind(
             \Aksara\Repository\ConfigRepository::class,
             \App\Store\LaravelConfig::class
         );

@@ -7,20 +7,29 @@ use Aksara\PluginManifest;
 use Aksara\ModuleIdentifier;
 use Aksara\AdminNotif\AdminNotifRequest;
 use Aksara\AdminNotif\AdminNotifHandler;
+use Aksara\Application\ApplicationInterface;
 
 class Interactor implements PluginRegistryHandler
 {
+    const PLUGIN_FOLDER = 'aksara-plugins';
+    const ACTIVE_MANIFEST = 'active_manifest.php';
+    const PLUGIN_MANIFEST = 'plugin.php';
+
     private $filesystem;
     private $pluginRoot;
     private $activeManifestPath;
+    private $app;
 
     public function __construct(
+        ApplicationInterface $app,
         FileSystem $filesystem,
         AdminNotifHandler $notifHandler
     ){
+        $this->app = $app;
         $this->filesystem = $filesystem;
-        $this->pluginRoot = base_path() . '/aksara-plugins';
-        $this->activeManifestPath = $this->pluginRoot . '/active_manifest.php';
+        $this->pluginRoot = $this->app->basePath(self::PLUGIN_FOLDER);
+        $this->activeManifestPath = $this->pluginRoot.
+            DIRECTORY_SEPARATOR.self::ACTIVE_MANIFEST;
         $this->notifHandler = $notifHandler;
     }
 
@@ -63,7 +72,9 @@ class Interactor implements PluginRegistryHandler
         $plugins = array();
 
         foreach ($manifest as $activePlugin) {
-            $pluginConfig = $this->pluginRoot . "/$activePlugin/plugin.php";
+            $pluginConfig = $this->pluginRoot.
+                DIRECTORY_SEPARATOR.$activePlugin.DIRECTORY_SEPARATOR.
+                self::PLUGIN_MANIFEST;
             $plugin = $this->loadPluginConfig($pluginConfig, $active);
             $plugins[] = $plugin;
         }
@@ -72,7 +83,7 @@ class Interactor implements PluginRegistryHandler
 
     private function loadPluginConfig($pluginManifest, $active)
     {
-        if (!file_exists($pluginManifest)) {
+        if (!$this->filesystem->exists($pluginManifest)) {
             throw new \Exception('Plugin manifest file not found');
         }
         $plugin = PluginManifest::fromPluginConfig(
@@ -128,7 +139,7 @@ class Interactor implements PluginRegistryHandler
 
     private function writeActiveManifest(array $manifest)
     {
-        if (!is_writable(dirname($this->activeManifestPath))) {
+        if (!$this->filesystem->isWritable(dirname($this->activeManifestPath))) {
             throw new \Exception(
                 'The '.dirname($this->activeManifestPath).
                 ' directory must be present and writable.');
