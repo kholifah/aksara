@@ -126,13 +126,63 @@ function get_country_code()
     return collect(json_decode($countries,true));
 }
 
-if (!function_exists('migration_path')) {
+if (!function_exists('migration_path_v2')) {
+    /**
+     * Get all path to migrations V2
+     *
+     * @return array
+     */
+    function migration_path_v2($type = '', $moduleName = '')
+    {
+        $dirs = [];
+        $registry = app('plugin_registry');
+        if (!empty($type) && !empty($moduleName)) {
+            if (strtolower($type) == 'plugin') {
+                //plugin v2
+                $path = $registry->getPluginPath($moduleName);
+                if (is_dir($path->migration())) {
+                    $dirs[] = $path->migration();
+                }
+            }
+            return $dirs;
+        }
+
+        $dirs[] = migration_path_core();
+
+        if (empty($type) || strtolower($type) == 'plugin') {
+            $plugins = $registry->getRegisteredPlugins();
+
+            foreach ($plugins as $plugin) {
+                $path = $registry->getPluginPath($plugin->getName());
+                if (is_dir($path->migration())) {
+                    $dirs[] = $path->migration();
+                }
+            }
+        }
+
+        return $dirs;
+    }
+}
+
+if (!function_exists('migration_path_core')) {
     /**
      * Get all path to migrations
      *
      * @return array
      */
-    function migration_path($type = '', $moduleName = '')
+    function migration_path_core()
+    {
+        return app()->databasePath().DIRECTORY_SEPARATOR.'migrations';
+    }
+}
+
+if (!function_exists('migration_path_v1')) {
+    /**
+     * Get all path to migrations V1
+     *
+     * @return array
+     */
+    function migration_path_v1($type = '', $moduleName = '')
     {
         $moduleTypes = config('aksara.modules');
         $dirs = [];
@@ -146,7 +196,7 @@ if (!function_exists('migration_path')) {
             return $dirs;
         }
 
-        $dirs[] = app()->databasePath().DIRECTORY_SEPARATOR.'migrations';
+        $dirs[] = migration_path_core();
 
         foreach ($moduleTypes as $typeItems) {
             foreach ($typeItems as $module) {
@@ -156,6 +206,21 @@ if (!function_exists('migration_path')) {
             }
         }
         return $dirs;
+    }
+}
+
+if (!function_exists('migration_path')) {
+    /**
+     * Get all path to migrations
+     *
+     * @return array
+     */
+    function migration_path($type = '', $moduleName = '')
+    {
+        $v1 = migration_path_v1($type, $moduleName);
+        $v2 = migration_path_v2($type, $moduleName);
+        $all = array_unique(array_merge($v1, $v2));
+        return $all;
     }
 }
 

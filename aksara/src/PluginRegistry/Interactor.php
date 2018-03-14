@@ -33,6 +33,11 @@ class Interactor implements PluginRegistryHandler
         $this->notifHandler = $notifHandler;
     }
 
+    public function getPluginPath($name) : PluginPath
+    {
+        return new PluginPath($this->pluginRoot, $name);
+    }
+
     public function getRegisteredPlugins()
     {
         $registeredPluginNames = $this->getRegisteredPluginNames();

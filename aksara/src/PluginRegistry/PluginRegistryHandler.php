@@ -4,6 +4,7 @@ namespace Aksara\PluginRegistry;
 
 interface PluginRegistryHandler
 {
+    public function getPluginPath($name) : PluginPath;
     public function getRegisteredPlugins();
     public function getActivePlugins();
     public function isActive($name);

@@ -17,10 +17,6 @@ class PluginServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        /**
-         * Nothing to boot
-         * Plugins should boot their services by themselves
-         */
     }
 
     /**
@@ -48,6 +44,16 @@ class PluginServiceProvider extends ServiceProvider
             //register aliases
             $aliases = $plugin->getAliases();
             AliasLoader::getInstance($aliases)->register();
+
+            //register paths
+            $path = $pluginRegistry->getPluginPath($plugin->getName());
+
+            //migration path
+            if (is_dir($path->migration())) {
+                app()->afterResolving('migrator', function ($migrator) use ($path) {
+                    $migrator->path($path->migration());
+                });
+            }
         }
     }
 }
