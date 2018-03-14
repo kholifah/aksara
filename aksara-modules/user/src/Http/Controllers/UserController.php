@@ -30,9 +30,7 @@ class UserController extends Controller
                 if ($apply == 'destroy') {
                     if ($request->input('user_id')) {
                         $user_id = $request->input('user_id');
-                        foreach ($user_id as $v) {
-                            $this->destroy($v);
-                        }
+                        $this->destroy($user_id);
                     }
                 }
             }
@@ -201,22 +199,24 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        $user = User::find($id);
-
-        if (!$user) {
-            admin_notice('danger', __('user::messages.error.user_not_found'));
-            return redirect()->route('aksara-user');
-        }
-
-        if ($id == Auth::user()->id) {
-            admin_notice('danger', __('user::messages.error.cannot_delete_self'));
-            return redirect()->route('aksara-user');
-        }
-
-        if ($user->delete()) {
-            admin_notice('success', __('user::messages.success_delete_user'));
+        if(is_array($id)){
+            foreach ($id as $did) {
+                $user = User::find($did);
+                if ($did != Auth::user()->id) {
+                    if (!$user->delete()) {
+                        admin_notice('danger', 'Data gagal dihapus.');
+                    }
+                }
+            }
+            admin_notice('success', count($id).' data berhasil dihapus. ');
         } else {
-            admin_notice('danger', __('user::messages.error.user_not_deleted'));
+            $user = User::find($id);
+            if ($id != Auth::user()->id) {
+                if (!$user->delete()) {
+                    admin_notice('danger', 'Data gagal dihapus.');
+                }
+                admin_notice('success', 'Data berhasil dihapus.');
+            }
         }
         return redirect()->route('aksara-user');
     }
