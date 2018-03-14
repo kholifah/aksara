@@ -29,20 +29,14 @@ class PostController extends Controller
         if ($request->get('bapply')) {
             if ($request->input('apply')) {
                 $apply = $request->input('apply');
-                if ($apply == 'trash') {
-                    if ($request->input('post_id')) {
-                        $post_id = $request->input('post_id');
-                        $this->trash($post_id);
-                    }
-                } elseif ($apply == 'restore') {
-                    if ($request->input('post_id')) {
-                        $post_id = $request->input('post_id');
-                        $this->restore($post_id);
-                    }
-                } elseif ($apply == 'destroy') {
-                    if ($request->input('post_id')) {
-                        $post_id = $request->input('post_id');
-                        $this->destroy($post_id);
+                if ($request->input('post_id')) {
+                    $id = $request->input('post_id');
+                    if ($apply == 'trash') {
+                        $this->trash($id);
+                    } elseif ($apply == 'restore') {
+                        $this->restore($id);
+                    } elseif ($apply == 'destroy') {
+                        $this->destroy($id);
                     }
                 }
             }
@@ -191,29 +185,21 @@ class PostController extends Controller
      */
     public function destroy($id)
     {
-        if(is_array($id)){
-            foreach ($id as $did) {
-                $post = Post::find($did);
-                if ($post) {
-                    delete_post_meta($did);
-                    delete_post_term($did);
-                    $post->delete();
-                } else {
-                    admin_notice('danger', 'Tidak ada data yang dihapus.');
-                }
-            }
-           admin_notice('success', count($id). ' data berhasil dihapus.');
-        } else {
-             $post = Post::find($id);
+        if(!is_array($id)){
+           $id = [$id];
+        }
+
+        foreach ($id as $postID) {
+            $post = Post::find($postID);
             if ($post) {
-                delete_post_meta($id);
-                delete_post_term($id);
+                delete_post_meta($postID);
+                delete_post_term($postID);
                 $post->delete();
-                admin_notice('success', 'Data berhasil dihapus.');
             } else {
                 admin_notice('danger', 'Tidak ada data yang dihapus.');
             }
         }
+       admin_notice('success', count($id). ' data berhasil dihapus.');
 
         \Eventy::action('aksara.post-type.'.get_current_post_type().'.destroy', $post, $id);
 
@@ -222,16 +208,13 @@ class PostController extends Controller
 
     public function trash($id)
     {
-        if(is_array($id)){
-            foreach ($id as $vid) {
-                $post = Post::find($vid);
-                if (set_post_meta($vid, 'trash_meta_status', $post->post_status, false)) {
-                    $post->update(['post_status' => 'trash']);
-                }
-            }
-        } else {
-            $post = Post::find($id);
-            if (set_post_meta($id, 'trash_meta_status', $post->post_status, false)) {
+        if(!is_array($id)){
+            $id = [$id] ;
+        }
+
+        foreach ($id as $postID) {
+            $post = Post::find($postID);
+            if (set_post_meta($postID, 'trash_meta_status', $post->post_status, false)) {
                 $post->update(['post_status' => 'trash']);
             }
         }
@@ -242,22 +225,25 @@ class PostController extends Controller
 
     public function restore($id)
     {
-        if(is_array($id)){
-            foreach ($id as $vid) {
-                $post = Post::find($vid);
-                if (get_post_meta($vid, 'trash_meta_status')) {
-                    $post->update(['post_status' => get_post_meta($vid, 'trash_meta_status')]);
-                }
-                delete_post_meta($vid, 'trash_meta_status');
-            }
-        } else {
-            $post = Post::find($id);
-            if (get_post_meta($id, 'trash_meta_status')) {
-                $post->update(['post_status' => get_post_meta($id, 'trash_meta_status')]);
-            }
-            delete_post_meta($id, 'trash_meta_status');
+        if(!is_array($id)){
+            $id = [$id];
         }
 
+        foreach ($id as $postID) {
+            $post = Post::find($postID);
+            if (get_post_meta($postID, 'trash_meta_status')) {
+                $post->update(['post_status' => get_post_meta($postID, 'trash_meta_status')]);
+            }
+            delete_post_meta($postID, 'trash_meta_status');
+        }
+
+        foreach ($id as $postID) {
+            $post = Post::find($postID);
+            if (get_post_meta($postID, 'trash_meta_status')) {
+                $post->update(['post_status' => get_post_meta($postID, 'trash_meta_status')]);
+            }
+            delete_post_meta($postID, 'trash_meta_status');
+        }
         admin_notice('success', count($id). ' data berhasil dikembalikan.');
         return redirect()->route('admin.'.get_current_post_type_args('route').'.index', ['post_status' => $post->post_status]);
     }
@@ -266,8 +252,8 @@ class PostController extends Controller
     {
         $posts = Post::where('post_status', 'trash')->get();
         if ($posts->count()) {
-            foreach ($posts as $v) {
-                $this->destroy($v->id);
+            foreach ($posts as $post) {
+                $this->destroy($post->id);
             }
             admin_notice('success', __('post-type::message.all-delete-success-message'));
         } else {

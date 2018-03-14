@@ -29,8 +29,8 @@ class UserController extends Controller
                 $apply = $request->input('apply');
                 if ($apply == 'destroy') {
                     if ($request->input('user_id')) {
-                        $user_id = $request->input('user_id');
-                        $this->destroy($user_id);
+                        $id = $request->input('user_id');
+                        $this->destroy($id);
                     }
                 }
             }
@@ -199,25 +199,19 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        if(is_array($id)){
-            foreach ($id as $did) {
-                $user = User::find($did);
-                if ($did != Auth::user()->id) {
-                    if (!$user->delete()) {
-                        admin_notice('danger', 'Data gagal dihapus.');
-                    }
-                }
-            }
-            admin_notice('success', count($id).' data berhasil dihapus. ');
-        } else {
-            $user = User::find($id);
-            if ($id != Auth::user()->id) {
+        if(!is_array($id)){
+            $id = [$id];
+        }
+
+        foreach ($id as $userID) {
+            $user = User::find($userID);
+            if ($userID != Auth::user()->id) {
                 if (!$user->delete()) {
                     admin_notice('danger', 'Data gagal dihapus.');
                 }
-                admin_notice('success', 'Data berhasil dihapus.');
             }
         }
+        admin_notice('success', count($id).' data berhasil dihapus. ');
         return redirect()->route('aksara-user');
     }
 }
