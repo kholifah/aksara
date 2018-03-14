@@ -1,5 +1,5 @@
 <?php
-namespace App\Modules\Plugins\User\Http;
+namespace Plugins\User\Http;
 
 use Illuminate\Http\Request;
 use App\Http\Requests;

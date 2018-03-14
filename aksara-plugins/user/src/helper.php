@@ -27,13 +27,13 @@ function set_user_meta($userID = false, $key = false, $value = false, $serialize
 
 function add_capability($name, $id = false, $parent = false)
 {
-    $role = \App::make('App\Modules\Plugins\User\Role');
+    $role = \App::make('Plugins\User\Role');
     $role->addCapability($name, $id, $parent);
 }
 
 function get_capability($id = false)
 {
-    $role = \App::make('App\Modules\Plugins\User\Role');
+    $role = \App::make('Plugins\User\Role');
     return $role->getCapability($id);
 }
 

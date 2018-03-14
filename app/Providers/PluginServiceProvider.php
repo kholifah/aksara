@@ -54,6 +54,12 @@ class PluginServiceProvider extends ServiceProvider
                     $migrator->path($path->migration());
                 });
             }
+
+            if (is_dir($path->view())) {
+                //TODO plugin type (plugin/frontend) support
+                //hardcoded for now for plugin
+                view()->addNamespace('plugin:'.$plugin->getName(), $path->view());
+            }
         }
     }
 }

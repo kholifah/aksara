@@ -1,5 +1,5 @@
 <?php
-namespace App\Modules\Plugins\User;
+namespace Plugins\User;
 
 class Role
 {

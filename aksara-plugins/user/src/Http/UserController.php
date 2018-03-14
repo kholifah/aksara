@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Modules\Plugins\User\Http;
+namespace Plugins\User\Http;
 
 use Illuminate\Http\Request;
 use App\Http\Requests;
@@ -72,7 +72,7 @@ class UserController extends Controller
         $user = new User();
 
         $validator = $user->validate($request->all(), false);
-        
+
         if ($validator->fails()) {
             foreach ($validator->messages()->toArray() as $v) {
                 admin_notice('danger', $v[0]);
@@ -140,7 +140,7 @@ class UserController extends Controller
         $id === false ? $id = \Auth::user()->id : $id;
 
         $user = User::find($id);
-        
+
         if ($request->input('password') || $request->input('password_confirmation')) {
             $data = [
                 'id' => $id,
@@ -160,7 +160,7 @@ class UserController extends Controller
         }
 
          $validator = $user->validate($data, false);
-        
+
         if ($validator->fails()) {
             foreach ($validator->messages()->toArray() as $v) {
                 admin_notice('danger', $v[0]);

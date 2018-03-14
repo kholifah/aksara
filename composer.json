@@ -50,7 +50,7 @@
             ],
             "recurse": true,
             "replace": false,
-            "ignore-duplicates": false,
+            "ignore-duplicates": true,
             "merge-dev": true,
             "merge-extra": false,
             "merge-extra-deep": false,

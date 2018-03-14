@@ -26,4 +26,14 @@ class PluginPath
     {
         return $this->database().DIRECTORY_SEPARATOR.'migrations';
     }
+
+    public function resource()
+    {
+        return $this->root().DIRECTORY_SEPARATOR.'resources';
+    }
+
+    public function view()
+    {
+        return $this->resource().DIRECTORY_SEPARATOR.'views';
+    }
 }
