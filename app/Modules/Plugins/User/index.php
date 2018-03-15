@@ -15,8 +15,8 @@
     // ];
     // add_admin_sub_menu_route('aksara-menu-user', $userIndex);
     $args = [
-        'page_title' => trans('menu.user'),
-        'menu_title' => trans('menu.user'),
+        'page_title' => 'User',
+        'menu_title' => 'User',
         'icon' => 'ti-user',
         'capability' => '',
         'route' => [
@@ -29,8 +29,8 @@
     ];
     add_admin_sub_menu_route('aksara-menu-user', $args);
     $args = [
-        'page_title' => trans('menu.edit-profile'),
-        'menu_title' => trans('menu.edit-profile'),
+        'page_title' => 'Edit Profile',
+        'menu_title' => 'Edit Profile',
         'icon' => 'ti-user',
         'capability' => '',
         'route' => [
@@ -98,8 +98,8 @@
     ];
     $route->addRoute($userDestroy);
     $args = [
-        'page_title' => trans('menu.role'),
-        'menu_title' => trans('menu.role'),
+        'page_title' => 'Role',
+        'menu_title' => 'Role',
         'icon' => 'ti-user',
         'capability' => '',
         'route' => [

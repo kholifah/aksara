@@ -36,7 +36,7 @@ require __DIR__.'/action-filter/robots.php';
     // Register Post
     $argsPost = [
         'label' => [
-            'name' => trans('menu.post')
+            'name' => 'Post'
         ],
         'route' => 'post',
         'icon' => 'ti-write'
@@ -45,7 +45,7 @@ require __DIR__.'/action-filter/robots.php';
     // Register Page
     $argsPage = [
         'label' => [
-            'name' => trans('menu.page')
+            'name' => 'Page'
         ],
         'has_archive'=>false,
         'route' => 'page',
@@ -55,13 +55,13 @@ require __DIR__.'/action-filter/robots.php';
     // Register Taxonomy
     $argsCategory = [
         'label' => [
-            'name' => trans('menu.category')
+            'name' => 'Category'
         ],
     ];
     $post->registerTaxonomy('category', ['post'], $argsCategory);
     $argsTag = [
         'label' => [
-            'name' => trans('menu.tag')
+            'name' => 'Tag'
         ],
     ];
     $post->registerTaxonomy('tag', ['post'], $argsTag);
