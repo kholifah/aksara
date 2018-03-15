@@ -16,5 +16,5 @@ return [
     'pending-migration-message' => 'Pending migration found',
     'module-unregistered-message' => ':moduleType - :moduleName is not registered',
     'error-activating-module-message' => 'Error occured when activating module'
-   
+
 ];
