@@ -194,14 +194,14 @@ class PostController extends Controller
             if ($post) {
                 delete_post_meta($postID);
                 delete_post_term($postID);
+                \Eventy::action('aksara.post-type.'.get_current_post_type().'.destroy', $post, $postID);
                 $post->delete();
             } else {
                 admin_notice('danger', 'Tidak ada data yang dihapus.');
             }
         }
-       admin_notice('success', count($id). ' data berhasil dihapus.');
 
-        \Eventy::action('aksara.post-type.'.get_current_post_type().'.destroy', $post, $id);
+        admin_notice('success', count($id). ' data berhasil dihapus.');
 
         return redirect()->route('admin.'.get_current_post_type_args('route').'.index', ['post_status' => 'trash']);
     }
@@ -255,9 +255,6 @@ class PostController extends Controller
             foreach ($posts as $post) {
                 $this->destroy($post->id);
             }
-            admin_notice('success', __('post-type::message.all-delete-success-message'));
-        } else {
-            admin_notice('danger', 'Data gagal dihapus.');
         }
         return redirect()->route('admin.'.get_current_post_type_args('route').'.index');
     }
