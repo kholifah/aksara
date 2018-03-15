@@ -1,21 +1,21 @@
-@extends('admin:aksara::layouts.admin')
+@extends('admin:aksara::layouts.layout')
 
 @section('breadcrumb')
 <ol class="breadcrumb">
     <li class="breadcrumb-item"><a href="{{ route('admin.root') }}">Dashboard</a></li>
-    <li class="breadcrumb-item active">Menu</li>
+    <li class="breadcrumb-item active">{{ __('plugin:menu::default.menu') }}</li>
 </ol>
 @endsection
 
 @section('content')
 <div class="content__head">
-    <h2 class="page-title">Menu</h2>
+    <h2 class="page-title">{{ __('plugin:menu::default.menu') }}</h2>
 </div>
 <!-- /.content__head -->
 
 <div class="content__body page-slider">
       <div class="card-box col-md-10">
-          Harap registrasi menu dengan perintah `register_menu`
+          {{ __('plugin:menu::message.register-register-menu') }}
       </div>
 </div>
 
