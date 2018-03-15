@@ -99,10 +99,6 @@ class Interactor implements PostInterface
         if (!isset($args['label'])) {
             throw new Exception('Missing label argument for registering post type '.$postType);
         }
-    {
-        if (!isset($args['label'])) {
-            throw new Exception('Missing label argument for registering post type '.$postType);
-        }
         if (!isset($args['public'])) {
             $args['public'] = true;
         }
