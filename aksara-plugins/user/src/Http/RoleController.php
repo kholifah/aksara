@@ -4,7 +4,7 @@ namespace Plugins\User\Http;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\Models\Role;
+use Plugins\User\Models\Role;
 use Auth;
 
 class RoleController extends Controller
@@ -57,7 +57,7 @@ class RoleController extends Controller
     {
         $role = new Role();
         $role->permissions = [];
-        $capabilities = get_capabilities();
+        $capabilities = \RoleCapability::all();
         return view('plugin:user::role.create', compact('role', 'capabilities'));
     }
 
@@ -109,7 +109,7 @@ class RoleController extends Controller
     public function edit($id)
     {
         $role = Role::find($id);
-        $capabilities = get_capabilities();
+        $capabilities = \RoleCapability::all();
         return view('plugin:user::role.edit', compact('role', 'capabilities'));
     }
 

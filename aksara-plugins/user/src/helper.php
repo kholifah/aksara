@@ -1,5 +1,5 @@
 <?php
-use App\Models\UserMeta;
+use Plugin\User\Models\UserMeta;
 
 // Function for delete user meta data
 function delete_user_meta($userID = false, $key = false)
@@ -27,17 +27,15 @@ function set_user_meta($userID = false, $key = false, $value = false, $serialize
 
 function add_capability($name, $id = false, $parent = false)
 {
-    $role = \App::make('Plugins\User\Role');
-    $role->addCapability($name, $id, $parent);
+    return RoleCapability::add($name, $id, $parent);
 }
 
 function get_capability($id = false)
 {
-    $role = \App::make('Plugins\User\Role');
-    return $role->getCapability($id);
+    return RoleCapability::get($id);
 }
 
 function get_capabilities()
 {
-    return \Config::get('aksara.user.capabilities', []);
+    return RoleCapability::all();
 }

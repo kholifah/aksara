@@ -1,37 +1,37 @@
 <?php
 
-namespace App\Models;
+namespace Plugin\User\UserMeta;
 
 use Illuminate\Database\Eloquent\Model;
 use App\User;
 
-class UserMeta extends Model 
+class UserMeta extends Model
 {
 
     protected $table = 'user_meta';
     protected $fillable = ['meta_key', 'meta_value', 'user_id'];
     public $timestamps = false;
 
-    public function validate($data) 
+    public function validate($data)
     {
         $rules = [
-            'meta_key' => 'required|max:40',            
+            'meta_key' => 'required|max:40',
             'user_id' => 'required',
         ];
 
         return \Validator::make($data, $rules);
     }
-    
-    public function user() 
+
+    public function user()
     {
         return $this->belongsTo('App\User', 'user_id');
     }
-    
+
     // Function for delete user meta data
-    public static function delete_user_meta($userID = false, $key = false) 
+    public static function delete_user_meta($userID = false, $key = false)
     {
-        //Checking user_id data can't be empty 
-        if (!$userID) 
+        //Checking user_id data can't be empty
+        if (!$userID)
         {
             return FALSE;
         } else {
@@ -41,13 +41,13 @@ class UserMeta extends Model
                 return FALSE;
         }
 
-        //Checking key data  
-        if ($key) 
+        //Checking key data
+        if ($key)
         {
             // Get user meta data from db
             $user_meta = UserMeta::where('user_id', $userID)->where('meta_key', $key)->first();
             // Checking user meta data
-            if ($user_meta) 
+            if ($user_meta)
             {
                 // Delete user meta data if data valid
                 $user_meta->delete();
@@ -58,7 +58,7 @@ class UserMeta extends Model
             // Get all user meta data from db
             $user_meta = UserMeta::where('user_id', $userID);
             // Checking user meta data
-            if ($user_meta->count()) 
+            if ($user_meta->count())
             {
                 // Delete user meta data if data valid
                 $user_meta->delete();
@@ -72,10 +72,10 @@ class UserMeta extends Model
     }
 
     // Function for get user meta data
-    public static function get_user_meta($userID = false, $key = false, $unserialize = false) 
+    public static function get_user_meta($userID = false, $key = false, $unserialize = false)
     {
-        // Checking user_id data can't be empty 
-        if (!$userID) 
+        // Checking user_id data can't be empty
+        if (!$userID)
         {
             return FALSE;
         } else {
@@ -85,8 +85,8 @@ class UserMeta extends Model
                 return FALSE;
         }
 
-        // Checking key data can't be empty 
-        if (!$key) 
+        // Checking key data can't be empty
+        if (!$key)
         {
             return FALSE;
         }
@@ -96,10 +96,10 @@ class UserMeta extends Model
         $data = '';
 
         // Checking user meta data
-        if ($user_meta) 
+        if ($user_meta)
         {
             // Checking value data to unserialize or change string data to array data
-            if ($unserialize) 
+            if ($unserialize)
             {
                 $data = unserialize($user_meta->meta_value);
             } else {
@@ -112,10 +112,10 @@ class UserMeta extends Model
     }
 
     // Function for setting user meta data
-    public static function set_user_meta($userID = false, $key = false, $value = false, $serialize = false) 
+    public static function set_user_meta($userID = false, $key = false, $value = false, $serialize = false)
     {
-        // Checking user_id data can't be empty 
-        if (!$userID) 
+        // Checking user_id data can't be empty
+        if (!$userID)
         {
             return FALSE;
         } else {
@@ -125,7 +125,7 @@ class UserMeta extends Model
                 return FALSE;
         }
 
-        // Checking key data can't ne empty 
+        // Checking key data can't ne empty
         if (!$key)
         {
             return FALSE;
@@ -136,7 +136,7 @@ class UserMeta extends Model
         $data = '';
 
         // Checking value data to unserialize or change array data to string data
-        if ($serialize) 
+        if ($serialize)
         {
             $data = serialize($value);
         } else {
@@ -150,22 +150,22 @@ class UserMeta extends Model
         ];
 
         // Checking user meta data
-        if ($user_meta) 
+        if ($user_meta)
         {
             // Checking data input
             $validator = $user_meta->validate($save);
-            if ($validator->fails()) 
+            if ($validator->fails())
             {
                 return back()->withErrors($validator)->withInput();
             }
 
-            // Checking value data 
-            if ($data) 
+            // Checking value data
+            if ($data)
             {
                 $term->meta_key = $save['meta_key'];
                 $term->meta_value = $save['meta_value'];
                 $term->user_id = $save['user_id'];
-                
+
                 // Update user meta data
                 if ($user_meta->save())
                     return TRUE;
@@ -179,11 +179,11 @@ class UserMeta extends Model
                     return FALSE;
             }
         } else {
-            // If user meta data not in db, create new data 
+            // If user meta data not in db, create new data
             $user_meta = new UserMeta;
             // Checking data input
             $validator = $user_meta->validate($save);
-            if ($validator->fails()) 
+            if ($validator->fails())
             {
                 return back()->withErrors($validator)->withInput();
             }

@@ -13,7 +13,9 @@
             "email": "satriyo.796@gmail.com"
         }
     ],
-    "require": {},
+    "require": {
+        "cocur/slugify": "^3.1"
+    },
     "autoload": {
         "psr-4": {
             "Plugins\\User\\": "src/"
