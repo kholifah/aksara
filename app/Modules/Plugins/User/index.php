@@ -1,5 +1,4 @@
 <?php
-
 \Eventy::addAction('aksara.init-completed', function () {
     // $userIndex = [
     //     'page_title' => 'User',
@@ -15,10 +14,9 @@
     //     ]
     // ];
     // add_admin_sub_menu_route('aksara-menu-user', $userIndex);
-
     $args = [
-        'page_title' => trans('menu.user'),
-        'menu_title' => trans('menu.user'),
+        'page_title' => 'User',
+        'menu_title' => 'User',
         'icon' => 'ti-user',
         'capability' => '',
         'route' => [
@@ -30,11 +28,9 @@
         ]
     ];
     add_admin_sub_menu_route('aksara-menu-user', $args);
-
-
     $args = [
-        'page_title' => trans('menu.edit-profile'),
-        'menu_title' => trans('menu.edit-profile'),
+        'page_title' => 'Edit Profile',
+        'menu_title' => 'Edit Profile',
         'icon' => 'ti-user',
         'capability' => '',
         'route' => [
@@ -46,7 +42,6 @@
         ]
     ];
     add_admin_sub_menu_route('aksara-menu-user', $args);
-
     $route = \App::make('route');
     $userCreate = [
         'slug' => '/aksara-user/create',
@@ -84,7 +79,6 @@
         ],
     ];
     $route->addRoute($userUpdate);
-
     $userUpdate = [
         'slug' => '/aksara/user/update-profile',
         'method' => 'PUT',
@@ -94,7 +88,6 @@
         ],
     ];
     $route->addRoute($userUpdate);
-
     $userDestroy = [
         'slug' => '/aksara-user/{id}/destroy',
         'method' => 'GET',
@@ -104,10 +97,9 @@
         ],
     ];
     $route->addRoute($userDestroy);
-
     $args = [
-        'page_title' => trans('menu.role'),
-        'menu_title' => trans('menu.role'),
+        'page_title' => 'Role',
+        'menu_title' => 'Role',
         'icon' => 'ti-user',
         'capability' => '',
         'route' => [
@@ -119,7 +111,6 @@
         ]
     ];
     add_admin_sub_menu_route('aksara-menu-user', $args);
-
     $route = \App::make('route');
     $userCreate = [
         'slug' => '/aksara-role/create',
@@ -166,34 +157,24 @@
         ],
     ];
     $route->addRoute($userDestroy);
-
     add_capability('User');
     add_capability('Add User', 'add-user', 'user');
     add_capability('Edit User', 'edit-user', 'user');
     add_capability('Delete User', 'delete-user', 'user');
 });
-
-
-
 \Eventy::addAction('aksara.init-after-routes',function(){
-
     $args = [
         'position' => 5,
         'menuTitle' =>'Edit Profile',
         'capability' =>[],
         'url' => route('aksara.user.edit-profile')
     ];
-
     add_admin_menu_toolbar_dropdown($args);
 },20);
-
-
 \Eventy::addAction('aksara.admin_head', function () {
     echo '<link href='.url("assets/admin/assets/plugins/datatables/jquery.dataTables.min.css").' rel="stylesheet" type="text/css"/>';
     echo '<link href='.url("assets/admin/assets/plugins/datatables/responsive.bootstrap.min.css").' rel="stylesheet" type="text/css"/>';
 });
-
-
     \Eventy::addAction('aksara.admin_footer', function () {
         // File JS / CSS masuk sini
         // @nanti dipindah ke resource

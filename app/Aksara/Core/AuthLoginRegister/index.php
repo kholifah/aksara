@@ -4,7 +4,7 @@
 
     $args = [
         'position' => 99,
-        'menuTitle' =>'Logout',
+        'menuTitle' => __('core:auth-login-register::default.logout'),
         'capability' =>[],
         'url' => route('admin.logout')
     ];

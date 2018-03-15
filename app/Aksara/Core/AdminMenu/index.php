@@ -13,21 +13,20 @@ namespace App\Aksara\Core\AdminMenu;
 
     // 60 Tools
     $args = [
-        'page_title' => 'Tools',
-        'menu_title' => 'Tools',
+        'page_title' => __('core:admin-menu::default.tools'),
+        'menu_title' => __('core:admin-menu::default.tools'),
         'icon'       => 'ti-panel',
         'capability' => [],
         'routeName'  => 'ti-package',
         'render'     => false,
         'position'   => 60
       ];
-
     add_admin_menu_route($args);
 
     // 70 aksara-menu-options
     $args = [
-        'page_title' => 'Options',
-        'menu_title' => 'Options',
+        'page_title' => __('core:admin-menu::default.options'),
+        'menu_title' => __('core:admin-menu::default.options'),
         'icon'       => 'ti-settings',
         'capability' => [],
         'routeName'  => 'aksara-menu-options',
@@ -39,8 +38,8 @@ namespace App\Aksara\Core\AdminMenu;
 
     // 80 aksara-menu-options appeareance
     $args = [
-        'page_title' => 'Appearance',
-        'menu_title' => 'Appearance',
+        'page_title' => __('core:admin-menu::default.appearance'),
+        'menu_title' => __('core:admin-menu::default.appearance'),
         'icon'       => 'ti-ruler-pencil',
         'capability' => [],
         'routeName'  => 'aksara-menu-options-appereance',
@@ -52,8 +51,8 @@ namespace App\Aksara\Core\AdminMenu;
 
     // 90 aksara-menu-user
     $args = [
-        'page_title' => 'User',
-        'menu_title' => 'User',
+        'page_title' => __('core:admin-menu::default.user'),
+        'menu_title' => __('core:admin-menu::default.user'),
         'icon'       => 'ti-user',
         'capability' => [],
         'routeName'  => 'aksara-menu-user',

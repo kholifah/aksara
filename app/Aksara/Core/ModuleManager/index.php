@@ -4,8 +4,8 @@
 \Eventy::addAction('aksara.init', function () {
     if (!\Config::get('aksara.module_manager.load_all', false)) {
         $moduleManagerIndex = [
-                      'page_title' => 'Module Manager',
-                      'menu_title' => 'Module Manager',
+                      'page_title' => __('core:module-manager::default.module-manager'),
+                      'menu_title' => __('core:module-manager::default.module-manager'),
                       'icon'       => 'ti-layout-menu-v',
                       'position'   => 30,
                       'capability' => [],

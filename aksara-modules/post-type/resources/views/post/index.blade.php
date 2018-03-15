@@ -1,12 +1,10 @@
 @extends('admin:aksara::layouts.layout')
-
 @section('breadcrumb')
 <ol class="breadcrumb">
     <li class="breadcrumb-item"><a href="{{ route('admin.root') }}">{{__('post-type::default.dashboard') }}</a></li>
     <li class="breadcrumb-item active">{{ __('post-type::default.all-post-type', ['post-type' => get_current_post_type_args('label.name')]) }}</li>
 </ol>
 @endsection
-
 @section('content')
 <div class="content__head">
     <h2 class="page-title">{{ __('post-type::default.all-post-type', ['post-type' => get_current_post_type_args('label.name')]) }}
@@ -37,7 +35,6 @@
     <form action="" class="posts-filter clearfix">
     <div class="tablenav top clearfix">
         <div class="alignleft action bulk-action">
-
                 <select name="apply" class="form-control">
                     @if($viewData['post_status'] == 'trash')
                         <option disabled selected>{{__('post-type::default.bulk-action') }}</option>
@@ -128,5 +125,4 @@
     </div>
     </form>
 </div>
-
 @endsection
