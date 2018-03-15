@@ -2,8 +2,8 @@
 
 \Eventy::addAction('aksara.init', function () {
     $menuIndex = [
-    'page_title' => 'Site Menu',
-    'menu_title' => 'Site Menu',
+    'page_title' => __('plugin:menu::default.site-menu'),
+    'menu_title' => __('plugin:menu::default.site-menu'),
     'icon'       => 'ti-layout-menu-v',
     'position'   => 80,
     'capability' => '',
