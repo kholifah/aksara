@@ -141,9 +141,11 @@ class Interactor implements ModuleRegistryHandler
     {
         $notifRequest = new AdminNotifRequest(
             'success',
-            'plugin - ' . $name .  ' berhasil ' .
-            ($active ? 'diaktifkan' : 'di non-aktifkan')
-        );
+            ($active ? 
+            __('core:module-manager::message.activate-module-successfully', [ 'moduleType' => 'plugin', 'moduleName' => $name] ) :
+            __('core:module-manager::message.deactivate-module-successfully', [ 'moduleType' => 'plugin', 'moduleName' => $name] )
+            )
+           );
 
         $this->notifHandler->handle($notifRequest);
     }

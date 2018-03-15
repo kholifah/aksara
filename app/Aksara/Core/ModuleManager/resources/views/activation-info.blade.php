@@ -2,8 +2,8 @@
 
 @section('breadcrumb')
 <ol class="breadcrumb">
-    <li class="breadcrumb-item"><a href="{{ route('admin.root') }}">Dashboard</a></li>
-    <li class="breadcrumb-item active">Module Manager</li>
+    <li class="breadcrumb-item"><a href="{{ route('admin.root') }}">{{ __('core:dashboard::default.dashboard') }}</a></li>
+    <li class="breadcrumb-item active">{{ __('core:module-manager::default.module-manager') }}</li>
 </ol>
 @endsection
 
@@ -11,7 +11,7 @@
 
 <div class="container">
     <div class="content__head">
-        <h2 class="page-title">Module Manager</h2>
+        <h2 class="page-title">{{ __('core:module-manager::default.module-manager') }}</h2>
     </div>
     <!-- /.content__head -->
     <div>

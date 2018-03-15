@@ -7,7 +7,7 @@
   </div>
   <!-- /.login-logo -->
   <div class="login-box-body">
-    <p class="login-box-msg">Sign in to start your session</p>
+    <p class="login-box-msg">{{ __('core:auth-login-register::message.login-to-start-your-session') }}</p>
     @if(session('message'))
       <p class="login-box-msg"><b>{{ session('message') }}</b></p>
     @endif
@@ -28,14 +28,14 @@
           {{--
             <div class="checkbox icheck">
               <label>
-                <input type="checkbox"> Remember Me
+                <input type="checkbox"> {{ __('core:auth-login-register::default.remember-me') }}
               </label>
             </div>
           --}}
         </div>
         <!-- /.col -->
         <div class="col-xs-4">
-          <button type="submit" class="btn btn-primary btn-block btn-flat">Sign In</button>
+          <button type="submit" class="btn btn-primary btn-block btn-flat">{{ __('core:auth-login-register::default.login') }}</button>
         </div>
         <!-- /.col -->
       </div>

@@ -57,17 +57,17 @@ class AuthController extends Controller
         if (\Auth::attempt($credential)) {
             if(!\Auth::user()->active){
               \Auth::logout();
-              return redirect()->route('admin.login')->with('message', 'User Non Active');
+              return redirect()->route('admin.login')->with('message', __('core:auth-login-register::message.user-non-active'));
             }
             return redirect()->route('admin.root');
         } else {
-            return redirect()->route('admin.login')->with('message', 'Login Gagal');
+            return redirect()->route('admin.login')->with('message', __('core:auth-login-register::message.login-fail'));
         }
     }
 
     public function logout()
     {
         \Auth::logout();
-        return redirect()->route('admin.login')->with('message', 'Berhasil logout');
+        return redirect()->route('admin.login')->with('message', __('core:auth-login-register::message.logout-success'));
     }
 }

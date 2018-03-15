@@ -2,37 +2,37 @@
 
 @section('breadcrumb')
   <ol class="breadcrumb">
-    <li class="breadcrumb-item"><a href="{{ route('admin.root') }}">Dashboard</a></li>
-    <li class="breadcrumb-item"><a href="{{ route('module-manager.index') }}">Module Manager</a></li>
-    <li class="breadcrumb-item active">Plugin Activation Check</li>
+    <li class="breadcrumb-item"><a href="{{ route('admin.root') }}">{{ __('core:dashboard::default.dashboard') }}</a></li>
+    <li class="breadcrumb-item"><a href="{{ route('module-manager.index') }}">{{ __('core:module-manager::default.module-manager') }}</a></li>
+    <li class="breadcrumb-item active">{{ __('core:module-manager::default.plugin-activation-check') }}</li>
   </ol>
 @endsection
 
 @section('content')
   <div class="container">
     <div class="content__head">
-      <h2 class="page-title">Activating {{ $type }}</h2>
+      <h2 class="page-title">{{ __('core:module-manager::message.activating-module', ['moduleType' => $type]) }}</h2>
     </div>
     <div class="col-md-6">
       <!-- dependencies -->
-      <h3>Activating {{ $type }} : {{ $module_name }}</h3>
+      <h3>{{ __('core:module-manager::message.activating-module-name', ['moduleType' => $type, 'moduleName' => $module_name]) }}</h3>
       <p>
-      The following plugin(s) will be activated if inactive because of dependency
+      {{ __('core:module-manager::message.activating-module-name-messsage') }}
       </p>
       <ul>
         @foreach($dependencies as $dependency)
-          <li>{{ $dependency['module_name'] }} ({{ !$dependency['is_registered'] ? 'Unregistered' : ($dependency['is_active'] ? 'Active' : 'Inactive') }}) </li>
+          <li>{{ $dependency['module_name'] }} ({{ !$dependency['is_registered'] ? 'Unregistered' : ($dependency['is_active'] ? __('core:module-manager::default.active') : __('core:module-manager::default.inactive')) }}) </li>
         @endforeach
       </ul>
     </div>
     <div class="col-md-6">
       <div class="row">
-        <h3>Pending Migrations</h3>
+        <h3>{{ __('core:module-manager::message.pending-migrations') }}</h3>
         <p>Following migration(s) are pending:</p>
           @foreach($migration_paths as $path)
             <br><code>{{ $path }}</code>
           @endforeach
-        <p>Please run the following migration command(s)</p>
+        <p>{{ __('core:module-manager::message.pending-migrations-message') }}</p>
         <!-- migration pending -->
           @foreach($migrations as $migration)
             <br><code>{{ $migration }}</code>
