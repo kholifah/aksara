@@ -9,8 +9,8 @@ require __DIR__.'/action-filter/header-meta.php';
 
 \Eventy::addAction('aksara.init', function () {
     $optionIndex = [
-                    'page_title' => 'Multi Bahasa',
-                    'menu_title' => 'Multi Bahasa',
+                    'page_title' => __('plugin:aksara-multi-bas::default.multi-lang'),
+                    'menu_title' => __('plugin:aksara-multi-bas::default.multi-lang'),
                     'icon'       => 'ti-brush-alt',
                     'capability' => '',
                     'route'      => [

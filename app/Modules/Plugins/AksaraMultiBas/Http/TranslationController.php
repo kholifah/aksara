@@ -14,7 +14,7 @@ class TranslationController extends Controller
         $translatedPost = $translationEngine->createPostTranslation($postId,$lang);
 
         // redirect
-        admin_notice('success', 'Translasi berhasil ditambahkan.');
+        admin_notice('success', __('plugin:aksara-multi-bas::message.translasi-success-message'));
         // dd(get_post_type_args('route',$translatedPost->post_type));
 
         return redirect()->route('admin.'.get_post_type_args('route',$translatedPost->post_type).'.edit', ['id'=>$translatedPost->id]);
