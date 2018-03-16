@@ -46,7 +46,7 @@ require __DIR__.'/action-filter/robots.php';
     // Register Post
     $argsPost = [
         'label' => [
-            'name' => 'Post'
+            'name' => __('plugin:post-type::default.post')
         ],
         'route' => 'post',
         'icon' => 'ti-write'
@@ -57,7 +57,7 @@ require __DIR__.'/action-filter/robots.php';
     // Register Page
     $argsPage = [
         'label' => [
-            'name' => 'Page'
+            'name' => __('plugin:post-type::default.page')
         ],
         'has_archive'=>false,
         'route' => 'page',
@@ -69,7 +69,7 @@ require __DIR__.'/action-filter/robots.php';
     // Register Taxonomy
     $argsCategory = [
         'label' => [
-            'name' => 'Category'
+            'name' => __('plugin:post-type::default.category')
         ],
     ];
 
@@ -77,7 +77,7 @@ require __DIR__.'/action-filter/robots.php';
 
     $argsTag = [
         'label' => [
-            'name' => 'Tag'
+            'name' => __('plugin:post-type::default.tag')
         ],
     ];
 
@@ -118,8 +118,8 @@ $postTypeFrontEnd->init();
 
 \Eventy::addAction('aksara.init-completed', function () {
     $optionIndex = [
-        'page_title' => 'Website Option',
-        'menu_title' => 'Website Option',
+        'page_title' => __('plugin:post-type::default.web-option'),
+        'menu_title' => __('plugin:post-type::default.web-option'),
         'icon'       => 'ti-brush-alt',
         'capability' => '',
         'route'      => [

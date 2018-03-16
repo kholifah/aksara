@@ -39,7 +39,7 @@
     </script>
 <div class="container">
     <div class="content__head">
-        <h2 class="page-title">Website Option</h2>
+        <h2 class="page-title">{{ __('plugin:post-type::default.web-option') }}</h2>
     </div>
     <!-- /.content__head -->
 
@@ -50,20 +50,20 @@
                     <div class="tab-pane active" id="opsi-homepage">
                         {!! Form::open(['route' => 'aksara-post-type-option-save', 'role' => 'form', 'class' => 'form-horizontal'])!!}
                         <div class="tab-pane__body">
-                            <h2 class="border-title">Pengaturan Umum</h2>
+                            <h2 class="border-title">{{ __('plugin:post-type::default.general-settings') }}</h2>
                             <div class="form-group row">
-                                <label class="col-sm-2 col-xs-4 col-xxs-12 col-form-label">Halaman utama</label>
+                                <label class="col-sm-2 col-xs-4 col-xxs-12 col-form-label">{{ __('plugin:post-type::default.main-page') }}</label>
                                 <div class="col-sm-10 col-xs-8 col-xxs-12">
                                     {!! Form::select('options[front_page]', $pages, @$options['front_page'], ['class'=>'form-control']) !!}
                                 </div>
                             </div>
-                            <h2 class="border-title">Permalink</h2>
+                            <h2 class="border-title">{{ __('plugin:post-type::default.permalink') }}</h2>
                             <div class="form-group row">
-                                <p>Permalink Options, choose one of the options</p>
+                                <p>{{ __('plugin:post-type::message.permalink-options-message') }}</p>
                                 <table class='table table-bordered table-striped'>
                                     <tr>
                                         <td>{post-type}/{slug}</td>
-                                        <td>Default permalink for custom post type</td>
+                                        <td>{{ __('plugin:post-type::message.default-permalink-message') }}</td>
                                     </tr>
                                     <tr>
                                         <td>{year}/{month}/{slug}</td>
@@ -71,11 +71,11 @@
                                     </tr>
                                     <tr>
                                         <td>{taxonomy-name[name]}/{term-name}/{slug}</td>
-                                        <td>replace [name] with the taxonomy name</td>
+                                        <td>{{ __('plugin:post-type::message.replace-taxonomy-name-message', ['name' => __('plugin:post-type::default.name')]) }}</td>
                                     </tr>
                                     <tr>
                                         <td>{slug}</td>
-                                        <td>Default for post and page</td>
+                                        <td>{{ __('plugin:post-type::message.default-posttype-message') }}</td>
                                     </tr>
                                 </table>
                             </div>
@@ -105,8 +105,8 @@
                             <div class="form-group row">
                                 <label class="col-sm-2 col-xs-4 col-xxs-12 col-form-label">Robots txt</label>
                                 <div class="col-sm-10 col-xs-8 col-xxs-12">
-                                    {!! Form::select('options[robots_txt]',[true=>"Allow Search Engine to Index",false=>"Don't allow search engine to index"] ,@$options['robots_txt'], ['class'=>'form-control']) !!}
-                                    <span style="font-size:12px">*For custom robots.txt please create robots.txt on 'public/robots.txt'</span>
+                                    {!! Form::select('options[robots_txt]',[true => __('plugin:post-type::default.true-index-robot'), false => __('plugin:post-type::default.false-index-robot')] ,@$options['robots_txt'], ['class'=>'form-control']) !!}
+                                    <span style="font-size:12px">{{ __('plugin:post-type::message.custom-robot-txt-message') }}</span>
                                 </div>
                             </div>
                             <h2 class="border-title">Custom Script / CSS</h2>
@@ -137,7 +137,7 @@
                         </div>
                         <div class="tab-pane__footer">
                             <div class="submit-row clearfix">
-                                <input class="btn btn-md btn-primary alignright" value="Simpan Pengaturan" type="submit">
+                                <input class="btn btn-md btn-primary alignright" value="{{ __('plugin:post-type::default.save') }}" type="submit">
                             </div>
                         </div>
                         {!! Form::close()!!}
