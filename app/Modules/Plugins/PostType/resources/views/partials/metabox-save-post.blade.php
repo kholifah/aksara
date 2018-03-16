@@ -1,6 +1,6 @@
 <div class="card-box post-box">
     <div class="card-box__header">
-        <h2>Terbitkan</h2>
+        <h2>{{ __('plugin:post-type::default.publish') }}</h2>
     </div>
     <div class="card-box__body form-horizontal">
         <div class="form-group form-group--table">
@@ -12,7 +12,7 @@
     </div>
     <div class="card-box__footer">
         <div class="submit-row clearfix">
-            <input type="submit" class="btn btn-md btn-primary alignright" value="Simpan">
+            <input type="submit" class="btn btn-md btn-primary alignright" value="{{ __('plugin:post-type::default.save') }}">
         </div>
     </div>
 </div>

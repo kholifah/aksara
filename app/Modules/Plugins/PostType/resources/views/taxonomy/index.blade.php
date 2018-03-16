@@ -10,7 +10,7 @@
 
 @section('content')
 <div class="content__head">
-    <h2 class="page-title">Pengaturan {{ get_current_taxonomy_args('label.name') }}  <a href="{{ route('admin.'.get_current_post_type_args('route').'.'.get_current_taxonomy().'.create') }}" class="page-title-action">Tambah {{ get_current_taxonomy_args('label.name') }}</a></h2>
+    <h2 class="page-title">{{ __('plugin:post-type::default.all-taxonomy', ['taxonomy' => get_current_taxonomy_args('label.name') ]) }}  <a href="{{ route('admin.'.get_current_post_type_args('route').'.'.get_current_taxonomy().'.create') }}" class="page-title-action">{{ __('plugin:post-type::default.add-taxonomy', ['taxonomy' => get_current_taxonomy_args('label.name') ]) }}</a></h2>
 </div>
 <!-- /.content__head -->
 
@@ -32,10 +32,10 @@
                 <table class="datatable-responsive table noborder-top display nowrap" cellspacing="0" width="100%">
                     <thead>
                         <tr>
-                            <th>Name</th>
-                            <th>Slug</th>
-                            <th>Parent</th>
-                            <th class="no-sort" width="50">Action</th>
+                            <th>{{__('plugin:post-type::default.name') }}</th>
+                            <th>{{__('plugin:post-type::default.slug') }}</th>
+                            <th>{{__('plugin:post-type::default.parent') }}</th>
+                            <th class="no-sort" width="50">{{__('plugin:post-type::default.action') }}</th>
                         </tr>
                     </thead>
                     <tbody>

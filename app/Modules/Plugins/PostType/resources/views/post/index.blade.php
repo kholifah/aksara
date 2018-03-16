@@ -3,15 +3,15 @@
 @section('breadcrumb')
 <ol class="breadcrumb">
     <li class="breadcrumb-item"><a href="{{ route('admin.root') }}">Dashboard</a></li>
-    <li class="breadcrumb-item active">Semua {{ get_current_post_type_args('label.name') }}</li>
+    <li class="breadcrumb-item active">{{ __('plugin:post-type::default.all-post-type', ['post-type' => get_current_post_type_args('label.name')]) }}</li>
 </ol>
 @endsection
 
 @section('content')
 <div class="content__head">
-    <h2 class="page-title">Semua {{ get_current_post_type_args('label.name') }}
+    <h2 class="page-title">{{ __('plugin:post-type::default.all-post-type', ['post-type' => get_current_post_type_args('label.name')]) }}
         @if( array_search_key_recursive('admin.'.get_current_post_type_args('slug').'.create',\Config::get('aksara.admin-menu.admin-sub-menu'),false) )
-        <a href="{{ route('admin.'.get_current_post_type_args('slug').'.create') }}" class="page-title-action">Tambah {{ get_current_post_type_args('label.name') }}</a>
+        <a href="{{ route('admin.'.get_current_post_type_args('slug').'.create') }}" class="page-title-action">{{ __('plugin:post-type::default.add-post-type', ['post-type' => get_current_post_type_args('label.name')]) }}</a>
         @endif
     </h2>
 </div>

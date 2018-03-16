@@ -85,7 +85,7 @@ class TaxonomyController extends Controller
         $data = add_term($data['taxonomy'], $data['name'], $data['slug'], $data['parent']);
 
         if ($data) {
-            admin_notice('success', 'Data berhasil ditambahkan.');
+            admin_notice('success', __('plugin:post-type::message.add-success-message'));
             return redirect()->route('admin.'.get_current_post_type_args('route').'.'.get_current_taxonomy_args('slug').'.index');
         } elseif (!$data) {
             return redirect()->route('admin.'.get_current_post_type_args('route').'.'.get_current_taxonomy_args('slug').'.create')
@@ -143,7 +143,7 @@ class TaxonomyController extends Controller
 //                            ->withErrors($validator)
                             ->withInput();
         }
-        admin_notice('success', 'Data berhasil diubah.');
+        admin_notice('success', __('plugin:post-type::message.edit-success-message'));
         return redirect()->route('admin.'.get_current_post_type_args('route').'.'.get_current_taxonomy_args('slug').'.index');
     }
 
@@ -160,7 +160,7 @@ class TaxonomyController extends Controller
             TermRelationship::where('term_id', $id)->delete();
             delete_term($id);
         }
-        admin_notice('success', 'Data berhasil dihapus.');
+        admin_notice('success', __('plugin:post-type::message.delete-success-message'));
         return redirect()->route('admin.'.get_current_post_type_args('route').'.'.get_current_taxonomy_args('slug').'.index');
     }
 }

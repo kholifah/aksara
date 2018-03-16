@@ -3,8 +3,8 @@
 @section('breadcrumb')
 <ol class="breadcrumb">
     <li class="breadcrumb-item"><a href="{{ route('admin.root') }}">Dashboard</a></li>
-    <li class="breadcrumb-item"><a href="{{ route('admin.'.get_current_post_type_args('route').'.index') }}">Semua {{ get_current_post_type_args('label.name') }}</a></li>
-    <li class="breadcrumb-item active">Edit {{ get_current_post_type_args('label.name') }}</li>
+    <li class="breadcrumb-item"><a href="{{ route('admin.'.get_current_post_type_args('route').'.index') }}">{{ __('plugin:post-type::default.all-post-type', ['post-type' => get_current_post_type_args('label.name')]) }}</a></li>
+    <li class="breadcrumb-item active">{{ __('plugin:post-type::default.edit-post-type', ['post-type' => get_current_post_type_args('label.name')]) }}</li>
 </ol>
 @endsection
 
@@ -19,7 +19,7 @@
                 </div>
                 <br/>
                 <p>
-                    <a class='btn btn-primary file-upload' style="text-decoration: none;"><i class="glyphicon glyphicon-edit"></i>Upload</a>&nbsp;&nbsp;
+                    <a class='btn btn-primary file-upload' style="text-decoration: none;"><i class="glyphicon glyphicon-edit"></i>{{ __('plugin:post-type::default.upload') }}</a>&nbsp;&nbsp;
                 </p>
                 <input type="file" id="file1" style="display: none"/>
             </center>
