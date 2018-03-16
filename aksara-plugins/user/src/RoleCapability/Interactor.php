@@ -1,15 +1,25 @@
 <?php
 namespace Plugins\User\RoleCapability;
 
+use Aksara\Support\Strings;
+use Aksara\Support\Arrays;
+
 //TODO refactor
 //extract DTO's
 class Interactor implements RoleCapabilityInterface
 {
     private $configRepo;
+    private $stringHelper;
+    private $arrayHelper;
 
-    public function __construct(ConfigRepository $configRepo)
-    {
+    public function __construct(
+        ConfigRepository $configRepo,
+        Strings $stringHelper,
+        Arrays $arrayHelper
+    ){
         $this->configRepo = $configRepo;
+        $this->stringHelper = $stringHelper;
+        $this->arrayHelper = $arrayHelper;
     }
 
     public function add($name, $id = false, $parent = false)
@@ -23,11 +33,11 @@ class Interactor implements RoleCapabilityInterface
             // id should not be created from name
             // it should be provided by the caller
             // on the contrary, name can be generated from id
-            $id = aksara_slugify($name);
+            $id = $this->stringHelper->slug($name);
         } else {
             // id format should be as-is
             // if must be slug, then validate, don't convert
-            $id = aksara_slugify($id);
+            $id = $this->stringHelper->slug($id);
         }
 
         $capabilities = $this->configRepo->get('aksara.user.capabilities', []);
@@ -56,7 +66,7 @@ class Interactor implements RoleCapabilityInterface
 
     public function get($id)
     {
-        $capability =  array_search_value_recursive($id,
+        $capability =  $this->arrayHelper->searchValueRecursive($id,
             $this->configRepo->get('aksara.user.capabilities', []));
 
         if (!$capability) {

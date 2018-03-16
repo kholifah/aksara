@@ -23,7 +23,7 @@ class RouteServiceProvider extends ServiceProvider
                     'slug' => '/aksara-user',
                     'args' => [
                         'as' => 'aksara-user',
-                        'uses' => '\Plugins\User\Http\UserController@index',
+                        'uses' => '\Plugins\User\Http\Controllers\UserController@index',
                     ],
                 ]
             ];
@@ -39,7 +39,7 @@ class RouteServiceProvider extends ServiceProvider
                     'slug' => '/aksara/user/edit-profile',
                     'args' => [
                         'as' => 'aksara.user.edit-profile',
-                        'uses' => '\Plugins\User\Http\UserController@editProfile',
+                        'uses' => '\Plugins\User\Http\Controllers\UserController@editProfile',
                     ],
                 ]
             ];
@@ -51,7 +51,7 @@ class RouteServiceProvider extends ServiceProvider
                 'method' => 'GET',
                 'args' => [
                     'as' => 'aksara-user-create',
-                    'uses' => '\Plugins\User\Http\UserController@create',
+                    'uses' => '\Plugins\User\Http\Controllers\UserController@create',
                 ],
             ];
             $route->addRoute($userCreate);
@@ -60,7 +60,7 @@ class RouteServiceProvider extends ServiceProvider
                 'method' => 'POST',
                 'args' => [
                     'as' => 'aksara-user-store',
-                    'uses' => '\Plugins\User\Http\UserController@store',
+                    'uses' => '\Plugins\User\Http\Controllers\UserController@store',
                 ],
             ];
             $route->addRoute($userStore);
@@ -69,7 +69,7 @@ class RouteServiceProvider extends ServiceProvider
                 'method' => 'GET',
                 'args' => [
                     'as' => 'aksara-user-edit',
-                    'uses' => '\Plugins\User\Http\UserController@edit',
+                    'uses' => '\Plugins\User\Http\Controllers\UserController@edit',
                 ],
             ];
             $route->addRoute($userEdit);
@@ -78,7 +78,7 @@ class RouteServiceProvider extends ServiceProvider
                 'method' => 'PUT',
                 'args' => [
                     'as' => 'aksara-user-update',
-                    'uses' => '\Plugins\User\Http\UserController@update',
+                    'uses' => '\Plugins\User\Http\Controllers\UserController@update',
                 ],
             ];
             $route->addRoute($userUpdate);
@@ -88,7 +88,7 @@ class RouteServiceProvider extends ServiceProvider
                 'method' => 'PUT',
                 'args' => [
                     'as' => 'aksara.user.update-profile',
-                    'uses' => '\Plugins\User\Http\UserController@update',
+                    'uses' => '\Plugins\User\Http\Controllers\UserController@update',
                 ],
             ];
             $route->addRoute($userUpdate);
@@ -98,7 +98,7 @@ class RouteServiceProvider extends ServiceProvider
                 'method' => 'GET',
                 'args' => [
                     'as' => 'aksara-user-destroy',
-                    'uses' => '\Plugins\User\Http\UserController@destroy',
+                    'uses' => '\Plugins\User\Http\Controllers\UserController@destroy',
                 ],
             ];
             $route->addRoute($userDestroy);
@@ -112,7 +112,7 @@ class RouteServiceProvider extends ServiceProvider
                     'slug' => '/aksara-role',
                     'args' => [
                         'as' => 'aksara-role',
-                        'uses' => '\Plugins\User\Http\RoleController@index',
+                        'uses' => '\Plugins\User\Http\Controllers\RoleController@index',
                     ],
                 ]
             ];
@@ -124,7 +124,7 @@ class RouteServiceProvider extends ServiceProvider
                 'method' => 'GET',
                 'args' => [
                     'as' => 'aksara-role-create',
-                    'uses' => '\Plugins\User\Http\RoleController@create',
+                    'uses' => '\Plugins\User\Http\Controllers\RoleController@create',
                 ],
             ];
             $route->addRoute($userCreate);
@@ -133,7 +133,7 @@ class RouteServiceProvider extends ServiceProvider
                 'method' => 'POST',
                 'args' => [
                     'as' => 'aksara-role-store',
-                    'uses' => '\Plugins\User\Http\RoleController@store',
+                    'uses' => '\Plugins\User\Http\Controllers\RoleController@store',
                 ],
             ];
             $route->addRoute($userStore);
@@ -142,7 +142,7 @@ class RouteServiceProvider extends ServiceProvider
                 'method' => 'GET',
                 'args' => [
                     'as' => 'aksara-role-edit',
-                    'uses' => '\Plugins\User\Http\RoleController@edit',
+                    'uses' => '\Plugins\User\Http\Controllers\RoleController@edit',
                 ],
             ];
             $route->addRoute($userEdit);
@@ -151,7 +151,7 @@ class RouteServiceProvider extends ServiceProvider
                 'method' => 'PUT',
                 'args' => [
                     'as' => 'aksara-role-update',
-                    'uses' => '\Plugins\User\Http\RoleController@update',
+                    'uses' => '\Plugins\User\Http\Controllers\RoleController@update',
                 ],
             ];
             $route->addRoute($userUpdate);
@@ -160,7 +160,7 @@ class RouteServiceProvider extends ServiceProvider
                 'method' => 'GET',
                 'args' => [
                     'as' => 'aksara-role-destroy',
-                    'uses' => '\Plugins\User\Http\RoleController@destroy',
+                    'uses' => '\Plugins\User\Http\Controllers\RoleController@destroy',
                 ],
             ];
             $route->addRoute($userDestroy);

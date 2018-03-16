@@ -1,12 +1,12 @@
 <?php
 
-namespace Plugins\User\Http;
+namespace Plugins\User\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\User;
-use App\Models\Role;
+use Plugins\User\Models\Role;
 use Auth;
 
 class UserController extends Controller

@@ -78,5 +78,15 @@ class AppServiceProvider extends ServiceProvider
             'plugin_registry',
             \Aksara\PluginRegistry\PluginRegistryHandler::class
         );
+
+        $this->app->bind(
+            'support_strings',
+            \Aksara\Support\Strings::class
+        );
+
+        $this->app->bind(
+            'support_arrays',
+            \Aksara\Support\Arrays::class
+        );
     }
 }
