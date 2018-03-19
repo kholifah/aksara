@@ -161,7 +161,7 @@ class ModuleManagerController extends Controller
     private function resolveDependencies($modules, $type, $slug)
     {
         if (!isset($modules[$type][$slug])) {
-            throw new NotFoundHttpException('Module not found');
+            throw new NotFoundHttpException(__('core:module-manager::message.module-not-found-message'));
         }
         $module = $modules[$type][$slug];
         if (isset($module['dependencies']) && !empty($module['dependencies'])) {
@@ -195,7 +195,7 @@ class ModuleManagerController extends Controller
             $modules = $this->getModulesMerged();
 
             if (!isset($modules[$type][$slug])) {
-                throw new NotFoundHttpException('Module not found');
+                throw new NotFoundHttpException(__('core:module-manager::message.module-not-found-message'));
             }
 
             $module = $modules[$type][$slug];
@@ -209,7 +209,7 @@ class ModuleManagerController extends Controller
                 })->count();
 
             if ($unregistered > 0) {
-                throw new \Exception('Unregistered dependency found');
+                throw new \Exception(__('core:module-manager::message.unregistered-dependency-message'));
             }
 
             $pendingMigrations = $this->getPendingMigrations(
@@ -217,14 +217,14 @@ class ModuleManagerController extends Controller
             );
 
             if (count($pendingMigrations) > 0) {
-                throw new \Exception('Pending migration found');
+                throw new \Exception(__('core:module-manager::message.pending-migration-message'));
             }
 
             $moduleInfo = $this->moduleStatus->getStatus($type, $slug);
 
             //TODO refactor to combine with unregistered detection above
             if (!$moduleInfo->getIsRegistered()) {
-                throw new \Exception("$type - $slug is not registered");
+                throw new \Exception(__('core:module-manager::message.pending-migration-message', ['moduleType' => $type, 'moduleName' => $slug]));
             }
 
             $inactiveOnly = collect($dependenciesInfo)
@@ -253,7 +253,7 @@ class ModuleManagerController extends Controller
                             );
                         }
                         //raise error
-                        throw new \Exception('Error occured when activating module');
+                        throw new \Exception(__('core:module-manager::message.error-activating-module-message'));
                     }
                 } else {
                     if ($itemToBeActivated->getType() == 'plugin') {
@@ -269,10 +269,7 @@ class ModuleManagerController extends Controller
             return redirect()->route('module-manager.index');
         } catch (\Exception $e) {
             admin_notice('warning',
-                $type .
-                ' - ' .
-                $slug .
-                ' gagal diaktifkan:' . $e->getMessage()
+                 __('core:module-manager::message.fail-activate-module-message', ['moduleType' => $type, 'moduleName' => $slug, 'error' => $e->getMessage()])   
             );
             return redirect()->route('module-manager.index');
         }
@@ -284,8 +281,7 @@ class ModuleManagerController extends Controller
             if (strtolower($type) == 'plugin') {
                 if ($this->pluginRequiredBy->isRequired($slug)) {
                     throw new \Exception(
-                        'Cannot deactivate ' . $type . ' - ' . $slug .
-                        ' because used in another module(s)'
+                        __('core:module-manager::message.cannot-deactivate-module-message', ['moduleType' => $type, 'moduleName' => $slug])                       
                     );
                 }
             }
@@ -301,10 +297,7 @@ class ModuleManagerController extends Controller
             return redirect()->route('module-manager.index');
         } catch (\Exception $e) {
             admin_notice('warning',
-                $type .
-                ' - ' .
-                $slug .
-                ' gagal diaktifkan:' . $e->getMessage()
+                __('core:module-manager::message.fail-activate-module-message', ['moduleType' => $type, 'moduleName' => $slug, 'error' => $e->getMessage()])   
             );
             return redirect()->route('module-manager.index');
         }

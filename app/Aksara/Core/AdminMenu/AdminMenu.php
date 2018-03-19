@@ -22,26 +22,26 @@ class AdminMenu
     {
         if (!isset($args['routeName'])) {
             if (!isset($args['route'])) {
-                throw new Exception('Menu must have a route');
+                throw new Exception(__('core:admin-menu::message.required-route'));
             }
 
             if (!isset($args['route']['slug'])) {
-                throw new Exception('Menu must have route slug paramater');
+                throw new Exception(__('core:admin-menu::message.required-route-slug'));
                 return;
             }
 
             if (!isset($args['route']['args'])) {
-                throw new Exception('Menu must have route args paramater');
+                throw new Exception(__('core:admin-menu::message.required-route-args'));
                 return;
             }
 
             if (!isset($args['route']['args']['as'])) {
-                throw new Exception('Menu must have a route name');
+                throw new Exception(__('core:admin-menu::message.required-route-name'));
                 return;
             }
 
             if (!isset($args['route']['args']['uses'])) {
-                throw new Exception('Menu must have a route controller');
+                throw new Exception(__('core:admin-menu::message.required-route-controller'));
                 return;
             }
 
@@ -76,26 +76,26 @@ class AdminMenu
     {
         if (!isset($args['routeName'])) {
             if (!isset($args['route'])) {
-                throw new Exception('Menu must have a route');
+                throw new Exception(__('core:admin-menu::message.required-route'));
             }
 
             if (!isset($args['route']['slug'])) {
-                throw new Exception('Menu must have route slug paramater');
+                throw new Exception(__('core:admin-menu::message.required-route-slug'));
                 return;
             }
 
             if (!isset($args['route']['args'])) {
-                throw new Exception('Menu must have route args paramater');
+                throw new Exception(__('core:admin-menu::message.required-route-args'));
                 return;
             }
 
             if (!isset($args['route']['args']['as'])) {
-                throw new Exception('Menu must have a route name');
+                throw new Exception(__('core:admin-menu::message.required-route-name'));
                 return;
             }
 
             if (!isset($args['route']['args']['uses'])) {
-                throw new Exception('Menu must have a route controller');
+                throw new Exception(__('core:admin-menu::message.required-route-controller'));
                 return;
             }
 

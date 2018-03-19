@@ -15,7 +15,7 @@
     </div>
     <!-- /.content__head -->
     <div>
-      <h3>Plugins</h3>
+      <h3>{{  __('core:module-manager::default.plugins') }}</h3>
       <table class='table'>
         <tr>
           <th style="width:100px">{{  __('core:module-manager::default.status') }}</th>
@@ -37,7 +37,7 @@
               <form method='POST' action="{{ route('module-manager.deactivate',['slug'=>$moduleName,'type'=>'plugin']) }}">
                 {{ csrf_field() }}
 
-                <input type='submit' class='btn btn-xs btn-default' value="{{  __('core:module-manager::default.deactivate') }}" {{ $pluginRequiredBy->isRequired($moduleName) ? 'disabled' : '' }}>
+                <input type='submit' class='btn btn-xs btn-default' value="{{  __('core:module-manager::default.deactivate') }}" {{ $pluginRequiredBy->isRequired($moduleName) ? __('core:module-manager::default.disabled')  : '' }}>
               </form>
             @else
               <a class='btn btn-xs btn-primany' href="{{ route('module-manager.activation-check', [ 'slug' => $moduleName, 'type' => 'plugin', ]) }}">{{  __('core:module-manager::default.activate') }}</a>
@@ -61,7 +61,7 @@
       </table>
     </div>
     <div>
-      <h3>Plugins V2</h3>
+      <h3>{{  __('core:module-manager::default.plugins-v2') }}</h3>
       <table class='table'>
         <tr>
           <th style="width:100px">{{  __('core:module-manager::default.status') }}</th>
@@ -83,7 +83,7 @@
                   <form method='POST' action="{{ route('module-manager.deactivate',['slug'=>$plugin->getName(),'type'=>'plugin']) }}">
                 {{ csrf_field() }}
 
-                <input type='submit' class='btn btn-xs btn-default' value="{{  __('core:module-manager::default.deactivate') }}" {{ $pluginRequiredBy->isRequired($plugin->getName()) ? 'disabled' : '' }}>
+                <input type='submit' class='btn btn-xs btn-default' value="{{  __('core:module-manager::default.deactivate') }}" {{ $pluginRequiredBy->isRequired($plugin->getName()) ? __('core:module-manager::default.disabled') : '' }}>
               </form>
             @else
                 <a class='btn btn-xs btn-primany' href="{{ route('module-manager.activation-check', [ 'slug' => $plugin->getName(), 'type' => 'plugin', ]) }}">{{  __('core:module-manager::default.activate') }}</a>
@@ -108,7 +108,7 @@
     </div>
     {{-- End Plugin --}}
     <div>
-      <h3>Front End</h3>
+      <h3>{{  __('core:module-manager::default.front-end') }}</h3>
       <table class='table'>
         <tr>
           <th style="width:100px">{{  __('core:module-manager::default.status') }}</th>
@@ -119,9 +119,9 @@
         <tr>
           <td>
           @if($module->getModuleStatus('front-end',$moduleName))
-            <span class="label label-success">Active</span>
+            <span class="label label-success">{{ __('core:module-manager::default.active') }}</span>
           @else
-            <span class="label label-danger">Not Active</span>
+            <span class="label label-danger">{{ __('core:module-manager::default.non-active') }}</span>
           @endif
           </td>
           <td>

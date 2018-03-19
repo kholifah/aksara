@@ -45,7 +45,7 @@
             {{ csrf_field() }}
 
             <input class='btn btn-xs btn-primary'
-              type='submit' value="Next"
+              type='submit' value="{{ __('core:module-manager::default.next') }}"
               {{ $allow_activation ? '' : 'disabled' }}>
           </form>
         </div>
