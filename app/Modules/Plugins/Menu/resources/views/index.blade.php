@@ -2,7 +2,7 @@
 
 @section('breadcrumb')
 <ol class="breadcrumb">
-    <li class="breadcrumb-item"><a href="{{ route('admin.root') }}">Dashboard</a></li>
+    <li class="breadcrumb-item"><a href="{{ route('admin.root') }}">{{ __('plugin:menu::default.dashboard') }}</a></li>
     <li class="breadcrumb-item active">{{ __('plugin:menu::default.menu') }}</li>
 </ol>
 @endsection
@@ -18,7 +18,7 @@
         <ul class="nav nav-pills nav-stacked col-md-2">
             @foreach ($menus as $id => $menu)
             <li class="@if( $menu_active_id == $id ) active @endif">
-                <a href="#{{ $id }}" data-toggle="pill">{{ __('plugin:menu::default.menu') }} {{ $menu['label'] }}</a>
+                <a href="#{{ $id }}" data-toggle="pill">{{ __('plugin:menu::default.menu-name', ['name' => $menu['label']]) }}</a>
             </li>
             @endforeach
         </ul>
@@ -29,7 +29,7 @@
                 <div class="tab-pane @if( $menu_active_id == $id ) active @endif" id="{{ $id }}">
                     <div class="tab-pane__body repeat-wrap">
                         <div id="{{ $id }}-form-app">
-                            <h2>{{ __('plugin:menu::default.menu') }} {{ $menu['label'] }} <a href="#" class="page-title-action" v-on:click="addMenuLevelOne">{{ __('plugin:menu::default.add-menu') }}</a></h2>
+                            <h2>{{ __('plugin:menu::default.menu-name', ['name' => $menu['label']]) }} <a href="#" class="page-title-action" v-on:click="addMenuLevelOne">{{ __('plugin:menu::default.add-menu') }}</a></h2>
 
                             <!-- Level 1 -->
                             <div v-for="(menu, index_menu) in menus" >
@@ -175,7 +175,7 @@
 
                     <div class="tab-pane__footer">
                         <div class="submit-row clearfix">
-                            <input type="submit" class="btn btn-md btn-primary alignright" value="{{ __('plugin:menu::default.save-menu') }} {{ $menu['label'] }}">
+                            <input type="submit" class="btn btn-md btn-primary alignright" value="{{ __('plugin:menu::default.save-menu', ['name' => $menu['label']]) }}">
                         </div>
                     </div>
 

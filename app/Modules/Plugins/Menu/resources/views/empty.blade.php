@@ -2,7 +2,7 @@
 
 @section('breadcrumb')
 <ol class="breadcrumb">
-    <li class="breadcrumb-item"><a href="{{ route('admin.root') }}">Dashboard</a></li>
+    <li class="breadcrumb-item"><a href="{{ route('admin.root') }}">{{ __('plugin:menu::default.dashboard') }}</a></li>
     <li class="breadcrumb-item active">{{ __('plugin:menu::default.menu') }}</li>
 </ol>
 @endsection
