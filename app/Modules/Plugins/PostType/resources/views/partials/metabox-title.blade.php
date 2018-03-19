@@ -13,12 +13,12 @@
             <input name="post_slug" type="text" autocomplete="off" value="{{ $post->post_slug }}" id="new-post-slug">
             </span>
             ‎<span id="edit-slug-buttons">
-                <button type="button" class="edit-slug btn btn-secondary">Edit</button>
+                <button type="button" class="edit-slug btn btn-secondary">{{__('plugin:post-type::default.edit') }}</button>
             </span>
         </div>
     @else
         <div class="slug-wrap clearfix">
-            <label>Slug</label>
+            <label>{{__('plugin:post-type::default.slug') }}</label>
             {!! Form::text('post_slug', '', ['class'=>'form-control', 'placeholder' => __('plugin:post-type::default.slug')]) !!}
         </div>
     @endif

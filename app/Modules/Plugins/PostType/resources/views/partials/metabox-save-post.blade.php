@@ -4,7 +4,7 @@
     </div>
     <div class="card-box__body form-horizontal">
         <div class="form-group form-group--table">
-            <label class="col-form-label">Status</label>
+            <label class="col-form-label">{{ __('plugin:post-type::default.status') }}</label>
             <div class="col-form-input">
                 {!! Form::select('post_status', status_post(), $post->post_status, array('class' => 'form-control form-sm')); !!}
             </div>

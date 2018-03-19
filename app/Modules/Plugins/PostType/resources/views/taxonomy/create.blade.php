@@ -2,7 +2,7 @@
 
 @section('breadcrumb')
 <ol class="breadcrumb">
-    <li class="breadcrumb-item"><a href="{{ route('admin.root') }}">Dashboard</a></li>
+    <li class="breadcrumb-item"><a href="{{ route('admin.root') }}">{{__('plugin:post-type::default.dashboard') }}</a></li>
     <li class="breadcrumb-item"><a href="{{ route('admin.'.get_current_post_type_args('route').'.index') }}">{{ get_current_post_type_args('label.name') }}</a></li>
     <li class="breadcrumb-item"><a href="{{ route('admin.'.get_current_post_type_args('route').'.'.get_current_taxonomy_args('slug').'.index') }}">{{ get_current_taxonomy_args('label.name') }}</a></li>
     <li class="breadcrumb-item active">{{ __('plugin:post-type::default.add-taxonomy', ['taxonomy' => get_current_taxonomy_args('label.name') ]) }}</li>
