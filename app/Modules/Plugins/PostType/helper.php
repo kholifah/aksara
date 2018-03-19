@@ -112,10 +112,10 @@ function set_post_meta($postID = false, $key = false, $value = false, $serialize
 function status_post($status = false)
 {
     $stat = [
-        'draft' => 'Draft',
-        'pending' => 'Pending',
-        'publish' => 'Published',
-        'trash' => 'Trash'
+        'draft' => __('plugin:post-type::default.draft'),
+        'pending' => __('plugin:post-type::default.pending'),
+        'publish' => __('plugin:post-type::default.publish'),
+        'trash' => __('plugin:post-type::default.trash')
     ];
     //Checking status
     if ($status) {

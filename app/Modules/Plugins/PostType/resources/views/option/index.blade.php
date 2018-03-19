@@ -2,8 +2,8 @@
 
 @section('breadcrumb')
 <ol class="breadcrumb">
-    <li class="breadcrumb-item"><a href="{{ route('admin.root') }}">Dashboard</a></li>
-    <li class="breadcrumb-item active">Option</li>
+    <li class="breadcrumb-item"><a href="{{ route('admin.root') }}">{{__('plugin:post-type::default.dashboard') }}</a></li>
+    <li class="breadcrumb-item active">{{__('plugin:post-type::default.option') }}</li>
 </ol>
 @endsection
 
@@ -89,47 +89,47 @@
                             </div>
                             @endif
                             @endforeach
-                            <h2 class="border-title">SEO</h2>
+                            <h2 class="border-title">{{ __('plugin:post-type::default.seo') }}</h2>
                             <div class="form-group row">
-                                <label class="col-sm-2 col-xs-4 col-xxs-12 col-form-label">Custom meta header</label>
+                                <label class="col-sm-2 col-xs-4 col-xxs-12 col-form-label">{{ __('plugin:post-type::default.custom-meta-header') }}</label>
                                 <div class="col-sm-10 col-xs-8 col-xxs-12">
                                     {!! Form::textArea('options[custom_meta_header]', @$options['custom_meta_header'], ['class'=>'form-control code-mirror','rows'=>3]) !!}
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label class="col-sm-2 col-xs-4 col-xxs-12 col-form-label">Default site description</label>
+                                <label class="col-sm-2 col-xs-4 col-xxs-12 col-form-label">{{ __('plugin:post-type::default.default-site-description') }}</label>
                                 <div class="col-sm-10 col-xs-8 col-xxs-12">
                                     {!! Form::textArea('options[default_site_description]', @$options['default_site_description'], ['class'=>'form-control','rows'=>2]) !!}
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label class="col-sm-2 col-xs-4 col-xxs-12 col-form-label">Robots txt</label>
+                                <label class="col-sm-2 col-xs-4 col-xxs-12 col-form-label">{{ __('plugin:post-type::default.robots-txt') }}</label>
                                 <div class="col-sm-10 col-xs-8 col-xxs-12">
                                     {!! Form::select('options[robots_txt]',[true => __('plugin:post-type::default.true-index-robot'), false => __('plugin:post-type::default.false-index-robot')] ,@$options['robots_txt'], ['class'=>'form-control']) !!}
                                     <span style="font-size:12px">{{ __('plugin:post-type::message.custom-robot-txt-message') }}</span>
                                 </div>
                             </div>
-                            <h2 class="border-title">Custom Script / CSS</h2>
+                            <h2 class="border-title">{{ __('plugin:post-type::default.custom-script-css') }}</h2>
                             <div class="form-group row">
-                                <label class="col-sm-2 col-xs-4 col-xxs-12 col-form-label">Header Script</label>
+                                <label class="col-sm-2 col-xs-4 col-xxs-12 col-form-label">{{ __('plugin:post-type::default.header-script') }}</label>
                                 <div class="col-sm-10 col-xs-8 col-xxs-12">
                                     {!! Form::textArea('options[header_script]', @$options['header_script'], ['class'=>'form-control code-mirror','rows'=>4]) !!}
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label class="col-sm-2 col-xs-4 col-xxs-12 col-form-label">Header CSS</label>
+                                <label class="col-sm-2 col-xs-4 col-xxs-12 col-form-label">{{ __('plugin:post-type::default.header-css') }}</label>
                                 <div class="col-sm-10 col-xs-8 col-xxs-12">
                                     {!! Form::textArea('options[header_css]', @$options['header_css'], ['class'=>'form-control code-mirror','rows'=>4]) !!}
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label class="col-sm-2 col-xs-4 col-xxs-12 col-form-label">Footer Script</label>
+                                <label class="col-sm-2 col-xs-4 col-xxs-12 col-form-label">{{ __('plugin:post-type::default.footer-script') }}</label>
                                 <div class="col-sm-10 col-xs-8 col-xxs-12">
                                     {!! Form::textArea('options[footer_script]', @$options['footer_script'], ['class'=>'form-control code-mirror','rows'=>4]) !!}
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label class="col-sm-2 col-xs-4 col-xxs-12 col-form-label">Footer CSS</label>
+                                <label class="col-sm-2 col-xs-4 col-xxs-12 col-form-label">{{ __('plugin:post-type::default.footer-css') }}</label>
                                 <div class="col-sm-10 col-xs-8 col-xxs-12">
                                     {!! Form::textArea('options[footer_css]', @$options['footer_css'], ['class'=>'form-control code-mirror','rows'=>4]) !!}
                                 </div>
