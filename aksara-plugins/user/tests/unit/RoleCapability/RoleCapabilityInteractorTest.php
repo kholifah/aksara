@@ -5,7 +5,6 @@ use Plugins\User\RoleCapability\Interactor;
 use Plugins\User\RoleCapability\ConfigRepository;
 use Aksara\Support\Strings;
 use Aksara\Support\Arrays;
-use Aksara\PluginManifest;
 
 class RoleCapabilityInteractorTest extends PHPUnit\Framework\TestCase
 {

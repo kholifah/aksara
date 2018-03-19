@@ -6,7 +6,7 @@ use Aksara\ModuleKey;
 use Aksara\Repository\ConfigRepository;
 use Aksara\ModuleStatus\ModuleStatus;
 use Aksara\PluginRegistry\PluginRegistryHandler;
-use Aksara\PluginManifest;
+use Aksara\PluginRegistry\PluginManifest;
 
 class PluginRequiredByInteractorTest extends PHPUnit\Framework\TestCase
 {

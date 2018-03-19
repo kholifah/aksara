@@ -1,7 +1,7 @@
 <?php
 
 use Faker\Factory as Faker;
-use Aksara\PluginManifest;
+use Aksara\PluginRegistry\PluginManifest;
 
 class PluginManifestTest extends PHPUnit\Framework\TestCase
 {
@@ -23,7 +23,7 @@ class PluginManifestTest extends PHPUnit\Framework\TestCase
             'providers' => $providers = [ $this->faker->slug ],
             'aliases' => $aliases = [ $this->faker->slug ],
         ],
-            $active = $this->faker->boolean
+            $pluginRoot = $this->faker->word
         );
 
         //assert getters
@@ -32,15 +32,33 @@ class PluginManifestTest extends PHPUnit\Framework\TestCase
         $this->assertEquals($dependencies, $manifest->getDependencies());
         $this->assertEquals($providers, $manifest->getProviders());
         $this->assertEquals($aliases, $manifest->getAliases());
-        $this->assertEquals($active, $manifest->getActive());
+
+        $pluginPath = $manifest->getPluginPath();
+        $pluginPathRoot = $pluginRoot.'/'.$name;
+        $pluginDatabase = $pluginPathRoot.'/database';
+        $pluginMigration = $pluginDatabase.'/migrations';
+        $pluginResource = $pluginPathRoot.'/resources';
+        $pluginView = $pluginResource.'/views';
+
+        $this->assertEquals($pluginPathRoot, $pluginPath->root());
+        $this->assertEquals($pluginDatabase, $pluginPath->database());
+        $this->assertEquals($pluginMigration, $pluginPath->migration());
+        $this->assertEquals($pluginResource, $pluginPath->resource());
+        $this->assertEquals($pluginView, $pluginPath->view());
 
         //test conversion to array
         $array = $manifest->toManifestArray();
 
-        $this->assertEquals($array[$name]['description'], $manifest->getDescription());
-        $this->assertEquals($array[$name]['dependencies'], $manifest->getDependencies());
+        $this->assertEquals($array[$name]['description'],
+            $manifest->getDescription());
+        $this->assertEquals($array[$name]['dependencies'],
+            $manifest->getDependencies());
         $this->assertEquals($array[$name]['providers'], $manifest->getProviders());
         $this->assertEquals($array[$name]['aliases'], $manifest->getAliases());
+        $this->assertEquals($array[$name]['plugin_path']['migration'],
+            $pluginMigration);
+        $this->assertEquals($array[$name]['plugin_path']['view'],
+            $pluginView);
 
         //test setter
         $manifest->setActive($active = $this->faker->boolean);

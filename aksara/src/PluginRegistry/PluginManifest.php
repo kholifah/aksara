@@ -1,5 +1,5 @@
 <?php
-namespace Aksara;
+namespace Aksara\PluginRegistry;
 
 class PluginManifest
 {
@@ -13,6 +13,7 @@ class PluginManifest
     public function __construct(
         string $name,
         string $description,
+        PluginPath $pluginPath,
         array $dependencies = [],
         array $providers = [],
         array $aliases = [],
@@ -20,6 +21,7 @@ class PluginManifest
     ){
         $this->name = $name;
         $this->description = $description;
+        $this->pluginPath = $pluginPath;
         $this->dependencies = $dependencies;
         $this->providers = $providers;
         $this->aliases = $aliases;
@@ -46,6 +48,11 @@ class PluginManifest
         return $this->description;
     }
 
+    public function getPluginPath() : PluginPath
+    {
+        return $this->pluginPath;
+    }
+
     public function getDependencies()
     {
         return $this->dependencies;
@@ -61,15 +68,15 @@ class PluginManifest
         return $this->aliases;
     }
 
-    public static function fromPluginConfig(array $array, bool $active = false)
+    public static function fromPluginConfig(array $array, string $pluginRoot)
     {
         return new static (
             $array['name'],
             $array['description'],
+            new PluginPath($pluginRoot, $array['name']),
             isset($array['dependencies']) ? $array['dependencies'] : [],
             isset($array['providers']) ? $array['providers'] : [],
-            isset($array['aliases']) ? $array['aliases'] : [],
-            $active
+            isset($array['aliases']) ? $array['aliases'] : []
         );
     }
 
@@ -78,6 +85,7 @@ class PluginManifest
         return [
             $this->name => [
                 'description' => $this->description,
+                'plugin_path' => $this->pluginPath->toArray(),
                 'dependencies' => $this->dependencies,
                 'providers' => $this->providers,
                 'aliases' => $this->aliases,

@@ -45,20 +45,19 @@ class PluginServiceProvider extends ServiceProvider
             $aliases = $plugin->getAliases();
             AliasLoader::getInstance($aliases)->register();
 
-            //register paths
-            $path = $pluginRegistry->getPluginPath($plugin->getName());
-
             //migration path
-            if (is_dir($path->migration())) {
-                app()->afterResolving('migrator', function ($migrator) use ($path) {
-                    $migrator->path($path->migration());
+            if (is_dir($plugin->getPluginPath()->migration())) {
+                app()->afterResolving('migrator', function ($migrator) use (
+                    $plugin) {
+                    $migrator->path($plugin->getPluginPath()->migration());
                 });
             }
 
-            if (is_dir($path->view())) {
+            if (is_dir($plugin->getPluginPath()->view())) {
                 //TODO plugin type (plugin/frontend) support
                 //hardcoded for now for plugin
-                view()->addNamespace('plugin:'.$plugin->getName(), $path->view());
+                view()->addNamespace('plugin:'.$plugin->getName(),
+                    $plugin->getPluginPath()->view());
             }
         }
     }

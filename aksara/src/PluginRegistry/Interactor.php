@@ -3,7 +3,6 @@
 namespace Aksara\PluginRegistry;
 
 use Illuminate\Filesystem\Filesystem;
-use Aksara\PluginManifest;
 use Aksara\ModuleIdentifier;
 use Aksara\AdminNotif\AdminNotifRequest;
 use Aksara\AdminNotif\AdminNotifHandler;
@@ -91,8 +90,10 @@ class Interactor implements PluginRegistryHandler
         if (!$this->filesystem->exists($pluginManifest)) {
             throw new \Exception('Plugin manifest file not found');
         }
+        $configArray = $this->filesystem->getRequire($pluginManifest);
         $plugin = PluginManifest::fromPluginConfig(
-            $this->filesystem->getRequire($pluginManifest)
+            $configArray,
+            $this->pluginRoot
         );
         if (is_null($active)) {
             $active = $this->isActive($plugin->getName());

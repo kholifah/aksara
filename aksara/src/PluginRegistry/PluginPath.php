@@ -36,4 +36,12 @@ class PluginPath
     {
         return $this->resource().DIRECTORY_SEPARATOR.'views';
     }
+
+    public function toArray()
+    {
+        return [
+            'migration' => $this->migration(),
+            'view' => $this->view(),
+        ];
+    }
 }
