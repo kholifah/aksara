@@ -200,6 +200,8 @@ class ModuleManagerController extends Controller
                 throw new NotFoundHttpException('Module not found');
             }
 
+            $module = $modules[$type][$slug];
+
             $dependenciesInfo = $this->getDependenciesRecursive(
                 $modules, $type, $slug);
 
@@ -212,18 +214,14 @@ class ModuleManagerController extends Controller
                 throw new \Exception('Unregistered dependency found');
             }
 
-            //TODO remove commented code
-            //$pendingMigrations = $this->getPendingMigrations(
-                //$type, $slug, $dependenciesInfo);
-            $migrations = $this->getPendingMigrations(
-                $type, $slug, $dependenciesInfo, $modules[$type][$slug]['version']
+            $pendingMigrations = $this->getPendingMigrations(
+                $type, $slug, $dependenciesInfo, $module['version']
             );
 
             if (count($pendingMigrations) > 0) {
                 throw new \Exception('Pending migration found');
             }
 
-            $module = $modules[$type][$slug];
             $moduleInfo = $this->moduleStatus->getStatus($type, $slug);
 
             //TODO refactor to combine with unregistered detection above

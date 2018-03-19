@@ -4,9 +4,6 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Foundation\AliasLoader;
-use Illuminate\Filesystem\Filesystem;
-use Aksara\Plugin;
-use Aksara\PluginRegistry\PluginRegistryHandler;
 
 class PluginServiceProvider extends ServiceProvider
 {
@@ -30,8 +27,7 @@ class PluginServiceProvider extends ServiceProvider
          * plugin activation V2
          */
 
-        $pluginRegistry = app(PluginRegistryHandler::class);
-        $plugins = $pluginRegistry->getRegisteredPlugins();
+        $plugins = \PluginRegistry::getRegisteredPlugins();
 
         foreach ($plugins as $plugin) {
 
