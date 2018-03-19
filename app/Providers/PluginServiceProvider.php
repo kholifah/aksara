@@ -31,33 +31,43 @@ class PluginServiceProvider extends ServiceProvider
          */
 
         $pluginRegistry = app(PluginRegistryHandler::class);
-        $activePlugins = $pluginRegistry->getActivePlugins();
+        $plugins = $pluginRegistry->getRegisteredPlugins();
 
-        foreach ($activePlugins as $plugin) {
+        foreach ($plugins as $plugin) {
 
-            //register providers
-            $providers = $plugin->getProviders();
-            foreach ($providers as $provider) {
-                $this->app->register($provider);
+            /**
+             * only load these when active
+             * * service provider
+             * * alias
+             * * view
+             */
+            if ($plugin->getActive()) {
+                //register providers
+                $providers = $plugin->getProviders();
+                foreach ($providers as $provider) {
+                    $this->app->register($provider);
+                }
+
+                //register aliases
+                $aliases = $plugin->getAliases();
+                AliasLoader::getInstance($aliases)->register();
+
+                //register views
+                if (is_dir($plugin->getPluginPath()->view())) {
+                    //TODO plugin type (plugin/frontend) support
+                    //hardcoded for now for plugin
+                    view()->addNamespace('plugin:'.$plugin->getName(),
+                        $plugin->getPluginPath()->view());
+                }
             }
 
-            //register aliases
-            $aliases = $plugin->getAliases();
-            AliasLoader::getInstance($aliases)->register();
-
-            //migration path
+            //migration is loaded regardless of active or not
+            //enables system to migrate database without activating module
             if (is_dir($plugin->getPluginPath()->migration())) {
                 app()->afterResolving('migrator', function ($migrator) use (
                     $plugin) {
                     $migrator->path($plugin->getPluginPath()->migration());
                 });
-            }
-
-            if (is_dir($plugin->getPluginPath()->view())) {
-                //TODO plugin type (plugin/frontend) support
-                //hardcoded for now for plugin
-                view()->addNamespace('plugin:'.$plugin->getName(),
-                    $plugin->getPluginPath()->view());
             }
         }
     }

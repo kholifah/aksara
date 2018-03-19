@@ -59,6 +59,15 @@ class ModuleManagerController extends Controller
         return $modules;
     }
 
+    private function getModule($type, $name)
+    {
+        $modules = $this->getModulesMerged();
+        if (!isset($modules[$type][$name])) {
+            throw new NotFoundHttpException('Module not found');
+        }
+        return $modules[$type][$name];
+    }
+
     public function index()
     {
         $module = $this->module;
@@ -76,10 +85,7 @@ class ModuleManagerController extends Controller
     public function activationCheck($type, $slug)
     {
         $modules = $this->getModulesMerged();
-
-        if (!isset($modules[$type][$slug])) {
-            throw new NotFoundHttpException('Module not found');
-        }
+        $module = $this->getModule($type, $slug);
 
         //TODO: refactor to separate module dependency resolver
         $dependenciesInfo = $this->getDependenciesRecursive(
@@ -87,7 +93,9 @@ class ModuleManagerController extends Controller
         );
 
         //TODO: refactor to separate migration resolver
-        $migrations = $this->getPendingMigrations($type, $slug, $dependenciesInfo);
+        $migrations = $this->getPendingMigrations(
+            $type, $slug, $dependenciesInfo, $module['version']
+        );
 
         $data = new ModuleActivationCheckInfo(
             $type,
@@ -99,11 +107,17 @@ class ModuleManagerController extends Controller
         return view('core:module-manager::activation-check', $data->toArray());
     }
 
-    private function getPendingMigrations($type, $slug, $dependenciesInfo)
-    {
+    private function getPendingMigrations(
+        $type, $slug, $dependenciesInfo, $version = 1
+    ){
         $selfMigrations = [];
         if (!migration_complete($type, $slug)) {
-            $selfMigrations = migration_path($type, $slug);
+            if ($version == 1) {
+                $selfMigrations = migration_path($type, $slug);
+            } else {
+                //v2 no need to show path
+                $selfMigrations = [ '' ];
+            }
         }
         $depsMigrations = [];
 
@@ -114,14 +128,24 @@ class ModuleManagerController extends Controller
             )){
                 continue;
             }
-            $depsMigration = migration_path(
+            $dep = $this->getModule(
                 $dependencyInfo->getType(),
                 $dependencyInfo->getModuleName()
             );
+            if ($dep['version'] == 1) {
+                $depsMigration = migration_path(
+                    $dependencyInfo->getType(),
+                    $dependencyInfo->getModuleName()
+                );
+            } else {
+                //v2 no need to show path
+                $depsMigration = [ '' ];
+            }
             $depsMigrations = array_merge($depsMigrations, $depsMigration);
         }
 
-        return array_merge($selfMigrations, $depsMigrations);
+        $migrations = array_unique(array_merge($selfMigrations, $depsMigrations));
+        return $migrations;
     }
 
     private function getDependenciesRecursive($modules, $type, $slug)
@@ -188,8 +212,12 @@ class ModuleManagerController extends Controller
                 throw new \Exception('Unregistered dependency found');
             }
 
-            $pendingMigrations = $this->getPendingMigrations(
-                $type, $slug, $dependenciesInfo);
+            //TODO remove commented code
+            //$pendingMigrations = $this->getPendingMigrations(
+                //$type, $slug, $dependenciesInfo);
+            $migrations = $this->getPendingMigrations(
+                $type, $slug, $dependenciesInfo, $modules[$type][$slug]['version']
+            );
 
             if (count($pendingMigrations) > 0) {
                 throw new \Exception('Pending migration found');

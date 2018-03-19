@@ -27,6 +27,11 @@ class PluginPath
         return $this->database().DIRECTORY_SEPARATOR.'migrations';
     }
 
+    public function seed()
+    {
+        return $this->database().DIRECTORY_SEPARATOR.'seeds';
+    }
+
     public function resource()
     {
         return $this->root().DIRECTORY_SEPARATOR.'resources';

@@ -57,8 +57,8 @@ class Interactor implements PluginRegistryHandler
 
     public function getActivePlugins()
     {
-        $activeManifest = $this->getActiveManifest();
-        $activePlugins = $this->loadPluginManifests($activeManifest, true);
+        $activePluginNames = $this->getActiveManifest();
+        $activePlugins = $this->loadPluginManifests($activePluginNames, true);
         return $activePlugins;
     }
 
@@ -71,33 +71,38 @@ class Interactor implements PluginRegistryHandler
         return $activeManifest;
     }
 
-    private function loadPluginManifests($manifest, $active = null)
+    private function loadPluginManifests($pluginNames, $active = null)
     {
         $plugins = array();
 
-        foreach ($manifest as $activePlugin) {
-            $pluginConfig = $this->pluginRoot.
-                DIRECTORY_SEPARATOR.$activePlugin.DIRECTORY_SEPARATOR.
-                self::PLUGIN_MANIFEST;
-            $plugin = $this->loadPluginConfig($pluginConfig, $active);
+        foreach ($pluginNames as $pluginName) {
+            $plugin = $this->loadPluginManifest($pluginName, $active);
             $plugins[] = $plugin;
         }
         return $plugins;
     }
 
-    private function loadPluginConfig($pluginManifest, $active)
+    private function loadPluginManifest($pluginName, $active = null)
     {
-        if (!$this->filesystem->exists($pluginManifest)) {
+        $pluginManifestFile = $this->pluginRoot.
+            DIRECTORY_SEPARATOR.$pluginName.DIRECTORY_SEPARATOR.
+            self::PLUGIN_MANIFEST;
+
+        if (!$this->filesystem->exists($pluginManifestFile)) {
             throw new \Exception('Plugin manifest file not found');
         }
-        $configArray = $this->filesystem->getRequire($pluginManifest);
+
+        $configArray = $this->filesystem->getRequire($pluginManifestFile);
+
         $plugin = PluginManifest::fromPluginConfig(
             $configArray,
             $this->pluginRoot
         );
+
         if (is_null($active)) {
             $active = $this->isActive($plugin->getName());
         }
+
         $plugin->setActive($active);
         return $plugin;
     }
@@ -154,6 +159,11 @@ class Interactor implements PluginRegistryHandler
         $this->filesystem->put(
             $this->activeManifestPath, '<?php return '.var_export($manifest, true).';'
         );
+    }
+
+    public function getManifest($name)
+    {
+        return $this->loadPluginManifest($name);
     }
 }
 

@@ -28,10 +28,15 @@
     <div class="col-md-6">
       <div class="row">
         <h3>Pending Migrations</h3>
-        <p>Please run the following migration(s)</p>
+        <p>Please run the following migration command(s)</p>
         <!-- migration pending -->
           @foreach($migrations as $migration)
-            <br><code>php artisan migrate --path={{ str_replace(base_path() . '/', '', $migration) }}</code>
+            @if (empty($migration))
+            <!-- for v2, no need to show path -->
+              <br><code>php artisan migrate</code>
+            @else
+              <br><code>php artisan migrate --path={{ str_replace(base_path() . '/', '', $migration) }}</code>
+            @endif
           @endforeach
         </ul>
       </div>

@@ -6,6 +6,7 @@ use App\DripEmailer;
 use Illuminate\Console\Command;
 use Illuminate\Config\Repository as Config;
 use Illuminate\FileSystem\FileSystem;
+use Aksara\PluginRegistry\PluginRegistryHandler;
 
 class MakeMigrationCommand extends Command
 {
@@ -38,11 +39,13 @@ class MakeMigrationCommand extends Command
      */
     public function __construct(
         FileSystem $fileSystem,
-        Config $config
+        Config $config,
+        PluginRegistryHandler $pluginRegistry
     ){
         parent::__construct();
         $this->fileSystem = $fileSystem;
         $this->config = $config;
+        $this->pluginRegistry = $pluginRegistry;
     }
 
     /**
@@ -63,31 +66,54 @@ class MakeMigrationCommand extends Command
         $this->makeModuleMigration($typeArray);
     }
 
+    private function getPluginV2($name)
+    {
+        if (!$this->pluginRegistry->isRegistered($name)) {
+            return false;
+        }
+        $plugin = $this->pluginRegistry->getManifest($name);
+        return $plugin;
+    }
+
     private function makeModuleMigration($typeArray)
     {
         $type = $typeArray[0];
         $moduleName = $typeArray[1];
 
-        $modules = $this->config->get('aksara.modules');
+        $path = '';
 
-        if (!isset($modules[$type])) {
-            $this->error('Jenis module '
-                . $type
-                .' tidak ada, gunakan [core,plugin,admin,front-end]');
+        //check plugin v2
+        if (strtolower($type) == 'plugin') {
+            $pluginV2 = $this->getPluginV2($moduleName);
+            if ($pluginV2 != false) {
+                $path = $pluginV2->getPluginPath()->migration();
+            }
         }
 
-        if (!isset($modules[$type][$moduleName])) {
-            $this->error('Module dengan nama '.$moduleName.' tidak ada');
+        if (empty($path)) {
+            //legacy module loader
+
+            $modules = $this->config->get('aksara.modules');
+
+            if (!isset($modules[$type])) {
+                $this->error('Jenis module '
+                    . $type
+                    .' tidak ada, gunakan [core,plugin,admin,front-end]');
+            }
+
+            if (!isset($modules[$type][$moduleName])) {
+                $this->error('Module dengan nama '.$moduleName.' tidak ada');
+            }
+
+            $module = $modules[$type][$moduleName];
+
+            if (!isset($module['migrationPath'])) {
+                $this->info("Module [$type] $moduleName tidak memiliki direktori 'migrations'.");
+                return false;
+            }
+
+            $path = $module['migrationPath'];
         }
-
-        $module = $modules[$type][$moduleName];
-
-        if (!isset($module['migrationPath'])) {
-            $this->info("Module [$type] $moduleName tidak memiliki direktori 'migrations'.");
-            return false;
-        }
-
-        $path = str_replace(base_path(), "", $module['migrationPath']);
 
         $this->executeMakeMigration($path);
     }
