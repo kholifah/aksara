@@ -21,7 +21,7 @@
       </p>
       <ul>
         @foreach($dependencies as $dependency)
-          <li>{{ $dependency->getModuleName() }} ({{ !$dependency->getIsRegistered() ? 'Unregistered' : ($dependency->getIsActive() ? 'Active' : 'Inactive') }}) </li>
+          <li>{{ $dependency['module_name'] }} ({{ !$dependency['is_registered'] ? 'Unregistered' : ($dependency['is_active'] ? 'Active' : 'Inactive') }}) </li>
         @endforeach
       </ul>
     </div>
@@ -31,12 +31,7 @@
         <p>Please run the following migration command(s)</p>
         <!-- migration pending -->
           @foreach($migrations as $migration)
-            @if (empty($migration))
-            <!-- for v2, no need to show path -->
-              <br><code>php artisan migrate</code>
-            @else
-              <br><code>php artisan migrate --path={{ str_replace(base_path() . '/', '', $migration) }}</code>
-            @endif
+            <br><code>{{ $migration }}</code>
           @endforeach
         </ul>
       </div>

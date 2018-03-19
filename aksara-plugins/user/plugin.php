@@ -14,4 +14,6 @@ return [
     'aliases' => [
         'RoleCapability' => 'Plugins\\User\\Facades\\RoleCapabilityFacade',
     ],
+
+    'type' => 'plugin',
 ];

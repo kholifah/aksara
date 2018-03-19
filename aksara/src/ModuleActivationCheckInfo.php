@@ -62,8 +62,12 @@ class ModuleActivationCheckInfo implements Arrayable, ModuleIdentifier
         return [
             'type' => $this->type,
             'module_name' => $this->moduleName,
-            'dependencies' => $this->dependencies,
-            'migrations' => $this->migrations,
+            'dependencies' => array_map(function ($item) {
+                return $item->toArray();
+            }, $this->dependencies),
+            'migrations' => array_map(function ($item) {
+                return (string)$item;
+            }, $this->migrations),
             'allow_activation' => $this->allowActivation(),
         ];
     }

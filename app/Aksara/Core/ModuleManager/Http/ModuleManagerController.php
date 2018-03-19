@@ -1,6 +1,7 @@
 <?php
 namespace App\Aksara\Core\ModuleManager\Http;
 
+use Aksara\MigrationInfo;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Aksara\Core\Module;
@@ -113,10 +114,13 @@ class ModuleManagerController extends Controller
         $selfMigrations = [];
         if (!migration_complete($type, $slug)) {
             if ($version == 1) {
-                $selfMigrations = migration_path($type, $slug);
+                $paths = migration_path($type, $slug);
+                $selfMigrations = MigrationInfo::bulk($type, $slug, $paths, $version);
             } else {
                 //v2 no need to show path
-                $selfMigrations = [ '' ];
+                $selfMigrations = [
+                    new MigrationInfo($type, $slug, '', $version),
+                ];
             }
         }
         $depsMigrations = [];
@@ -133,13 +137,26 @@ class ModuleManagerController extends Controller
                 $dependencyInfo->getModuleName()
             );
             if ($dep['version'] == 1) {
-                $depsMigration = migration_path(
+                $paths = migration_path(
                     $dependencyInfo->getType(),
                     $dependencyInfo->getModuleName()
                 );
+                $depsMigration = MigrationInfo::bulk(
+                    $dependencyInfo->getType(),
+                    $dependencyInfo->getModuleName(),
+                    $paths,
+                    $dep['version']
+                );
             } else {
                 //v2 no need to show path
-                $depsMigration = [ '' ];
+                $depsMigration = [ 
+                    new MigrationInfo(
+                        $dependencyInfo->getType(),
+                        $dependencyInfo->getModuleName(),
+                        '',
+                        $dep['version']
+                    ),
+                ];
             }
             $depsMigrations = array_merge($depsMigrations, $depsMigration);
         }

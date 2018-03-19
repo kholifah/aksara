@@ -58,12 +58,27 @@ class MakeMigrationCommand extends Command
         $typeName = $this->argument('type-name');
         $typeArray = explode('/', $typeName);
 
-        if (count($typeArray) != 2) {
-            $this->error('Format type-name tidak valid,
-                gunakan format tipe/nama-modul');
+        switch (count($typeArray)) {
+        case 1: $this->makeMigrationV2($typeArray); break;
+        case 2: $this->makeMigrationV1($typeArray); break;
+        default: $this->error('Format type-name tidak valid,
+                gunakan format tipe/nama-modul'); break;
         }
+    }
 
-        $this->makeModuleMigration($typeArray);
+    private function makeMigrationV2($typeArray)
+    {
+        $moduleName = $typeArray[0];
+
+        $path = '';
+
+        $pluginV2 = $this->getPluginV2($moduleName);
+        if (!$pluginV2) {
+            throw new \Exception("$moduleName is not a valid V2 module");
+        }
+        $path = $pluginV2->getPluginPath()->migration();
+
+        $this->executeMakeMigration($path);
     }
 
     private function getPluginV2($name)
@@ -75,45 +90,33 @@ class MakeMigrationCommand extends Command
         return $plugin;
     }
 
-    private function makeModuleMigration($typeArray)
+    private function makeMigrationV1($typeArray)
     {
         $type = $typeArray[0];
         $moduleName = $typeArray[1];
 
-        $path = '';
+        //legacy module loader
 
-        //check plugin v2
-        if (strtolower($type) == 'plugin') {
-            $pluginV2 = $this->getPluginV2($moduleName);
-            if ($pluginV2 != false) {
-                $path = $pluginV2->getPluginPath()->migration();
-            }
+        $modules = $this->config->get('aksara.modules');
+
+        if (!isset($modules[$type])) {
+            $this->error('Jenis module '
+                . $type
+                .' tidak ada, gunakan [core,plugin,admin,front-end]');
         }
 
-        if (empty($path)) {
-            //legacy module loader
-
-            $modules = $this->config->get('aksara.modules');
-
-            if (!isset($modules[$type])) {
-                $this->error('Jenis module '
-                    . $type
-                    .' tidak ada, gunakan [core,plugin,admin,front-end]');
-            }
-
-            if (!isset($modules[$type][$moduleName])) {
-                $this->error('Module dengan nama '.$moduleName.' tidak ada');
-            }
-
-            $module = $modules[$type][$moduleName];
-
-            if (!isset($module['migrationPath'])) {
-                $this->info("Module [$type] $moduleName tidak memiliki direktori 'migrations'.");
-                return false;
-            }
-
-            $path = $module['migrationPath'];
+        if (!isset($modules[$type][$moduleName])) {
+            $this->error('Module dengan nama '.$moduleName.' tidak ada');
         }
+
+        $module = $modules[$type][$moduleName];
+
+        if (!isset($module['migrationPath'])) {
+            $this->info("Module [$type] $moduleName tidak memiliki direktori 'migrations'.");
+            return false;
+        }
+
+        $path = $module['migrationPath'];
 
         $this->executeMakeMigration($path);
     }
