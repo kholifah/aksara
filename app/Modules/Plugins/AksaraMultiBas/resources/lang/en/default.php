@@ -4,6 +4,8 @@ return [
 
     'multi-lang' => 'Multi Language',
     'multi-lang-option' => 'Multi Language Option',
+    'dashboard' =>  'Dashboard',
+    'option' => 'Option',
     'add-multi-lang' => 'Add Multi Language',
     'add-lang' => 'Add Language',
     'save-lang-setting' => 'Save Setting Language',

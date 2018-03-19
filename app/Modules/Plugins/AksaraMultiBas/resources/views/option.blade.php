@@ -2,8 +2,8 @@
 
 @section('breadcrumb')
 <ol class="breadcrumb">
-    <li class="breadcrumb-item"><a href="{{ route('admin.root') }}">Dashboard</a></li>
-    <li class="breadcrumb-item active">Option</li>
+    <li class="breadcrumb-item"><a href="{{ route('admin.root') }}">{{ __('plugin:aksara-multi-bas::default.dashboard') }}</a></li>
+    <li class="breadcrumb-item active">{{ __('plugin:aksara-multi-bas::default.option') }}</li>
 </ol>
 @endsection
 
