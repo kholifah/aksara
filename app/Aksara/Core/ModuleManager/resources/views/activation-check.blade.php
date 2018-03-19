@@ -28,6 +28,10 @@
     <div class="col-md-6">
       <div class="row">
         <h3>Pending Migrations</h3>
+        <p>Following migration(s) are pending:</p>
+          @foreach($migration_paths as $path)
+            <br><code>{{ $path }}</code>
+          @endforeach
         <p>Please run the following migration command(s)</p>
         <!-- migration pending -->
           @foreach($migrations as $migration)

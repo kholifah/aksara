@@ -59,7 +59,7 @@ class ModuleActivationCheckInfo implements Arrayable, ModuleIdentifier
 
     public function toArray()
     {
-        return [
+        $array = [
             'type' => $this->type,
             'module_name' => $this->moduleName,
             'dependencies' => array_map(function ($item) {
@@ -68,7 +68,11 @@ class ModuleActivationCheckInfo implements Arrayable, ModuleIdentifier
             'migrations' => array_map(function ($item) {
                 return (string)$item;
             }, $this->migrations),
+            'migration_paths' => array_map(function ($item) {
+                return $item->getPath();
+            }, $this->migrations),
             'allow_activation' => $this->allowActivation(),
         ];
+        return $array;
     }
 }

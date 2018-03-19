@@ -113,15 +113,8 @@ class ModuleManagerController extends Controller
     ){
         $selfMigrations = [];
         if (!migration_complete($type, $slug)) {
-            if ($version == 1) {
-                $paths = migration_path($type, $slug);
-                $selfMigrations = MigrationInfo::bulk($type, $slug, $paths, $version);
-            } else {
-                //v2 no need to show path
-                $selfMigrations = [
-                    new MigrationInfo($type, $slug, '', $version),
-                ];
-            }
+            $paths = migration_path($type, $slug);
+            $selfMigrations = MigrationInfo::bulk($type, $slug, $paths, $version);
         }
         $depsMigrations = [];
 
@@ -136,28 +129,16 @@ class ModuleManagerController extends Controller
                 $dependencyInfo->getType(),
                 $dependencyInfo->getModuleName()
             );
-            if ($dep['version'] == 1) {
-                $paths = migration_path(
-                    $dependencyInfo->getType(),
-                    $dependencyInfo->getModuleName()
-                );
-                $depsMigration = MigrationInfo::bulk(
-                    $dependencyInfo->getType(),
-                    $dependencyInfo->getModuleName(),
-                    $paths,
-                    $dep['version']
-                );
-            } else {
-                //v2 no need to show path
-                $depsMigration = [ 
-                    new MigrationInfo(
-                        $dependencyInfo->getType(),
-                        $dependencyInfo->getModuleName(),
-                        '',
-                        $dep['version']
-                    ),
-                ];
-            }
+            $paths = migration_path(
+                $dependencyInfo->getType(),
+                $dependencyInfo->getModuleName()
+            );
+            $depsMigration = MigrationInfo::bulk(
+                $dependencyInfo->getType(),
+                $dependencyInfo->getModuleName(),
+                $paths,
+                $dep['version']
+            );
             $depsMigrations = array_merge($depsMigrations, $depsMigration);
         }
 
