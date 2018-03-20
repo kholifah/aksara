@@ -47,7 +47,7 @@
                                             </span>
                                         </div>
                                         <div class="alignright btn-action-group">
-                                            <a v-if="menu.data.display == 'block' "   href="#" class="btn-action btn-action-primary" title="Hide menu" v-on:click="hideMenu(menu)"><i class="fa fa-minus"></i></a>
+                                            <a v-if="menu.data.display == 'block' "   href="#" class="btn-action btn-action-primary" title="{{ __('plugin:menu::default.hidden') }}" v-on:click="hideMenu(menu)"><i class="fa fa-minus"></i></a>
                                             <a v-else href="#" class="btn-action btn-action-primary" title="{{ __('plugin:menu::default.show') }}" v-on:click="showMenu(menu)"><i class="fa fa-plus"></i></a>
                                             <a href="#" class="btn-action btn-action-danger" title="{{ __('plugin:menu::default.delete') }}" v-on:click="deleteMenu(menu,index_menu)"><i class="fa fa-trash-o"></i></a>
                                         </div>
@@ -92,7 +92,7 @@
                                                     </span>
                                                 </div>
                                                 <div class="alignright btn-action-group">
-                                                    <a v-if="menu.data.display == 'block'" href="#" class="btn-action btn-action-primary" title="Hide menu" v-on:click="hideMenu(menu)"><i class="fa fa-minus"></i></a>
+                                                    <a v-if="menu.data.display == 'block'" href="#" class="btn-action btn-action-primary" title="{{ __('plugin:menu::default.hidden') }}" v-on:click="hideMenu(menu)"><i class="fa fa-minus"></i></a>
                                                     <a v-else href="#" class="btn-action btn-action-primary" title="{{ __('plugin:menu::default.show') }}" v-on:click="showMenu(menu)"><i class="fa fa-plus"></i></a>
                                                     <a href="#" class="btn-action btn-action-danger" title="{{ __('plugin:menu::default.delete') }}" v-on:click="deleteMenu(menu,index_menu,index_sub_menu)"><i class="fa fa-trash-o"></i></a>
                                                 </div>
@@ -134,7 +134,7 @@
                                                             </span>
                                                         </div>
                                                         <div class="alignright btn-action-group">
-                                                            <a v-if="menu.data.display =='block' "href="#" class="btn-action btn-action-primary" title="Hide menu" v-on:click="hideMenu(menu)"><i class="fa fa-minus"></i></a>
+                                                            <a v-if="menu.data.display =='block' "href="#" class="btn-action btn-action-primary" title="{{ __('plugin:menu::default.hidden') }}" v-on:click="hideMenu(menu)"><i class="fa fa-minus"></i></a>
                                                             <a v-else  href="#" class="btn-action btn-action-primary" title="{{ __('plugin:menu::default.show') }}" v-on:click="showMenu(menu)"><i class="fa fa-plus"></i></a>
                                                             <a href="#" class="btn-action btn-action-danger" title="{{ __('plugin:menu::default.delete') }}" v-on:click="deleteMenu(menu,index_menu,index_sub_menu,index_sub_sub_menu)"><i class="fa fa-trash-o"></i></a>
                                                         </div>
