@@ -3,18 +3,29 @@ namespace App\Aksara\Core\ModuleManager\Console\Commands;
 
 trait PluginGetter
 {
+    private function allV2()
+    {
+        return \PluginRegistry::getRegisteredPlugins();
+    }
+
     private function getPluginV2($name)
     {
-        if (!$this->pluginRegistry->isRegistered($name)) {
+        if (!\PluginRegistry::isRegistered($name)) {
             return false;
         }
-        $plugin = $this->pluginRegistry->getManifest($name);
+        $plugin = \PluginRegistry::getManifest($name);
         return $plugin;
+    }
+
+    private function allV1()
+    {
+        $modules = $this->config->get('aksara.modules');
+        return $modules;
     }
 
     private function getPluginV1($type, $moduleName)
     {
-        $modules = $this->config->get('aksara.modules');
+        $modules = $this->allV1();
 
         if (!isset($modules[$type])) {
             $this->error('Jenis module '
@@ -28,10 +39,6 @@ trait PluginGetter
 
         $module = $modules[$type][$moduleName];
 
-        if (!isset($module['migrationPath'])) {
-            $this->info("Module [$type] $moduleName tidak memiliki direktori 'migrations'.");
-            return false;
-        }
         return $module;
     }
 }

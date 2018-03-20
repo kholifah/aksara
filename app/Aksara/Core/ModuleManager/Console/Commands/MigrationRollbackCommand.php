@@ -4,7 +4,6 @@ namespace App\Aksara\Core\ModuleManager\Console\Commands;
 
 use Illuminate\Config\Repository as Config;
 use Illuminate\Console\Command;
-use Aksara\PluginRegistry\PluginRegistryHandler;
 
 class MigrationRollbackCommand extends Command
 {
@@ -15,71 +14,51 @@ class MigrationRollbackCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'aksara:migrate:rollback
-        {type-name : [v1] type and name of the module (type/module-name); [v2] name of the module}';
+    protected $signature = 'aksara:migrate:rollback';
 
-    protected $description = 'Rollback migrasi modul aksara';
+    protected $description = 'Rollback migrasi modul aksara (semua modul)';
+
+    private $migrator;
 
     public function __construct(
-        Config $config,
-        PluginRegistryHandler $pluginRegistry
+        Config $config
     ){
         parent::__construct();
         $this->config = $config;
-        $this->pluginRegistry = $pluginRegistry;
+        $this->migrator = app('migrator');
     }
 
     public function handle()
     {
-        $typeName = $this->argument('type-name');
-        $typeArray = explode('/', $typeName);
+        $this->registerV1();
+        $this->registerV2();
+        $this->executeRollback();
+    }
 
-        switch (count($typeArray)) {
-        case 1: $this->rollbackMigrationV2($typeArray); break;
-        case 2: $this->rollbackMigrationV1($typeArray); break;
-        default: $this->error('Format type-name tidak valid,
-                gunakan format tipe/nama-modul (v1) atau nama-modul (v2'); break;
+    private function registerV1()
+    {
+        $modules = $this->allV1();
+
+        foreach ($modules as $type => $module) {
+            foreach ($module as $name => $manifest) {
+                if (isset($manifest['migrationPath'])) {
+                    $this->migrator->path($manifest['migrationPath']);
+                }
+            }
         }
     }
 
-    private function rollbackMigrationV2(array $typeArray)
+    private function registerV2()
     {
-        $moduleName = $typeArray[0];
+        $modules = $this->allV2();
 
-        $path = '';
-
-        $pluginV2 = $this->getPluginV2($moduleName);
-        if (!$pluginV2) {
-            throw new \Exception("$moduleName tidak ditemukan dalam module V2");
+        foreach ($modules as $module) {
+            $this->migrator->path($module->getPluginPath()->migration());
         }
-        $path = $pluginV2->getPluginPath()->migration();
-
-        $this->executeRollback($path);
     }
 
-    private function rollbackMigrationV1(array $typeArray)
+    private function executeRollback()
     {
-        $type = $typeArray[0];
-        $moduleName = $typeArray[1];
-
-        $module = $this->getPluginV1($type, $moduleName);
-
-        if (!$module) {
-            return false;
-        }
-
-        $path = $module['migrationPath'];
-
-        $this->executeRollback($path);
-    }
-
-    private function executeRollback($path)
-    {
-        $path = str_replace(base_path(), '/', $path);
-        $args = [
-            '--path' => $path,
-        ];
-
-        $this->call('migrate:rollback', $args);
+        $this->call('migrate:rollback');
     }
 }

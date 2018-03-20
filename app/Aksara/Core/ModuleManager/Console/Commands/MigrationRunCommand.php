@@ -3,7 +3,6 @@ namespace App\Aksara\Core\ModuleManager\Console\Commands;
 
 use Illuminate\Config\Repository as Config;
 use Illuminate\Console\Command;
-use Aksara\PluginRegistry\PluginRegistryHandler;
 
 class MigrationRunCommand extends Command
 {
@@ -20,12 +19,10 @@ class MigrationRunCommand extends Command
     protected $description = 'Eksekusi migrasi modul aksara';
 
     public function __construct(
-        Config $config,
-        PluginRegistryHandler $pluginRegistry
+        Config $config
     ){
         parent::__construct();
         $this->config = $config;
-        $this->pluginRegistry = $pluginRegistry;
     }
 
     public function handle()
@@ -64,6 +61,11 @@ class MigrationRunCommand extends Command
         $module = $this->getPluginV1($type, $moduleName);
 
         if (!$module) {
+            return false;
+        }
+
+        if (!isset($module['migrationPath'])) {
+            $this->info("Module [$type] $moduleName tidak memiliki direktori 'migrations'.");
             return false;
         }
 

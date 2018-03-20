@@ -6,7 +6,6 @@ use App\DripEmailer;
 use Illuminate\Console\Command;
 use Illuminate\Config\Repository as Config;
 use Illuminate\FileSystem\FileSystem;
-use Aksara\PluginRegistry\PluginRegistryHandler;
 
 class MakeMigrationCommand extends Command
 {
@@ -40,13 +39,11 @@ class MakeMigrationCommand extends Command
      */
     public function __construct(
         FileSystem $fileSystem,
-        Config $config,
-        PluginRegistryHandler $pluginRegistry
+        Config $config
     ){
         parent::__construct();
         $this->fileSystem = $fileSystem;
         $this->config = $config;
-        $this->pluginRegistry = $pluginRegistry;
     }
 
     /**
@@ -90,6 +87,10 @@ class MakeMigrationCommand extends Command
         $module = $this->getPluginV1($type, $moduleName);
 
         if (!$module) {
+            return false;
+        }
+        if (!isset($module['migrationPath'])) {
+            $this->info("Module [$type] $moduleName tidak memiliki direktori 'migrations'.");
             return false;
         }
 
