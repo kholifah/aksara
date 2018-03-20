@@ -4,6 +4,8 @@ return [
 
     'multi-lang' => 'Multi Bahasa',
     'multi-lang-option' => 'Pilihan Multi Bahasa',
+    'translation' => 'Translasi',
+    'create-translation' => 'Buat Translasi',
     'dashboard' =>  'Dasbor',
     'option' => 'Pilihan',
     'add-multi-lang' => 'Tambah Multi Bahasa',
