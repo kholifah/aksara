@@ -25,7 +25,7 @@
                 <div class="card-box__body">
                     {!! Form::model($role, ['route' => ['aksara-role-update', $role->id], 'class' => 'form-horizontal'])!!}
                     {{ method_field('PUT') }}
-                    @include('plugin:user::role._form')
+                    @include('user::role._form')
                     <div class="submit-row clearfix">
                         <input type="submit" class="btn btn-md btn-primary alignright" value="{{__('user::labels.update_role')}}">
                         <a href="{{ route('aksara-role') }}" class="btn btn-md btn-danger alignright">

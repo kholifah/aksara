@@ -45,7 +45,7 @@ class RoleController extends Controller
         $total = $roles->count();
         $roles = $roles->paginate(10);
 
-        return view('plugin:user::role.index', compact('roles', 'search', 'total'));
+        return view('user::role.index', compact('roles', 'search', 'total'));
     }
 
     /**
@@ -58,7 +58,7 @@ class RoleController extends Controller
         $role = new Role();
         $role->permissions = [];
         $capabilities = \RoleCapability::all();
-        return view('plugin:user::role.create', compact('role', 'capabilities'));
+        return view('user::role.create', compact('role', 'capabilities'));
     }
 
     /**
@@ -110,7 +110,7 @@ class RoleController extends Controller
     {
         $role = Role::find($id);
         $capabilities = \RoleCapability::all();
-        return view('plugin:user::role.edit', compact('role', 'capabilities'));
+        return view('user::role.edit', compact('role', 'capabilities'));
     }
 
     /**

@@ -46,7 +46,7 @@ class UserController extends Controller
 
         $total = $users->count();
         $users = $users->paginate(10);
-        return view('plugin:user::user.index', compact('users', 'search', 'total'));
+        return view('user::user.index', compact('users', 'search', 'total'));
     }
 
     /**
@@ -58,7 +58,7 @@ class UserController extends Controller
     {
         $user = new User();
         $user_role = Role::orderBy('name')->get()->pluck('name', 'name');
-        return view('plugin:user::user.create', compact('user', 'user_role'));
+        return view('user::user.create', compact('user', 'user_role'));
     }
 
     /**
@@ -112,7 +112,7 @@ class UserController extends Controller
     {
         $user = User::find($id);
         $user_role = Role::orderBy('name')->get()->pluck('name', 'name');
-        return view('plugin:user::user.edit', compact('user', 'user_role'));
+        return view('user::user.edit', compact('user', 'user_role'));
     }
 
     /**
@@ -125,7 +125,7 @@ class UserController extends Controller
     {
         $user = \Auth::user();
         $user_role = Role::orderBy('name')->get()->pluck('name', 'name');
-        return view('plugin:user::user.edit-profile', compact('user', 'user_role'));
+        return view('user::user.edit-profile', compact('user', 'user_role'));
     }
 
     /**

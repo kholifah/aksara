@@ -43,7 +43,9 @@ class PluginServiceProvider extends ServiceProvider
 
             //register views
             if (is_dir($plugin->getPluginPath()->view())) {
-                view()->addNamespace($plugin->getType().':'.$plugin->getName(),
+                //view()->addNamespace($plugin->getType().':'.$plugin->getName(),
+                    //$plugin->getPluginPath()->view());
+                view()->addNamespace($plugin->getName(),
                     $plugin->getPluginPath()->view());
             }
 

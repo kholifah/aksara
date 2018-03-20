@@ -25,7 +25,7 @@
                 <div class="card-box__body">
                     {!! Form::model($user, ['route' => ['aksara-user-update', $user->id], 'class' => 'form-horizontal'])!!}
                     {{ method_field('PUT') }}
-                        @include('plugin:user::user._form')
+                        @include('user::user._form')
                     {!! Form::close() !!}
                 </div>
             </div>

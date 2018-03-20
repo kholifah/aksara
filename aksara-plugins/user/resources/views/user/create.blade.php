@@ -24,7 +24,7 @@
                 </div>
                 <div class="card-box__body">
                     {!! Form::open(['route' => 'aksara-user-store', 'role' => 'form', 'class' => 'form-horizontal'])!!}
-                        @include('plugin:user::user._form')
+                        @include('user::user._form')
                     {!! Form::close() !!}
                 </div>
             </div>

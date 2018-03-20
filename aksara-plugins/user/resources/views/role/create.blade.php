@@ -24,7 +24,7 @@
                 </div>
                 <div class="card-box__body">
                     {!! Form::open(['route' => 'aksara-role-store', 'role' => 'form', 'class' => 'form-horizontal'])!!}
-                    @include('plugin:user::role._form')
+                    @include('user::role._form')
                     <div class="submit-row clearfix">
                         <input type="submit" class="btn btn-md btn-primary alignright" value="{{__('user::labels.add_role')}}">
                     </div>
