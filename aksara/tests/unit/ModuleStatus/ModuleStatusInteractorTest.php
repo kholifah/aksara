@@ -5,7 +5,7 @@ use Faker\Factory as Faker;
 use Aksara\Repository\ConfigRepository;
 use Aksara\Repository\OptionRepository;
 use Aksara\ModuleStatusInfo;
-use Aksara\PluginRegistry\PluginRegistryHandler;
+use Aksara\ModuleRegistry\ModuleRegistryHandler;
 
 class ModuleStatusInteractorTest extends PHPUnit\Framework\TestCase
 {
@@ -51,7 +51,7 @@ class ModuleStatusInteractorTest extends PHPUnit\Framework\TestCase
         $optionRepo = $this->getMockBuilder(OptionRepository::class)
             ->getMock();
 
-        $pluginRegistry = $this->getMockBuilder(PluginRegistryHandler::class)
+        $pluginRegistry = $this->getMockBuilder(ModuleRegistryHandler::class)
             ->getMock();
 
         $plugin_1 = 'plugin/'.$this->faker->slug;
@@ -100,7 +100,7 @@ class ModuleStatusInteractorTest extends PHPUnit\Framework\TestCase
         $optionRepo = $this->getMockBuilder(OptionRepository::class)
             ->getMock();
 
-        $pluginRegistry = $this->getMockBuilder(PluginRegistryHandler::class)
+        $pluginRegistry = $this->getMockBuilder(ModuleRegistryHandler::class)
             ->getMock();
 
         $moduleNames = $this->generateModuleNames();

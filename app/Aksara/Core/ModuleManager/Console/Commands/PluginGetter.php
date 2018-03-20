@@ -5,15 +5,15 @@ trait PluginGetter
 {
     private function allV2()
     {
-        return \PluginRegistry::getRegisteredPlugins();
+        return \ModuleRegistry::getRegisteredModules();
     }
 
     private function getPluginV2($name)
     {
-        if (!\PluginRegistry::isRegistered($name)) {
+        if (!\ModuleRegistry::isRegistered($name)) {
             return false;
         }
-        $plugin = \PluginRegistry::getManifest($name);
+        $plugin = \ModuleRegistry::getManifest($name);
         return $plugin;
     }
 

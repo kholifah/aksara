@@ -70,13 +70,13 @@ class AppServiceProvider extends ServiceProvider
         );
 
         $this->app->bind(
-            \Aksara\PluginRegistry\PluginRegistryHandler::class,
-            \Aksara\PluginRegistry\Interactor::class
+            \Aksara\ModuleRegistry\ModuleRegistryHandler::class,
+            \Aksara\ModuleRegistry\Interactor::class
         );
 
         $this->app->bind(
-            'plugin_registry',
-            \Aksara\PluginRegistry\PluginRegistryHandler::class
+            'module_registry',
+            \Aksara\ModuleRegistry\ModuleRegistryHandler::class
         );
 
         $this->app->bind(

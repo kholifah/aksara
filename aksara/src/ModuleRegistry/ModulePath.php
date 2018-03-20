@@ -1,7 +1,7 @@
 <?php
-namespace Aksara\PluginRegistry;
+namespace Aksara\ModuleRegistry;
 
-class PluginPath
+class ModulePath
 {
     private $pluginRoot;
     private $name;

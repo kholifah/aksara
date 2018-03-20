@@ -85,7 +85,7 @@ if (!function_exists('migration_path_v2')) {
         if (!empty($type) && !empty($moduleName)) {
             if (strtolower($type) == 'plugin') {
                 //plugin v2
-                $path = PluginRegistry::getPluginPath($moduleName);
+                $path = ModuleRegistry::getModulePath($moduleName);
                 if (is_dir($path->migration())) {
                     $dirs[] = $path->migration();
                 }
@@ -96,10 +96,10 @@ if (!function_exists('migration_path_v2')) {
         $dirs[] = migration_path_core();
 
         if (empty($type) || strtolower($type) == 'plugin') {
-            $plugins = PluginRegistry::getRegisteredPlugins();
+            $plugins = ModuleRegistry::getRegisteredModules();
 
             foreach ($plugins as $plugin) {
-                $path = PluginRegistry::getPluginPath($plugin->getName());
+                $path = ModuleRegistry::getModulePath($plugin->getName());
                 if (is_dir($path->migration())) {
                     $dirs[] = $path->migration();
                 }

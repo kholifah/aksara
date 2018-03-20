@@ -87,7 +87,7 @@ class MakeSeedCommand extends GeneratorCommand
     protected function getPath($name)
     {
         if ($this->version == 2 && !is_null($this->moduleV2)) {
-            return $this->moduleV2->getPluginPath()->seed()."/$name.php";
+            return $this->moduleV2->getModulePath()->seed()."/$name.php";
         }
         return $this->laravel->databasePath().'/seeds/'.$name.'.php';
     }

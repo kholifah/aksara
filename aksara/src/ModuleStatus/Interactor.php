@@ -4,22 +4,22 @@ namespace Aksara\ModuleStatus;
 use Aksara\Repository\ConfigRepository;
 use Aksara\Repository\OptionRepository;
 use Aksara\ModuleStatusInfo;
-use Aksara\PluginRegistry\PluginRegistryHandler;
+use Aksara\ModuleRegistry\ModuleRegistryHandler;
 
 class Interactor implements ModuleStatus
 {
     private $configRepo;
     private $optionRepo;
-    private $pluginRegistry;
+    private $moduleRegistry;
 
     public function __construct(
         ConfigRepository $configRepo,
         OptionRepository $optionRepo,
-        PluginRegistryHandler $pluginRegistry
+        ModuleRegistryHandler $moduleRegistry
     ){
         $this->configRepo = $configRepo;
         $this->optionRepo = $optionRepo;
-        $this->pluginRegistry = $pluginRegistry;
+        $this->moduleRegistry = $moduleRegistry;
     }
 
     public function getStatus($type, $moduleName) : ModuleStatusInfo
@@ -40,7 +40,7 @@ class Interactor implements ModuleStatus
     public function getVersion($type, $moduleName) : int
     {
         if (strtolower($type) == 'plugin') {
-            $pluginRegistered = $this->pluginRegistry->isRegistered($moduleName);
+            $pluginRegistered = $this->moduleRegistry->isRegistered($moduleName);
 
             if ($pluginRegistered) {
                 return 2;
@@ -53,7 +53,7 @@ class Interactor implements ModuleStatus
     {
         //check V2 first
         if (strtolower($type) == 'plugin') {
-            $pluginRegistered = $this->pluginRegistry->isRegistered($moduleName);
+            $pluginRegistered = $this->moduleRegistry->isRegistered($moduleName);
 
             if ($pluginRegistered) {
                 return true;
@@ -78,7 +78,7 @@ class Interactor implements ModuleStatus
     {
         //check V2 first
         if (strtolower($type) == 'plugin') {
-            $pluginActive = $this->pluginRegistry->isActive($moduleName);
+            $pluginActive = $this->moduleRegistry->isActive($moduleName);
 
             if ($pluginActive) {
                 return true;

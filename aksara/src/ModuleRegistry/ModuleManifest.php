@@ -1,7 +1,7 @@
 <?php
-namespace Aksara\PluginRegistry;
+namespace Aksara\ModuleRegistry;
 
-class PluginManifest
+class ModuleManifest
 {
     private $name;
     private $description;
@@ -13,7 +13,7 @@ class PluginManifest
     public function __construct(
         string $name,
         string $description,
-        PluginPath $pluginPath,
+        ModulePath $pluginPath,
         array $dependencies = [],
         array $providers = [],
         array $aliases = [],
@@ -22,7 +22,7 @@ class PluginManifest
     ){
         $this->name = $name;
         $this->description = $description;
-        $this->pluginPath = $pluginPath;
+        $this->modulePath = $pluginPath;
         $this->dependencies = $dependencies;
         $this->providers = $providers;
         $this->aliases = $aliases;
@@ -50,9 +50,9 @@ class PluginManifest
         return $this->description;
     }
 
-    public function getPluginPath() : PluginPath
+    public function getModulePath() : ModulePath
     {
-        return $this->pluginPath;
+        return $this->modulePath;
     }
 
     public function getDependencies()
@@ -75,12 +75,12 @@ class PluginManifest
         return $this->type;
     }
 
-    public static function fromPluginConfig(array $array, string $pluginRoot)
+    public static function fromPluginConfig(array $array, string $moduleRoot)
     {
         return new static (
             $array['name'],
             $array['description'],
-            new PluginPath($pluginRoot, $array['name']),
+            new ModulePath($moduleRoot, $array['name']),
             isset($array['dependencies']) ? $array['dependencies'] : [],
             isset($array['providers']) ? $array['providers'] : [],
             isset($array['aliases']) ? $array['aliases'] : [],
@@ -93,7 +93,7 @@ class PluginManifest
         return [
             $this->name => [
                 'description' => $this->description,
-                'plugin_path' => $this->pluginPath->toArray(),
+                'plugin_path' => $this->modulePath->toArray(),
                 'dependencies' => $this->dependencies,
                 'providers' => $this->providers,
                 'aliases' => $this->aliases,

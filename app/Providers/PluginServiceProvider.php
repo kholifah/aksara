@@ -27,42 +27,41 @@ class PluginServiceProvider extends ServiceProvider
          * plugin activation V2
          */
 
-        $plugins = \PluginRegistry::getActivePlugins();
+        $modules = \ModuleRegistry::getActiveModules();
 
-        foreach ($plugins as $plugin) {
+        foreach ($modules as $module) {
 
             //register providers
-            $providers = $plugin->getProviders();
+            $providers = $module->getProviders();
             foreach ($providers as $provider) {
                 $this->app->register($provider);
             }
 
             //register aliases
-            $aliases = $plugin->getAliases();
+            $aliases = $module->getAliases();
             AliasLoader::getInstance($aliases)->register();
 
             //register views
-            if (is_dir($plugin->getPluginPath()->view())) {
-                //view()->addNamespace($plugin->getType().':'.$plugin->getName(),
-                    //$plugin->getPluginPath()->view());
-                view()->addNamespace($plugin->getName(),
-                    $plugin->getPluginPath()->view());
+            if (is_dir($module->getModulePath()->view())) {
+                view()->addNamespace($module->getName(),
+                    $module->getModulePath()->view());
             }
 
-            if (is_dir($plugin->getPluginPath()->lang())) {
+            //register language namespace
+            if (is_dir($module->getModulePath()->lang())) {
                 app()->afterResolving('translator', function ($translator) use (
-                    $plugin) {
-                    $translator->addNamespace($plugin->getName(),
-                        $plugin->getPluginPath()->lang()
+                    $module) {
+                    $translator->addNamespace($module->getName(),
+                        $module->getModulePath()->lang()
                     );
                 });
             }
 
             //register migrations
-            if (is_dir($plugin->getPluginPath()->migration())) {
+            if (is_dir($module->getModulePath()->migration())) {
                 app()->afterResolving('migrator', function ($migrator) use (
-                    $plugin) {
-                    $migrator->path($plugin->getPluginPath()->migration());
+                    $module) {
+                    $migrator->path($module->getModulePath()->migration());
                 });
             }
         }

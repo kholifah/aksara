@@ -1,9 +1,9 @@
 <?php
 
 use Faker\Factory as Faker;
-use Aksara\PluginRegistry\PluginManifest;
+use Aksara\ModuleRegistry\ModuleManifest;
 
-class PluginManifestTest extends PHPUnit\Framework\TestCase
+class ModuleManifestTest extends PHPUnit\Framework\TestCase
 {
     private $faker;
 
@@ -16,7 +16,7 @@ class PluginManifestTest extends PHPUnit\Framework\TestCase
     public function shouldCreateObject()
     {
         //test generate from config
-        $manifest = PluginManifest::fromPluginConfig([
+        $manifest = ModuleManifest::fromPluginConfig([
             'name' => $name = $this->faker->slug,
             'description' => $description = $this->faker->sentence,
             'dependencies' => $dependencies = [ $this->faker->slug ],
@@ -33,7 +33,7 @@ class PluginManifestTest extends PHPUnit\Framework\TestCase
         $this->assertEquals($providers, $manifest->getProviders());
         $this->assertEquals($aliases, $manifest->getAliases());
 
-        $pluginPath = $manifest->getPluginPath();
+        $pluginPath = $manifest->getModulePath();
         $pluginPathRoot = $pluginRoot.'/'.$name;
         $pluginDatabase = $pluginPathRoot.'/database';
         $pluginMigration = $pluginDatabase.'/migrations';

@@ -53,7 +53,7 @@ class MigrationRollbackCommand extends Command
         $modules = $this->allV2();
 
         foreach ($modules as $module) {
-            $this->migrator->path($module->getPluginPath()->migration());
+            $this->migrator->path($module->getModulePath()->migration());
         }
     }
 

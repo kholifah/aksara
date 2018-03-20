@@ -15,4 +15,6 @@ return [
         'ImageService' => 'Plugins\\ImageService\\Facades\\ImageService',
         'ImageConfig' => 'Plugins\\ImageService\\Facades\\ImageConfig',
     ],
+
+    'type' => 'plugin',
 ];

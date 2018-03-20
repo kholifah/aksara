@@ -11,7 +11,7 @@ use Aksara\ModuleStatus\ModuleStatus;
 use Aksara\ModuleDependency\PluginRequiredBy;
 use Aksara\ModuleKey;
 use Aksara\UpdateModuleStatus\UpdateModuleStatusHandler;
-use Aksara\PluginRegistry\PluginRegistryHandler;
+use Aksara\ModuleRegistry\ModuleRegistryHandler;
 
 class ModuleManagerController extends Controller
 {
@@ -19,20 +19,20 @@ class ModuleManagerController extends Controller
     private $moduleStatus;
     private $pluginRequiredBy;
     private $updateModuleStatus;
-    private $pluginRegistry;
+    private $moduleRegistry;
 
     public function __construct(
         Module $module,
         ModuleStatus $moduleStatus,
         PluginRequiredBy $pluginRequiredBy,
         UpdateModuleStatusHandler $updateModuleStatus,
-        PluginRegistryHandler $pluginRegistry
+        ModuleRegistryHandler $moduleRegistry
     ){
         $this->module = $module;
         $this->moduleStatus = $moduleStatus;
         $this->pluginRequiredBy = $pluginRequiredBy;
         $this->updateModuleStatus = $updateModuleStatus;
-        $this->pluginRegistry = $pluginRegistry;
+        $this->moduleRegistry = $moduleRegistry;
     }
 
     private function getModulesMerged()
@@ -47,7 +47,7 @@ class ModuleManagerController extends Controller
         }
 
         //Plugins V2
-        $plugins = $this->pluginRegistry->getRegisteredPlugins();
+        $plugins = $this->moduleRegistry->getRegisteredModules();
         $pluginsArray = array();
 
         foreach ($plugins as $plugin) {
@@ -76,7 +76,7 @@ class ModuleManagerController extends Controller
 
         $pluginRequiredBy = $this->pluginRequiredBy;
 
-        $plugins = $this->pluginRegistry->getRegisteredPlugins();
+        $plugins = $this->moduleRegistry->getRegisteredModules();
 
         $param = compact('module', 'pluginRequiredBy', 'plugins');
 
@@ -257,7 +257,7 @@ class ModuleManagerController extends Controller
                     }
                 } else {
                     if ($itemToBeActivated->getType() == 'plugin') {
-                        $this->pluginRegistry->activatePlugin(
+                        $this->moduleRegistry->activateModule(
                             $itemToBeActivated->getModuleName());
                     }
                 }
@@ -293,7 +293,7 @@ class ModuleManagerController extends Controller
                 $this->updateModuleStatus->deactivate(new ModuleKey($type, $slug));
             } else {
                 if (strtolower($type) == 'plugin') {
-                    $this->pluginRegistry->deactivatePlugin($slug);
+                    $this->moduleRegistry->deactivateModule($slug);
                 }
             }
             session()->put('deactivating_module', new ModuleKey($type, $slug));

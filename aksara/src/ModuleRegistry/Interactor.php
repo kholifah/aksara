@@ -1,6 +1,6 @@
 <?php
 
-namespace Aksara\PluginRegistry;
+namespace Aksara\ModuleRegistry;
 
 use Illuminate\Filesystem\Filesystem;
 use Aksara\ModuleIdentifier;
@@ -8,14 +8,14 @@ use Aksara\AdminNotif\AdminNotifRequest;
 use Aksara\AdminNotif\AdminNotifHandler;
 use Aksara\Application\ApplicationInterface;
 
-class Interactor implements PluginRegistryHandler
+class Interactor implements ModuleRegistryHandler
 {
-    const PLUGIN_FOLDER = 'aksara-plugins';
+    const MODULE_FOLDER = 'aksara-modules';
     const ACTIVE_MANIFEST = 'active_manifest.php';
-    const PLUGIN_MANIFEST = 'plugin.php';
+    const MODULE_MANIFEST = 'module.php';
 
     private $filesystem;
-    private $pluginRoot;
+    private $moduleRoot;
     private $activeManifestPath;
     private $app;
 
@@ -26,27 +26,27 @@ class Interactor implements PluginRegistryHandler
     ){
         $this->app = $app;
         $this->filesystem = $filesystem;
-        $this->pluginRoot = $this->app->basePath(self::PLUGIN_FOLDER);
-        $this->activeManifestPath = $this->pluginRoot.
+        $this->moduleRoot = $this->app->basePath(self::MODULE_FOLDER);
+        $this->activeManifestPath = $this->moduleRoot.
             DIRECTORY_SEPARATOR.self::ACTIVE_MANIFEST;
         $this->notifHandler = $notifHandler;
     }
 
-    public function getPluginPath($name) : PluginPath
+    public function getModulePath($name) : ModulePath
     {
-        return new PluginPath($this->pluginRoot, $name);
+        return new ModulePath($this->moduleRoot, $name);
     }
 
-    public function getRegisteredPlugins()
+    public function getRegisteredModules()
     {
         $registeredPluginNames = $this->getRegisteredPluginNames();
-        $registeredPlugins = $this->loadPluginManifests($registeredPluginNames);
+        $registeredPlugins = $this->loadModuleManifests($registeredPluginNames);
         return $registeredPlugins;
     }
 
     private function getRegisteredPluginNames()
     {
-        $pluginDirs = $this->filesystem->directories($this->pluginRoot);
+        $pluginDirs = $this->filesystem->directories($this->moduleRoot);
         //take last part only
         $registeredPluginNames = array_map(function ($fullDir) {
             $segments = explode('/', $fullDir);
@@ -55,10 +55,10 @@ class Interactor implements PluginRegistryHandler
         return $registeredPluginNames;
     }
 
-    public function getActivePlugins()
+    public function getActiveModules()
     {
         $activePluginNames = $this->getActiveManifest();
-        $activePlugins = $this->loadPluginManifests($activePluginNames, true);
+        $activePlugins = $this->loadModuleManifests($activePluginNames, true);
         return $activePlugins;
     }
 
@@ -71,22 +71,22 @@ class Interactor implements PluginRegistryHandler
         return $activeManifest;
     }
 
-    private function loadPluginManifests($pluginNames, $active = null)
+    private function loadModuleManifests($pluginNames, $active = null)
     {
         $plugins = array();
 
         foreach ($pluginNames as $pluginName) {
-            $plugin = $this->loadPluginManifest($pluginName, $active);
+            $plugin = $this->loadModuleManifest($pluginName, $active);
             $plugins[] = $plugin;
         }
         return $plugins;
     }
 
-    private function loadPluginManifest($pluginName, $active = null)
+    private function loadModuleManifest($pluginName, $active = null)
     {
-        $pluginManifestFile = $this->pluginRoot.
+        $pluginManifestFile = $this->moduleRoot.
             DIRECTORY_SEPARATOR.$pluginName.DIRECTORY_SEPARATOR.
-            self::PLUGIN_MANIFEST;
+            self::MODULE_MANIFEST;
 
         if (!$this->filesystem->exists($pluginManifestFile)) {
             throw new \Exception('Plugin manifest file not found');
@@ -94,9 +94,9 @@ class Interactor implements PluginRegistryHandler
 
         $configArray = $this->filesystem->getRequire($pluginManifestFile);
 
-        $plugin = PluginManifest::fromPluginConfig(
+        $plugin = ModuleManifest::fromPluginConfig(
             $configArray,
-            $this->pluginRoot
+            $this->moduleRoot
         );
 
         if (is_null($active)) {
@@ -119,7 +119,7 @@ class Interactor implements PluginRegistryHandler
         return in_array($name, $registeredPluginNames);
     }
 
-    public function activatePlugin($name)
+    public function activateModule($name)
     {
         $activeManifest = $this->getActiveManifest();
         if (!in_array($name, $activeManifest)) {
@@ -129,7 +129,7 @@ class Interactor implements PluginRegistryHandler
         $this->successNotify($name);
     }
 
-    public function deactivatePlugin($name)
+    public function deactivateModule($name)
     {
         $activeManifest = $this->filesystem->getRequire($this->activeManifestPath);
         $newManifest = array_diff($activeManifest, [ $name ]);
@@ -163,7 +163,7 @@ class Interactor implements PluginRegistryHandler
 
     public function getManifest($name)
     {
-        return $this->loadPluginManifest($name);
+        return $this->loadModuleManifest($name);
     }
 }
 

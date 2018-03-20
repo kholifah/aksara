@@ -3,11 +3,11 @@ namespace Aksara\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
-class PluginRegistryFacade extends Facade
+class ModuleRegistryFacade extends Facade
 {
     protected static function getFacadeAccessor()
     {
-        return 'plugin_registry';
+        return 'module_registry';
     }
 }
 

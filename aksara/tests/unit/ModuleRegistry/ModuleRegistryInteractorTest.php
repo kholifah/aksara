@@ -1,18 +1,18 @@
-<?php
+//<?php
 
-use Aksara\PluginRegistry\Interactor;
+use Aksara\ModuleRegistry\Interactor;
 use Aksara\AdminNotif\AdminNotifRequest;
 use Aksara\AdminNotif\AdminNotifHandler;
 use Aksara\Application\ApplicationInterface;
 use Faker\Factory as Faker;
 use Illuminate\Filesystem\Filesystem;
 
-class PluginRegistryInteractorTest extends PHPUnit\Framework\TestCase
+class ModuleRegistryInteractorTest extends PHPUnit\Framework\TestCase
 {
     private $faker;
 
     private $basePath;
-    private $pluginRoot;
+    private $moduleRoot;
     private $activePath;
     private $app;
 
@@ -21,16 +21,16 @@ class PluginRegistryInteractorTest extends PHPUnit\Framework\TestCase
         $this->faker = Faker::create();
 
         $this->basePath = $this->generateDir($this->faker->slug);
-        $this->pluginRoot = $this->basePath."/aksara-plugins";
-        $this->activePath = $this->pluginRoot."/active_manifest.php";
+        $this->moduleRoot = $this->basePath."/aksara-modules";
+        $this->activePath = $this->moduleRoot."/active_manifest.php";
 
         $this->app = $this->getMockBuilder(ApplicationInterface::class)
             ->getMock();
 
         $this->app->expects($this->once())
             ->method('basePath')
-            ->with('aksara-plugins')
-            ->willReturn($this->pluginRoot);
+            ->with('aksara-modules')
+            ->willReturn($this->moduleRoot);
     }
 
     private function generateDir($lastDir)
@@ -40,11 +40,11 @@ class PluginRegistryInteractorTest extends PHPUnit\Framework\TestCase
 
     private function getRegisteredPluginNames()
     {
-        $plugin_1 = $this->faker->slug;
-        $plugin_2 = $this->faker->slug;
-        $plugin_3 = $this->faker->slug;
+        $module_1 = $this->faker->slug;
+        $module_2 = $this->faker->slug;
+        $module_3 = $this->faker->slug;
 
-        return array($plugin_1, $plugin_2, $plugin_3);
+        return array($module_1, $module_2, $module_3);
     }
 
     /** @test */
@@ -59,7 +59,7 @@ class PluginRegistryInteractorTest extends PHPUnit\Framework\TestCase
 
         $filesystem->expects($this->exactly(2))
             ->method('directories')
-            ->with($this->pluginRoot)
+            ->with($this->moduleRoot)
             ->willReturn($directories);
 
         $notifHandler = $this->getMockBuilder(AdminNotifHandler::class)
@@ -124,15 +124,15 @@ class PluginRegistryInteractorTest extends PHPUnit\Framework\TestCase
 
         $filesystem->expects($this->once())
             ->method('directories')
-            ->with($this->pluginRoot)
+            ->with($this->moduleRoot)
             ->willReturn($directories);
 
         $filesystem->expects($this->any())
             ->method('exists')
             ->with($this->logicalOr(
-                $manifest1 = $directories[0].'/plugin.php',
-                $manifest2 = $directories[1].'/plugin.php',
-                $manifest3 = $directories[2].'/plugin.php',
+                $manifest1 = $directories[0].'/module.php',
+                $manifest2 = $directories[1].'/module.php',
+                $manifest3 = $directories[2].'/module.php',
                 $this->activePath
             ))
             ->willReturn(false);
@@ -143,7 +143,7 @@ class PluginRegistryInteractorTest extends PHPUnit\Framework\TestCase
         $interactor = new Interactor($this->app, $filesystem, $notifHandler);
 
         $this->expectException(\Exception::class);
-        $interactor->getRegisteredPlugins();
+        $interactor->getRegisteredModules();
     }
 
     /** @test */
@@ -157,15 +157,15 @@ class PluginRegistryInteractorTest extends PHPUnit\Framework\TestCase
 
         $filesystem->expects($this->once())
             ->method('directories')
-            ->with($this->pluginRoot)
+            ->with($this->moduleRoot)
             ->willReturn($directories);
 
         $filesystem->expects($this->any())
             ->method('exists')
             ->with($this->logicalOr(
-                $manifest1 = $directories[0].'/plugin.php',
-                $manifest2 = $directories[1].'/plugin.php',
-                $manifest3 = $directories[2].'/plugin.php',
+                $manifest1 = $directories[0].'/module.php',
+                $manifest2 = $directories[1].'/module.php',
+                $manifest3 = $directories[2].'/module.php',
                 $this->activePath
             ))
             ->willReturnCallback(function ($path) {
@@ -201,19 +201,19 @@ class PluginRegistryInteractorTest extends PHPUnit\Framework\TestCase
 
         $interactor = new Interactor($this->app, $filesystem, $notifHandler);
 
-        $interactor->getRegisteredPlugins();
+        $interactor->getRegisteredModules();
     }
 
-    private function getMockDirectories($plugins = [])
+    private function getMockDirectories($modules = [])
     {
-        list ($plugin_1, $plugin_2, $plugin_3) = empty($plugins) ?
+        list ($module_1, $module_2, $module_3) = empty($modules) ?
             $this->getRegisteredPluginNames()
-            : $plugins;
+            : $modules;
 
         $directories = [
-            $pluginDir1 = $this->pluginRoot."/$plugin_1",
-            $pluginDir2 = $this->pluginRoot."/$plugin_2",
-            $pluginDir3 = $this->pluginRoot."/$plugin_3",
+            $moduleDir1 = $this->moduleRoot."/$module_1",
+            $moduleDir2 = $this->moduleRoot."/$module_2",
+            $moduleDir3 = $this->moduleRoot."/$module_3",
         ];
         return $directories;
     }
@@ -231,9 +231,9 @@ class PluginRegistryInteractorTest extends PHPUnit\Framework\TestCase
         $filesystem->expects($this->any())
             ->method('exists')
             ->with($this->logicalOr(
-                $manifest1 = $directories[0].'/plugin.php',
-                $manifest2 = $directories[1].'/plugin.php',
-                $manifest3 = $directories[2].'/plugin.php',
+                $manifest1 = $directories[0].'/module.php',
+                $manifest2 = $directories[1].'/module.php',
+                $manifest3 = $directories[2].'/module.php',
                 $this->activePath
             ))
             ->willReturn(true);
@@ -265,7 +265,7 @@ class PluginRegistryInteractorTest extends PHPUnit\Framework\TestCase
 
         $interactor = new Interactor($this->app, $filesystem, $notifHandler);
 
-        $interactor->getActivePlugins();
+        $interactor->getActiveModules();
     }
 
     /** @test */
@@ -281,9 +281,9 @@ class PluginRegistryInteractorTest extends PHPUnit\Framework\TestCase
         $filesystem->expects($this->any())
             ->method('exists')
             ->with($this->logicalOr(
-                $manifest1 = $directories[0].'/plugin.php',
-                $manifest2 = $directories[1].'/plugin.php',
-                $manifest3 = $directories[2].'/plugin.php',
+                $manifest1 = $directories[0].'/module.php',
+                $manifest2 = $directories[1].'/module.php',
+                $manifest3 = $directories[2].'/module.php',
                 $this->activePath
             ))
             ->willReturn(true);
@@ -330,12 +330,12 @@ class PluginRegistryInteractorTest extends PHPUnit\Framework\TestCase
 
         $interactor = new Interactor($this->app, $filesystem, $notifHandler);
 
-        $interactor->activatePlugin($activated);
+        $interactor->activateModule($activated);
 
     }
 
     /** @test */
-    public function shouldDeactivatePlugin()
+    public function shouldDeactivateModule()
     {
         $activePlugins = $this->getRegisteredPluginNames();
         $directories = $this->getMockDirectories($activePlugins);
@@ -376,7 +376,7 @@ class PluginRegistryInteractorTest extends PHPUnit\Framework\TestCase
 
         $interactor = new Interactor($this->app, $filesystem, $notifHandler);
 
-        $interactor->deactivatePlugin($deactivated);
+        $interactor->deactivateModule($deactivated);
     }
 
     /** @test */
@@ -412,6 +412,6 @@ class PluginRegistryInteractorTest extends PHPUnit\Framework\TestCase
         $interactor = new Interactor($this->app, $filesystem, $notifHandler);
 
         $this->expectException(\Exception::class);
-        $interactor->deactivatePlugin($deactivated);
+        $interactor->deactivateModule($deactivated);
     }
 }

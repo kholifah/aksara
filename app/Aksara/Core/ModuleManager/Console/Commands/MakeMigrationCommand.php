@@ -74,7 +74,7 @@ class MakeMigrationCommand extends Command
         if (!$pluginV2) {
             throw new \Exception("$moduleName tidak ditemukan dalam module V2");
         }
-        $path = $pluginV2->getPluginPath()->migration();
+        $path = $pluginV2->getModulePath()->migration();
 
         $this->executeMakeMigration($path);
     }

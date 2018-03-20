@@ -4,22 +4,22 @@ namespace Aksara\ModuleDependency;
 use Aksara\ModuleKey;
 use Aksara\Repository\ConfigRepository;
 use Aksara\ModuleStatus\ModuleStatus;
-use Aksara\PluginRegistry\PluginRegistryHandler;
+use Aksara\ModuleRegistry\ModuleRegistryHandler;
 
 class PluginRequiredByInteractor implements PluginRequiredBy
 {
     private $configRepo;
     private $moduleStatus;
-    private $pluginRegistry;
+    private $moduleRegistry;
 
     public function __construct(
         ConfigRepository $configRepo,
         ModuleStatus $moduleStatus,
-        PluginRegistryHandler $pluginRegistry
+        ModuleRegistryHandler $moduleRegistry
     ){
         $this->configRepo = $configRepo;
         $this->moduleStatus = $moduleStatus;
-        $this->pluginRegistry = $pluginRegistry;
+        $this->moduleRegistry = $moduleRegistry;
     }
 
     public function isRequired(string $pluginName) : bool
@@ -50,7 +50,7 @@ class PluginRequiredByInteractor implements PluginRequiredBy
             }
         }
 
-        $plugins = $this->pluginRegistry->getActivePlugins();
+        $plugins = $this->moduleRegistry->getActiveModules();
         foreach ($plugins as $plugin) {
             if (!in_array($pluginName, $plugin->getDependencies())) {
                 continue;

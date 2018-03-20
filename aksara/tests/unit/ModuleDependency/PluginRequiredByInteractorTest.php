@@ -5,8 +5,8 @@ use Faker\Factory as Faker;
 use Aksara\ModuleKey;
 use Aksara\Repository\ConfigRepository;
 use Aksara\ModuleStatus\ModuleStatus;
-use Aksara\PluginRegistry\PluginRegistryHandler;
-use Aksara\PluginRegistry\PluginManifest;
+use Aksara\ModuleRegistry\ModuleRegistryHandler;
+use Aksara\ModuleRegistry\ModuleManifest;
 
 class PluginRequiredByInteractorTest extends PHPUnit\Framework\TestCase
 {
@@ -55,11 +55,11 @@ class PluginRequiredByInteractorTest extends PHPUnit\Framework\TestCase
         $moduleStatus = $this->getMockBuilder(ModuleStatus::class)
             ->getMock();
 
-        $pluginRegistry = $this->getMockBuilder(PluginRegistryHandler::class)
+        $pluginRegistry = $this->getMockBuilder(ModuleRegistryHandler::class)
             ->getMock();
 
         $pluginRegistry->expects($this->exactly(2))
-            ->method('getActivePlugins')
+            ->method('getActiveModules')
             ->willReturn([]);
 
         $moduleStatus->expects($this->any())
@@ -107,10 +107,10 @@ class PluginRequiredByInteractorTest extends PHPUnit\Framework\TestCase
         $moduleStatus = $this->getMockBuilder(ModuleStatus::class)
             ->getMock();
 
-        $pluginRegistry = $this->getMockBuilder(PluginRegistryHandler::class)
+        $pluginRegistry = $this->getMockBuilder(ModuleRegistryHandler::class)
             ->getMock();
 
-        $plugin = $this->getMockBuilder(PluginManifest::class)
+        $plugin = $this->getMockBuilder(ModuleManifest::class)
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -127,7 +127,7 @@ class PluginRequiredByInteractorTest extends PHPUnit\Framework\TestCase
         ];
 
         $pluginRegistry->expects($this->once())
-            ->method('getActivePlugins')
+            ->method('getActiveModules')
             ->willReturn($activePlugins);
 
         $configRepo->expects($this->once())
