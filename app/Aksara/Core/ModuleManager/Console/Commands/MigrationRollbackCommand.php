@@ -1,73 +1,48 @@
 <?php
+
 namespace App\Aksara\Core\ModuleManager\Console\Commands;
 
-use App\User;
-use App\DripEmailer;
-use Illuminate\Console\Command;
 use Illuminate\Config\Repository as Config;
-use Illuminate\FileSystem\FileSystem;
+use Illuminate\Console\Command;
 use Aksara\PluginRegistry\PluginRegistryHandler;
 
-class MakeMigrationCommand extends Command
+class MigrationRollbackCommand extends Command
 {
-    use MigrationMaker;
     use PluginGetter;
+
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'aksara:make:migration
-        {type-name : type and name of the module (type/module-name)}
-        {name : The name of the migration.}
-        {--create= : The table to be created.}
-        {--table= : The table to migrate.}';
+    protected $signature = 'aksara:migrate:rollback
+        {type-name : [v1] type and name of the module (type/module-name); [v2] name of the module}';
 
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
-    protected $description = 'Generate file migration di dalam module';
+    protected $description = 'Rollback migrasi modul aksara';
 
-    private $fileSystem;
-    private $config;
-
-    /**
-     * Create a new command instance.
-     *
-     * @return void
-     */
     public function __construct(
-        FileSystem $fileSystem,
         Config $config,
         PluginRegistryHandler $pluginRegistry
     ){
         parent::__construct();
-        $this->fileSystem = $fileSystem;
         $this->config = $config;
         $this->pluginRegistry = $pluginRegistry;
     }
 
-    /**
-     * Execute the console command.
-     *
-     * @return mixed
-     */
     public function handle()
     {
         $typeName = $this->argument('type-name');
         $typeArray = explode('/', $typeName);
 
         switch (count($typeArray)) {
-        case 1: $this->makeMigrationV2($typeArray); break;
-        case 2: $this->makeMigrationV1($typeArray); break;
+        case 1: $this->rollbackMigrationV2($typeArray); break;
+        case 2: $this->rollbackMigrationV1($typeArray); break;
         default: $this->error('Format type-name tidak valid,
                 gunakan format tipe/nama-modul (v1) atau nama-modul (v2'); break;
         }
     }
 
-    private function makeMigrationV2($typeArray)
+    private function rollbackMigrationV2(array $typeArray)
     {
         $moduleName = $typeArray[0];
 
@@ -79,10 +54,10 @@ class MakeMigrationCommand extends Command
         }
         $path = $pluginV2->getPluginPath()->migration();
 
-        $this->executeMakeMigration($path);
+        $this->executeRollback($path);
     }
 
-    private function makeMigrationV1($typeArray)
+    private function rollbackMigrationV1(array $typeArray)
     {
         $type = $typeArray[0];
         $moduleName = $typeArray[1];
@@ -95,6 +70,16 @@ class MakeMigrationCommand extends Command
 
         $path = $module['migrationPath'];
 
-        $this->executeMakeMigration($path);
+        $this->executeRollback($path);
+    }
+
+    private function executeRollback($path)
+    {
+        $path = str_replace(base_path(), '/', $path);
+        $args = [
+            '--path' => $path,
+        ];
+
+        $this->call('migrate:rollback', $args);
     }
 }

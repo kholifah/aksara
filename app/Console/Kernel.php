@@ -14,6 +14,8 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         \App\Aksara\Core\ModuleManager\Console\Commands\MakeMigrationCommand::class,
+        \App\Aksara\Core\ModuleManager\Console\Commands\MigrationRunCommand::class,
+        \App\Aksara\Core\ModuleManager\Console\Commands\MigrationRollbackCommand::class,
         \App\Aksara\Core\ModuleManager\Console\Commands\MakeSeedCommand::class,
         \App\Aksara\Core\ModuleManager\Console\Commands\MakeSeedRunCommand::class,
     ];
