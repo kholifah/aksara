@@ -10,7 +10,8 @@ use App\Aksara\Core\ModuleManager\Console\Commands\DatabaseSeeder;
 
 class MakeSeedRunCommand extends Command
 {
-    
+    use PluginGetter;
+
     /**
      * The name and signature of the console command.
      *
@@ -54,31 +55,33 @@ class MakeSeedRunCommand extends Command
         $typeName = $this->argument('type-name');
         $typeArray = explode('/', $typeName);
 
-        if (count($typeArray) != 2) {
-            $this->error('Format type-name tidak valid, gunakan format tipe/nama-modul');
+        switch (count($typeArray)) {
+        case 1: $this->runSeedV2($typeArray); break;
+        case 2: $this->runSeedV1($typeArray); break;
+        default: $this->error('Format type-name tidak valid,
+                gunakan format tipe/nama-modul (v1) atau nama-modul (v2'); break;
         }
-
-        $this->makeModuleSeed($typeArray);
     }
 
-    private function makeModuleSeed($typeArray)
+    private function runSeedV2($typeArray)
+    {
+        $module = $this->getPluginV2($typeArray[0]);
+
+        $class = $this->argument('name');
+        spl_autoload_register(function ($class) use ($module) {
+            include $module->getPluginPath()->seed()."/$class.php";
+        });
+
+        $seeder = new $class();
+        $seeder->run();
+    }
+
+    private function runSeedV1($typeArray)
     {
         $type = $typeArray[0];
         $moduleName = $typeArray[1];
 
-        $modules = $this->config->get('aksara.modules');
-
-        if (!isset($modules[$type])) {
-            $this->error('Jenis module '
-                . $type
-                .' tidak ada, gunakan [core,plugin,admin,front-end]');
-        }
-
-        if (!isset($modules[$type][$moduleName])) {
-            $this->error('Module dengan nama '.$moduleName.' tidak ada');
-        }
-
-        $module = $modules[$type][$moduleName];
+        $module = $this->getPluginV1($type, $moduleName);
 
         if (!isset($module['seedPath'])) {
             $this->info("Module [$type] $moduleName tidak memiliki direktori 'seeds'.");
