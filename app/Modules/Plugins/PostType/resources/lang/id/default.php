@@ -30,7 +30,7 @@ return [
     'status' => 'Status',
     'page-template' => 'Pola Acuan Halaman',
     'name' => 'Nama',
-    'parent' => 'Parent',
+    'parent' => 'Induk',
     'action' => 'Aksi',
     'search' => 'Cari',
     'apply' => 'Terapkan',
