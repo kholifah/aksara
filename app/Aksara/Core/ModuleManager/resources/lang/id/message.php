@@ -11,6 +11,7 @@ return [
     'pending-migrations-message' => 'Harap eksekusi migrasi berikut',
     'cannot-deactivate-module-message' => 'Tidak bisa menonaktifkan :moduleType - :moduleName karena digunakan plugin lain',
     'fail-activate-module-message' => 'Gagal mengaktifkan :moduleType - :moduleName karena :error',
+    'fail-deactivate-module-message' => 'Gagal menonaktifkan :moduleType - :moduleName karena :error',
     'module-not-found-message' => 'Modul tidak ditemukan',
     'unregistered-dependency-message' => 'Ketergantungan tidak terdaftar ditemukan',
     'pending-migration-message' => 'Ditemukan migrasi tertunda',

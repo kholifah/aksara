@@ -297,7 +297,7 @@ class ModuleManagerController extends Controller
             return redirect()->route('module-manager.index');
         } catch (\Exception $e) {
             admin_notice('warning',
-                __('core:module-manager::message.fail-activate-module-message', ['moduleType' => $type, 'moduleName' => $slug, 'error' => $e->getMessage()])   
+                __('core:module-manager::message.fail-deactivate-module-message', ['moduleType' => $type, 'moduleName' => $slug, 'error' => $e->getMessage()])   
             );
             return redirect()->route('module-manager.index');
         }

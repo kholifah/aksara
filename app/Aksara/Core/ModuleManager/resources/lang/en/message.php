@@ -11,6 +11,7 @@ return [
     'pending-migrations-message' => 'Please run the following migration(s)',
     'cannot-deactivate-module-message' => 'Cannot deactivate :moduleType - :moduleName because used in another module(s)',
     'fail-activate-module-message' => 'Fail activate :moduleType - :moduleName because :error',
+    'fail-deactivate-module-message' => 'Fail deactivate :moduleType - :moduleName because :error',
     'module-not-found-message' => 'Module not found',
     'unregistered-dependency-message' => 'Unregistered dependency found',
     'pending-migration-message' => 'Pending migration found',
