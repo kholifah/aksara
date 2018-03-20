@@ -6,6 +6,7 @@ return [
     'edit-success-message' => 'Data berhasil diubah.',
     'delete-success-message' => 'Data berhasil dihapus.',
     'confirm-delete-message' => 'Anda yakin ingin mengahapus data?',
+    'confirm-trash-message' => 'Anda yakin ingin memindahkan ke :trash.?',
     'all-delete-success-message' => 'Semua data berhasil dihapus.',
     'add-fail-message' => 'Data gagal ditambahkan.',
     'edit-fail-message' => 'Data gagal diubah.',
