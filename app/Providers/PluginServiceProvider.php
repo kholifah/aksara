@@ -45,7 +45,7 @@ class PluginServiceProvider extends ServiceProvider
             if (is_dir($plugin->getPluginPath()->view())) {
                 //TODO plugin type (plugin/frontend) support
                 //hardcoded for now for plugin
-                view()->addNamespace('plugin:'.$plugin->getName(),
+                view()->addNamespace($plugin->getType().':'.$plugin->getName(),
                     $plugin->getPluginPath()->view());
             }
 

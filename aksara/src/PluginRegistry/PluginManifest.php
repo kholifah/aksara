@@ -17,7 +17,8 @@ class PluginManifest
         array $dependencies = [],
         array $providers = [],
         array $aliases = [],
-        bool $active = false
+        bool $active = false,
+        string $type = 'plugin'
     ){
         $this->name = $name;
         $this->description = $description;
@@ -26,6 +27,7 @@ class PluginManifest
         $this->providers = $providers;
         $this->aliases = $aliases;
         $this->active = $active;
+        $this->type = $type;
     }
 
     public function getActive()
@@ -68,6 +70,11 @@ class PluginManifest
         return $this->aliases;
     }
 
+    public function getType()
+    {
+        return $this->type;
+    }
+
     public static function fromPluginConfig(array $array, string $pluginRoot)
     {
         return new static (
@@ -76,7 +83,8 @@ class PluginManifest
             new PluginPath($pluginRoot, $array['name']),
             isset($array['dependencies']) ? $array['dependencies'] : [],
             isset($array['providers']) ? $array['providers'] : [],
-            isset($array['aliases']) ? $array['aliases'] : []
+            isset($array['aliases']) ? $array['aliases'] : [],
+            isset($array['type']) ? $array['type'] : 'plugin'
         );
     }
 
@@ -89,6 +97,7 @@ class PluginManifest
                 'dependencies' => $this->dependencies,
                 'providers' => $this->providers,
                 'aliases' => $this->aliases,
+                'type' => $this->type,
             ]
         ];
     }
