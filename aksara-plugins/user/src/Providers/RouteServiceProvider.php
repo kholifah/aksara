@@ -15,8 +15,8 @@ class RouteServiceProvider extends ServiceProvider
         \Eventy::addAction('aksara.init-completed', function () {
 
             $args = [
-                'page_title' => 'User',
-                'menu_title' => 'User',
+                'page_title' => __('user::page.user'),
+                'menu_title' => __('user::menu.user'),
                 'icon' => 'ti-user',
                 'capability' => '',
                 'route' => [
@@ -31,8 +31,8 @@ class RouteServiceProvider extends ServiceProvider
 
 
             $args = [
-                'page_title' => 'Edit Profile',
-                'menu_title' => 'Edit Profile',
+                'page_title' => __('user::page.edit_profile'),
+                'menu_title' => __('user::menu.edit_profile'),
                 'icon' => 'ti-user',
                 'capability' => '',
                 'route' => [
@@ -104,8 +104,8 @@ class RouteServiceProvider extends ServiceProvider
             $route->addRoute($userDestroy);
 
             $args = [
-                'page_title' => 'Role',
-                'menu_title' => 'Role',
+                'page_title' => __('user::page.role'),
+                'menu_title' => __('user::menu.role'),
                 'icon' => 'ti-user',
                 'capability' => '',
                 'route' => [

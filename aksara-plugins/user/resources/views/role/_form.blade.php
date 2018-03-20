@@ -1,5 +1,5 @@
 <div class="form-group form-group--table m-b-30">
-    <label class="col-form-label">Nama Role</label>
+    <label class="col-form-label">@lang('user::labels.role_name')</label>
     <div class="col-form-input">
         {!! Form::text('name', $role->name, ['class'=>'form-control']) !!}
     </div>

@@ -85,7 +85,7 @@ class RoleController extends Controller
         $role->name = $data['name'];
         $role->permissions = $data['permissions'];
         $role->save();
-        admin_notice('success', 'Data berhasil ditambah.');
+        admin_notice('success', __('user::messages.success_add_role'));
         return redirect()->route('aksara-role');
     }
 
@@ -137,7 +137,7 @@ class RoleController extends Controller
         $role->name = $data['name'];
         $role->permissions = $data['permissions'];
         $role->save();
-        admin_notice('success', 'Data berhasil diubah.');
+        admin_notice('success', __('user::messages.success_update_role'));
         return redirect()->route('aksara-role');
     }
 
@@ -150,10 +150,14 @@ class RoleController extends Controller
     public function destroy($id)
     {
         $role = Role::find($id);
+        if (!$role) {
+            admin_notice('danger', __('user::messages.error.role_not_found'));
+            return redirect()->route('aksara-role');
+        }
         if ($role->delete()) {
-            admin_notice('success', 'Data berhasil dihapus.');
+            admin_notice('success', __('user::messages.success_delete_role'));
         } else {
-            admin_notice('danger', 'Data gagal dihapus.');
+            admin_notice('danger', __('user::messages.error.role_not_deleted'));
         }
         return redirect()->route('aksara-role');
     }

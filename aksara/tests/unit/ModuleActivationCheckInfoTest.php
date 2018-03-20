@@ -2,6 +2,7 @@
 
 use Aksara\ModuleActivationCheckInfo;
 use Aksara\ModuleStatusInfo;
+use Aksara\MigrationInfo;
 use Faker\Factory as Faker;
 
 class ModuleActivationCheckInfoTest extends PHPUnit\Framework\TestCase
@@ -20,11 +21,29 @@ class ModuleActivationCheckInfoTest extends PHPUnit\Framework\TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
+        $dependency->expects($this->once())
+            ->method('toArray')
+            ->willReturn($dependencyArray = $this->faker->words);
+
+        $migration = $this->getMockBuilder(MigrationInfo::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $migration->expects($this->once())
+            ->method('getPath')
+            ->willReturn(
+                $migrationPath = $this->faker->word.'/'.$this->faker->slug);
+
+        $migration->expects($this->any())
+            ->method('__toString')
+            ->willReturn(
+                $migrationString = $this->faker->sentence);
+
         $info = new ModuleActivationCheckInfo(
             $type = $this->faker->randomElement([ 'plugin', 'front-end', 'core' ]),
             $moduleName = $this->faker->slug,
             $dependencies = [ $dependency ],
-            $migrations = $this->faker->randomElements
+            $migrations = [ $migration ]
         );
 
         $this->assertEquals($type, $info->getType());
@@ -37,8 +56,9 @@ class ModuleActivationCheckInfoTest extends PHPUnit\Framework\TestCase
 
         $this->assertEquals($type, $array['type']);
         $this->assertEquals($moduleName, $array['module_name']);
-        $this->assertEquals($dependencies, $array['dependencies']);
-        $this->assertEquals($migrations, $array['migrations']);
+        $this->assertEquals([ $dependencyArray ], $array['dependencies']);
+        $this->assertEquals([ $migrationString ], $array['migrations']);
+        $this->assertEquals([ $migrationPath ], $array['migration_paths']);
         $this->assertFalse($array['allow_activation']);
     }
 

@@ -77,9 +77,9 @@ class UserController extends Controller
             foreach ($validator->messages()->toArray() as $v) {
                 admin_notice('danger', $v[0]);
             }
-             return back()
-                    ->withErrors($validator)
-                    ->withInput();
+            return back()
+                ->withErrors($validator)
+                ->withInput();
         }
         $data = $request->all();
         $user->name = $data['name'];
@@ -87,7 +87,7 @@ class UserController extends Controller
         $user->password = $data['password'];
         $user->active = $data['active'];
         $user->save();
-        admin_notice('success', 'Data berhasil ditambah.');
+        admin_notice('success', __('user::messages.success_add_user'));
         return redirect()->route('aksara-user');
     }
 
@@ -184,7 +184,7 @@ class UserController extends Controller
             $user->active = $data['active'];
         }
         $user->save();
-        admin_notice('success', 'Data berhasil diubah.');
+        admin_notice('success', __('user::messages.success_update_user'));
 
         if ($id === false) {
                 return redirect()->route('aksara.user.edit-profile');
@@ -202,12 +202,21 @@ class UserController extends Controller
     public function destroy($id)
     {
         $user = User::find($id);
-        if ($id != Auth::user()->id) {
-            if ($user->delete()) {
-                admin_notice('success', 'Data berhasil dihapus.');
-            } else {
-                admin_notice('danger', 'Data gagal dihapus.');
-            }
+
+        if (!$user) {
+            admin_notice('danger', __('user::messages.error.user_not_found'));
+            return redirect()->route('aksara-user');
+        }
+
+        if ($id == Auth::user()->id) {
+            admin_notice('danger', __('user::messages.error.cannot_delete_self'));
+            return redirect()->route('aksara-user');
+        }
+
+        if ($user->delete()) {
+            admin_notice('success', __('user::messages.success_delete_user'));
+        } else {
+            admin_notice('danger', __('user::messages.error.user_not_deleted'));
         }
         return redirect()->route('aksara-user');
     }

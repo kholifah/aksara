@@ -3,15 +3,15 @@
 @section('breadcrumb')
 <ol class="breadcrumb">
     <li class="breadcrumb-item"><a href="{{ route('admin.root') }}">Dashboard</a></li>
-    <li class="breadcrumb-item"><a href="{{ route('aksara-user') }}">User</a></li>
-    <li class="breadcrumb-item active">Edit User</li>
+    <li class="breadcrumb-item"><a href="{{ route('aksara-user') }}">@lang('user::labels.all_user')</a></li>
+    <li class="breadcrumb-item active">@lang('user::labels.edit_user')</li>
 </ol>
 @endsection
 
 
 @section('content')
 <div class="content__head">
-    <h2 class="page-title">Edit User</h2>
+    <h2 class="page-title">@lang('user::labels.edit_user')</h2>
 </div>
 <!-- /.content__head -->
 
@@ -20,7 +20,7 @@
         <div class="col-lg-8 col-md-11">
             <div class="card-box">
                 <div class="card-box__header">
-                    <h2>Edit User</h2>
+                    <h2>@lang('user::labels.edit_user')</h2>
                 </div>
                 <div class="card-box__body">
                     {!! Form::model($user, ['route' => ['aksara-user-update', $user->id], 'class' => 'form-horizontal'])!!}

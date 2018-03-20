@@ -3,13 +3,14 @@
 @section('breadcrumb')
 <ol class="breadcrumb">
     <li class="breadcrumb-item"><a href="{{ route('admin.root') }}">Dashboard</a></li>
-    <li class="breadcrumb-item active">Semua User</li>
+    <li class="breadcrumb-item active">@lang('user::labels.all_user')</li>
 </ol>
 @endsection
 
 @section('content')
 <div class="content__head">
-    <h2 class="page-title">Daftar User <a href="{{ route('aksara-user-create') }}" class="page-title-action">Tambah User</a></h2>
+    <h2 class="page-title">@lang('user::labels.user_list')
+        <a href="{{ route('aksara-user-create') }}" class="page-title-action">@lang('user::labels.add_user')</a></h2>
 </div>
 <!-- /.content__head -->
 
@@ -21,7 +22,7 @@
                     <div class="alignleft search-box">
 
                         <input name="search" value="{{ $search }}" type="text" class="form-control">
-                        <input type="submit" class="btn btn-secondary" value="Search">
+                        <input type="submit" class="btn btn-secondary" value=@lang('user::labels.search')>
 
                     </div>
                     <div class="tablenav-pages"><span class="displaying-num">{{ $total }} @if($total > 1 )items @else item @endif</span>
@@ -40,10 +41,10 @@
                                         <label></label>
                                     </div>
                                 </th>
-                                <th>Nama</th>
-                                <th>Email</th>                              
-                                <th>Active</th>
-                                <th class="no-sort" width="100">Edit</th>
+                                <th>@lang('user::labels.user_name')</th>
+                                <th>@lang('user::labels.email')</th>
+                                <th>@lang('user::labels.active')</th>
+                                <th class="no-sort" width="100">@lang('user::labels.edit')</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -57,17 +58,17 @@
                                     </div>
                                 </td>
                                 <td>{{ $user->name }}</td>
-                                <td>{{ $user->email }}</td>                               
+                                <td>{{ $user->email }}</td>
                                 <td>
                                     @if($user->active == 1)
-                                    Active
+                                      @lang('user::labels.active')
                                     @else
-                                    Non Active
+                                      @lang('user::labels.inactive')
                                     @endif
                                 </td>
                                 <td>
                                     <a href="{{ route('aksara-user-edit', $user->id) }}" class="icon-edit"><i title="Edit" class="fa fa-pencil-square-o edit-row" data-toggle="modal" data-target="#edit-komponen"></i> </a>
-                                    <a onclick="return confirm('Are you sure?');" href="{{ route('aksara-user-destroy', $user->id) }}" class="icon-delete sa-warning"><i title="Trash" class="fa fa-trash-o"></i></a>
+                                    <a onclick='{{ "return confirm('".__('user::messages.confirm_delete_user')."');" }}' href="{{ route('aksara-user-destroy', $user->id) }}" class="icon-delete sa-warning"><i title="Trash" class="fa fa-trash-o"></i></a>
                                 </td>
                             </tr>
                             @endforeach
@@ -78,10 +79,10 @@
                 <div class="tablenav bottom clearfix">
                     <div class="alignleft action bulk-action">
                         <select name="apply" class="form-control">
-                            <option disabled selected>Bulk Action</option>
-                            <option value='destroy'>Delete</option>
+                            <option disabled selected>@lang('user::labels.bulk_action')</option>
+                            <option value='destroy'>@lang('user::labels.delete')</option>
                         </select>
-                        <input name="bapply" type="submit" class="btn btn-secondary" value="Apply">
+                        <input name="bapply" type="submit" class="btn btn-secondary" value=@lang('user::labels.apply')>
                     </div>
                     <div class="tablenav-pages"><span class="displaying-num">{{ $total }} @if($total > 1 )items @else item @endif</span>
                         {!! $users->links() !!}

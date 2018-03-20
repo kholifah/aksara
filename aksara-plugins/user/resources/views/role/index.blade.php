@@ -3,13 +3,13 @@
 @section('breadcrumb')
 <ol class="breadcrumb">
     <li class="breadcrumb-item"><a href="{{ route('admin.root') }}">Dashboard</a></li>
-    <li class="breadcrumb-item active">Semua Roles</li>
+    <li class="breadcrumb-item active">@lang('user::labels.all_roles')</li>
 </ol>
 @endsection
 
 @section('content')
 <div class="content__head">
-    <h2 class="page-title">Daftar Role <a href="{{ route('aksara-role-create') }}" class="page-title-action">Tambah Roles</a></h2>
+    <h2 class="page-title">@lang('user::labels.role_list') <a href="{{ route('aksara-role-create') }}" class="page-title-action">@lang('user::labels.add_role')</a></h2>
 </div>
 <!-- /.content__head -->
 
@@ -21,7 +21,7 @@
                     <div class="alignleft search-box">
 
                         <input name="search" value="{{ $search }}" type="text" class="form-control">
-                        <input type="submit" class="btn btn-secondary" value="Search">
+                        <input type="submit" class="btn btn-secondary" value=@lang('user::labels.search')>
 
                     </div>
                     <div class="tablenav-pages"><span class="displaying-num">{{ $total }} @if($total > 1 )items @else item @endif</span>
@@ -38,8 +38,8 @@
                                         <label></label>
                                     </div>
                                 </th>
-                                <th>Nama</th>
-                                <th class="no-sort" width="100px">Edit</th>
+                                <th>@lang('user::labels.role_name')</th>
+                                <th class="no-sort" width="100px">@lang('user::labels.edit')</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -55,7 +55,7 @@
                                 <td>{{ $role->name }}</td>
                                 <td>
                                     <a href="{{ route('aksara-role-edit', $role->id) }}" class="icon-edit"><i title="Edit" class="fa fa-pencil-square-o edit-row" data-toggle="modal" data-target="#edit-komponen"></i> </a>
-                                    <a onclick="return confirm('Are you sure?');" href="{{ route('aksara-role-destroy', $role->id) }}" class="icon-delete sa-warning"><i title="Trash" class="fa fa-trash-o"></i></a>
+                                    <a onclick='{{ "return confirm('".__('user::messages.confirm_delete_role')."');" }}' href="{{ route('aksara-role-destroy', $role->id) }}" class="icon-delete sa-warning"><i title="Trash" class="fa fa-trash-o"></i></a>
                                 </td>
                             </tr>
                             @endforeach
@@ -66,10 +66,10 @@
                 <div class="tablenav bottom clearfix">
                     <div class="alignleft action bulk-action">
                         <select name="apply" class="form-control">
-                            <option disabled selected>Bulk Action</option>
-                            <option value='destroy'>Delete</option>
+                            <option disabled selected>@lang('user::labels.bulk_action')</option>
+                            <option value='destroy'>@lang('user::labels.delete')</option>
                         </select>
-                        <input name="bapply" type="submit" class="btn btn-secondary" value="Apply">
+                        <input name="bapply" type="submit" class="btn btn-secondary" value=@lang('user::labels.apply')>
                     </div>
                     <div class="tablenav-pages"><span class="displaying-num">{{ $total }} @if($total > 1 )items @else item @endif</span>
                         {!! $roles->appends(['search' => $search])->links() !!}

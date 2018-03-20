@@ -43,12 +43,20 @@ class PluginServiceProvider extends ServiceProvider
 
             //register views
             if (is_dir($plugin->getPluginPath()->view())) {
-                //TODO plugin type (plugin/frontend) support
-                //hardcoded for now for plugin
                 view()->addNamespace($plugin->getType().':'.$plugin->getName(),
                     $plugin->getPluginPath()->view());
             }
 
+            if (is_dir($plugin->getPluginPath()->lang())) {
+                app()->afterResolving('translator', function ($translator) use (
+                    $plugin) {
+                    $translator->addNamespace($plugin->getName(),
+                        $plugin->getPluginPath()->lang()
+                    );
+                });
+            }
+
+            //register migrations
             if (is_dir($plugin->getPluginPath()->migration())) {
                 app()->afterResolving('migrator', function ($migrator) use (
                     $plugin) {

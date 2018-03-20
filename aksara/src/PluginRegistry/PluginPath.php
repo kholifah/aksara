@@ -42,6 +42,11 @@ class PluginPath
         return $this->resource().DIRECTORY_SEPARATOR.'views';
     }
 
+    public function lang()
+    {
+        return $this->resource().DIRECTORY_SEPARATOR.'lang';
+    }
+
     public function toArray()
     {
         return [
