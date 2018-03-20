@@ -4,7 +4,7 @@
     </div>
     @if($post->id)
         <div class="edit-slug-box">
-            <strong>__('plugin:post-type::default.permalink'):</strong>
+            <strong>{{ __('plugin:post-type::default.permalink') }}:</strong>
             <span class="sample-permalink">
                 {{-- @todo --}}
                 <a href="{{ get_post_permalink($post) }}">

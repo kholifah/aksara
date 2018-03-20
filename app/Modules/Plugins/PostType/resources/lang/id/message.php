@@ -11,7 +11,7 @@ return [
     'edit-fail-message' => 'Data gagal diubah.',
     'delete-fail-message' => 'Data gagal dihapus.',
     'move-trash-message' => 'Data dipindahkan ke :trash.',
-    'return-message' => 'Data berhasil dikembalikan.',
+    'return-message' => 'Data berhasil dipulihkan.',
     'click-image-to-delete-message' => 'Klik pada ikon di dalam gambar untuk menghapus',
     'permalink-options-message' => 'Pilihan permalink, pilih satu dari pilhan',
     'default-permalink-message' => 'Permalink standart untuk post type yang dibuat khusus',
