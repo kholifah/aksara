@@ -218,7 +218,7 @@ class PostController extends Controller
         if (set_post_meta($id, 'trash_meta_status', $post->post_status, false)) {
             $post->update(['post_status' => 'trash']);
         }
-        admin_notice('success', __('plugin:post-type::message.move-trash-message'));
+        admin_notice('success', __('plugin:post-type::message.move-trash-message', ['trash' => status_post('trash')]));
         return redirect()->route('admin.'.get_current_post_type_args('route').'.index');
     }
 

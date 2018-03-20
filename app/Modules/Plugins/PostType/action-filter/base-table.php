@@ -12,8 +12,8 @@
 function post_type_base_column($cols, $postType)
 {
     $cols['quick-edit'] = ['title'=>'','width'=>'20px','class'=>'no-sort'];
-    $cols['title'] = ['title'=>'Judul'];
-    $cols['status'] = ['title'=>'Status','width'=>'100px'];
+    $cols['title'] = ['title'=> __('plugin:post-type::default.title') ];
+    $cols['status'] = ['title'=> __('plugin:post-type::default.status'),'width'=>'100px'];
 
     return $cols;
 }
@@ -40,7 +40,7 @@ function post_type_image_column($cols, $postType)
     unset($cols['status']);
 
     $imageCol = [
-        'image' => ['title'=>'Image','width'=>'200px','class'=>'image no-sort']
+        'image' => ['title'=>__('plugin:post-type::default.image'),'width'=>'200px','class'=>'image no-sort']
     ];
 
     insert_after_array_key($cols, 'quick-edit', $imageCol);
@@ -60,8 +60,8 @@ function post_type_image_row($colsId, $post)
 function post_type_tag_category_column($cols, $postType)
 {
     $taxonomyCol = [
-        'category' => ['title'=>'Category','width'=>'150px'],
-        'tag' => ['title'=>'tag','width'=>'150px']
+        'category' => ['title'=>__('plugin:post-type::default.category'),'width'=>'150px'],
+        'tag' => ['title'=>__('plugin:post-type::default.tag'),'width'=>'150px']
     ];
 
     insert_after_array_key($cols, 'title', $taxonomyCol);
