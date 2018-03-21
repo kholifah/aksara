@@ -68,6 +68,7 @@ class Module
             $viewFolder = $module['modulePath'].'/resources/views' ;
             $languageFolder = $module['modulePath'].'/resources/lang' ;
             $migrationFolder = $module['modulePath'].'/migrations' ;
+            $seedFolder = $module['modulePath'].'/seeds' ;
 
             // Check if dependency not met
             $moduleDescription = \Config::get('aksara.modules', []);
@@ -133,6 +134,15 @@ class Module
                 if (is_dir($migrationFolder)) {
                     app()->afterResolving('migrator', function ($migrator) use ($migrationFolder) {
                         $migrator->path($migrationFolder);
+                    });
+                }
+
+
+                // register seed
+                // @TODO Seeding
+                if (is_dir($seedFolder)) {
+                    app()->afterResolving('seeder', function ($seeder) use ($seedFolder) {
+                        $seeder->path($seedFolder);
                     });
                 }
 
@@ -353,6 +363,16 @@ class Module
             if (is_dir($migrationFolder)) {
                 $registeredModules[$type][$moduleName]['migrationPath'] =
                     $migrationFolder;
+            }
+        }
+
+        //use config in description.php to determine seedPath
+        if (!isset($registeredModules[$type][$moduleName]['seedPath'])) {
+            //if not configured, use default in subdir /seed
+            $seedFolder = $modulePath.'/seeds' ;
+            if (is_dir($seedFolder)) {
+                $registeredModules[$type][$moduleName]['seedPath'] =
+                    $seedFolder;
             }
         }
 

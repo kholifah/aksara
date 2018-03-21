@@ -18,12 +18,18 @@ class Module
         $type,
         $key,
         $path,
-        $name
+        $name,
+        $description = null,
+        $dependencies = [],
+        $migration = null
     ){
         $this->type = $type;
         $this->key = $key;
         $this->path = $path;
         $this->name = $name;
+        $this->description = $description;
+        $this->dependencies = $dependencies;
+        $this->migration = $migration;
     }
 
     public static function fromConfigArray($modulesArray)

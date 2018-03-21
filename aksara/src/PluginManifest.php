@@ -8,7 +8,6 @@ class PluginManifest
     private $dependencies;
     private $providers;
     private $aliases;
-    private $helpers;
     private $active;
 
     public function __construct(
@@ -17,7 +16,6 @@ class PluginManifest
         array $dependencies = [],
         array $providers = [],
         array $aliases = [],
-        array $helpers = [],
         bool $active = false
     ){
         $this->name = $name;
@@ -25,7 +23,6 @@ class PluginManifest
         $this->dependencies = $dependencies;
         $this->providers = $providers;
         $this->aliases = $aliases;
-        $this->helpers = $helpers;
         $this->active = $active;
     }
 
@@ -37,11 +34,6 @@ class PluginManifest
     public function setActive(bool $active)
     {
         $this->active = $active;
-    }
-
-    public function getHelpers()
-    {
-        return $this->helpers;
     }
 
     public function getName()
@@ -77,7 +69,6 @@ class PluginManifest
             isset($array['dependencies']) ? $array['dependencies'] : [],
             isset($array['providers']) ? $array['providers'] : [],
             isset($array['aliases']) ? $array['aliases'] : [],
-            isset($array['helpers']) ? $array['helpers'] : [],
             $active
         );
     }
@@ -90,7 +81,6 @@ class PluginManifest
                 'dependencies' => $this->dependencies,
                 'providers' => $this->providers,
                 'aliases' => $this->aliases,
-                'helpers' => $this->helpers,
             ]
         ];
     }

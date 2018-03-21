@@ -9,6 +9,9 @@ class ModuleTest extends PHPUnit\Framework\TestCase
     private $key;
     private $path;
     private $name;
+    private $description;
+    private $dependencies;
+    private $migration;
 
     protected function setup()
     {
@@ -18,6 +21,10 @@ class ModuleTest extends PHPUnit\Framework\TestCase
         $this->key = $faker->slug;
         $this->path = implode('/', $faker->words(3));
         $this->name = $faker->name;
+
+        $this->description = $faker->sentence;
+        $this->dependencies = $faker->words;
+        $this->migration = $faker->url;
     }
 
     /** @test */
@@ -27,10 +34,17 @@ class ModuleTest extends PHPUnit\Framework\TestCase
             $this->type,
             $this->key,
             $this->path,
-            $this->name
+            $this->name,
+            $this->description,
+            $this->dependencies,
+            $this->migration
         );
 
         $this->assertObject($obj);
+
+        $this->assertEquals($this->description, $obj->getDescription());
+        $this->assertEquals($this->dependencies, $obj->getDependencies());
+        $this->assertEquals($this->migration, $obj->getMigration());
     }
 
     private function assertObject($obj)

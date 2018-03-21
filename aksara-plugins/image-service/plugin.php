@@ -15,9 +15,4 @@ return [
         'ImageService' => 'Plugins\\ImageService\\Facades\\ImageService',
         'ImageConfig' => 'Plugins\\ImageService\\Facades\\ImageConfig',
     ],
-
-    //helpers file
-    'helpers' => [
-        'helper.php',
-    ],
 ];
