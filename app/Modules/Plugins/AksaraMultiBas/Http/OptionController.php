@@ -32,7 +32,7 @@ class OptionController extends Controller
 
         set_options('multibas_countries', $data['countries']);
 
-        admin_notice('success', 'Data berhasil diubah.');
+        admin_notice('success', __('plugin:aksara-multi-bas::message.success-message'));
         return redirect()->route('aksara-multibas-option');
     }
 }
