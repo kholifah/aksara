@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "7a552de4cc516453af98d5b366a35593",
+    "content-hash": "2fd3f125e2a44bcaf02c69e443b94313",
     "packages": [
         {
             "name": "bnbwebexpertise/laravel-merge-plugin",
@@ -2610,6 +2610,44 @@
             ],
             "description": "Composer plugin to merge multiple composer.json files",
             "time": "2017-04-25T02:31:25+00:00"
+        },
+        {
+            "name": "zerobit/support",
+            "version": "v0.1.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/zerobitid/php-support.git",
+                "reference": "23097047e3ea5adb82e7e47dabbfe9aa048dcc41"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/zerobitid/php-support/zipball/23097047e3ea5adb82e7e47dabbfe9aa048dcc41",
+                "reference": "23097047e3ea5adb82e7e47dabbfe9aa048dcc41",
+                "shasum": ""
+            },
+            "require-dev": {
+                "fzaninotto/faker": "~1.4",
+                "mockery/mockery": "~1.0",
+                "phpunit/phpunit": "~6.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Zerobit\\Support\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Arseto Nugroho",
+                    "email": "satriyo.796@gmail.com"
+                }
+            ],
+            "description": "Collection of supportive PHP libraries",
+            "time": "2018-03-21T07:56:11+00:00"
         }
     ],
     "packages-dev": [

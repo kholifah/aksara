@@ -47,6 +47,11 @@ class ModulePath
         return $this->resource().DIRECTORY_SEPARATOR.'lang';
     }
 
+    public function asset()
+    {
+        return $this->root().DIRECTORY_SEPARATOR.'assets';
+    }
+
     public function toArray()
     {
         return [
