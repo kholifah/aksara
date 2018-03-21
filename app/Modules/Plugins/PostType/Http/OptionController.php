@@ -25,7 +25,7 @@ class OptionController extends Controller
 
         set_options('website_options', $data['options']);
 
-        admin_notice('success', 'Data berhasil diubah.');
+        admin_notice('success', __('plugin:post-type::message.add-success-message'));
         return redirect()->route('aksara-post-type-option');
     }
 

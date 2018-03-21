@@ -90,8 +90,8 @@ class Post
         $menu->addMenuPage($args['label']['name'], $args['label']['name'], 'admin.'.$args['route'].'.index', $args['priority'], $args['icon'], $args['capability']);
 
         // Add For Index and Add New
-        $menu->addSubMenuPage('admin.'.$args['route'].'.index', "Semua ".$args['label']['name'], "Semua ".$args['label']['name'], 'admin.'.$args['route'].'.index');
-        $menu->addSubMenuPage('admin.'.$args['route'].'.index', "Tambah ".$args['label']['name'], "Tambah ".$args['label']['name'], 'admin.'.$args['route'].'.create');
+        $menu->addSubMenuPage('admin.'.$args['route'].'.index', __('plugin:post-type::default.all-post-type', ['post-type' => $args['label']['name']]), __('plugin:post-type::default.all-post-type', ['post-type' => $args['label']['name']]), 'admin.'.$args['route'].'.index');
+        $menu->addSubMenuPage('admin.'.$args['route'].'.index', __('plugin:post-type::default.add-post-type', ['post-type' => $args['label']['name']]), __('plugin:post-type::default.add-post-type', ['post-type' => $args['label']['name']]), 'admin.'.$args['route'].'.create');
     }
 
     public function parseDefaultArgs($postType, $args)

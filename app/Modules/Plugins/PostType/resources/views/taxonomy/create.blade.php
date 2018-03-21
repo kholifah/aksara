@@ -2,17 +2,17 @@
 
 @section('breadcrumb')
 <ol class="breadcrumb">
-    <li class="breadcrumb-item"><a href="{{ route('admin.root') }}">Dashboard</a></li>
+    <li class="breadcrumb-item"><a href="{{ route('admin.root') }}">{{__('plugin:post-type::default.dashboard') }}</a></li>
     <li class="breadcrumb-item"><a href="{{ route('admin.'.get_current_post_type_args('route').'.index') }}">{{ get_current_post_type_args('label.name') }}</a></li>
     <li class="breadcrumb-item"><a href="{{ route('admin.'.get_current_post_type_args('route').'.'.get_current_taxonomy_args('slug').'.index') }}">{{ get_current_taxonomy_args('label.name') }}</a></li>
-    <li class="breadcrumb-item active">Tambah {{ get_current_taxonomy_args('label.name') }}</li>
+    <li class="breadcrumb-item active">{{ __('plugin:post-type::default.add-taxonomy', ['taxonomy' => get_current_taxonomy_args('label.name') ]) }}</li>
 </ol>
 @endsection
 
 
 @section('content')
 <div class="content__head">
-    <h2 class="page-title">Tambah {{ get_current_taxonomy_args('label.name') }}</h2>
+    <h2 class="page-title">{{ __('plugin:post-type::default.add-taxonomy', ['taxonomy' => get_current_taxonomy_args('label.name') ]) }}</h2>
 </div>
 <!-- /.content__head -->
 
@@ -21,7 +21,7 @@
         <div class="col-lg-6 col-md-8">
             <div class="card-box">
                 <div class="card-box__header">
-                    <h2>Tambah {{ get_current_taxonomy_args('label.name') }}</h2>
+                    <h2>{{ __('plugin:post-type::default.add-taxonomy', ['taxonomy' => get_current_taxonomy_args('label.name') ]) }}</h2>
                 </div>
                 <div class="card-box__body">
                     {!! Form::open(['route' => 'admin.'.get_current_post_type_args('route').'.'.get_current_taxonomy().'.store', 'role' => 'form', 'class' => 'form-horizontal'])!!}
