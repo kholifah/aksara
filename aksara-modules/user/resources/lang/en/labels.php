@@ -1,0 +1,30 @@
+<?php
+
+return [
+    'all_user' => 'All Users',
+    'user_list' => 'User List',
+    'add_user' => 'Add User',
+    'edit_user' => 'Edit User',
+    'edit_profile' => 'Edit Profile',
+    'search' => 'Search',
+    'user_name' => 'Name',
+    'email' => 'Email',
+    'active' => 'Active',
+    'inactive' => 'Non Active',
+    'edit' => 'Edit',
+    'delete' => 'Delete',
+    'create' => 'Create',
+    'update' => 'Update',
+    'bulk_action' => 'Bulk Action',
+    'apply' => 'Apply',
+    'password' => 'Password',
+    'password_confirmation' => 'Confirm Password',
+    'cancel' => 'Cancel',
+
+    'role_list' => 'Role List',
+    'all_roles' => 'All Roles',
+    'add_role' => 'Add Role',
+    'edit_role' => 'Edit Role',
+    'update_role' => 'Update Role',
+    'role_name' => 'Role Name',
+];

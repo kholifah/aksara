@@ -1,6 +1,7 @@
 <?php
 namespace App\Aksara\Core\ModuleManager\Http;
 
+use Aksara\MigrationInfo;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Aksara\Core\Module;
@@ -10,7 +11,7 @@ use Aksara\ModuleStatus\ModuleStatus;
 use Aksara\ModuleDependency\PluginRequiredBy;
 use Aksara\ModuleKey;
 use Aksara\UpdateModuleStatus\UpdateModuleStatusHandler;
-use Aksara\PluginRegistry\PluginRegistryHandler;
+use Aksara\ModuleRegistry\ModuleRegistryHandler;
 
 class ModuleManagerController extends Controller
 {
@@ -18,20 +19,20 @@ class ModuleManagerController extends Controller
     private $moduleStatus;
     private $pluginRequiredBy;
     private $updateModuleStatus;
-    private $pluginRegistry;
+    private $moduleRegistry;
 
     public function __construct(
         Module $module,
         ModuleStatus $moduleStatus,
         PluginRequiredBy $pluginRequiredBy,
         UpdateModuleStatusHandler $updateModuleStatus,
-        PluginRegistryHandler $pluginRegistry
+        ModuleRegistryHandler $moduleRegistry
     ){
         $this->module = $module;
         $this->moduleStatus = $moduleStatus;
         $this->pluginRequiredBy = $pluginRequiredBy;
         $this->updateModuleStatus = $updateModuleStatus;
-        $this->pluginRegistry = $pluginRegistry;
+        $this->moduleRegistry = $moduleRegistry;
     }
 
     private function getModulesMerged()
@@ -46,7 +47,7 @@ class ModuleManagerController extends Controller
         }
 
         //Plugins V2
-        $plugins = $this->pluginRegistry->getRegisteredPlugins();
+        $plugins = $this->moduleRegistry->getRegisteredModules();
         $pluginsArray = array();
 
         foreach ($plugins as $plugin) {
@@ -59,6 +60,15 @@ class ModuleManagerController extends Controller
         return $modules;
     }
 
+    private function getModule($type, $name)
+    {
+        $modules = $this->getModulesMerged();
+        if (!isset($modules[$type][$name])) {
+            throw new NotFoundHttpException('Module not found');
+        }
+        return $modules[$type][$name];
+    }
+
     public function index()
     {
         $module = $this->module;
@@ -66,7 +76,7 @@ class ModuleManagerController extends Controller
 
         $pluginRequiredBy = $this->pluginRequiredBy;
 
-        $plugins = $this->pluginRegistry->getRegisteredPlugins();
+        $plugins = $this->moduleRegistry->getRegisteredModules();
 
         $param = compact('module', 'pluginRequiredBy', 'plugins');
 
@@ -76,10 +86,7 @@ class ModuleManagerController extends Controller
     public function activationCheck($type, $slug)
     {
         $modules = $this->getModulesMerged();
-
-        if (!isset($modules[$type][$slug])) {
-            throw new NotFoundHttpException('Module not found');
-        }
+        $module = $this->getModule($type, $slug);
 
         //TODO: refactor to separate module dependency resolver
         $dependenciesInfo = $this->getDependenciesRecursive(
@@ -87,7 +94,9 @@ class ModuleManagerController extends Controller
         );
 
         //TODO: refactor to separate migration resolver
-        $migrations = $this->getPendingMigrations($type, $slug, $dependenciesInfo);
+        $migrations = $this->getPendingMigrations(
+            $type, $slug, $dependenciesInfo, $module['version']
+        );
 
         $data = new ModuleActivationCheckInfo(
             $type,
@@ -99,11 +108,13 @@ class ModuleManagerController extends Controller
         return view('core:module-manager::activation-check', $data->toArray());
     }
 
-    private function getPendingMigrations($type, $slug, $dependenciesInfo)
-    {
+    private function getPendingMigrations(
+        $type, $slug, $dependenciesInfo, $version = 1
+    ){
         $selfMigrations = [];
         if (!migration_complete($type, $slug)) {
-            $selfMigrations = migration_path($type, $slug);
+            $paths = migration_path($type, $slug);
+            $selfMigrations = MigrationInfo::bulk($type, $slug, $paths, $version);
         }
         $depsMigrations = [];
 
@@ -114,14 +125,25 @@ class ModuleManagerController extends Controller
             )){
                 continue;
             }
-            $depsMigration = migration_path(
+            $dep = $this->getModule(
                 $dependencyInfo->getType(),
                 $dependencyInfo->getModuleName()
+            );
+            $paths = migration_path(
+                $dependencyInfo->getType(),
+                $dependencyInfo->getModuleName()
+            );
+            $depsMigration = MigrationInfo::bulk(
+                $dependencyInfo->getType(),
+                $dependencyInfo->getModuleName(),
+                $paths,
+                $dep['version']
             );
             $depsMigrations = array_merge($depsMigrations, $depsMigration);
         }
 
-        return array_merge($selfMigrations, $depsMigrations);
+        $migrations = array_unique(array_merge($selfMigrations, $depsMigrations));
+        return $migrations;
     }
 
     private function getDependenciesRecursive($modules, $type, $slug)
@@ -176,6 +198,8 @@ class ModuleManagerController extends Controller
                 throw new NotFoundHttpException('Module not found');
             }
 
+            $module = $modules[$type][$slug];
+
             $dependenciesInfo = $this->getDependenciesRecursive(
                 $modules, $type, $slug);
 
@@ -189,13 +213,13 @@ class ModuleManagerController extends Controller
             }
 
             $pendingMigrations = $this->getPendingMigrations(
-                $type, $slug, $dependenciesInfo);
+                $type, $slug, $dependenciesInfo, $module['version']
+            );
 
             if (count($pendingMigrations) > 0) {
                 throw new \Exception('Pending migration found');
             }
 
-            $module = $modules[$type][$slug];
             $moduleInfo = $this->moduleStatus->getStatus($type, $slug);
 
             //TODO refactor to combine with unregistered detection above
@@ -233,7 +257,7 @@ class ModuleManagerController extends Controller
                     }
                 } else {
                     if ($itemToBeActivated->getType() == 'plugin') {
-                        $this->pluginRegistry->activatePlugin(
+                        $this->moduleRegistry->activateModule(
                             $itemToBeActivated->getModuleName());
                     }
                 }
@@ -269,7 +293,7 @@ class ModuleManagerController extends Controller
                 $this->updateModuleStatus->deactivate(new ModuleKey($type, $slug));
             } else {
                 if (strtolower($type) == 'plugin') {
-                    $this->pluginRegistry->deactivatePlugin($slug);
+                    $this->moduleRegistry->deactivateModule($slug);
                 }
             }
             session()->put('deactivating_module', new ModuleKey($type, $slug));

@@ -5,6 +5,16 @@ trait MigrationMaker
 {
     protected function executeMakeMigration($path)
     {
+        if (!is_dir($path)) {
+            if (!file_exists($path)) {
+                $this->fileSystem->makeDirectory($path, 0755, true);
+            } else {
+                $this->error("Nama direktori $path sudah terpakai");
+            }
+        }
+
+        $path = str_replace(base_path(), '', $path);
+
         $create = $this->option('create');
         $table = $this->option('table');
 

@@ -46,12 +46,12 @@
         },
         "merge-plugin": {
             "include": [
-                "aksara-plugins/*/composer.json"
+                "aksara-modules/*/composer.json"
             ],
             "recurse": true,
             "replace": false,
-            "ignore-duplicates": false,
-            "merge-dev": true,
+            "ignore-duplicates": true,
+            "merge-dev": false,
             "merge-extra": false,
             "merge-extra-deep": false,
             "merge-scripts": false

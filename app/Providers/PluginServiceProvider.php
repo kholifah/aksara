@@ -4,9 +4,6 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Foundation\AliasLoader;
-use Illuminate\Filesystem\Filesystem;
-use Aksara\Plugin;
-use Aksara\PluginRegistry\PluginRegistryHandler;
 
 class PluginServiceProvider extends ServiceProvider
 {
@@ -17,10 +14,6 @@ class PluginServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        /**
-         * Nothing to boot
-         * Plugins should boot their services by themselves
-         */
     }
 
     /**
@@ -34,20 +27,43 @@ class PluginServiceProvider extends ServiceProvider
          * plugin activation V2
          */
 
-        $pluginRegistry = app(PluginRegistryHandler::class);
-        $activePlugins = $pluginRegistry->getActivePlugins();
+        $modules = \ModuleRegistry::getActiveModules();
 
-        foreach ($activePlugins as $plugin) {
+        foreach ($modules as $module) {
 
             //register providers
-            $providers = $plugin->getProviders();
+            $providers = $module->getProviders();
             foreach ($providers as $provider) {
                 $this->app->register($provider);
             }
 
             //register aliases
-            $aliases = $plugin->getAliases();
+            $aliases = $module->getAliases();
             AliasLoader::getInstance($aliases)->register();
+
+            //register views
+            if (is_dir($module->getModulePath()->view())) {
+                view()->addNamespace($module->getName(),
+                    $module->getModulePath()->view());
+            }
+
+            //register language namespace
+            if (is_dir($module->getModulePath()->lang())) {
+                app()->afterResolving('translator', function ($translator) use (
+                    $module) {
+                    $translator->addNamespace($module->getName(),
+                        $module->getModulePath()->lang()
+                    );
+                });
+            }
+
+            //register migrations
+            if (is_dir($module->getModulePath()->migration())) {
+                app()->afterResolving('migrator', function ($migrator) use (
+                    $module) {
+                    $migrator->path($module->getModulePath()->migration());
+                });
+            }
         }
     }
 }

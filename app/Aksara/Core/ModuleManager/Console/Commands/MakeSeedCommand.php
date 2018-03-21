@@ -6,10 +6,13 @@ use App\DripEmailer;
 use Illuminate\Console\Command;
 use Illuminate\Config\Repository as Config;
 use Illuminate\FileSystem\FileSystem;
+use Illuminate\Console\GeneratorCommand;
+use Illuminate\Support\Composer;
 
-class MakeSeedCommand extends Command
+class MakeSeedCommand extends GeneratorCommand
 {
     use SeedMaker;
+    use PluginGetter;
     /**
      * The name and signature of the console command.
      *
@@ -26,8 +29,10 @@ class MakeSeedCommand extends Command
      */
     protected $description = 'Generate file seeder di dalam module';
 
-    private $fileSystem;
     private $config;
+    private $composer;
+    private $version;
+    private $moduleV2;
 
     /**
      * Create a new command instance.
@@ -36,11 +41,12 @@ class MakeSeedCommand extends Command
      */
     public function __construct(
         FileSystem $fileSystem,
-        Config $config
+        Config $config,
+        Composer $composer
     ){
-        parent::__construct();
-        $this->fileSystem = $fileSystem;
+        parent::__construct($fileSystem);
         $this->config = $config;
+        $this->composer = $composer;
     }
 
     /**
@@ -53,53 +59,90 @@ class MakeSeedCommand extends Command
         $typeName = $this->argument('type-name');
         $typeArray = explode('/', $typeName);
 
-        if (count($typeArray) != 2) {
-            $this->error('Format type-name tidak valid, gunakan format tipe/nama-modul');
+        switch (count($typeArray)) {
+        case 1: $this->makeSeedV2($typeArray); break;
+        case 2: $this->makeSeedV1($typeArray); break;
+        default: $this->error('Format type-name tidak valid,
+                gunakan format tipe/nama-modul (v1) atau nama-modul (v2'); break;
         }
-
-        $this->makeModuleSeed($typeArray);
     }
 
-    private function makeModuleSeed($typeArray)
+    private function makeSeedV2($typeArray)
     {
+        $this->version = 2;
+        $moduleName = $typeArray[0];
+
+        $this->moduleV2 = $this->getPluginV2($moduleName);
+
+        parent::handle();
+        $this->composer->dumpAutoloads();
+    }
+
+    /**
+     * Get the destination class path.
+     *
+     * @param  string  $name
+     * @return string
+     */
+    protected function getPath($name)
+    {
+        if ($this->version == 2 && !is_null($this->moduleV2)) {
+            return $this->moduleV2->getModulePath()->seed()."/$name.php";
+        }
+        return $this->laravel->databasePath().'/seeds/'.$name.'.php';
+    }
+
+    /**
+     * Parse the class name and format according to the root namespace.
+     *
+     * @param  string  $name
+     * @return string
+     */
+    protected function qualifyClass($name)
+    {
+        return $name;
+    }
+
+    /**
+     * Get the stub file for the generator.
+     *
+     * @return string
+     */
+    protected function getStub()
+    {
+        return __DIR__.'/stubs/seeder.stub';
+    }
+
+    private function makeSeedV1($typeArray)
+    {
+        $this->version = 1;
+
         $type = $typeArray[0];
         $moduleName = $typeArray[1];
 
-        $modules = $this->config->get('aksara.modules');
-
-        if (!isset($modules[$type])) {
-            $this->error('Jenis module '
-                . $type
-                .' tidak ada, gunakan [core,plugin,admin,front-end]');
-        }
-
-        if (!isset($modules[$type][$moduleName])) {
-            $this->error('Module dengan nama '.$moduleName.' tidak ada');
-        }
-
-        $module = $modules[$type][$moduleName];
+        $module = $this->getPluginV1($type, $moduleName);
 
         if (!isset($module['seedPath'])) {
-            $this->info("Module [$type] $moduleName tidak memiliki direktori 'seeds'.");
+            $this->info(
+                "Module [$type] $moduleName tidak memiliki direktori 'seeds'.");
             return false;
         }
 
-        $path = str_replace(base_path(), "", $module['seedPath']);
+        $path = $module['seedPath'];
 
         $this->executeMakeSeed($path);
 
-        $this->addNamespace($path, $module['seedPath']);
+        $this->addNamespace($path);
     }
 
-    public function addNamespace($path, $seedPath){
-        $url_file = public_path($path.'/'.$this->argument('name').'.php');
-        $url_file = str_replace('public/', '', $url_file);
+    public function addNamespace($path){
+        $url_file = $path.'/'.$this->argument('name').'.php';
         $lines = file($url_file);
 
-        $namespace = str_replace(base_path(), "", $seedPath);
+        $namespace = str_replace(base_path(), "", $path);
         $namespace = str_replace('/', '\\', $namespace);
         $namespace = substr_replace($namespace, 'A', 0, 2);
-        
+
         $current = '';
         if($lines){
             $lines[1] = "namespace ".$namespace.";\n\n";
@@ -109,9 +152,9 @@ class MakeSeedCommand extends Command
                 $current .= $data;
             }
         }
-                
+
         file_put_contents($url_file, $current);
-        
+
     }
 
 

@@ -21,17 +21,21 @@
       </p>
       <ul>
         @foreach($dependencies as $dependency)
-          <li>{{ $dependency->getModuleName() }} ({{ !$dependency->getIsRegistered() ? 'Unregistered' : ($dependency->getIsActive() ? 'Active' : 'Inactive') }}) </li>
+          <li>{{ $dependency['module_name'] }} ({{ !$dependency['is_registered'] ? 'Unregistered' : ($dependency['is_active'] ? 'Active' : 'Inactive') }}) </li>
         @endforeach
       </ul>
     </div>
     <div class="col-md-6">
       <div class="row">
         <h3>Pending Migrations</h3>
-        <p>Please run the following migration(s)</p>
+        <p>Following migration(s) are pending:</p>
+          @foreach($migration_paths as $path)
+            <br><code>{{ $path }}</code>
+          @endforeach
+        <p>Please run the following migration command(s)</p>
         <!-- migration pending -->
           @foreach($migrations as $migration)
-            <br><code>php artisan migrate --path={{ str_replace(base_path() . '/', '', $migration) }}</code>
+            <br><code>{{ $migration }}</code>
           @endforeach
         </ul>
       </div>

@@ -25,6 +25,11 @@ class AppServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->bind(
+            \Aksara\Application\ApplicationInterface::class,
+            \Aksara\Application\Laravel\LaravelApplication::class
+        );
+
+        $this->app->bind(
             \Aksara\Repository\ConfigRepository::class,
             \App\Store\LaravelConfig::class
         );
@@ -65,8 +70,23 @@ class AppServiceProvider extends ServiceProvider
         );
 
         $this->app->bind(
-            \Aksara\PluginRegistry\PluginRegistryHandler::class,
-            \Aksara\PluginRegistry\Interactor::class
+            \Aksara\ModuleRegistry\ModuleRegistryHandler::class,
+            \Aksara\ModuleRegistry\Interactor::class
+        );
+
+        $this->app->bind(
+            'module_registry',
+            \Aksara\ModuleRegistry\ModuleRegistryHandler::class
+        );
+
+        $this->app->bind(
+            'support_strings',
+            \Aksara\Support\Strings::class
+        );
+
+        $this->app->bind(
+            'support_arrays',
+            \Aksara\Support\Arrays::class
         );
     }
 }

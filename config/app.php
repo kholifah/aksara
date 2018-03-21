@@ -233,6 +233,9 @@ return [
         // 'Image'     => Intervention\Image\Facades\Image::class,
         // 'Surpass'   => Sukohi\Surpass\Facades\Surpass::class,
         'Eventy'    => App\Aksara\Core\Eventy\Facades\Events::class,
+        'ModuleRegistry' => Aksara\Facades\ModuleRegistryFacade::class,
+        'Strings' => Aksara\Facades\StringsFacade::class,
+        'Arrays' => Aksara\Facades\ArraysFacade::class,
     ],
 
 ];

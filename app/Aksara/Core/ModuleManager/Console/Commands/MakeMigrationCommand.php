@@ -10,6 +10,7 @@ use Illuminate\FileSystem\FileSystem;
 class MakeMigrationCommand extends Command
 {
     use MigrationMaker;
+    use PluginGetter;
     /**
      * The name and signature of the console command.
      *
@@ -55,39 +56,45 @@ class MakeMigrationCommand extends Command
         $typeName = $this->argument('type-name');
         $typeArray = explode('/', $typeName);
 
-        if (count($typeArray) != 2) {
-            $this->error('Format type-name tidak valid,
-                gunakan format tipe/nama-modul');
+        switch (count($typeArray)) {
+        case 1: $this->makeMigrationV2($typeArray); break;
+        case 2: $this->makeMigrationV1($typeArray); break;
+        default: $this->error('Format type-name tidak valid,
+                gunakan format tipe/nama-modul (v1) atau nama-modul (v2'); break;
         }
-
-        $this->makeModuleMigration($typeArray);
     }
 
-    private function makeModuleMigration($typeArray)
+    private function makeMigrationV2($typeArray)
+    {
+        $moduleName = $typeArray[0];
+
+        $path = '';
+
+        $pluginV2 = $this->getPluginV2($moduleName);
+        if (!$pluginV2) {
+            throw new \Exception("$moduleName tidak ditemukan dalam module V2");
+        }
+        $path = $pluginV2->getModulePath()->migration();
+
+        $this->executeMakeMigration($path);
+    }
+
+    private function makeMigrationV1($typeArray)
     {
         $type = $typeArray[0];
         $moduleName = $typeArray[1];
 
-        $modules = $this->config->get('aksara.modules');
+        $module = $this->getPluginV1($type, $moduleName);
 
-        if (!isset($modules[$type])) {
-            $this->error('Jenis module '
-                . $type
-                .' tidak ada, gunakan [core,plugin,admin,front-end]');
+        if (!$module) {
+            return false;
         }
-
-        if (!isset($modules[$type][$moduleName])) {
-            $this->error('Module dengan nama '.$moduleName.' tidak ada');
-        }
-
-        $module = $modules[$type][$moduleName];
-
         if (!isset($module['migrationPath'])) {
             $this->info("Module [$type] $moduleName tidak memiliki direktori 'migrations'.");
             return false;
         }
 
-        $path = str_replace(base_path(), "", $module['migrationPath']);
+        $path = $module['migrationPath'];
 
         $this->executeMakeMigration($path);
     }

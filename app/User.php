@@ -34,19 +34,19 @@ class User extends Authenticatable
             if (isset($data['password']) || isset($data['password_confirmation']))
                 $rules = [
                     'name' => 'required|string',
-                    'email' => 'required|email|unique:users' . ($this->id ? ",id,$this->id" : ''),               
+                    'email' => 'required|email|unique:users' . ($this->id ? ",id,$this->id" : ''),
                     'password' => 'required|confirmed',
                     'password_confirmation' => 'required'
                 ];
             else
                 $rules = [
                     'name' => 'required|string',
-                    'email' => 'required|email|unique:users' . ($this->id ? ",id,$this->id" : ''),                    
+                    'email' => 'required|email|unique:users' . ($this->id ? ",id,$this->id" : ''),
                 ];
         } else {
             $rules = [
                 'name' => 'required|string',
-                'email' => 'required|unique:users|email',            
+                'email' => 'required|unique:users|email',
                 'password' => 'required|confirmed',
                 'password_confirmation' => 'required'
             ];
