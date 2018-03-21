@@ -29,13 +29,13 @@
 \Eventy::addAction('aksara.init', function () {
     register_menu(
       ['primary' => [
-                    'label' => 'Primary'
+                    'label' => __('front-end:aksara::default.primary')
                     ]]
                   );
 
     register_menu(
       ['footer' => [
-                    'label' => 'Footer'
+                    'label' => __('front-end:aksara::default.footer')
                   ]]
                 );
     // register_image_size('thumbnail',500,500,true);
