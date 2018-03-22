@@ -15,7 +15,7 @@ class MenuController extends Controller
         aksara_admin_enqueue_style(url("assets/modules/Plugins/Menu/assets/menu.css"));
 
         if (sizeof($menus) == 0) {
-            return view('menu::empty');
+            return view('plugin:menu::empty');
         }
 
         $menu_active_id = key($menus);
@@ -40,7 +40,7 @@ class MenuController extends Controller
             }
 
             set_options('aksara.menu.menus', $data['menu_data']);
-            admin_notice('success', 'Menu berhasil di-update.');
+            admin_notice('success', __('plugin:menu::message.menu-updated-message'));
         }
         return redirect(route('aksara-menu'). '#');
     }

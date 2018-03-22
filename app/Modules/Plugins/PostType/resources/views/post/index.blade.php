@@ -2,16 +2,16 @@
 
 @section('breadcrumb')
 <ol class="breadcrumb">
-    <li class="breadcrumb-item"><a href="{{ route('admin.root') }}">Dashboard</a></li>
-    <li class="breadcrumb-item active">Semua {{ get_current_post_type_args('label.name') }}</li>
+    <li class="breadcrumb-item"><a href="{{ route('admin.root') }}">{{__('plugin:post-type::default.dashboard') }}</a></li>
+    <li class="breadcrumb-item active">{{ __('plugin:post-type::default.all-post-type', ['post-type' => get_current_post_type_args('label.name')]) }}</li>
 </ol>
 @endsection
 
 @section('content')
 <div class="content__head">
-    <h2 class="page-title">Semua {{ get_current_post_type_args('label.name') }}
+    <h2 class="page-title">{{ __('plugin:post-type::default.all-post-type', ['post-type' => get_current_post_type_args('label.name')]) }}
         @if( array_search_key_recursive('admin.'.get_current_post_type_args('slug').'.create',\Config::get('aksara.admin-menu.admin-sub-menu'),false) )
-        <a href="{{ route('admin.'.get_current_post_type_args('slug').'.create') }}" class="page-title-action">Tambah {{ get_current_post_type_args('label.name') }}</a>
+        <a href="{{ route('admin.'.get_current_post_type_args('slug').'.create') }}" class="page-title-action">{{ __('plugin:post-type::default.add-post-type', ['post-type' => get_current_post_type_args('label.name')]) }}</a>
         @endif
     </h2>
 </div>
@@ -19,7 +19,7 @@
 <div class="content__body">
     <ul class="trash-sistem">
         <li>
-            <a href="{{ route('admin.'.get_current_post_type_args('slug').'.index') }}" <?php if ($viewData['post_status'] == '') echo 'class="current"' ?> >All</a> |
+            <a href="{{ route('admin.'.get_current_post_type_args('slug').'.index') }}" <?php if ($viewData['post_status'] == '') echo 'class="current"' ?> >{{__('plugin:post-type::default.all') }}</a> |
         </li>
         <li>
             <a href="{{ route('admin.'.get_current_post_type_args('slug').'.index') }}?post_status=publish" <?php if ($viewData['post_status'] == 'publish') echo 'class="current"' ?>>{{ status_post('publish',get_current_post_type()) }}</a> |
@@ -40,15 +40,15 @@
 
                 <select name="apply" class="form-control">
                     @if($viewData['post_status'] == 'trash')
-                        <option disabled selected>Bulk Action</option>
-                        <option value='restore'>Restore</option>
-                        <option value='destroy'>Delete Permanently</option>
+                        <option disabled selected>{{__('plugin:post-type::default.bulk-action') }}</option>
+                        <option value='restore'>{{__('plugin:post-type::default.restore') }}</option>
+                        <option value='destroy'>{{__('plugin:post-type::default.delete-permanently') }}</option>
                     @else
-                        <option disabled selected>Bulk Action</option>
-                        <option value='trash'>Move to Trash</option>
+                        <option disabled selected>{{__('plugin:post-type::default.bulk-action') }}</option>
+                        <option value='trash'>{{__('plugin:post-type::default.move-trash') }}</option>
                     @endif
                 </select>
-                <input name="bapply" type="submit" class="btn btn-secondary" value="Apply">
+                <input name="bapply" type="submit" class="btn btn-secondary" value="{{__('plugin:post-type::default.apply') }}">
 
         </div>
         <div class="alignleft action filter-box">
@@ -58,18 +58,18 @@
                 $terms = $terms->pluck('name','id');
                 $terms = $terms->toArray();
 
-                $termSelect = [ 0=>'All '.array_get($taxonomy,'label.name') ] ;
+                $termSelect = [ 0 => __('plugin:post-type::default.all-taxonomy', ['taxonomy' => array_get($taxonomy,'label.name')])] ;
                 $termSelect = $termSelect + $terms;
             ?>
             {!! Form::select('taxonomy['.array_get($taxonomy,'id').']', $termSelect, @$viewData['taxonomy'][array_get($taxonomy,'id')], array('class' => 'form-control')); !!}
             @endforeach
-            <input name="bfilter" type="submit" class="btn btn-secondary" value="Filter">
+            <input name="bfilter" type="submit" class="btn btn-secondary" value="{{__('plugin:post-type::default.filter') }}">
         </div>
         <div class="alignleft search-box">
             <input name="search" value="{{ $viewData['search'] }}" type="text" class="form-control">
-            <input name="bsearch" type="submit" class="btn btn-secondary" value="Search">
+            <input name="bsearch" type="submit" class="btn btn-secondary" value="{{__('plugin:post-type::default.search') }}">
         </div>
-        <div class="tablenav-pages"><span class="displaying-num">{{ $viewData['total'] }} @if($viewData['total'] > 1 )items @else item @endif</span>
+        <div class="tablenav-pages"><span class="displaying-num">{{ $viewData['total'] }} @if($viewData['total'] > 1 ){{__('plugin:post-type::default.items') }} @else {{__('plugin:post-type::default.item') }} @endif</span>
             {!! $posts->links('admin:aksara::partials.pagination') !!}
         </div>
     </div>
@@ -107,22 +107,22 @@
         <div class="alignleft action bulk-action">
             <select name="apply" class="form-control">
                 @if($viewData['post_status'] == 'trash')
-                    <option disabled selected>Bulk Action</option>
-                    <option value='restore'>Restore</option>
-                    <option value='destroy'>Delete Permanently</option>
+                    <option disabled selected>{{__('plugin:post-type::default.bulk-action') }}</option>
+                    <option value='restore'>{{__('plugin:post-type::default.restore') }}</option>
+                    <option value='destroy'>{{__('plugin:post-type::default.delete-permanently') }}</option>
                 @else
-                    <option disabled selected>Bulk Action</option>
-                    <option value='trash'>Move to Trash</option>
+                    <option disabled selected>{{__('plugin:post-type::default.bulk-action') }}</option>
+                    <option value='trash'>{{__('plugin:post-type::default.move-trash') }}</option>
                 @endif
             </select>
-            <input name="bapply" type="submit" class="btn btn-secondary" value="Apply">
+            <input name="bapply" type="submit" class="btn btn-secondary" value="{{__('plugin:post-type::default.apply') }}">
         </div>
         @if($viewData['post_status'] == 'trash')
         <div class="alignleft">
-            <input name="bapplyall" type="submit" class="btn btn-secondary" value="Empty Trash">
+            <input name="bapplyall" type="submit" class="btn btn-secondary" value="{{__('plugin:post-type::default.empty-trash') }}">
         </div>
         @endif
-        <div class="tablenav-pages"><span class="displaying-num">{{ $viewData['total'] }} @if($viewData['total'] > 1 ) items @else item @endif</span>
+        <div class="tablenav-pages"><span class="displaying-num">{{ $viewData['total'] }} @if($viewData['total'] > 1 ) {{__('plugin:post-type::default.items') }} @else {{__('plugin:post-type::default.item') }} @endif</span>
             {!! $posts->links('admin:aksara::partials.pagination') !!}
         </div>
     </div>

@@ -19,7 +19,7 @@
                     </li>
                     @endforeach
                 </ul>
-                <a href="{!! route('admin.'.get_current_post_type().'.'.$taxonomy.'.index')!!}">Tambah {!! array_get($args,'label.name')!!}</a>
+                <a href="{!! route('admin.'.get_current_post_type().'.'.$taxonomy.'.index')!!}">{{ __('plugin:post-type::default.add-taxonomy', ['taxonomy' => array_get($args,'label.name')]) }}</a>
             </div>
         </div>
     @endforeach

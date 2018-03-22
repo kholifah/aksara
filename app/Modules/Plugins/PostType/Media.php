@@ -20,7 +20,7 @@ class Media
         // Register Post
         $argsPost = [
             'label' => [
-                'name' => 'Media'
+                'name' => __('plugin:post-type::default.media')
             ],
             'priority'=>20,
             'icon' => 'ti-gallery',

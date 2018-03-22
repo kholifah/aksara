@@ -2,7 +2,7 @@
 
 @section('breadcrumb')
 <ol class="breadcrumb">
-    <li class="breadcrumb-item"><a href="{{ route('admin.root') }}">Dashboard</a></li>
+    <li class="breadcrumb-item"><a href="{{ route('admin.root') }}">{{__('plugin:post-type::default.dashboard') }}</a></li>
     <li class="breadcrumb-item"><a href="{{ route('admin.'.get_current_post_type_args('route').'.index') }}">{{ get_current_post_type_args('label.name') }}</a></li>
     <li class="breadcrumb-item active">{{ get_current_taxonomy_args('label.name') }}</li>
 </ol>
@@ -10,7 +10,7 @@
 
 @section('content')
 <div class="content__head">
-    <h2 class="page-title">Pengaturan {{ get_current_taxonomy_args('label.name') }}  <a href="{{ route('admin.'.get_current_post_type_args('route').'.'.get_current_taxonomy().'.create') }}" class="page-title-action">Tambah {{ get_current_taxonomy_args('label.name') }}</a></h2>
+    <h2 class="page-title">{{ __('plugin:post-type::default.all-taxonomy', ['taxonomy' => get_current_taxonomy_args('label.name') ]) }}  <a href="{{ route('admin.'.get_current_post_type_args('route').'.'.get_current_taxonomy().'.create') }}" class="page-title-action">{{ __('plugin:post-type::default.add-taxonomy', ['taxonomy' => get_current_taxonomy_args('label.name') ]) }}</a></h2>
 </div>
 <!-- /.content__head -->
 
@@ -21,10 +21,10 @@
                 <div class="alignleft search-box">
                     <form class="posts-filter clearfix" method="get">
                         <input name="search" value="{{ $search }}" type="text" class="form-control">
-                        <input type="submit" class="btn btn-secondary" value="Search">
+                        <input type="submit" class="btn btn-secondary" value="{{__('plugin:post-type::default.search') }}">
                     </form>
                 </div>
-                <div class="tablenav-pages"><span class="displaying-num">{{ $total }} @if($total > 1 )items @else item @endif</span>
+                <div class="tablenav-pages"><span class="displaying-num">{{ $total }} @if($total > 1 ){{__('plugin:post-type::default.items') }} @else {{__('plugin:post-type::default.item') }} @endif</span>
                     {!! $terms->links('admin:aksara::partials.pagination') !!}
                 </div>
             </div>
@@ -32,10 +32,10 @@
                 <table class="datatable-responsive table noborder-top display nowrap" cellspacing="0" width="100%">
                     <thead>
                         <tr>
-                            <th>Name</th>
-                            <th>Slug</th>
-                            <th>Parent</th>
-                            <th class="no-sort" width="50">Action</th>
+                            <th>{{__('plugin:post-type::default.name') }}</th>
+                            <th>{{__('plugin:post-type::default.slug') }}</th>
+                            <th>{{__('plugin:post-type::default.parent') }}</th>
+                            <th class="no-sort" width="50">{{__('plugin:post-type::default.action') }}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -52,8 +52,8 @@
                                 @endif
                             </td>
                             <td>
-                                <a href="{{ route('admin.'.get_current_post_type_args('route').'.'.get_current_taxonomy().'.edit', $term->id) }}" class="icon-edit"><i title="Edit" class="fa fa-pencil-square-o edit-row" data-toggle="modal" data-target="#edit-komponen"></i> </a>
-                                <a href="{{ route('admin.'.get_current_post_type_args('route').'.'.get_current_taxonomy().'.destroy', $term->id) }}" onclick="return confirm('Yakin ingin menghapus data?');" class="icon-delete sa-warning"><i title="Trash" class="fa fa-trash-o"></i></a>
+                                <a href="{{ route('admin.'.get_current_post_type_args('route').'.'.get_current_taxonomy().'.edit', $term->id) }}" class="icon-edit"><i title="{{__('plugin:post-type::default.edit') }}" class="fa fa-pencil-square-o edit-row" data-toggle="modal" data-target="#edit-komponen"></i> </a>
+                                <a href="{{ route('admin.'.get_current_post_type_args('route').'.'.get_current_taxonomy().'.destroy', $term->id) }}" onclick="return confirm({{__('plugin:post-type::message.confirm-delete-message') }});" class="icon-delete sa-warning"><i title="{{__('plugin:post-type::default.delete') }}" class="fa fa-trash-o"></i></a>
 
 
                             </td>
@@ -64,7 +64,7 @@
                 </table>
             </div>
             <div class="tablenav bottom clearfix">
-                <div class="tablenav-pages"><span class="displaying-num">{{ $total }} @if($total > 1 )items @else item @endif</span>
+                <div class="tablenav-pages"><span class="displaying-num">{{ $total }} @if($total > 1 ){{__('plugin:post-type::default.items') }} @else {{__('plugin:post-type::default.item') }} @endif</span>
                    {!! $terms->links('admin:aksara::partials.pagination') !!}
                 </div>
             </div>

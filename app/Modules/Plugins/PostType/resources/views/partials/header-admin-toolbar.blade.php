@@ -10,7 +10,7 @@
 <div id="aksara-adminbar" class="adminbar">
 	<ul class="adminbar__menu">
 		<li class="adminbar__item">
-			<a href="{{url('/admin')}}"><i class="ti-dashboard"></i> <span> Dashboard </span></a>
+			<a href="{{url('/admin')}}"><i class="ti-dashboard"></i> <span> {{__('plugin:post-type::default.dashboard') }} </span></a>
 		</li>
         @if( is_single() )
 				<li class="adminbar__item">

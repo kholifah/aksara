@@ -2,16 +2,16 @@
 
 @section('breadcrumb')
 <ol class="breadcrumb">
-    <li class="breadcrumb-item"><a href="{{ route('admin.root') }}">Dashboard</a></li>
-    <li class="breadcrumb-item"><a href="{{ route('admin.'.get_current_post_type_args('route').'.index') }}">Semua {{ get_current_post_type_args('label.name') }}</a></li>
-    <li class="breadcrumb-item active">Edit {{ get_current_post_type_args('label.name') }}</li>
+    <li class="breadcrumb-item"><a href="{{ route('admin.root') }}">{{__('plugin:post-type::default.dashboard') }}</a></li>
+    <li class="breadcrumb-item"><a href="{{ route('admin.'.get_current_post_type_args('route').'.index') }}">{{ __('plugin:post-type::default.all-post-type', ['post-type' => get_current_post_type_args('label.name')]) }}</a></li>
+    <li class="breadcrumb-item active">{{ __('plugin:post-type::default.edit-post-type', ['post-type' => get_current_post_type_args('label.name')]) }}</li>
 </ol>
 @endsection
 
 
 @section('content')
 <div class="content__head m-b-20">
-    <h2 class="page-title">Edit Post</h2>
+    <h2 class="page-title">{{ __('plugin:post-type::default.edit-post-type', ['post-type' => get_current_post_type_args('label.name')]) }}</h2>
 </div>
 <!-- /.content__head -->
 <div class="content__body column-2">

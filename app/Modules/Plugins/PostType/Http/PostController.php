@@ -128,7 +128,7 @@ class PostController extends Controller
 
         \Eventy::action('aksara.post-type.'.get_current_post_type().'.create', $post, $request);
 
-        admin_notice('success', 'Data berhasil ditambahkan.');
+        admin_notice('success', __('plugin:post-type::message.add-success-message'));
 
         return redirect()->route('admin.'.get_current_post_type_args('route').'.edit', ['id'=>$post->id]);
     }
@@ -184,7 +184,7 @@ class PostController extends Controller
 
         \Eventy::action('aksara.post-type.'.get_current_post_type().'.update', $post, $request);
 
-        admin_notice('success', 'Data berhasil diubah.');
+        admin_notice('success', __('plugin:post-type::message.edit-success-message'));
 
         return redirect()->route('admin.'.get_current_post_type_args('route').'.edit', ['id'=>$post->id]);
     }
@@ -202,7 +202,7 @@ class PostController extends Controller
             delete_post_meta($id);
             delete_post_term($id);
             $post->delete();
-            admin_notice('success', 'Data berhasil dihapus.');
+            admin_notice('success', __('plugin:post-type::message.delete-success-message'));
         } else {
             admin_notice('danger', 'Tidak ada data yang dihapus.');
         }
@@ -218,7 +218,7 @@ class PostController extends Controller
         if (set_post_meta($id, 'trash_meta_status', $post->post_status, false)) {
             $post->update(['post_status' => 'trash']);
         }
-        admin_notice('success', 'Data berhasil dipindah ke Trash.');
+        admin_notice('success', __('plugin:post-type::message.move-trash-message', ['trash' => status_post('trash')]));
         return redirect()->route('admin.'.get_current_post_type_args('route').'.index');
     }
 
@@ -229,7 +229,7 @@ class PostController extends Controller
             $post->update(['post_status' => get_post_meta($id, 'trash_meta_status')]);
         }
         delete_post_meta($id, 'trash_meta_status');
-        admin_notice('success', 'Data berhasil dikembalikan ke '.$post->post_status.'.');
+        admin_notice('success', __('plugin:post-type::message.return-message'));
         return redirect()->route('admin.'.get_current_post_type_args('route').'.index', ['post_status' => $post->post_status]);
     }
 
@@ -240,7 +240,7 @@ class PostController extends Controller
             foreach ($posts as $v) {
                 $this->destroy($v->id);
             }
-            admin_notice('success', 'Semua data berhasil dihapus.');
+            admin_notice('success', __('plugin:post-type::message.all-delete-success-message'));
         } else {
             admin_notice('danger', 'Data gagal dihapus.');
         }
