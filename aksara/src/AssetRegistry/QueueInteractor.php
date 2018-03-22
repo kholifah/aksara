@@ -75,13 +75,13 @@ class QueueInteractor implements AssetQueueInterface
         $modules = \Config::get('aksara.modules');
 
         if (!isset($modules[$type])) {
-            $this->error('Jenis module '
+            throw new \Exception('Jenis module '
                 . $type
                 .' tidak ada, gunakan [core,plugin,admin,front-end]');
         }
 
         if (!isset($modules[$type][$moduleName])) {
-            $this->error('Module dengan nama '.$moduleName.' tidak ada');
+            throw new \Exception('Module dengan nama '.$moduleName.' tidak ada');
         }
 
         $moduleCfg = $modules[$type][$moduleName];

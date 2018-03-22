@@ -30,7 +30,12 @@ function aksara_slugify($name)
 
 function aksara_unslugify($string, $capitalizeFirstCharacter = false)
 {
-    return \Strings::unslug($string, $capitalizeFirstCharacter);
+    return \Strings::slugToCamel($string, $capitalizeFirstCharacter);
+}
+
+function slug_to_title($string, $capitalizeFirstCharacter = false)
+{
+    return \Strings::slugToTitle($string, $capitalizeFirstCharacter);
 }
 
 // @todo segment ada cms berarti admin

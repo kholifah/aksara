@@ -1,7 +1,7 @@
 <?php
 use App\Modules\Plugins\PostType\Model\PostMeta;
 use App\Modules\Plugins\PostType\Model\Post;
-use App\Modules\Plugins\AksaraMultiBas\TranslationEngine;
+use Plugins\AksaraMultiBas\TranslationEngine;
 
 function get_registered_locales()
 {
@@ -28,24 +28,24 @@ function get_post_language($post)
 
 function set_multibas_language($lang=false)
 {
-    $languageSwitcher = \App::make('App\Modules\Plugins\AksaraMultiBas\LocaleSwitcher');
+    $languageSwitcher = \App::make('Plugins\AksaraMultiBas\LocaleSwitcher');
     return $languageSwitcher->setLanguage($lang);
 }
 
 function get_current_multibas_locale()
 {
-    $languageSwitcher = \App::make('App\Modules\Plugins\AksaraMultiBas\LocaleSwitcher');
+    $languageSwitcher = \App::make('Plugins\AksaraMultiBas\LocaleSwitcher');
     return $languageSwitcher->getCurrentLocale();
 }
 
 function is_default_multibas_locale($lang = false)
 {
-    $languageSwitcher = \App::make('App\Modules\Plugins\AksaraMultiBas\LocaleSwitcher');
+    $languageSwitcher = \App::make('Plugins\AksaraMultiBas\LocaleSwitcher');
     return $languageSwitcher->isDefaultLocale($lang);
 }
 function get_multibas_default_locale()
 {
-    $languageSwitcher = \App::make('App\Modules\Plugins\AksaraMultiBas\LocaleSwitcher');
+    $languageSwitcher = \App::make('Plugins\AksaraMultiBas\LocaleSwitcher');
     return $languageSwitcher->getDefaultLocale();
 }
 
@@ -79,7 +79,7 @@ function render_metabox_multibas($post)
         array_push($postLists,$postList);
     }
 
-    echo view('plugin:aksara-multi-bas::metabox', compact('postLists','post'))->render();
+    echo view('aksara-multi-bas::metabox', compact('postLists','post'))->render();
 }
 
 //query-filter

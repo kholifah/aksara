@@ -15,14 +15,21 @@ class Strings
         return Str::slug($string, $separator, $language);
     }
 
-    public function unslug($string, $capitalizeFirstCharacter = false)
+    public function slugToCamel($slug, $capitalizeFirstCharacter = false)
     {
-        $str = str_replace(' ', '', ucwords(str_replace('-', ' ', $string)));
+        $str = str_replace(' ', '', ucwords(str_replace('-', ' ', $slug)));
 
         if (!$capitalizeFirstCharacter) {
             $str[0] = strtolower($str[0]);
         }
 
+        return $str;
+    }
+
+    public function slugToTitle($slug)
+    {
+        $str = ucwords(str_replace('-', ' ', $slug));
+        $str[0] = strtoupper($str[0]);
         return $str;
     }
 }

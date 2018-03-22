@@ -1,0 +1,22 @@
+{
+    "name": "aksara-plugins/aksara-multi-bas",
+    "description": "Multi language support for Aksara Post Type",
+    "type": "library",
+    "license": "private",
+    "authors": [
+        {
+            "name": "Arseto Nugroho",
+            "email": "satriyo.796@gmail.com"
+        }
+    ],
+    "require": {
+    },
+    "autoload": {
+        "psr-4": {
+            "Plugins\\AksaraMultiBas\\": "src/"
+        },
+        "files": [
+            "src/helper.php"
+        ]
+    }
+}

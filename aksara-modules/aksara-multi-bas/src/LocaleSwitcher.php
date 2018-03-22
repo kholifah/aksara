@@ -1,5 +1,5 @@
 <?php
-namespace App\Modules\Plugins\AksaraMultiBas;
+namespace Plugins\AksaraMultiBas;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Config;

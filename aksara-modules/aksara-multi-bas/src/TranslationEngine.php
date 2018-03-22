@@ -1,5 +1,5 @@
 <?php
-namespace App\Modules\Plugins\AksaraMultiBas;
+namespace Plugins\AksaraMultiBas;
 use App\Modules\Plugins\PostType\Model\PostMeta as PostMeta;
 use App\Modules\Plugins\PostType\Model\Post as Post;
 use App\Modules\Plugins\PostType\Model\TermRelationship as TermRelationship;

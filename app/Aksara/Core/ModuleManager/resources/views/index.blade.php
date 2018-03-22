@@ -90,7 +90,7 @@
             @endif
           </td>
           <td>
-              <p>{{ $plugin->getName() }}</p>
+              <p>{{ slug_to_title($plugin->getName()) }}</p>
               <p>Description : {{ $plugin->getDescription() }}</p>
               @if( sizeof($plugin->getDependencies()) >0 )
                   <p>Dependencies : {{ implode(',',$plugin->getDependencies() ) }}</p>
