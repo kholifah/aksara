@@ -1,11 +1,11 @@
 <?php
-namespace App\Modules\Plugins\AksaraCommerce;
+namespace Plugins\AksaraCommerce;
 
 class MetaBox
 {
     public function render($post)
     {
-        echo view('plugin:aksara-commerce::metabox', compact('post'))->render();
+        echo view('aksara-commerce::metabox', compact('post'))->render();
     }
 
     public function save($post, $request)
