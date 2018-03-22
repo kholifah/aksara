@@ -9,4 +9,9 @@ return [
       'Plugins\\AksaraMultiBas\\Providers\\MultiBasActionFilterServiceProvider',
       'Plugins\\AksaraMultiBas\\Providers\\MultiBasServiceProvider',
   ],
+
+  'aliases' => [
+      'LocaleSwitcher' => 'Plugins\\AksaraMultiBas\\Facades\\LocaleSwitcherFacade',
+      'LanguageSwitcher' => 'Plugins\\AksaraMultiBas\\Facades\\LanguageSwitcherFacade',
+  ],
 ];

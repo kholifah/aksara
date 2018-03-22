@@ -28,25 +28,21 @@ function get_post_language($post)
 
 function set_multibas_language($lang=false)
 {
-    $languageSwitcher = \App::make('Plugins\AksaraMultiBas\LocaleSwitcher');
-    return $languageSwitcher->setLanguage($lang);
+    return \LocaleSwitcher::setLanguage($lang);
 }
 
 function get_current_multibas_locale()
 {
-    $languageSwitcher = \App::make('Plugins\AksaraMultiBas\LocaleSwitcher');
-    return $languageSwitcher->getCurrentLocale();
+    return \LocaleSwitcher::getCurrentLocale();
 }
 
 function is_default_multibas_locale($lang = false)
 {
-    $languageSwitcher = \App::make('Plugins\AksaraMultiBas\LocaleSwitcher');
-    return $languageSwitcher->isDefaultLocale($lang);
+    return \LocaleSwitcher::isDefaultLocale($lang);
 }
 function get_multibas_default_locale()
 {
-    $languageSwitcher = \App::make('Plugins\AksaraMultiBas\LocaleSwitcher');
-    return $languageSwitcher->getDefaultLocale();
+    return \LocaleSwitcher::getDefaultLocale();
 }
 
 /**

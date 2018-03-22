@@ -3,6 +3,7 @@
 namespace Plugins\AksaraMultiBas\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Foundation\Http\Kernel;
 
 class MultiBasServiceProvider extends ServiceProvider
 {
@@ -23,40 +24,36 @@ class MultiBasServiceProvider extends ServiceProvider
                     'slug' => '/aksara-multibas-option',
                     'args' => [
                         'as' => 'aksara-multibas-option',
-                        'uses' => '\Plugins\AksaraMultiBas\Http\OptionController@index',
+                        'uses' => '\Plugins\AksaraMultiBas\Http\Controllers\OptionController@index',
                     ],
                 ]
             ];
 
             add_admin_sub_menu_route('aksara-menu-options',$optionIndex);
 
-            \App::singleton('Plugins\AksaraMultiBas\LocaleSwitcher', function(){
-                $LocaleSwitcher = new \Plugins\AksaraMultiBas\LocaleSwitcher();
-                $LocaleSwitcher->setCurrentLanguangeFromParam();
-                return $LocaleSwitcher;
-            });
+            \LanguageSwitcher::setCurrentLanguangeFromParam();
+
         },200);
 
         /*
          * Set correct language for front-end controller
          */
+        //TODO
+        //middleware?
         \Eventy::addAction('aksara.post-type.front-end.before-query', function() {
-
-            $languageSwitcher = \App::make('Plugins\AksaraMultiBas\LocaleSwitcher');
-            $languageSwitcher->setCurrentLanguange();
+            \LanguageSwitcher::setCurrentLanguange();
         });
-
 
         \Eventy::addAction('aksara.routes.admin',function(){
 
             \Route::post('/aksara-multibas-option',[
                 'as' => 'aksara-multibas-option-save',
-                'uses' => '\Plugins\AksaraMultiBas\Http\OptionController@save',
+                'uses' => '\Plugins\AksaraMultiBas\Http\Controllers\OptionController@save',
             ]);
 
             \Route::get('/aksara-generate-translation/{postId}/{lang}',[
                 'as' => 'aksara-multibas-generate-translation',
-                'uses' => '\Plugins\AksaraMultiBas\Http\TranslationController@generate',
+                'uses' => '\Plugins\AksaraMultiBas\Http\Controllers\TranslationController@generate',
             ]);
 
         });
@@ -76,6 +73,24 @@ class MultiBasServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->bind(
+            \Plugins\AksaraMultiBas\LocaleSwitcher\LocaleSwitcherInterface::class,
+            \Plugins\AksaraMultiBas\LocaleSwitcher\Interactor::class
+        );
+
+        $this->app->bind(
+            'locale_switcher',
+            \Plugins\AksaraMultiBas\LocaleSwitcher\LocaleSwitcherInterface::class
+        );
+
+        $this->app->bind(
+            \Plugins\AksaraMultiBas\LanguageSwitcher\LanguageSwitcherInterface::class,
+            \Plugins\AksaraMultiBas\LanguageSwitcher\Interactor::class
+        );
+
+        $this->app->bind(
+            'language_switcher',
+            \Plugins\AksaraMultiBas\LanguageSwitcher\LanguageSwitcherInterface::class
+        );
     }
 }

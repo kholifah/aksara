@@ -1,5 +1,5 @@
 <?php
-namespace Plugins\AksaraMultiBas\Http;
+namespace Plugins\AksaraMultiBas\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
