@@ -1,5 +1,5 @@
 <?php
-namespace App\Modules\Plugins\Option\Http;
+namespace Plugins\Option\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -13,7 +13,7 @@ class OptionController extends Controller
         $lang_options = get_country_code();
         $lang_options = $lang_options->pluck('name','language_code');
 
-        return view('plugin:option::index', compact('site_options','lang_options'));
+        return view('option::index', compact('site_options','lang_options'));
     }
 
     public function save(Request $request)
@@ -22,7 +22,7 @@ class OptionController extends Controller
 
         set_options('site_options', $data['options']);
 
-        admin_notice('success', __('plugin:option::messages.notification_save_success'));
+        admin_notice('success', __('option::messages.success_save_option'));
         return redirect()->route('aksara-option');
     }
 }

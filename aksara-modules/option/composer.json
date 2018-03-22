@@ -1,0 +1,27 @@
+{
+    "name": "aksara-plugins/option",
+    "description": "Option manager for Aksara",
+    "type": "library",
+    "require-dev": {
+        "phpunit/phpunit": "^7.0"
+    },
+    "license": "private",
+    "authors": [
+        {
+            "name": "Arseto Nugroho",
+            "email": "satriyo.796@gmail.com"
+        }
+    ],
+    "require": {
+    },
+    "autoload": {
+        "psr-4": {
+            "Plugins\\Option\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Aksara\\": "../../aksara/src/"
+        }
+    }
+}
