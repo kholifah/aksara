@@ -56,6 +56,8 @@ require __DIR__.'/action-filter/header-meta.php';
 });
 
 \Eventy::addAction('aksara.post-type.post-controller.construct',function(){
-        aksara_admin_enqueue_style(url("assets/modules/Plugins/AksaraMultiBas/css/flag-icon.min.css"), "flag-icon" , 25, true);
-        aksara_admin_enqueue_style(url("assets/modules/Plugins/AksaraMultiBas/css/style.css"), "multibas" , 25, true);
+    aksara_admin_enqueue_module_style('plugin/aksara-multi-bas',
+        "css/flag-icon.min.css", "flag-icon" , 25, true);
+    aksara_admin_enqueue_module_style('plugin/aksara-multi-bas',
+        "css/style.css", "multibas" , 25, true);
 });

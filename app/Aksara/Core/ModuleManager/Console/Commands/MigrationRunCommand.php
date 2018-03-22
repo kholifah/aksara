@@ -34,7 +34,7 @@ class MigrationRunCommand extends Command
         case 1: $this->runMigrationV2($typeArray); break;
         case 2: $this->runMigrationV1($typeArray); break;
         default: $this->error('Format type-name tidak valid,
-                gunakan format tipe/nama-modul (v1) atau nama-modul (v2'); break;
+                gunakan format tipe/nama-modul (v1) atau nama-modul (v2)'); break;
         }
     }
 

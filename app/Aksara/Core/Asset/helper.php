@@ -20,10 +20,7 @@ function aksara_admin_enqueue_style($url, $id=false, $priority=20)
     \AssetQueue::enqueue('admin', 'style', $url, $priority);
 }
 
-//TODO
-//create v2 function of above function, that parameter should not be url, instead:
-//module type/name
-//asset path/relative from assets folder in module: eg: css/flag-icon.min.css
-function aksara_admin_enqueue_style_v2($module, $assetPath, $id = false, $priority = 20)
+function aksara_admin_enqueue_module_style($module, $assetPath, $id = false, $priority = 20)
 {
+    \AssetQueue::enqueueModuleAsset('admin', 'style', $module, $assetPath, $id, $priority);
 }

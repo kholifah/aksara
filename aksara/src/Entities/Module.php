@@ -32,16 +32,26 @@ class Module
         $this->migration = $migration;
     }
 
+    public static function fromConfig($type, $moduleKey, $module)
+    {
+        $obj = new static (
+            $type,
+            $moduleKey,
+            $module['modulePath'],
+            $module['name']
+        );
+        return $obj;
+    }
+
     public static function fromConfigArray($modulesArray)
     {
         $modules = [];
         foreach ($modulesArray as $type => $moduleList) {
             foreach ($moduleList as $moduleKey => $module) {
-                $obj = new static (
+                $obj = static::fromConfig(
                     $type,
                     $moduleKey,
-                    $module['modulePath'],
-                    $module['name']
+                    $module
                 );
                 $modules[] = $obj;
             }

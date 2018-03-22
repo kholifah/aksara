@@ -61,7 +61,6 @@ class AssetServiceProvider extends ServiceProvider
         \Config::set('aksara.assets', $config);
 
         //registerAction
-        //TODO replace app->make to use new renderer interface
         \Eventy::addAction('aksara.admin.head', function () {
             \AssetRenderer::renderStyle('admin');
         });

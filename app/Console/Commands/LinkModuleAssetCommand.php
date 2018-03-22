@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use Aksara\Entities\Module;
+use Aksara\ModuleRegistry\ModuleRegistryHandler;
 use Illuminate\Console\Command;
 use Illuminate\FileSystem\FileSystem;
 use Illuminate\Config\Repository as Config;
@@ -25,6 +26,7 @@ class LinkModuleAssetCommand extends Command
 
     private $fileSystem;
     private $config;
+    private $moduleRegistry;
 
     /**
      * Create a new command instance.
@@ -33,11 +35,13 @@ class LinkModuleAssetCommand extends Command
      */
     public function __construct(
         FileSystem $fileSystem,
-        Config $config
+        Config $config,
+        ModuleRegistryHandler $moduleRegistry
     ){
         parent::__construct();
         $this->fileSystem = $fileSystem;
         $this->config = $config;
+        $this->moduleRegistry = $moduleRegistry;
     }
 
     /**
@@ -46,6 +50,45 @@ class LinkModuleAssetCommand extends Command
      * @return mixed
      */
     public function handle()
+    {
+        $this->linkModulesV1();
+        $this->linkModulesV2();
+    }
+
+    private function linkModulesV2()
+    {
+        $modules = $this->moduleRegistry->getRegisteredModules();
+
+        $modulesAssetRoot = public_path("assets/modules-v2/");
+
+        $this->fileSystem->deleteDirectory($modulesAssetRoot);
+        $this->fileSystem->makeDirectory($modulesAssetRoot);
+
+        foreach ($modules as $module) {
+            $assetPath = $module->getModulePath()->asset();
+
+            if (!$this->fileSystem->exists($assetPath)) {
+                $this->info("$assetPath does not exist");
+                continue;
+            }
+
+            $publicPath = $modulesAssetRoot.$module->getName();
+
+            if ($this->fileSystem->exists($publicPath)) {
+                $this->info("$publicPath already exists.");
+                continue;
+            }
+
+            $this->fileSystem->link(
+                $assetPath,
+                $publicPath
+            );
+
+            $this->info("Linked $assetPath to $publicPath\n");
+        }
+    }
+
+    private function linkModulesV1()
     {
         $modulesArray = $this->config->get('aksara.modules');
         $modules = Module::fromConfigArray($modulesArray);

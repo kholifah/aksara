@@ -178,9 +178,9 @@ return [
         App\Providers\RouteServiceProvider::class,
         Collective\Html\HtmlServiceProvider::class,
         'App\Aksara\Core\Eventy\EventServiceProvider',
-        Aksara\Providers\AssetServiceProvider::class,
         App\Providers\PluginServiceProvider::class,
         'App\Providers\AksaraServiceProvider',
+        Aksara\Providers\AssetServiceProvider::class,
     ],
 
     /*
