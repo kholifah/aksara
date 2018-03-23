@@ -2,5 +2,5 @@
 
 return [
     'product' => 'Produk',
-    'category_product' => 'Kategori Produk',
+    'category-product' => 'Kategori Produk',
 ];
