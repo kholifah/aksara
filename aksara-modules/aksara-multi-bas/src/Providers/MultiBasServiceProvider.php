@@ -59,10 +59,8 @@ class MultiBasServiceProvider extends ServiceProvider
         });
 
         \Eventy::addAction('aksara.post-type.post-controller.construct',function(){
-            aksara_admin_enqueue_module_style('aksara-multi-bas',
-                "css/flag-icon.min.css", "flag-icon" , 25, true);
-            aksara_admin_enqueue_module_style('aksara-multi-bas',
-                "css/style.css", "multibas" , 25, true);
+            multibas_admin_enqueue_style('css/flag-icon.min.css', 'flag-icon', 25, true);
+            multibas_admin_enqueue_style('css/style.css', 'multibas', 25, true);
         });
     }
 

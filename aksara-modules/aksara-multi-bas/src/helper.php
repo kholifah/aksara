@@ -38,8 +38,19 @@ function is_default_multibas_locale($lang = false)
 {
     return \LocaleSwitcher::isDefaultLocale($lang);
 }
+
 function get_multibas_default_locale()
 {
     return \LocaleSwitcher::getDefaultLocale();
+}
+
+function multibas_admin_enqueue_script($assetPath, $id=false, $priority=20, $footer=false)
+{
+    aksara_admin_enqueue_module_script('aksara-multi-bas', $assetPath, $id, $priority, $footer);
+}
+
+function multibas_admin_enqueue_style($assetPath, $id, $priority, $footer)
+{
+    aksara_admin_enqueue_module_style('aksara-multi-bas', $assetPath, $id, $priority, $footer);
 }
 

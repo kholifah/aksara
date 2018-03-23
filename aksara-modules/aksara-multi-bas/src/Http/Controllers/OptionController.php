@@ -16,8 +16,9 @@ class OptionController extends Controller
         else {
             aksara_admin_enqueue_script("https://cdnjs.cloudflare.com/ajax/libs/vue/2.4.4/vue.min.js", "vue" , 20, true);
         }
-        aksara_admin_enqueue_script(url("assets/modules-v2/aksara-multi-bas/js/script.js"), "multibas-script" , 25, true);
-        aksara_admin_enqueue_style(url("assets/modules-v2/aksara-multi-bas/css/flag-icon.min.css"), "flag-icon" , 25, true);
+
+        multibas_admin_enqueue_script('js/script.js', 'multibas-script', 25, true);
+        multibas_admin_enqueue_style('css/flag-icon.min.css', 'flag-icon', 25, true);
 
         $countries = get_registered_locales();
         $lang_options = get_country_code();

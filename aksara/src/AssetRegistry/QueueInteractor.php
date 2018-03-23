@@ -12,7 +12,7 @@ class QueueInteractor implements AssetQueueInterface
     // $id
     // $priority
     // in footer
-    public function enqueue($location, $type, $url, $id, $priority = 20, $footer=false)
+    public function enqueue(string $location, string $type, $url, $id, $priority = 20, $footer=false)
     {
         if (!in_array($location, AssetLocation::allValues())) {
             return false;
@@ -38,10 +38,17 @@ class QueueInteractor implements AssetQueueInterface
     }
 
     public function enqueueModuleAsset(
-        $location, $type, $module, $assetPath, $id = false, $priority = 20, $footer = false
+        string $location, string $type, $module, $assetPath, $id = false, $priority = 20, $footer = false
     ){
-        $nameArray = explode('/', $module);
+        $path = $this->getModuleAssetPath($module);
+        $url = url($path.'/'.$assetPath);
 
+        $this->enqueue($location, $type, $url, $id, $priority, $footer);
+    }
+
+    private function getModuleAssetPath($module)
+    {
+        $nameArray = explode('/', $module);
         $path = '';
 
         switch (count($nameArray)) {
@@ -52,12 +59,9 @@ class QueueInteractor implements AssetQueueInterface
             $path = $this->getPathV1($nameArray);
             break;
         default: throw new \Exception('Format type-name tidak valid,
-                gunakan format tipe/nama-modul (v1) atau nama-modul (v2)');
+            gunakan format tipe/nama-modul (v1) atau nama-modul (v2)');
         }
-
-        $url = url($path.'/'.$assetPath);
-
-        $this->enqueue($location, $type, $url, $id, $priority, $footer);
+        return $path;
     }
 
     private function getPathV2($nameArray)

@@ -14,4 +14,24 @@ class AssetLocation extends Enum
     {
         parent::__construct($value, true);
     }
+
+    public static function frontend() : self
+    {
+        return new static(self::FRONTEND);
+    }
+
+    public static function admin() : self
+    {
+        return new static(self::ADMIN);
+    }
+
+    public static function adminFooter() : self
+    {
+        return new static(self::ADMIN_FOOTER);
+    }
+ 
+    public static function frontendFooter() : self
+    {
+        return new static(self::FRONTEND_FOOTER);
+    }
 }

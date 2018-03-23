@@ -25,7 +25,7 @@ class AssetServiceProvider extends ServiceProvider
         );
 
         $this->app->bind('asset_queue',
-            \Aksara\AssetRegistry\AssetQueueInterface::class
+            \Aksara\AssetRegistry\QueueFactory::class
         );
 
         $this->app->bind('asset_renderer',
