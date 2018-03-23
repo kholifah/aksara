@@ -61,7 +61,7 @@ class MultiBasActionFilterServiceProvider extends ServiceProvider
             if( is_home() && isset($args['id']) ) {
 
                 $locale = get_current_multibas_locale();
-                $post = \App\Modules\Plugins\PostType\Model\Post::find($args['id']);
+                $post = \Plugins\PostType\Model\Post::find($args['id']);
                 $postTranslated = get_translated_post($post, $locale);
 
                 if($postTranslated) {
@@ -105,34 +105,34 @@ class MultiBasActionFilterServiceProvider extends ServiceProvider
                     function($route, $routeName) use ($country) {
                         \Route::get( $country['language_code'].'/'.$route,
                             ['as' => $routeName.'.multibas-locale-'.$country['language_code'],
-                            'uses' =>'\App\Modules\Plugins\PostType\Http\FrontEndController@serve']);
+                            'uses' =>'\Plugins\PostType\Http\FrontEndController@serve']);
                 }, 10, 2);
                 \Eventy::addAction('aksara.post-type.permalink.home',
                     function($route, $routeName) use ($country) {
                         \Route::get( $country['language_code'].'/'.$route,
                             ['as' => $routeName.'.multibas-locale-'.$country['language_code'],
-                            'uses' =>'\App\Modules\Plugins\PostType\Http\FrontEndController@serve']);
+                            'uses' =>'\Plugins\PostType\Http\FrontEndController@serve']);
                 }, 10, 2);
                 \Eventy::addAction('aksara.post-type.permalink.archive-post-type',
                     function($route, $routeName) use ($country) {
                         \Route::get( $country['language_code'].'/'.$route,
                             ['as' => $routeName.'.multibas-locale-'.$country['language_code'],
-                            'uses' =>'\App\Modules\Plugins\PostType\Http\FrontEndController@serve']);
+                            'uses' =>'\Plugins\PostType\Http\FrontEndController@serve']);
                 }, 10, 2);
                 \Eventy::addAction('aksara.post-type.permalink.single',
                     function($route, $routeName) use ($country) {
                         \Route::get( $country['language_code'].'/'.$route,
-                            ['as' => $routeName.'.multibas-locale-'.$country['language_code'], 'uses' =>'\App\Modules\Plugins\PostType\Http\FrontEndController@serve']);
+                            ['as' => $routeName.'.multibas-locale-'.$country['language_code'], 'uses' =>'\Plugins\PostType\Http\FrontEndController@serve']);
                 }, 10, 2);
                 \Eventy::addAction('aksara.post-type.permalink.archive-taxonomy',
                     function($route, $routeName) use ($country) {
                         \Route::get( $country['language_code'].'/'.$route,
-                            ['as' => $routeName.'.multibas-locale-'.$country['language_code'], 'uses' =>'\App\Modules\Plugins\PostType\Http\FrontEndController@serve']);
+                            ['as' => $routeName.'.multibas-locale-'.$country['language_code'], 'uses' =>'\Plugins\PostType\Http\FrontEndController@serve']);
                 }, 10, 2);
                 \Eventy::addAction('aksara.post-type.permalink.archive-taxonomy-terms',
                     function($route, $routeName) use ($country) {
                         \Route::get( $country['language_code'].'/'.$route,
-                            ['as' => $routeName.'.multibas-locale-'.$country['language_code'], 'uses' =>'\App\Modules\Plugins\PostType\Http\FrontEndController@serve']);
+                            ['as' => $routeName.'.multibas-locale-'.$country['language_code'], 'uses' =>'\Plugins\PostType\Http\FrontEndController@serve']);
                 }, 10, 2);
                 \Eventy::addAction('aksara.post-type.permalink.catch-all',
                     function($route, $routeParamsFrontEnd) use ($country) {

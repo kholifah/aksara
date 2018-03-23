@@ -1,0 +1,26 @@
+{
+    "name": "aksara-plugins/post-type",
+    "description": "WordPress like Post Type manager for Aksara",
+    "type": "library",
+    "license": "private",
+    "authors": [
+        {
+            "name": "Arseto Nugroho",
+            "email": "satriyo.796@gmail.com"
+        }
+    ],
+    "require": {
+    },
+    "autoload": {
+        "psr-4": {
+            "Plugins\\PostType\\": "src/"
+        },
+        "files": [
+            "src/helper.php",
+            "src/base_metabox_helper.php",
+            "src/base_table_helper.php",
+            "src/post_index_list_helper.php",
+            "src/set_post_terms_helper.php"
+        ]
+    }
+}

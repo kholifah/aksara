@@ -1,6 +1,6 @@
 <?php
-use App\Modules\Plugins\PostType\Model\PostMeta;
-use App\Modules\Plugins\PostType\Model\Post;
+use Plugins\PostType\Model\PostMeta;
+use Plugins\PostType\Model\Post;
 
 function get_registered_locales()
 {

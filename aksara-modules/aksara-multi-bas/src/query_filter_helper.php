@@ -7,7 +7,7 @@ function multibas_table_index_exclude_translation($query)
     $query->addQuery(function($query){
         $query = $query->whereNotIn('id',function($query){
             $query->select('post_id as id')
-                  ->from(with(new \App\Modules\Plugins\PostType\Model\PostMeta())->getTable())
+                  ->from(with(new \Plugins\PostType\Model\PostMeta())->getTable())
                   ->where('meta_key', 'is_translation');
         });
 
@@ -24,7 +24,7 @@ function multibas_get_translated_post_frontpage($query)
         $query->addQuery(function($query){
             $query = $query->whereNotIn('id',function($query){
                 $query->select('post_id as id')
-                      ->from(with(new \App\Modules\Plugins\PostType\Model\PostMeta())->getTable())
+                      ->from(with(new \Plugins\PostType\Model\PostMeta())->getTable())
                       ->where('meta_key', 'is_translation');
             });
 
@@ -36,7 +36,7 @@ function multibas_get_translated_post_frontpage($query)
         $query->addQuery(function($query) use ($locale) {
             $query = $query->whereIn('id',function($query) use ($locale) {
                 $query->select('post_id as id')
-                      ->from(with(new \App\Modules\Plugins\PostType\Model\PostMeta())->getTable())
+                      ->from(with(new \Plugins\PostType\Model\PostMeta())->getTable())
                       ->where('meta_key', 'multibas-translation-'.$locale);
             });
 
@@ -51,7 +51,7 @@ function multibas_table_index_exclude_option_pages($query)
 {
     $query = $query->whereNotIn('id',function($query){
         $query->select('post_id as id')
-              ->from(with(new \App\Modules\Plugins\PostType\Model\PostMeta())->getTable())
+              ->from(with(new \Plugins\PostType\Model\PostMeta())->getTable())
               ->where('meta_key', 'is_translation');
     });
 

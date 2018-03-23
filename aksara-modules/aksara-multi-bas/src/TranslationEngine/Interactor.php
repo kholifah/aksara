@@ -2,9 +2,9 @@
 
 namespace Plugins\AksaraMultiBas\TranslationEngine;
 
-use App\Modules\Plugins\PostType\Model\PostMeta as PostMeta;
-use App\Modules\Plugins\PostType\Model\Post as Post;
-use App\Modules\Plugins\PostType\Model\TermRelationship as TermRelationship;
+use Plugins\PostType\Model\PostMeta as PostMeta;
+use Plugins\PostType\Model\Post as Post;
+use Plugins\PostType\Model\TermRelationship as TermRelationship;
 
 class Interactor implements TranslationEngineInterface
 {
