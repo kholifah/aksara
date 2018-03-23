@@ -16,7 +16,9 @@
             "Plugins\\AksaraMultiBas\\": "src/"
         },
         "files": [
-            "src/helper.php"
+            "src/helper.php",
+            "src/query_filter_helper.php",
+            "src/metabox_helper.php"
         ]
     }
 }
