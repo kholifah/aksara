@@ -11,9 +11,7 @@ return [
     ],
 
     //Laravel Facade aliases defined in plugin
-    'aliases' => [
-
-    ],
+    'aliases' => [],
 
     'type' => 'plugin',
 ];
