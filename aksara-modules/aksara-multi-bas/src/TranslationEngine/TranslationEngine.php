@@ -1,10 +1,12 @@
 <?php
-namespace Plugins\AksaraMultiBas;
+
+namespace Plugins\AksaraMultiBas\TranslationEngine;
+
 use App\Modules\Plugins\PostType\Model\PostMeta as PostMeta;
 use App\Modules\Plugins\PostType\Model\Post as Post;
 use App\Modules\Plugins\PostType\Model\TermRelationship as TermRelationship;
 
-class TranslationEngine
+class Interactor implements TranslationEngineInterface
 {
     function getTranslatedPost($post, $lang)
     {

@@ -7,6 +7,11 @@ namespace Plugins\AksaraMultiBas\LanguageSwitcher;
  */
 class Interactor implements LanguageSwitcherInterface
 {
+    public function boot()
+    {
+        $this->setCurrentLanguangeFromParam();
+    }
+
     /*
      * - Based on `multibas_lang` parameter if exist and then redirect to current page
      * Will set both application and front end locale

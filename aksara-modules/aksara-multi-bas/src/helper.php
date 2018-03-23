@@ -1,7 +1,6 @@
 <?php
 use App\Modules\Plugins\PostType\Model\PostMeta;
 use App\Modules\Plugins\PostType\Model\Post;
-use Plugins\AksaraMultiBas\TranslationEngine;
 
 function get_registered_locales()
 {
@@ -10,8 +9,7 @@ function get_registered_locales()
 
 function get_translated_post($post, $lang)
 {
-    $translationEngine = new TranslationEngine();
-    return $translationEngine->getTranslatedPost($post,$lang);
+    return \TranslationEngine::getTranslatedPost($post,$lang);
 }
 
 function get_post_language($post)

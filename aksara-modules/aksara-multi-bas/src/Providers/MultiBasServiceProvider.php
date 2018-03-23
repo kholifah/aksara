@@ -31,7 +31,7 @@ class MultiBasServiceProvider extends ServiceProvider
 
             add_admin_sub_menu_route('aksara-menu-options',$optionIndex);
 
-            \LanguageSwitcher::setCurrentLanguangeFromParam();
+            \LanguageSwitcher::boot();
 
         },200);
 
@@ -83,7 +83,7 @@ class MultiBasServiceProvider extends ServiceProvider
             \Plugins\AksaraMultiBas\LocaleSwitcher\LocaleSwitcherInterface::class
         );
 
-        $this->app->bind(
+        $this->app->singleton(
             \Plugins\AksaraMultiBas\LanguageSwitcher\LanguageSwitcherInterface::class,
             \Plugins\AksaraMultiBas\LanguageSwitcher\Interactor::class
         );
@@ -91,6 +91,16 @@ class MultiBasServiceProvider extends ServiceProvider
         $this->app->bind(
             'language_switcher',
             \Plugins\AksaraMultiBas\LanguageSwitcher\LanguageSwitcherInterface::class
+        );
+
+        $this->app->bind(
+            \Plugins\AksaraMultiBas\TranslationEngine\TranslationEngineInterface::class,
+            \Plugins\AksaraMultiBas\TranslationEngine\Interactor::class
+        );
+
+        $this->app->bind(
+            'translation_engine',
+            \Plugins\AksaraMultiBas\TranslationEngine\TranslationEngineInterface::class
         );
     }
 }

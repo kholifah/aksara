@@ -13,5 +13,6 @@ return [
   'aliases' => [
       'LocaleSwitcher' => 'Plugins\\AksaraMultiBas\\Facades\\LocaleSwitcherFacade',
       'LanguageSwitcher' => 'Plugins\\AksaraMultiBas\\Facades\\LanguageSwitcherFacade',
+      'TranslationEngine' => 'Plugins\\AksaraMultiBas\\Facades\\TranslationEngineFacade',
   ],
 ];
