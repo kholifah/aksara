@@ -16,7 +16,7 @@ class RouteServiceProvider extends ServiceProvider
 
             $argsPost = [
                 'label' => [
-                    'name' =>  __('aksara-commerce::menu.product'),
+                    'name' =>  __('aksara-commerce::global.product'),
                 ],
                 'route' => 'product',
                 'icon' => 'ti-shopping-cart'
@@ -26,7 +26,7 @@ class RouteServiceProvider extends ServiceProvider
 
             $argsCategory = [
                 'label' => [
-                    'name' => __('aksara-commerce::menu.category-product'),
+                    'name' => __('aksara-commerce::global.product-category'),
                 ],
             ];
 
