@@ -14,8 +14,8 @@ class RouteServiceProvider extends ServiceProvider
     {
         \Eventy::addAction('aksara.init-completed', function () {
             $optionIndex = [
-                'page_title' => __('option::page.general_option'),
-                'menu_title' => __('option::menu.general_option'),
+                'page_title' => __('option::global.general-option'),
+                'menu_title' => __('option::global.general-option'),
                 'icon'       => 'ti-brush-alt',
                 'capability' => '',
                 'route'      => [
