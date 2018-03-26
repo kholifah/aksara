@@ -4,9 +4,17 @@ namespace Plugins\PostType\Http;
 use App\Http\Controllers\Controller;
 use Plugins\PostType\Media;
 use Illuminate\Http\Request;
+use Plugins\PostType\MediaUpload\MediaUploadInterface;
 
 class MediaController extends Controller
 {
+    private $uploader;
+
+    public function __construct(MediaUploadInterface $uploader)
+    {
+        $this->uploader = $uploader;
+    }
+
     public function mediaManager()
     {
         aksara_media_uploader();
@@ -15,10 +23,7 @@ class MediaController extends Controller
 
     public function upload(Request $request)
     {
-        $mediaUpload = new \Plugins\PostType\MediaUpload($request);
-
-        $response = $mediaUpload->handle();
-
+        $response = $this->uploader->handle($request);
         return $response;
     }
 

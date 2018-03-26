@@ -17,7 +17,7 @@
 <div class="content__body column-2">
     {!! Form::open(['route' => ['admin.'.get_current_post_type_args('route').'.update', $post->id],'role' => 'form','files' => 'true'])!!}
     {{ method_field('PUT') }}
-    @include('pe::post._form')
+    @include('post-type::post._form')
     {!! Form::close() !!}
 </div>
 

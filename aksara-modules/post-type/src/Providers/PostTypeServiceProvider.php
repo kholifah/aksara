@@ -156,6 +156,11 @@ class PostTypeServiceProvider extends ServiceProvider
 
         \App::bind('Plugins\PostType\Repository\PostRepositoryInterface', 'Plugins\PostType\Repository\PostRepository');
         \App::bind('Plugins\PostType\Repository\TaxonomyRepositoryInterface', 'Plugins\PostType\Repository\TaxonomyRepository');
+
+        $this->app->bind(
+            \Plugins\PostType\MediaUpload\MediaUploadInterface::class,
+            \Plugins\PostType\MediaUpload\Interactor::class
+        );
     }
 }
 

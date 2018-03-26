@@ -1,18 +1,12 @@
 <?php
-namespace Plugins\PostType;
+namespace Plugins\PostType\MediaUpload;
 
 use Plugins\PostType\Model\Post;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Http\Request;
 
-class MediaUpload
+class Interactor implements MediaUploadInterface
 {
-    protected $request;
-
-    function __construct($request)
-    {
-        $this->request = $request;
-    }
-
     private function getSupportedMimesParam()
     {
         return implode(',',
@@ -25,9 +19,9 @@ class MediaUpload
         );
     }
 
-    public function handle()
+    public function handle(Request $request)
     {
-        $validator = Validator::make($this->request->all(),
+        $validator = Validator::make($request->all(),
             [
                 'file' => 'mimetypes:' . $this->getSupportedMimesParam(),
             ],
@@ -42,14 +36,14 @@ class MediaUpload
             );
 
         // Upload file to proper location
-        $extension = $this->request->file('file')->getClientOriginalExtension(); // getting image extension
+        $extension = $request->file('file')->getClientOriginalExtension(); // getting image extension
         $extension = strtolower($extension);
 
         $yearMonth = \Carbon\Carbon::now();
         $path = 'uploads/'.$yearMonth->format('Y/m').'/';
 
         $filename = uniqid() . '_' . time() . '.' . $extension;
-        $this->request->file('file')->move($path, $filename);
+        $request->file('file')->move($path, $filename);
 
         $imagePath = $path.$filename;
         $imageAbsolutePath = url($imagePath);
@@ -63,7 +57,7 @@ class MediaUpload
         $post->post_modified = date('Y-m-d H:i:s');
         $post->post_content = '';
         $post->post_image = '';
-        $post->post_title = $this->request->file('file')->getClientOriginalName();
+        $post->post_title = $request->file('file')->getClientOriginalName();
 
         $post->save();
 
@@ -75,15 +69,5 @@ class MediaUpload
             'post_id'=>$post->id
         ];
     }
-
-    function getDirectory()
-    {
-
-    }
-
-
-    function createDirectory()
-    {
-
-    }
 }
+
