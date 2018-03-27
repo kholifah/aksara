@@ -1,18 +1,18 @@
 <?php
-namespace Plugins\PostType;
 
-use Plugins\PostType\Repository\AksaraQuery;
+namespace Plugins\PostType\Permalink;
 
-class Permalink
+class Interactor implements PermalinkInterface
 {
     private $options = [ "{post-type}/{slug}",
                          "{year}/{month}/{slug}",
                          "{taxonomy-name[name]}/{term-name}/{slug}",
                          "{slug}" ];
+
     private $where = [];
     private $replace = [];
 
-    public function init()
+    public function boot()
     {
         $registeredTaxonomies = \Config::get('aksara.post-type.taxonomies');
         foreach ($registeredTaxonomies as $taxonomy => $taxonomyArgs) {
@@ -28,30 +28,6 @@ class Permalink
     public function getOptions()
     {
         return $this->options;
-    }
-
-
-    public function getPostPermalinkFormat($postType)
-    {
-        $postPermalinkFormat = "";
-        $options = get_options('website_options', []);
-
-        // get from options
-        if( isset($options['permalink']) && isset($options['permalink'][$postType]) ) {
-            $postPermalinkFormat = $options['permalink'][$postType];
-        }
-        // page and post special treatment for default value
-        elseif( $postType == 'post' || $postType == 'page' ) {
-            $postPermalinkFormat =  $this->options[3];
-        }
-        else {
-            // default
-            $postPermalinkFormat =  $this->options[0];
-        }
-
-
-        // filter and return
-        return \Eventy::filter('aksara.post-type.front-end.post-permalink-format', $postPermalinkFormat);
     }
 
     public function getPermalink($post)
@@ -80,6 +56,29 @@ class Permalink
         // replace post type
         $format = str_replace('{post-type}',get_post_type_args('slug',$postType),$format) ;
         return $format;
+    }
+
+    public function getPostPermalinkFormat($postType)
+    {
+        $postPermalinkFormat = "";
+        $options = get_options('website_options', []);
+
+        // get from options
+        if( isset($options['permalink']) && isset($options['permalink'][$postType]) ) {
+            $postPermalinkFormat = $options['permalink'][$postType];
+        }
+        // page and post special treatment for default value
+        elseif( $postType == 'post' || $postType == 'page' ) {
+            $postPermalinkFormat =  $this->options[3];
+        }
+        else {
+            // default
+            $postPermalinkFormat =  $this->options[0];
+        }
+
+
+        // filter and return
+        return \Eventy::filter('aksara.post-type.front-end.post-permalink-format', $postPermalinkFormat);
     }
 
     public function generatePostPermalinkRoutes()
@@ -138,9 +137,6 @@ class Permalink
         \Route::get('/', ['as' => 'aksara.post-type.front-end.home', 'uses' =>'\Plugins\PostType\Http\FrontEndController@serve']);
     }
 
-    /*
-     * Catch All Remaining Route AKA `{slug}`
-     */
     public function generateCatchAll()
     {
         // @TODO route `en/posts` is mistakenly routed to `en/{slug}`
@@ -158,5 +154,5 @@ class Permalink
             \Route::get( $path, $routeParamsFrontEnd);
         },99);
     }
-
 }
+

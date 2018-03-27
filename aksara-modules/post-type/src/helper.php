@@ -23,14 +23,12 @@ function get_post_excerpt($post)
 
 function get_post_permalink($post)
 {
-    $permalink = \App::make('Plugins\PostType\Permalink');
-    return $permalink->getPermalink($post);
+    return \Permalink::getPermalink($post);
 }
 
 function get_post_permalink_format($post)
 {
-    $permalink = \App::make('Plugins\PostType\Permalink');
-    return $permalink->getPostPermalinkFormat($post);
+    return \Permalink::getPostPermalinkFormat($post);
 }
 
 function add_page_template($name, $path)

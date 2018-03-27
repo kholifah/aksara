@@ -8,5 +8,10 @@ return [
   'providers' => [
       'Plugins\\PostType\\Providers\\ActionFilterServiceProvider',
       'Plugins\\PostType\\Providers\\PostTypeServiceProvider',
-  ]
+  ],
+
+  'aliases' => [
+      'Permalink' => 'Plugins\\PostType\\Facades\\PermalinkFacade',
+      'PostTypeFrontEnd' => 'Plugins\\PostType\\Facades\\FrontEndFacade',
+  ],
 ];

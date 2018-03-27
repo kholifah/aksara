@@ -73,8 +73,8 @@ class PostTypeServiceProvider extends ServiceProvider
         $metabox = \App::make('Plugins\PostType\MetaBox');
         $metabox->init();
 
-        $postTypeFrontEnd = \App::make('Plugins\PostType\FrontEnd');
-        $postTypeFrontEnd->init();
+        \PostTypeFrontEnd::boot();
+
         //
         //@TODO pindah ke aksara_admin)enqueue
         \Eventy::addAction('aksara.admin_head', function () {
@@ -122,8 +122,7 @@ class PostTypeServiceProvider extends ServiceProvider
         });
 
         \Eventy::addAction('aksara.routes.before',function(){
-            $permalink = \App::make('Plugins\PostType\Permalink');
-            $permalink->init();
+            \Permalink::boot();
         });
 
     }
@@ -140,27 +139,44 @@ class PostTypeServiceProvider extends ServiceProvider
             $post->enqueueAsset();
             return $post;
         });
+
         \App::singleton('Plugins\PostType\MetaBox', function () {
             return new \Plugins\PostType\MetaBox();
         });
 
         \App::singleton('Plugins\PostType\Media');
 
-        \App::singleton('Plugins\PostType\FrontEnd', function () {
-            return new \Plugins\PostType\FrontEnd();
-        });
+        \App::bind('Plugins\PostType\Repository\PostRepositoryInterface',
+            'Plugins\PostType\Repository\PostRepository');
 
-        \App::singleton('Plugins\PostType\Permalink', function () {
-            return new \Plugins\PostType\Permalink();
-        });
-
-        \App::bind('Plugins\PostType\Repository\PostRepositoryInterface', 'Plugins\PostType\Repository\PostRepository');
-        \App::bind('Plugins\PostType\Repository\TaxonomyRepositoryInterface', 'Plugins\PostType\Repository\TaxonomyRepository');
+        \App::bind('Plugins\PostType\Repository\TaxonomyRepositoryInterface',
+            'Plugins\PostType\Repository\TaxonomyRepository');
 
         $this->app->bind(
             \Plugins\PostType\MediaUpload\MediaUploadInterface::class,
             \Plugins\PostType\MediaUpload\Interactor::class
         );
+
+        $this->app->bind(
+            \Plugins\PostType\Permalink\PermalinkInterface::class,
+            \Plugins\PostType\Permalink\Interactor::class
+        );
+
+        $this->app->bind(
+            'permalink',
+            \Plugins\PostType\Permalink\PermalinkInterface::class
+        );
+
+        $this->app->bind(
+            \Plugins\PostType\FrontEnd\FrontEndInterface::class,
+            \Plugins\PostType\FrontEnd\Interactor::class
+        );
+
+        $this->app->bind(
+            'posttype_frontend',
+            \Plugins\PostType\FrontEnd\FrontEndInterface::class
+        );
+
     }
 }
 

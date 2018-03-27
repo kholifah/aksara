@@ -12,11 +12,10 @@ class OptionController extends Controller
         $options = get_options('website_options', []);
         $pages = $this->generate_homepage_options();
         $postTypes = \Config::get('aksara.post-type.post-types');
-        $permalink = \App::make('Plugins\PostType\Permalink');
 
         $options['custom_meta_header'] = !isset($options['custom_meta_header']) == '' ? $options['custom_meta_header'] :  '<meta name="author" content="" />' ;
 
-        return view('post-type::option.index', compact('options','pages','postTypes','permalink'));
+        return view('post-type::option.index', compact('options','pages','postTypes'));
     }
 
     public function save(Request $request)

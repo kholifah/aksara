@@ -84,7 +84,7 @@
                             <div class="form-group row">
                                 <label class="col-sm-2 col-xs-4 col-xxs-12 col-form-label">{{ get_post_type_args('label.name',$postType) }}</label>
                                 <div class="col-sm-10 col-xs-8 col-xxs-12">
-                                    {!! Form::text("options[permalink][{$postType}]",$permalink->getPostPermalinkFormat($postType), ['class'=>'form-control']) !!}
+                                    {!! Form::text("options[permalink][{$postType}]",\Permalink::getPostPermalinkFormat($postType), ['class'=>'form-control']) !!}
                                 </div>
                             </div>
                             @endif
