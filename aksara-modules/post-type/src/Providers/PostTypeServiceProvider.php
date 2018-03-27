@@ -67,8 +67,7 @@ class PostTypeServiceProvider extends ServiceProvider
         \Plugins\PostType\Model\Post::observe(new \Plugins\PostType\Model\PostSlugObserver());
         \Plugins\PostType\Model\Term::observe(new \Plugins\PostType\Model\TermSlugObserver());
 
-        $media = \App::make('Plugins\PostType\Media');
-        $media->init();
+        \Media::boot();
 
         // Init metabox action handler
         $metabox = \App::make('Plugins\PostType\MetaBox');
@@ -135,18 +134,26 @@ class PostTypeServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        \App::singleton(
+        $this->app->singleton(
             \Plugins\PostType\Post\PostInterface::class,
             \Plugins\PostType\Post\Interactor::class
         );
 
-        \App::singleton('post', \Plugins\PostType\Post\PostInterface::class);
+        $this->app->bind('post', \Plugins\PostType\Post\PostInterface::class);
 
         \App::singleton('Plugins\PostType\MetaBox', function () {
             return new \Plugins\PostType\MetaBox();
         });
 
-        \App::singleton('Plugins\PostType\Media');
+        $this->app->singleton(
+            \Plugins\PostType\Media\MediaInterface::class,
+            \Plugins\PostType\Media\Interactor::class
+        );
+
+        $this->app->bind(
+            'media',
+            \Plugins\PostType\Media\MediaInterface::class
+        );
 
         \App::bind('Plugins\PostType\Repository\PostRepositoryInterface',
             'Plugins\PostType\Repository\PostRepository');

@@ -2,7 +2,6 @@
 namespace Plugins\PostType\Http;
 
 use App\Http\Controllers\Controller;
-use Plugins\PostType\Media;
 use Illuminate\Http\Request;
 use Plugins\PostType\MediaUpload\MediaUploadInterface;
 

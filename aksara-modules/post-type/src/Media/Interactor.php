@@ -1,11 +1,13 @@
 <?php
-namespace Plugins\PostType;
+namespace Plugins\PostType\Media;
 
-class Media
+class Interactor implements MediaInterface
 {
-    public function init()
+    public function boot()
     {
-        \Eventy::addAction('aksara.init', [$this,'registerPostType'], 20);
+        \Eventy::addAction('aksara.init', function () {
+            $this->registerPostType();
+        }, 20);
         // add route
         \Eventy::addAction('aksara.routes.admin', function () {
             \Route::get('media/upload', ['as'=>'admin.media.upload-view','uses'=>'\Plugins\PostType\Http\MediaController@mediaManager']);
@@ -13,7 +15,7 @@ class Media
         });
     }
 
-    public function registerPostType()
+    private function registerPostType()
     {
         // Register Post
         $argsPost = [

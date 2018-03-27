@@ -78,9 +78,7 @@ function get_page_template($post)
 
 function aksara_media_uploader()
 {
-    $media = \App::make('Plugins\PostType\Media');
-
-    $media->enqueueScript();
+    \Media::enqueueScript();
 }
 
 // Function for delete post meta data
