@@ -13,5 +13,6 @@ return [
   'aliases' => [
       'Permalink' => 'Plugins\\PostType\\Facades\\PermalinkFacade',
       'PostTypeFrontEnd' => 'Plugins\\PostType\\Facades\\FrontEndFacade',
+      'PostType' => 'Plugins\\PostType\\Facades\\PostTypeFacade',
   ],
 ];

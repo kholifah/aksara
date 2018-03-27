@@ -15,8 +15,6 @@ class Media
 
     public function registerPostType()
     {
-        $post = \App::make('post');
-
         // Register Post
         $argsPost = [
             'label' => [
@@ -28,7 +26,7 @@ class Media
             'supports' => []
         ];
 
-        $post->registerPostType('media', $argsPost);
+        \PostType::registerPostType('media', $argsPost);
         remove_admin_sub_menu('admin.media.create');
     }
 
@@ -40,6 +38,6 @@ class Media
         }
         \Config::set('aksara_media_uploader', true);
 
-        aksara_admin_enqueue_script(url('assets/modules-v2/post-type/js/media-uploader.js'), 'aksara-media-uploader', 20, true);
+        aksara_admin_enqueue_module_script('post-type', '/js/media-uploader.js', 'aksara-media-uploader', 20, true);
     }
 }

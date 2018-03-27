@@ -1,22 +1,31 @@
 <?php
-namespace Plugins\PostType;
+namespace Plugins\PostType\Post;
 
 use \App\Aksara\Core\AdminMenu\AdminMenu as Menu;
 use Plugins\PostType\Model\Taxonomy;
 
-class Post
+class Interactor implements PostInterface
 {
-    public function __construct()
+    public function boot()
     {
-        \Eventy::addAction('aksara.routes.admin', 'Plugins\PostType\Post@registerAdminRoutes');
+        \Eventy::addAction('aksara.routes.admin', function () {
+            $this->registerAdminRoutes();
+        });
+        $this->enqueueAsset();
     }
 
-    public function enqueueAsset()
+    private function enqueueAsset()
     {
-        aksara_admin_enqueue_script(url('assets/modules-v2/post-type/js/post-type.js'), 'aksara-post-type', 20, true);
+        \AssetQueue::admin()
+            ->script()
+            ->url(url('assets/modules-v2/post-type/js/post-type.js'))
+            ->id('aksara-post-type')
+            ->priority(20)
+            ->footer(true)
+            ->enqueue();
     }
 
-    public function registerAdminRoutes()
+    private function registerAdminRoutes()
     {
         $postTypes = \Config::get('aksara.post-type.post-types');
 
@@ -32,7 +41,7 @@ class Post
               'except' => [
                       'show', 'destroy'
                   ]
-              ]);            
+              ]);
 
             // @TODO rename route to post-type.admin.[$post-type].action
             \Route::get($postTypeArgs['route'].'/{id}/destroy', ['as' => 'admin.'.$postTypeArgs['route'].'.destroy', 'uses' =>'\Plugins\PostType\Http\PostController@destroy']);
@@ -94,7 +103,7 @@ class Post
         $menu->addSubMenuPage('admin.'.$args['route'].'.index', __('post-type::default.add-post-type', ['post-type' => $args['label']['name']]), __('post-type::default.add-post-type', ['post-type' => $args['label']['name']]), 'admin.'.$args['route'].'.create');
     }
 
-    public function parseDefaultArgs($postType, $args)
+    private function parseDefaultArgs($postType, $args)
     {
         if (!isset($args['label'])) {
             throw new Exception('Missing label argument for registering post type '.$postType);
@@ -187,7 +196,7 @@ class Post
     }
 
 
-    public function parseTaxonomyDefaultArgs($taxonomy, $args)
+    private function parseTaxonomyDefaultArgs($taxonomy, $args)
     {
         if (!isset($args['label'])) {
             throw new Exception('Missing label argument for registering taxonomy '.$taxonomy);

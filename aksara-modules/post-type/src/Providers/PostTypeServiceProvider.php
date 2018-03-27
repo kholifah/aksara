@@ -12,8 +12,9 @@ class PostTypeServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        \PostType::boot();
+
         \Eventy::addAction('aksara.init', function () {
-            $post = \App::make('post');
 
             // Register Post
             $argsPost = [
@@ -24,7 +25,7 @@ class PostTypeServiceProvider extends ServiceProvider
                 'icon' => 'ti-write'
             ];
 
-            $post->registerPostType('post', $argsPost);
+            \PostType::registerPostType('post', $argsPost);
 
             // Register Page
             $argsPage = [
@@ -36,7 +37,7 @@ class PostTypeServiceProvider extends ServiceProvider
                 'icon' => 'ti-book'
             ];
 
-            $post->registerPostType('page', $argsPage);
+            \PostType::registerPostType('page', $argsPage);
 
             // Register Taxonomy
             $argsCategory = [
@@ -45,7 +46,7 @@ class PostTypeServiceProvider extends ServiceProvider
                 ],
             ];
 
-            $post->registerTaxonomy('category', ['post'], $argsCategory);
+            \PostType::registerTaxonomy('category', ['post'], $argsCategory);
 
             $argsTag = [
                 'label' => [
@@ -53,7 +54,7 @@ class PostTypeServiceProvider extends ServiceProvider
                 ],
             ];
 
-            $post->registerTaxonomy('tag', ['post'], $argsTag);
+            \PostType::registerTaxonomy('tag', ['post'], $argsTag);
 
             register_image_size('thumbnail',500,500,true,false);
             register_image_size('small',0,300);
@@ -134,11 +135,12 @@ class PostTypeServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        \App::singleton('post', function () {
-            $post =  new \Plugins\PostType\Post();
-            $post->enqueueAsset();
-            return $post;
-        });
+        \App::singleton(
+            \Plugins\PostType\Post\PostInterface::class,
+            \Plugins\PostType\Post\Interactor::class
+        );
+
+        \App::singleton('post', \Plugins\PostType\Post\PostInterface::class);
 
         \App::singleton('Plugins\PostType\MetaBox', function () {
             return new \Plugins\PostType\MetaBox();

@@ -5,7 +5,6 @@ use Plugins\PostType\Model\TermRelationship;
 use Plugins\PostType\Model\Term;
 use Plugins\PostType\Model\Taxonomy;
 
-
 function get_post_title($post)
 {
     return \Eventy::filter('aksara.post-type.front-end.post-title',$post->post_title,$post);
@@ -126,8 +125,7 @@ function status_post($status = false)
 
 function register_post_type($postType, $args)
 {
-    $post = \App::make('post');
-    $post->registerPostType($postType, $args);
+    \PostType::registerPostType($postType, $args);
 }
 
 function add_meta_box(string $id, string $postType, string $callbackRender, string $callbackSave = null, string $location = "metabox", $priority = 20)
@@ -211,51 +209,41 @@ function get_taxonomies($postType = false)
 
 function register_taxonomy($taxonomy, $postType, $args)
 {
-    $post = \App::make('post');
-    $post->registerTaxonomy($taxonomy, $postType, $args);
+    \PostType::registerTaxonomy($taxonomy, $postType, $args);
 }
 
 function add_post_type_to_taxonomy($taxonomy, $postType)
 {
-    $post = \App::make('post');
-    $post->addPostTypeToTaxonomy($taxonomy, $postType);
+    \PostType::addPostTypeToTaxonomy($taxonomy, $postType);
 }
 
 
 function get_current_post_type()
 {
-  $post = \App::make('post');
-  return $post->getCurrentPostType();
+    return \PostType::getCurrentPostType();
 }
 
 function get_current_post_type_from_route($delimiter = false)
 {
-  $post = \App::make('post');
-  return $post->getPostTypeFromRoute($delimiter);
+    return \PostType::getPostTypeFromRoute($delimiter);
 }
 
 function get_current_taxonomy_from_route($delimiter = false)
 {
-  $post = \App::make('post');
-  return $post->getTaxonomyFromRoute($delimiter);
+    return \PostType::getTaxonomyFromRoute($delimiter);
 }
 
 function get_post_type_args($key,$postType = false)
 {
-  $post = \App::make('post');
-
-  $args = $post->getPostTypeArgs($postType);
-
-  return array_get($args,$key);
+    $args = \PostType::getPostTypeArgs($postType);
+    return array_get($args,$key);
 }
 
 function get_current_post_type_args($key = false)
 {
     $postType = get_current_post_type();
 
-     $post = \App::make('post');
-
-    $args = $post->getPostTypeArgs($postType);
+    $args = \PostType::getPostTypeArgs($postType);
 
     return array_get($args,$key);
 }
@@ -263,22 +251,13 @@ function get_current_post_type_args($key = false)
 
 function get_current_taxonomy()
 {
-  $post = \App::make('post');
-  return $post->getCurrentTaxonomy();
+    return \PostType::getCurrentTaxonomy();
 }
-
-// function get_current_taxonomy_args('slug')
-// {
-//   $post = \App::make('post');
-//   return $post->getCurrentTaxonomy();
-// }
 
 function get_taxonomy_args($key,$taxonomy = false)
 {
-  $post = \App::make('post');
-  $args = $post->getTaxonomyArgs($taxonomy);
-
-  return array_get($args,$key);
+    $args = \PostType::getTaxonomyArgs($taxonomy);
+    return array_get($args,$key);
 }
 
 function get_current_taxonomy_args( $key = false )
