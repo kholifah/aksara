@@ -9,11 +9,5 @@ interface PermalinkInterface
     public function getPostPermalinkRoutes($postType);
     public function getPostPermalinkFormat($postType);
 
-    public function generatePostPermalinkRoutes();
-    public function generatePostArchivePermalinkRoutes();
-    public function generateSearchRoute();
-    public function generateHomeRoute();
-    public function generateCatchAll();
-
     public function boot();
 }
