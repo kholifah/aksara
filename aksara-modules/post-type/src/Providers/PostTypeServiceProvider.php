@@ -63,15 +63,13 @@ class PostTypeServiceProvider extends ServiceProvider
 
         });
 
-
         \Plugins\PostType\Model\Post::observe(new \Plugins\PostType\Model\PostSlugObserver());
         \Plugins\PostType\Model\Term::observe(new \Plugins\PostType\Model\TermSlugObserver());
 
         \Media::boot();
 
         // Init metabox action handler
-        $metabox = \App::make('Plugins\PostType\MetaBox');
-        $metabox->init();
+        \Metabox::boot();
 
         \PostTypeFrontEnd::boot();
 
@@ -141,9 +139,15 @@ class PostTypeServiceProvider extends ServiceProvider
 
         $this->app->bind('post', \Plugins\PostType\Post\PostInterface::class);
 
-        \App::singleton('Plugins\PostType\MetaBox', function () {
-            return new \Plugins\PostType\MetaBox();
-        });
+        $this->app->singleton(
+            \Plugins\PostType\MetaboxRegistry\MetaboxRegistryInterface::class,
+            \Plugins\PostType\MetaboxRegistry\Interactor::class
+        );
+
+        $this->app->bind(
+            'metabox',
+            \Plugins\PostType\MetaboxRegistry\MetaboxRegistryInterface::class
+        );
 
         $this->app->singleton(
             \Plugins\PostType\Media\MediaInterface::class,
@@ -155,11 +159,15 @@ class PostTypeServiceProvider extends ServiceProvider
             \Plugins\PostType\Media\MediaInterface::class
         );
 
-        \App::bind('Plugins\PostType\Repository\PostRepositoryInterface',
-            'Plugins\PostType\Repository\PostRepository');
+        $this->app->bind(
+            \Plugins\PostType\Repository\PostRepositoryInterface::class,
+            \Plugins\PostType\Repository\PostRepository::class
+        );
 
-        \App::bind('Plugins\PostType\Repository\TaxonomyRepositoryInterface',
-            'Plugins\PostType\Repository\TaxonomyRepository');
+        $this->app->bind(
+            Plugins\PostType\Repository\TaxonomyRepositoryInterface::class,
+            Plugins\PostType\Repository\TaxonomyRepository::class
+        );
 
         $this->app->bind(
             \Plugins\PostType\MediaUpload\MediaUploadInterface::class,

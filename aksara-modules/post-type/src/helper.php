@@ -128,8 +128,7 @@ function register_post_type($postType, $args)
 
 function add_meta_box(string $id, string $postType, string $callbackRender, string $callbackSave = null, string $location = "metabox", $priority = 20)
 {
-    $metabox = \App::make('Plugins\PostType\MetaBox');
-    $metabox->add($id, $postType, $callbackRender, $callbackSave, $location, $priority);
+    \Metabox::add($id, $postType, $callbackRender, $callbackSave, $location, $priority);
 }
 
 // Function for delete term data

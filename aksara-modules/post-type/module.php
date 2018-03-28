@@ -15,5 +15,6 @@ return [
       'PostTypeFrontEnd' => 'Plugins\\PostType\\Facades\\FrontEndFacade',
       'PostType' => 'Plugins\\PostType\\Facades\\PostTypeFacade',
       'Media' => 'Plugins\\PostType\\Facades\\MediaFacade',
+      'Metabox' => 'Plugins\\PostType\\Facades\\MetaboxFacade',
   ],
 ];

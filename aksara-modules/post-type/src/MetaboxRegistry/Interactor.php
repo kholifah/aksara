@@ -1,18 +1,26 @@
 <?php
-namespace Plugins\PostType;
+namespace Plugins\PostType\MetaboxRegistry;
 
-class MetaBox
+class Interactor implements MetaboxRegistryInterface
 {
-    public function init()
+    public function boot()
     {
         \Eventy::addAction('aksara.init-completed', function () {
             $postTypes = \Config::get('aksara.post-type.post-types', []);
 
             foreach ($postTypes as $postType => $args) {
-                \Eventy::addAction('aksara.post_editor.'.$postType.'.metabox', 'Plugins\PostType\MetaBox@renderMetabox');
-                \Eventy::addAction('aksara.post_editor.'.$postType.'.metabox-sidebar', 'Plugins\PostType\MetaBox@renderMetaboxSidebar');
-                \Eventy::addAction('aksara.post-type.'.$postType.'.create', 'Plugins\PostType\MetaBox@saveMetabox', 10, 2);
-                \Eventy::addAction('aksara.post-type.'.$postType.'.update', 'Plugins\PostType\MetaBox@saveMetabox', 10, 2);
+                \Eventy::addAction('aksara.post_editor.'.$postType.'.metabox', function ($parameters) {
+                    $this->renderMetabox($parameters);
+                });
+                \Eventy::addAction('aksara.post_editor.'.$postType.'.metabox-sidebar', function ($parameters) {
+                    $this->renderMetaboxSidebar($parameters);
+                });
+                \Eventy::addAction('aksara.post-type.'.$postType.'.create', function ($post, $request) {
+                    $this->saveMetabox($post, $request);
+                }, 10, 2);
+                \Eventy::addAction('aksara.post-type.'.$postType.'.update', function ($post, $request) {
+                    $this->saveMetabox($post, $request);
+                }, 10, 2);
             }
         });
     }
@@ -45,17 +53,17 @@ class MetaBox
         \Config::set('aksara.metaboxes', $metaboxes);
     }
 
-    public function renderMetaboxSidebar($parameters=[])
+    private function renderMetaboxSidebar($parameters=[])
     {
         $this->render('metabox-sidebar', $parameters);
     }
 
-    public function renderMetabox($parameters=[])
+    private function renderMetabox($parameters=[])
     {
         $this->render('metabox', $parameters);
     }
 
-    public function saveMetabox($post, $request)
+    private function saveMetabox($post, $request)
     {
         $postType = get_current_post_type();
 
@@ -80,7 +88,7 @@ class MetaBox
         }
     }
 
-    public function render($location, $post)
+    private function render($location, $post)
     {
         $postType = get_current_post_type();
 
