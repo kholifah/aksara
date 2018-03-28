@@ -10,7 +10,7 @@
   </head>
 
   <body>
-    @include('front-end:aksara::partials.navigation')
+    @include('aksara::partials.navigation')
     @yield('content')
 
     <hr>

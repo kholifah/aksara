@@ -1,4 +1,4 @@
-@extends('front-end:aksara::layouts.layout') @section('content')
+@extends('aksara::layouts.layout') @section('content')
 <!-- Page Header -->
 <header class="masthead" style="background-image: url('img/home-bg.jpg')">
     <div class="container">
@@ -33,7 +33,7 @@
                     </div>
                     <hr>
                 @endforeach
-                {{ $data['posts']->appends(\Request::except('page'))->links('front-end:aksara::partials.pagination') }}
+                {{ $data['posts']->appends(\Request::except('page'))->links('aksara::partials.pagination') }}
             @else
             <h2> No Post Found.. </h2>
             @endif

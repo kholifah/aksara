@@ -1,4 +1,4 @@
-@extends('front-end:aksara::layouts.layout') @section('content')
+@extends('aksara::layouts.layout') @section('content')
 <!-- Page Header -->
 <header class="masthead" style="background-image: url('img/home-bg.jpg')">
     <div class="container">
@@ -28,14 +28,14 @@
                             </h3>
                         </a>
                         <p class="post-meta">
-                            Posted by <a href="#">{{ $post->author->name }}</a> {{ $post->post_date }}
+                            @lang('aksara::global.posted-by') <a href="#">{{ $post->author->name }}</a> {{ $post->post_date }}
                         </p>
                     </div>
                     <hr>
                 @endforeach
-                {{ $data['posts']->appends(\Request::except('page'))->links('front-end:aksara::partials.pagination') }}
+                {{ $data['posts']->appends(\Request::except('page'))->links('aksara::partials.pagination') }}
             @else
-            <h2> No Post Found.. </h2>
+            <h2>@lang('aksara::validation.no-posttype-found-message')</h2>
             @endif
         </div>
     </div>

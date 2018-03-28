@@ -1,5 +1,5 @@
 {
-    "name": "aksara-plugins/user",
+    "name": "aksara-plugins/aksara",
     "description": "User and role manager for Aksara",
     "type": "library",
     "require-dev": {
@@ -18,10 +18,7 @@
     "autoload": {
         "psr-4": {
             "Plugins\\Aksara\\": "src/"
-        },
-        "files": [
-            "src/helper.php"
-        ]
+        }
     },
     "autoload-dev": {
         "psr-4": {
