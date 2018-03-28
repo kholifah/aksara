@@ -26,7 +26,7 @@ class Interactor implements MetaboxRegistryInterface
     }
 
     // location default / sidebar
-    public function add(string $id, string $postType, string $callbackRender = null, string $callbackSave = null, string $location = "metabox", $priority = 10)
+    public function add(string $id, string $postType, $callbackRender = null, $callbackSave = null, string $location = "metabox", $priority = 10)
     {
         $metaboxes = \Config::get('aksara.metaboxes', []);
 
@@ -51,6 +51,18 @@ class Interactor implements MetaboxRegistryInterface
         array_push($metaboxes[$postType][$location][$priority], $args);
 
         \Config::set('aksara.metaboxes', $metaboxes);
+    }
+
+    public function addClass(MetaboxBase $metabox)
+    {
+        $this->add(
+            $metabox->getId(),
+            $metabox->getPostType(),
+            $metabox->getCallbackRender(),
+            $metabox->getCallbackSave(),
+            $metabox->getLocation(),
+            $metabox->getPriority()
+        );
     }
 
     private function renderMetaboxSidebar($parameters=[])

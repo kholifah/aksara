@@ -60,14 +60,7 @@ class ActionFilterServiceProvider extends ServiceProvider
                 }
 
                 add_meta_box('save-post', $postType, 'render_metabox_save_post', false, 'metabox-sidebar', 10);
-                add_meta_box(
-                    'post-date-metabox',
-                    $postType,
-                    'Plugins\PostType\PostDateMetaBox@render',
-                    'Plugins\PostType\PostDateMetaBox@save',
-                    'metabox-sidebar',
-                    10
-                );
+                \Metabox::addClass(new \Plugins\PostType\PostDateMetaBox($postType));
 
                 if (in_array('thumbnail', $supports)) {
                     add_meta_box('thumbnail', $postType, 'render_metabox_thumbnail', 'save_metabox_thumbnail', 'metabox-sidebar', 10);

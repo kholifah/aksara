@@ -4,6 +4,7 @@ use Plugins\PostType\Model\PostMeta;
 use Plugins\PostType\Model\TermRelationship;
 use Plugins\PostType\Model\Term;
 use Plugins\PostType\Model\Taxonomy;
+use Plugins\PostType\MetaboxRegistry\MetaboxBase;
 
 function get_post_title($post)
 {
@@ -129,6 +130,11 @@ function register_post_type($postType, $args)
 function add_meta_box(string $id, string $postType, string $callbackRender, string $callbackSave = null, string $location = "metabox", $priority = 20)
 {
     \Metabox::add($id, $postType, $callbackRender, $callbackSave, $location, $priority);
+}
+
+function add_meta_box_class(MetaboxBase $metabox)
+{
+    \Metabox::addClass($metabox);
 }
 
 // Function for delete term data

@@ -2,20 +2,42 @@
 namespace Plugins\PostType;
 
 use Carbon\Carbon;
+use Plugins\PostType\MetaboxRegistry\MetaboxBase;
 
-class PostDateMetaBox
+class PostDateMetaBox extends MetaboxBase
 {
-    public function render($post)
+    private $postType;
+
+    public function __construct($postType)
     {
-        echo view('post-type::partials.metabox_post_date',
-            compact('post'))->render();
+        $this->postType = $postType;
     }
 
-    public function save($post, $request)
+    public function getId()
     {
-        $postDate = Carbon::parse($request->input('post_date'))->format('Y-m-d');
-        $post->post_date = $postDate;
-        $post->save();
+        return 'post-date-metabox';
+    }
+
+    public function getPostType()
+    {
+        return $this->postType;
+    }
+
+    public function getCallbackRender()
+    {
+        return function ($post) {
+            echo view('post-type::partials.metabox_post_date',
+                compact('post'))->render();
+        };
+    }
+
+    public function getCallbackSave()
+    {
+        return function ($post, $request) {
+            $postDate = Carbon::parse($request->input('post_date'))->format('Y-m-d');
+            $post->post_date = $postDate;
+            $post->save();
+        };
     }
 }
 

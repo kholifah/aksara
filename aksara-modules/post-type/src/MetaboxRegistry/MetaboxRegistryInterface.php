@@ -6,6 +6,7 @@ interface MetaboxRegistryInterface
 {
     public function boot();
     public function add(string $id, string $postType,
-        string $callbackRender = null, string $callbackSave = null,
+        $callbackRender = null, $callbackSave = null,
         string $location = "metabox", $priority = 10);
+    public function addClass(MetaboxBase $metabox);
 }

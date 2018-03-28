@@ -9,11 +9,15 @@ abstract class MetaboxBase
      */
     abstract function getId();
     abstract function getPostType();
-    abstract function getCallbackRender();
 
     /**
      * Optional attributes
      */
+    public function getCallbackRender()
+    {
+        return null;
+    }
+
     public function getCallbackSave()
     {
         return null;
