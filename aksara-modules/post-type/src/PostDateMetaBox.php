@@ -18,6 +18,11 @@ class PostDateMetaBox extends MetaboxBase
         return 'post-date-metabox';
     }
 
+    public function getLocation()
+    {
+        return 'metabox-sidebar';
+    }
+
     public function getPostType()
     {
         return $this->postType;
