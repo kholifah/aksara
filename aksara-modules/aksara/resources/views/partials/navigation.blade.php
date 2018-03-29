@@ -23,7 +23,7 @@
             <div class="search-toggle">
                 <i class="fa fa-search"></i>
             </div>
-            @if(function_exists('is_default_multibas_locale'))
+            @if(checkPlugin('aksara-multi-bas'))
             @if(count(get_registered_locales()))
             <div class="lang">
                 @foreach(get_registered_locales() as $locale)
@@ -44,7 +44,7 @@
             @endif
             @endif
             <div class="header-search active" id="header-search">
-                @if(function_exists('is_default_multibas_locale'))
+               @if(checkPlugin('aksara-multi-bas'))
                     @if(is_default_multibas_locale())
                     <form action="{{url('/search')}}">
                             <input type="text" name="query" placeholder="{{  __('aksara::validation.search-keyword-message') }}" class="form-control">

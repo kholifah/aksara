@@ -78,6 +78,19 @@ function get_country_code()
     return collect(json_decode($countries,true));
 }
 
+function checkPlugin($moduleName = FALSE)
+{
+    $module = \App::make('module');
+    $plugin = $module->getModuleStatus('plugin', $moduleName);
+    $frontend = $module->getModuleStatus('front-end', $moduleName);
+  
+    if ($plugin || $frontend)
+        return True;
+    else
+        return False;
+}
+
+
 if (!function_exists('migration_path_v2')) {
     /**
      * Get all path to migrations V2
