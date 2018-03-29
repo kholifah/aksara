@@ -24,7 +24,7 @@
                 <i class="fa fa-search"></i>
             </div>
             @if(function_exists('is_default_multibas_locale'))
-            @if(count(get_registered_locales())) 
+            @if(count(get_registered_locales()))
             <div class="lang">
                 @foreach(get_registered_locales() as $locale)
                     @if(get_current_multibas_locale()==$locale['language_code'])
