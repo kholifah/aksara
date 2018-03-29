@@ -16,7 +16,7 @@ class ModuleManifestTest extends PHPUnit\Framework\TestCase
     public function shouldCreateObject()
     {
         //test generate from config
-        $manifest = ModuleManifest::fromPluginConfig([
+        $manifest = ModuleManifest::fromModuleConfig([
             'name' => $name = $this->faker->slug,
             'description' => $description = $this->faker->sentence,
             'dependencies' => $dependencies = [ $this->faker->slug ],

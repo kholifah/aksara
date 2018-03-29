@@ -39,27 +39,27 @@ class Interactor implements ModuleRegistryHandler
 
     public function getRegisteredModules()
     {
-        $registeredPluginNames = $this->getRegisteredPluginNames();
-        $registeredPlugins = $this->loadModuleManifests($registeredPluginNames);
-        return $registeredPlugins;
+        $registeredModuleNames = $this->getRegisteredModuleNames();
+        $registeredModules = $this->loadModuleManifests($registeredModuleNames);
+        return $registeredModules;
     }
 
-    private function getRegisteredPluginNames()
+    private function getRegisteredModuleNames()
     {
         $pluginDirs = $this->filesystem->directories($this->moduleRoot);
         //take last part only
-        $registeredPluginNames = array_map(function ($fullDir) {
+        $registeredModuleNames = array_map(function ($fullDir) {
             $segments = explode('/', $fullDir);
             return $segments[count($segments)-1];
         }, $pluginDirs);
-        return $registeredPluginNames;
+        return $registeredModuleNames;
     }
 
     public function getActiveModules()
     {
-        $activePluginNames = $this->getActiveManifest();
-        $activePlugins = $this->loadModuleManifests($activePluginNames, true);
-        return $activePlugins;
+        $activeModuleNames = $this->getActiveManifest();
+        $activeModules = $this->loadModuleManifests($activeModuleNames, true);
+        return $activeModules;
     }
 
     private function getActiveManifest()
@@ -89,12 +89,12 @@ class Interactor implements ModuleRegistryHandler
             self::MODULE_MANIFEST;
 
         if (!$this->filesystem->exists($pluginManifestFile)) {
-            throw new \Exception('Plugin manifest file not found');
+            throw new \Exception('Module manifest file not found');
         }
 
         $configArray = $this->filesystem->getRequire($pluginManifestFile);
 
-        $plugin = ModuleManifest::fromPluginConfig(
+        $plugin = ModuleManifest::fromModuleConfig(
             $configArray,
             $this->moduleRoot
         );
@@ -115,8 +115,8 @@ class Interactor implements ModuleRegistryHandler
 
     public function isRegistered($name)
     {
-        $registeredPluginNames = $this->getRegisteredPluginNames();
-        return in_array($name, $registeredPluginNames);
+        $registeredModuleNames = $this->getRegisteredModuleNames();
+        return in_array($name, $registeredModuleNames);
     }
 
     public function activateModule($name)

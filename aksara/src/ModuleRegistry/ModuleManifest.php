@@ -75,7 +75,7 @@ class ModuleManifest
         return $this->type;
     }
 
-    public static function fromPluginConfig(array $array, string $moduleRoot)
+    public static function fromModuleConfig(array $array, string $moduleRoot)
     {
         return new static (
             $array['name'],
