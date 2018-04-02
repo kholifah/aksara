@@ -44,6 +44,16 @@ class Interactor implements ModuleRegistryHandler
         return $registeredModules;
     }
 
+    public function getRegisteredModulesGrouped()
+    {
+        $registeredModules = $this->getRegisteredModules();
+        $result = array();
+        foreach ($registeredModules as $module) {
+            $result[$module->getType()][] = $module;
+        }
+        return $result;
+    }
+
     private function getRegisteredModuleNames()
     {
         $pluginDirs = $this->filesystem->directories($this->moduleRoot);

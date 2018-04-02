@@ -10,15 +10,15 @@ class ModuleManifest
     private $aliases;
     private $active;
 
-    public function __construct(
+    private function __construct(
         string $name,
         string $description,
         ModulePath $pluginPath,
         array $dependencies = [],
         array $providers = [],
         array $aliases = [],
-        bool $active = false,
-        string $type = 'plugin'
+        string $type = 'plugin',
+        bool $active = false
     ){
         $this->name = $name;
         $this->description = $description;
@@ -26,8 +26,8 @@ class ModuleManifest
         $this->dependencies = $dependencies;
         $this->providers = $providers;
         $this->aliases = $aliases;
-        $this->active = $active;
         $this->type = $type;
+        $this->active = $active;
     }
 
     public function getActive()
@@ -77,7 +77,7 @@ class ModuleManifest
 
     public static function fromModuleConfig(array $array, string $moduleRoot)
     {
-        return new static (
+        $module = new static (
             $array['name'],
             $array['description'],
             new ModulePath($moduleRoot, $array['name']),
@@ -86,6 +86,7 @@ class ModuleManifest
             isset($array['aliases']) ? $array['aliases'] : [],
             isset($array['type']) ? $array['type'] : 'plugin'
         );
+        return $module;
     }
 
     public function toManifestArray()

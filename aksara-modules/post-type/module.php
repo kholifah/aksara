@@ -17,4 +17,6 @@ return [
       'Media' => 'Plugins\\PostType\\Facades\\MediaFacade',
       'Metabox' => 'Plugins\\PostType\\Facades\\MetaboxFacade',
   ],
+
+  'type' => 'plugin',
 ];

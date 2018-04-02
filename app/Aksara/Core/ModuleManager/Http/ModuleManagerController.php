@@ -71,14 +71,14 @@ class ModuleManagerController extends Controller
 
     public function index()
     {
-        $module = $this->module;
-        $module->moduleStatusChangeListener();
+        $moduleV1 = $this->module;
+        $moduleV1->moduleStatusChangeListener();
 
         $pluginRequiredBy = $this->pluginRequiredBy;
 
-        $plugins = $this->moduleRegistry->getRegisteredModules();
+        $moduleGroup = $this->moduleRegistry->getRegisteredModulesGrouped();
 
-        $param = compact('module', 'pluginRequiredBy', 'plugins');
+        $param = compact('moduleV1', 'pluginRequiredBy', 'moduleGroup');
 
         return view('core:module-manager::index', $param)->render();
     }

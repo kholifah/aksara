@@ -15,4 +15,6 @@ return [
       'LanguageSwitcher' => 'Plugins\\AksaraMultiBas\\Facades\\LanguageSwitcherFacade',
       'TranslationEngine' => 'Plugins\\AksaraMultiBas\\Facades\\TranslationEngineFacade',
   ],
+
+  'type' => 'plugin',
 ];

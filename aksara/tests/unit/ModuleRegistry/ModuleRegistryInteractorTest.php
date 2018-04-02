@@ -178,19 +178,26 @@ class ModuleRegistryInteractorTest extends PHPUnit\Framework\TestCase
         $filesystem->expects($this->any())
             ->method('getRequire')
             ->willReturnCallback(function ($manifestPath) use (
-                $manifest1, $manifest2, $manifest3) {
+                $manifest1, $manifest2, $manifest3,
+                &$name_1, &$name_2, &$name_3,
+                &$description_1, &$description_2, &$description_3,
+                &$type_1, &$type_2, &$type_3
+            ) {
                 switch ($manifestPath) {
                 case $manifest1: return [
                         'name' => $name_1 = $this->faker->slug,
                         'description' => $description_1 = $this->faker->sentence,
+                        'type' => $type_1 = 'plugin',
                     ];
                 case $manifest2: return [
                         'name' => $name_2 = $this->faker->slug,
                         'description' => $description_2 = $this->faker->sentence,
+                        'type' => $type_2 = 'plugin',
                     ];
                 case $manifest3: return [
                         'name' => $name_3 = $this->faker->slug,
                         'description' => $description_3 = $this->faker->sentence,
+                        'type' => $type_3 = 'frontend',
                     ];
                 default: return null;
                 }
@@ -201,7 +208,104 @@ class ModuleRegistryInteractorTest extends PHPUnit\Framework\TestCase
 
         $interactor = new Interactor($this->app, $filesystem, $notifHandler);
 
-        $interactor->getRegisteredModules();
+        $modules = $interactor->getRegisteredModules();
+
+        $this->assertEquals($name_1, $modules[0]->getName());
+        $this->assertEquals($description_1, $modules[0]->getDescription());
+        $this->assertEquals($type_1, $modules[0]->getType());
+
+        $this->assertEquals($name_2, $modules[1]->getName());
+        $this->assertEquals($description_2, $modules[1]->getDescription());
+        $this->assertEquals($type_2, $modules[1]->getType());
+
+        $this->assertEquals($name_3, $modules[2]->getName());
+        $this->assertEquals($description_3, $modules[2]->getDescription());
+        $this->assertEquals($type_3, $modules[2]->getType());
+    }
+
+    /** @test */
+    public function shouldGetRegisteredModulesGrouped()
+    {
+        $directories = $this->getMockDirectories();
+
+        $filesystem = $this->getMockBuilder(Filesystem::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $filesystem->expects($this->once())
+            ->method('directories')
+            ->with($this->moduleRoot)
+            ->willReturn($directories);
+
+        $filesystem->expects($this->any())
+            ->method('exists')
+            ->with($this->logicalOr(
+                $manifest1 = $directories[0].'/module.php',
+                $manifest2 = $directories[1].'/module.php',
+                $manifest3 = $directories[2].'/module.php',
+                $this->activePath
+            ))
+            ->willReturnCallback(function ($path) {
+                if ($path == $this->activePath) {
+                    return false;
+                }
+                return true;
+            });
+
+        $filesystem->expects($this->any())
+            ->method('getRequire')
+            ->willReturnCallback(function ($manifestPath) use (
+                $manifest1, $manifest2, $manifest3,
+                &$name_1, &$name_2, &$name_3,
+                &$description_1, &$description_2, &$description_3,
+                &$type_1, &$type_2, &$type_3
+            ) {
+                switch ($manifestPath) {
+                case $manifest1: return [
+                        'name' => $name_1 = $this->faker->slug,
+                        'description' => $description_1 = $this->faker->sentence,
+                        'type' => $type_1 = 'plugin',
+                    ];
+                case $manifest2: return [
+                        'name' => $name_2 = $this->faker->slug,
+                        'description' => $description_2 = $this->faker->sentence,
+                        'type' => $type_2 = 'plugin',
+                    ];
+                case $manifest3: return [
+                        'name' => $name_3 = $this->faker->slug,
+                        'description' => $description_3 = $this->faker->sentence,
+                        'type' => $type_3 = 'frontend',
+                    ];
+                default: return null;
+                }
+            });
+
+        $notifHandler = $this->getMockBuilder(AdminNotifHandler::class)
+            ->getMock();
+
+        $interactor = new Interactor($this->app, $filesystem, $notifHandler);
+
+        $grouped = $interactor->getRegisteredModulesGrouped();
+
+        $this->assertCount(2, $grouped['plugin']);
+        $this->assertCount(1, $grouped['frontend']);
+
+        $plugins = $grouped['plugin'];
+
+        $this->assertEquals($name_1, $plugins[0]->getName());
+        $this->assertEquals($description_1, $plugins[0]->getDescription());
+        $this->assertEquals($type_1, $plugins[0]->getType());
+
+        $this->assertEquals($name_2, $plugins[1]->getName());
+        $this->assertEquals($description_2, $plugins[1]->getDescription());
+        $this->assertEquals($type_2, $plugins[1]->getType());
+
+        $frontends = $grouped['frontend'];
+
+        $this->assertEquals($name_3, $frontends[0]->getName());
+        $this->assertEquals($description_3, $frontends[0]->getDescription());
+        $this->assertEquals($type_3, $frontends[0]->getType());
+
     }
 
     private function getMockDirectories($modules = [])
