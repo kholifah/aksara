@@ -27,18 +27,20 @@
     </div>
     <div class="col-md-6">
       <div class="row">
-        <h3>{{ __('core:module-manager::message.pending-migrations') }}</h3>
-        <p>Following migration(s) are pending:</p>
-        <p>{{ __('core:module-manager::message.pending-migrations-path') }}:</p>
+        <h3><i class="fa fa-exclamation-circle yellow-icon" style="margin-right: 5px;"></i>{{ __('core:module-manager::message.pending-migrations') }}</h3>
+        <div class="jumbo-bubble warning">
+          <p>{{ __('core:module-manager::message.pending-migrations-path') }}:</p>
           @foreach($migration_paths as $path)
             <br><code>{{ $path }}</code>
           @endforeach
-        <p>{{ __('core:module-manager::message.pending-migrations-command') }}:</p>
-        <!-- migration pending -->
-          @foreach($migrations as $migration)
-            <br><code>{{ $migration }}</code>
-          @endforeach
-        </ul>
+        </div>
+        <div class="jumbo-bubble warning">
+          <p>{{ __('core:module-manager::message.pending-migrations-command') }}:</p>
+            <!-- migration pending -->
+            @foreach($migrations as $migration)
+              <br><code>{{ $migration }}</code>
+            @endforeach
+        </div>
       </div>
       <div class="row">
         <div class="col-md-12 text-right">

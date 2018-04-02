@@ -16,6 +16,10 @@
     aksara_admin_enqueue_style(url('assets/modules/Admin/Aksara/css/base.css'));
     aksara_admin_enqueue_style(url('assets/modules/Admin/Aksara/css/custom.css'));
 
+    //jquery dataTable
+    aksara_admin_enqueue_style(url('assets/admin/assets/plugins/datatables/jquery.dataTables.min.css'));
+    aksara_admin_enqueue_style(url('assets/admin/assets/plugins/datatables/responsive.bootstrap.min.css'));
+
 });
 
 //@TODO Enqueue semua script dan css admin side kesini

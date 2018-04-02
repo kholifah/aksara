@@ -16,8 +16,10 @@
     <!-- /.content__head -->
     {{-- V2 --}}
     @foreach ($moduleGroup as $type => $modules)
-    <div>
-      <h3>{{ slug_to_title($type) }}</h3>
+    <div class="card-box">
+      <div class="card-box__header card-box__header--noborder">
+        <h3>{{ slug_to_title($type) }}</h3>
+      </div>
       <table class='table'>
         <tr>
           <th style="width:100px">{{  __('core:module-manager::default.status') }}</th>
@@ -64,8 +66,10 @@
     @endforeach
     {{-- End V2 --}}
     {{-- V1 --}}
-    <div>
-      <h3>Legacy Modules</h3>
+    <div class="card-box">
+      <div class="card-box__header card-box__header--noborder">
+        <h3>Legacy Modules</h3>
+      </div>
       <table class='table'>
         <tr>
           <th style="width:100px">{{  __('core:module-manager::default.status') }}</th>
