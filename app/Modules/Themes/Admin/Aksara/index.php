@@ -15,10 +15,11 @@
     aksara_admin_enqueue_style('https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600,700,300|Noto+Sans:400,700');
     aksara_admin_enqueue_style(url('assets/modules/Admin/Aksara/css/base.css'));
     aksara_admin_enqueue_style(url('assets/modules/Admin/Aksara/css/custom.css'));
+    aksara_admin_enqueue_style(url('assets/modules/Admin/Aksara/css/style.css'));
 
     //jquery dataTable
-    aksara_admin_enqueue_style(url('assets/admin/assets/plugins/datatables/jquery.dataTables.min.css'));
-    aksara_admin_enqueue_style(url('assets/admin/assets/plugins/datatables/responsive.bootstrap.min.css'));
+    aksara_admin_enqueue_style(url('assets/plugins/datatables/jquery.dataTables.min.css'));
+    aksara_admin_enqueue_style(url('assets/plugins/datatables/responsive.bootstrap.min.css'));
 
 });
 
