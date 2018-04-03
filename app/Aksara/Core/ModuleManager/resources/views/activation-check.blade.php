@@ -29,10 +29,11 @@
       <div class="row">
         <h3>{{ __('core:module-manager::message.pending-migrations') }}</h3>
         <p>Following migration(s) are pending:</p>
+        <p>{{ __('core:module-manager::message.pending-migrations-path') }}:</p>
           @foreach($migration_paths as $path)
             <br><code>{{ $path }}</code>
           @endforeach
-        <p>{{ __('core:module-manager::message.pending-migrations-message') }}</p>
+        <p>{{ __('core:module-manager::message.pending-migrations-command') }}:</p>
         <!-- migration pending -->
           @foreach($migrations as $migration)
             <br><code>{{ $migration }}</code>
