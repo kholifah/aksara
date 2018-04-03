@@ -7,6 +7,7 @@ use Illuminate\Foundation\AliasLoader;
 
 class ModuleServiceProvider extends ServiceProvider
 {
+    private $hasBackend;
     /**
      * Bootstrap the application services.
      *
@@ -28,42 +29,22 @@ class ModuleServiceProvider extends ServiceProvider
          */
 
         $modules = \ModuleRegistry::getActiveModules();
+        $this->hasBackend = false;
 
         foreach ($modules as $module) {
-
-            //register providers
-            $providers = $module->getProviders();
-            foreach ($providers as $provider) {
-                $this->app->register($provider);
+            \ModuleLoader::load($module);
+            if ($module->getType() == 'backend') {
+                $this->hasBackend = true;
             }
+        }
 
-            //register aliases
-            $aliases = $module->getAliases();
-            AliasLoader::getInstance($aliases)->register();
-
-            //register views
-            if (is_dir($module->getModulePath()->view())) {
-                view()->addNamespace($module->getName(),
-                    $module->getModulePath()->view());
-            }
-
-            //register language namespace
-            if (is_dir($module->getModulePath()->lang())) {
-                app()->afterResolving('translator', function ($translator) use (
-                    $module) {
-                    $translator->addNamespace($module->getName(),
-                        $module->getModulePath()->lang()
-                    );
-                });
-            }
-
-            //register migrations
-            if (is_dir($module->getModulePath()->migration())) {
-                app()->afterResolving('migrator', function ($migrator) use (
-                    $module) {
-                    $migrator->path($module->getModulePath()->migration());
-                });
-            }
+        if (!$this->hasBackend) {
+            $defaultBackendConfig = config('aksara.default_backend');
+            \ModuleRegistry::activateModule($defaultBackendConfig, true);
+            $defaultBackend = \ModuleRegistry::getManifest(
+                $defaultBackendConfig);
+            \ModuleLoader::load($defaultBackend);
+            admin_notice('warning', 'No backend activated, default backend will be activated', true);
         }
     }
 }

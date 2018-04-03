@@ -88,5 +88,15 @@ class AppServiceProvider extends ServiceProvider
             'support_arrays',
             \Aksara\Support\Arrays::class
         );
+
+        $this->app->bind(
+            \Aksara\ModuleLoader\ModuleLoaderInterface::class,
+            \Aksara\ModuleLoader\Interactor::class
+        );
+
+        $this->app->bind(
+            'module_loader',
+            \Aksara\ModuleLoader\ModuleLoaderInterface::class
+        );
     }
 }

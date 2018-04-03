@@ -7,6 +7,7 @@ use Aksara\ModuleIdentifier;
 use Aksara\AdminNotif\AdminNotifRequest;
 use Aksara\AdminNotif\AdminNotifHandler;
 use Aksara\Application\ApplicationInterface;
+use Aksara\Repository\ConfigRepository;
 
 class Interactor implements ModuleRegistryHandler
 {
@@ -18,11 +19,13 @@ class Interactor implements ModuleRegistryHandler
     private $moduleRoot;
     private $activeManifestPath;
     private $app;
+    private $config;
 
     public function __construct(
         ApplicationInterface $app,
         FileSystem $filesystem,
-        AdminNotifHandler $notifHandler
+        AdminNotifHandler $notifHandler,
+        ConfigRepository $config
     ){
         $this->app = $app;
         $this->filesystem = $filesystem;
@@ -30,6 +33,7 @@ class Interactor implements ModuleRegistryHandler
         $this->activeManifestPath = $this->moduleRoot.
             DIRECTORY_SEPARATOR.self::ACTIVE_MANIFEST;
         $this->notifHandler = $notifHandler;
+        $this->config = $config;
     }
 
     public function getModulePath($name) : ModulePath
@@ -47,6 +51,19 @@ class Interactor implements ModuleRegistryHandler
     public function getRegisteredModulesGrouped()
     {
         $registeredModules = $this->getRegisteredModules();
+        $result = $this->groupResult($registeredModules);
+        return $result;
+    }
+
+    private function getActiveModulesGrouped()
+    {
+        $activeModules = $this->getActiveModules();
+        $result = $this->groupResult($activeModules);
+        return $result;
+    }
+
+    private function groupResult($registeredModules)
+    {
         $result = array();
         foreach ($registeredModules as $module) {
             $result[$module->getType()][] = $module;
@@ -129,14 +146,21 @@ class Interactor implements ModuleRegistryHandler
         return in_array($name, $registeredModuleNames);
     }
 
-    public function activateModule($name)
+    public function activateModule($name, bool $silent = false)
+    {
+        $this->includeToActiveManifest($name);
+        if (!$silent) {
+            $this->successNotify($name);
+        }
+    }
+
+    private function includeToActiveManifest($name)
     {
         $activeManifest = $this->getActiveManifest();
         if (!in_array($name, $activeManifest)) {
             $activeManifest[] = $name;
         }
         $this->writeActiveManifest($activeManifest);
-        $this->successNotify($name);
     }
 
     public function deactivateModule($name)
@@ -152,10 +176,12 @@ class Interactor implements ModuleRegistryHandler
         $notifRequest = new AdminNotifRequest(
             'success',
             ($active ? 
-            __('core:module-manager::message.activate-module-successfully', [ 'moduleType' => 'plugin', 'moduleName' => $name] ) :
-            __('core:module-manager::message.deactivate-module-successfully', [ 'moduleType' => 'plugin', 'moduleName' => $name] )
-            )
-           );
+            __('core:module-manager::message.activate-module-successfully', [
+                'moduleType' => 'plugin', 'moduleName' => $name] ) :
+                __('core:module-manager::message.deactivate-module-successfully', [
+                    'moduleType' => 'plugin', 'moduleName' => $name] )
+                )
+            );
 
         $this->notifHandler->handle($notifRequest);
     }

@@ -9,7 +9,7 @@ function render_admin_menu()
     $menu->render();
 }
 
-function admin_notice($labelClass, $content)
+function admin_notice($labelClass, $content, bool $useConfig = false)
 {
     $notices = [];
     $notice = [
@@ -17,13 +17,21 @@ function admin_notice($labelClass, $content)
         'content' => $content
     ];
 
+    if ($useConfig) {
+        $messages = \Config::get('aksara.admin_notice', []);
+        array_push($messages, $notice);
+        \Config::set('aksara.admin_notice', $messages);
+        return;
+    }
+
     if (session()->has('admin_notice')) {
         $messages = session('admin_notice');
         array_push($messages, $notice);
-        session()->flash('admin_notice', $messages);
+        session()->put('admin_notice', $messages);
     } else {
-        session()->flash('admin_notice', [ $notice ]);
+        session()->put('admin_notice', [ $notice ]);
     }
+
 }
 
 function render_admin_notice()
@@ -33,11 +41,13 @@ function render_admin_notice()
     if (session()->has('admin_notice')) {
         $notices = session()->get('admin_notice');
     }
+    $notices = array_merge($notices, \Config::get('aksara.admin_notice', []));
 
     foreach ($notices as $data) {
         echo view('aksara-backend::partials.notice', $data)->render();
     }
 
+    \Config::set('aksara.admin_notice', []);
     session()->forget('admin_notice');
 }
 

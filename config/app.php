@@ -235,6 +235,7 @@ return [
         // 'Surpass'   => Sukohi\Surpass\Facades\Surpass::class,
         'Eventy'    => App\Aksara\Core\Eventy\Facades\Events::class,
         'ModuleRegistry' => Aksara\Facades\ModuleRegistryFacade::class,
+        'ModuleLoader' => Aksara\Facades\ModuleLoaderFacade::class,
         'Strings' => Aksara\Facades\StringsFacade::class,
         'Arrays' => Aksara\Facades\ArraysFacade::class,
         'AssetRenderer' => Aksara\Facades\AssetRendererFacade::class,

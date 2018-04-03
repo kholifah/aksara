@@ -2,7 +2,7 @@
 
 return [
   'name' => 'aksara-backend',
-  'description' => 'Sample Theme',
+  'description' => 'Default Admin Theme',
   'type' => 'backend',
 
   'providers' => [

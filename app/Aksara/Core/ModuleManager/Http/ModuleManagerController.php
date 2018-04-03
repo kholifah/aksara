@@ -158,25 +158,38 @@ class ModuleManagerController extends Controller
         $collection = collect($dependencies);
 
         $statusCollection = $collection->map(function ($item, $key) {
-            $statusInfo = $this->moduleStatus->getStatus($type, $item);
+            $statusInfo = $this->moduleStatus->getStatus($item['type'], $item['name']);
             return $statusInfo;
         });
         return $statusCollection->reverse()->values()->all();
     }
 
+    private function getModuleType($moduleName)
+    {
+        $type = 'plugin';
+        $legacy = $this->moduleRegistry->isRegistered($moduleName) ? false : true;
+        if (!$legacy) {
+            $registeredModule = $this->moduleRegistry->getManifest($moduleName);
+            $type = $registeredModule->getType();
+        }
+        return $type;
+    }
+
     private function resolveDependencies($modules, $type, $slug)
     {
         if (!isset($modules[$type][$slug])) {
-            throw new NotFoundHttpException(__('core:module-manager::message.module-not-found-message'));
+            throw new NotFoundHttpException(
+                __('core:module-manager::message.module-not-found-message'));
         }
         $module = $modules[$type][$slug];
         if (isset($module['dependencies']) && !empty($module['dependencies'])) {
             $childDeps = [];
-            foreach ($module['dependencies'] as $dep) {
+            foreach ($module['dependencies'] as $moduleDep) {
+                $depType = $this->getModuleType($moduleDep);
                 $childDep = $this->resolveDependencies(
                     $modules,
-                    'plugin',
-                    $dep
+                    $depType,
+                    $moduleDep
                 );
                 foreach ($childDep as $dep) {
                     if (!in_array($dep, $childDeps)) {
@@ -184,7 +197,16 @@ class ModuleManagerController extends Controller
                     }
                 }
             }
-            $result = $module['dependencies'];
+            $result = array_map(
+                function ($item) {
+                    $type = $this->getModuleType($item);
+                    return [
+                        'name' => $item,
+                        'type' => $type,
+                    ];
+
+                }, $module['dependencies']
+            );
             foreach ($childDeps as $dep) {
                 if (!in_array($dep, $result)) {
                     $result[] = $dep;
