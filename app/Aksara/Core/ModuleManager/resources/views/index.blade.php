@@ -36,11 +36,10 @@
           @endif
           </td>
           <td>
-
-              @if($module->getActive())
-                <form method='POST' action="{{ route('module-manager.deactivate',['slug'=>$module->getName(),'type'=>$module->getType()]) }}">
+            @if($module->getActive())
+              <form method='POST' action="{{ route('module-manager.deactivate',['slug'=>$module->getName(),'type'=>$module->getType()]) }}">
                 {{ csrf_field() }}
-                <input type='submit' class='btn btn-xs btn-default' value="{{  __('core:module-manager::default.deactivate') }}" {{ $pluginRequiredBy->isRequired(module->getName()) ? __('core:module-manager::default.disabled')  : '' }}>
+                <input type='submit' class='btn btn-xs btn-default' value="{{  __('core:module-manager::default.deactivate') }}" {{ $pluginRequiredBy->isRequired($module->getName()) ? 'disabled'  : '' }}>
               </form>
             @else
                 <a class='btn btn-xs btn-primany' href="{{ route('module-manager.activation-check', [ 'slug' => $module->getName(), 'type' => $module->getType(), ]) }}">{{  __('core:module-manager::default.activate') }}</a>
@@ -48,9 +47,9 @@
           </td>
           <td>
             <p>{{ slug_to_title($module->getName()) }}</p>
-            <p>__('core:module-manager::default.description') }}: {{ $module->getDescription() }}</p>
+            <p>{{ __('core:module-manager::default.description') }}: {{ $module->getDescription() }}</p>
             @if( sizeof($module->getDependencies()) >0 )
-              <p>__('core:module-manager::default.dependencies') }}: {{ implode(',',$module->getDependencies() ) }}</p>
+              <p>{{ __('core:module-manager::default.dependencies') }}: {{ implode(',',$module->getDependencies() ) }}</p>
             @endif
             @if ($pluginRequiredBy->isRequired($module->getName()))
               {{  __('core:module-manager::default.currently-used-by') }}:
@@ -68,7 +67,7 @@
     {{-- V1 --}}
     <div class="card-box">
       <div class="card-box__header card-box__header--noborder">
-        <h3>Legacy Modules</h3>
+        <h3>{{  __('core:module-manager::default.legacy_modules') }}</h3>
       </div>
       <table class='table'>
         <tr>
@@ -90,7 +89,7 @@
             @if($moduleV1->getModuleStatus('plugin',$moduleName))
               <form method='POST' action="{{ route('module-manager.deactivate',['slug'=>$moduleName,'type'=>'plugin']) }}">
                 {{ csrf_field() }}
-                <input type='submit' class='btn btn-xs btn-default' value="{{  __('core:module-manager::default.deactivate') }}" {{ $pluginRequiredBy->isRequired($moduleName) ? __('core:module-manager::default.disabled') : '' }}>
+                <input type='submit' class='btn btn-xs btn-default' value="{{  __('core:module-manager::default.deactivate') }}" {{ $pluginRequiredBy->isRequired($moduleName) ? 'disabled' : '' }}>
               </form>
             @else
               <a class='btn btn-xs btn-primary' href="{{ route('module-manager.activation-check', [ 'slug' => $moduleName, 'type' => 'plugin', ]) }}">{{  __('core:module-manager::default.activate') }}</a>
@@ -98,9 +97,9 @@
           </td>
           <td>
             <p>{{ $moduleDescription['name'] }}</p>
-            <p>__('core:module-manager::default.description') }}: {{ $moduleDescription['description'] }}</p>
+            <p>{{ __('core:module-manager::default.description') }}: {{ $moduleDescription['description'] }}</p>
             @if( sizeof($moduleDescription['dependencies']) >0 )
-              <p>__('core:module-manager::default.dependencies') }}: {{ implode(',',$moduleDescription['dependencies'] ) }}</p>
+              <p>{{ __('core:module-manager::default.dependencies') }}: {{ implode(',',$moduleDescription['dependencies'] ) }}</p>
             @endif
             @if ($pluginRequiredBy->isRequired($moduleName))
               {{  __('core:module-manager::default.currently-used-by') }}:

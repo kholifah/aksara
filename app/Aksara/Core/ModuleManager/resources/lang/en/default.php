@@ -20,6 +20,7 @@ return [
     'dependencies' => 'Dependencies',
     'currently-used-by' => 'Currently used by',
     'plugin-activation-check' => 'Plugin Activation Check',
-    'next' => 'Next'
+    'next' => 'Next',
+    'legacy_modules' => 'Legacy Modules',
 
 ];

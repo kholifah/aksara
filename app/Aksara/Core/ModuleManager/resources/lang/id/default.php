@@ -20,6 +20,6 @@ return [
     'dependencies' => 'Ketergantungan',
     'currently-used-by' => 'Saat ini digunakan oleh',
     'plugin-activation-check' => 'Pengecekan aktifasi plugin',
-    'next' => 'Selanjutnya'
-
+    'next' => 'Selanjutnya',
+    'legacy_modules' => 'Module Lama',
 ];
