@@ -42,7 +42,7 @@
                 <input type='submit' class='btn btn-xs btn-default' value="{{  __('core:module-manager::default.deactivate') }}" {{ $pluginRequiredBy->isRequired($module->getName()) ? 'disabled'  : '' }}>
               </form>
             @else
-                <a class='btn btn-xs btn-primany' href="{{ route('module-manager.activation-check', [ 'slug' => $module->getName(), 'type' => $module->getType(), ]) }}">{{  __('core:module-manager::default.activate') }}</a>
+                <a class='btn btn-xs btn-primary' href="{{ route('module-manager.activation-check', [ 'slug' => $module->getName(), 'type' => $module->getType(), ]) }}">{{  __('core:module-manager::default.activate') }}</a>
             @endif
           </td>
           <td>
@@ -128,7 +128,7 @@
             <input type='submit' class='btn btn-xs btn-default' value="{{  __('core:module-manager::default.deactivate') }}" >
             </form>
           @else
-            <a class='btn btn-xs btn-primany' href="{{ route('module-manager.activation-check', [ 'slug' => $moduleName, 'type' => 'front-end', ]) }}">{{  __('core:module-manager::default.activate') }}</a>
+            <a class='btn btn-xs btn-primary' href="{{ route('module-manager.activation-check', [ 'slug' => $moduleName, 'type' => 'front-end', ]) }}">{{  __('core:module-manager::default.activate') }}</a>
           @endif
           </td>
           <td>
