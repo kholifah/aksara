@@ -40,7 +40,7 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-        $loginPage = \Eventy::filter('aksara.auth-login-register.login.view', 'admin:aksara::auth.login');
+        $loginPage = \Eventy::filter('aksara.auth-login-register.login.view', 'aksara-backend::auth.login');
         return view($loginPage)->render();
     }
 

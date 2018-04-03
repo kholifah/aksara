@@ -47,16 +47,22 @@ class ModuleManagerController extends Controller
         }
 
         //Plugins V2
-        $plugins = $this->moduleRegistry->getRegisteredModules();
-        $pluginsArray = array();
+        $grouped = $this->moduleRegistry->getRegisteredModulesGrouped();
+        foreach ($grouped as $type => $plugins) {
+            $pluginsArray = array();
 
-        foreach ($plugins as $plugin) {
-            $arrayItem = $plugin->toManifestArray();
-            $arrayItem[$plugin->getName()]['version'] = 2;
-            $pluginsArray = array_merge($pluginsArray, $arrayItem);
+            foreach ($plugins as $plugin) {
+                $arrayItem = $plugin->toManifestArray();
+                $arrayItem[$plugin->getName()]['version'] = 2;
+                $pluginsArray = array_merge($pluginsArray, $arrayItem);
+            }
+
+            if (isset($modules[$type])) {
+                $modules[$type] = array_merge($modules[$type], $pluginsArray);
+            } else {
+                $modules[$type] = $pluginsArray;
+            }
         }
-
-        $modules['plugin'] = array_merge($modules['plugin'], $pluginsArray);
         return $modules;
     }
 
@@ -152,7 +158,7 @@ class ModuleManagerController extends Controller
         $collection = collect($dependencies);
 
         $statusCollection = $collection->map(function ($item, $key) {
-            $statusInfo = $this->moduleStatus->getStatus('plugin', $item);
+            $statusInfo = $this->moduleStatus->getStatus($type, $item);
             return $statusInfo;
         });
         return $statusCollection->reverse()->values()->all();
@@ -224,7 +230,7 @@ class ModuleManagerController extends Controller
 
             //TODO refactor to combine with unregistered detection above
             if (!$moduleInfo->getIsRegistered()) {
-                throw new \Exception(__('core:module-manager::message.pending-migration-message', ['moduleType' => $type, 'moduleName' => $slug]));
+                throw new \Exception(__('core:module-manager::message.unregistered-message', ['moduleType' => $type, 'moduleName' => $slug]));
             }
 
             $inactiveOnly = collect($dependenciesInfo)
@@ -256,10 +262,8 @@ class ModuleManagerController extends Controller
                         throw new \Exception(__('core:module-manager::message.error-activating-module-message'));
                     }
                 } else {
-                    if ($itemToBeActivated->getType() == 'plugin') {
-                        $this->moduleRegistry->activateModule(
-                            $itemToBeActivated->getModuleName());
-                    }
+                    $this->moduleRegistry->activateModule(
+                        $itemToBeActivated->getModuleName());
                 }
                 $activated[] = $itemToBeActivated;
             }
@@ -269,7 +273,7 @@ class ModuleManagerController extends Controller
             return redirect()->route('module-manager.index');
         } catch (\Exception $e) {
             admin_notice('warning',
-                 __('core:module-manager::message.fail-activate-module-message', ['moduleType' => $type, 'moduleName' => $slug, 'error' => $e->getMessage()])   
+                 __('core:module-manager::message.fail-activate-module-message', ['moduleType' => $type, 'moduleName' => $slug, 'error' => $e->getMessage()])
             );
             return redirect()->route('module-manager.index');
         }
@@ -281,23 +285,21 @@ class ModuleManagerController extends Controller
             if (strtolower($type) == 'plugin') {
                 if ($this->pluginRequiredBy->isRequired($slug)) {
                     throw new \Exception(
-                        __('core:module-manager::message.cannot-deactivate-module-message', ['moduleType' => $type, 'moduleName' => $slug])                       
+                        __('core:module-manager::message.cannot-deactivate-module-message', ['moduleType' => $type, 'moduleName' => $slug])
                     );
                 }
             }
             if ($this->moduleStatus->getVersion($type, $slug) == 1) {
                 $this->updateModuleStatus->deactivate(new ModuleKey($type, $slug));
             } else {
-                if (strtolower($type) == 'plugin') {
-                    $this->moduleRegistry->deactivateModule($slug);
-                }
+                $this->moduleRegistry->deactivateModule($slug);
             }
             session()->put('deactivating_module', new ModuleKey($type, $slug));
 
             return redirect()->route('module-manager.index');
         } catch (\Exception $e) {
             admin_notice('warning',
-                __('core:module-manager::message.fail-deactivate-module-message', ['moduleType' => $type, 'moduleName' => $slug, 'error' => $e->getMessage()])   
+                __('core:module-manager::message.fail-deactivate-module-message', ['moduleType' => $type, 'moduleName' => $slug, 'error' => $e->getMessage()])
             );
             return redirect()->route('module-manager.index');
         }

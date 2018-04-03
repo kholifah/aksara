@@ -42,7 +42,7 @@ class AdminMenuToolbar
 
         ksort($adminMenus);
 
-        echo view('admin:aksara::partials.admin-menu', compact('adminMenus'))->render();
+        echo view('aksara-backend::partials.admin-menu', compact('adminMenus'))->render();
     }
 
     function registerAdminToolbarDropDownMenu($args) {
@@ -82,6 +82,6 @@ class AdminMenuToolbar
         $adminMenus = \Config::get('aksara.admin-menu.toolbar-dropdown-menu',[]);
         ksort($adminMenus);
 
-        echo view('admin:aksara::partials.toolbar-dropdown-menu', compact('adminMenus'))->render();
+        echo view('aksara-backend::partials.toolbar-dropdown-menu', compact('adminMenus'))->render();
     }
 }

@@ -1,4 +1,4 @@
-@extends('admin:aksara::layouts.layout-auth')
+@extends('aksara-backend::layouts.layout-auth')
 
 @section('content')
 <div class="register-box">

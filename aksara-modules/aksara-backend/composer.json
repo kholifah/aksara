@@ -1,0 +1,22 @@
+{
+    "name": "aksara/aksara-backend",
+    "description": "Sample Aksara backend theme",
+    "type": "library",
+    "require-dev": {
+        "phpunit/phpunit": "^7.0"
+    },
+    "license": "private",
+    "authors": [
+        {
+            "name": "Arseto Nugroho",
+            "email": "satriyo.796@gmail.com"
+        }
+    ],
+    "require": {
+    },
+    "autoload": {
+        "psr-4": {
+            "Backend\\Aksara\\": "src/"
+        }
+    }
+}

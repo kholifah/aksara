@@ -15,8 +15,9 @@ return [
     'fail-deactivate-module-message' => 'Gagal menonaktifkan :moduleType - :moduleName karena :error',
     'module-not-found-message' => 'Modul tidak ditemukan',
     'unregistered-dependency-message' => 'Ketergantungan tidak terdaftar ditemukan',
+    'unregistered-message' => 'Modul :moduleType - :moduleName tidak terdaftar',
     'pending-migration-message' => 'Ditemukan migrasi tertunda',
     'module-unregistered-message' => ':moduleType - :moduleName belum terdaftar',
     'error-activating-module-message' => 'Terjadi kesalahan saat mengaktifkan modul'
-   
+
 ];

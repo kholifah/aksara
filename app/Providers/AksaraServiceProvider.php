@@ -40,7 +40,8 @@ class AksaraServiceProvider extends ServiceProvider
         $module->loadModules('front-end', app_path('Modules/Themes/FrontEnd'));
 
         // Load CMD Themes
-        $module->loadModules('admin', app_path('Modules/Themes/Admin'));
+        // TODO: move backend plugin loading in ModuleServiceProvider
+        //$module->loadModules('admin', app_path('Modules/Themes/Admin'));
         \Eventy::action('aksara.init');
         \Eventy::action('aksara.init-completed');
 

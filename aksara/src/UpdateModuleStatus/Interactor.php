@@ -50,10 +50,10 @@ class Interactor implements UpdateModuleStatusHandler
 
     private function successNotify(ModuleIdentifier $key, $active = true)
     {
-        
+
         $notifRequest = new AdminNotifRequest(
             'success',
-            ($active ? 
+            ($active ?
             __('core:module-manager::message.activate-module-successfully', [ 'moduleType' => $key->getType(), 'moduleName' => $key->getModuleName()] ) :
             __('core:module-manager::message.deactivate-module-successfully', [ 'moduleType' => $key->getType(), 'moduleName' => $key->getModuleName()] )
             )

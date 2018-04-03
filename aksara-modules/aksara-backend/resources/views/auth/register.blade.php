@@ -1,47 +1,45 @@
-@extends('admin:aksara::layouts.layout-auth')
+@extends('aksara-backend::layouts.layout-auth')
 
 @section('content')
-
 <div class="register-box">
   <div class="register-logo">
     <a href="{{ route('home') }}">Admin</a>
   </div>
 
   <div class="register-box-body">
-    <p class="login-box-msg">Set New Password</p>
+    <p class="login-box-msg">Register a new membership</p>
 
-    <form action="{{ url('/password/reset') }}" method="post">
+    <form action="{{ route('doRegister') }}" method="post">
       {{ csrf_field() }}
-      <input type="hidden" name="token" value="{{ $token }}">
+      <div class="form-group {!! $errors->has('name') ? 'has-error' : '' !!}">
+        <input type="text" name="name" class="form-control" placeholder="Name">
+        {!! $errors->first('name', '<p class="help-block">:message</p>') !!}
+      </div>
       <div class="form-group {!! $errors->has('email') ? 'has-error' : '' !!}">
-        {!! Form::label('email', 'Email') !!}
-        {!! Form::text('email', null, ['class'=>'form-control']) !!}
+        <input type="email" name="email" class="form-control" placeholder="Email">
         {!! $errors->first('email', '<p class="help-block">:message</p>') !!}
       </div>
       <div class="form-group {!! $errors->has('password') ? 'has-error' : '' !!}">
-        {!! Form::label('password', 'New Password') !!}
-        {!! Form::password('password', ['class'=>'form-control']) !!}
+        <input type="password" name="password" class="form-control" placeholder="Password">
         {!! $errors->first('password', '<p class="help-block">:message</p>') !!}
       </div>
       <div class="form-group {!! $errors->has('password_confirmation') ? 'has-error' : '' !!}">
-        {!! Form::label('password_confirmation', 'Confirmation Password') !!}
-        {!! Form::password('password_confirmation', ['class'=>'form-control']) !!}
+        <input type="password" name="password_confirmation" class="form-control" placeholder="Retype password">
         {!! $errors->first('password_confirmation', '<p class="help-block">:message</p>') !!}
       </div>
       <div class="row">
         <!-- /.col -->
         <div class="col-xs-4">
-          <button type="submit" class="btn btn-primary btn-block btn-flat">SET</button>
+          <button type="submit" class="btn btn-primary btn-block btn-flat">Register</button>
         </div>
         <!-- /.col -->
       </div>
     </form>
 
 
-    <a href="{{ route('login') }}" class="text-center">I Remember my password</a>
+    <a href="{{ route('login') }}" class="text-center">I already have a membership</a>
   </div>
   <!-- /.form-box -->
 </div>
 <!-- /.register-box -->
-
 @endsection

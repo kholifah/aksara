@@ -33,7 +33,7 @@
 
             <!-- Top Bar Start -->
             <div class="topbar">
-                @include('admin:aksara::partials.topbar')
+                @include('aksara-backend::partials.topbar')
             </div>
             <!-- Top Bar End -->
 
@@ -41,7 +41,7 @@
             <div class="left side-menu">
                 <div class="sidebar-inner slimscrollleft">
                     <!--- Divider -->
-                    @include('admin:aksara::partials.sidebar')
+                    @include('aksara-backend::partials.sidebar')
                     <div class="clearfix"></div>
                 </div>
             </div>

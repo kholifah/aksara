@@ -15,6 +15,7 @@ return [
     'fail-deactivate-module-message' => 'Fail deactivate :moduleType - :moduleName because :error',
     'module-not-found-message' => 'Module not found',
     'unregistered-dependency-message' => 'Unregistered dependency found',
+    'unregistered-message' => 'Module :moduleType - :moduleName is not registered',
     'pending-migration-message' => 'Pending migration found',
     'module-unregistered-message' => ':moduleType - :moduleName is not registered',
     'error-activating-module-message' => 'Error occured when activating module'

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "2fd3f125e2a44bcaf02c69e443b94313",
+    "content-hash": "18e472e3890d73c12df686a07fc48f39",
     "packages": [
         {
             "name": "bnbwebexpertise/laravel-merge-plugin",

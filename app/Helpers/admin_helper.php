@@ -35,7 +35,7 @@ function render_admin_notice()
     }
 
     foreach ($notices as $data) {
-        echo view('admin:aksara::partials.notice', $data)->render();
+        echo view('aksara-backend::partials.notice', $data)->render();
     }
 
     session()->forget('admin_notice');
