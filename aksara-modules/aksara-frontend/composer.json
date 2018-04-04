@@ -1,0 +1,23 @@
+{
+    "name": "aksara/aksara-frontend",
+    "description": "Sample Aksara frontend theme",
+    "type": "library",
+    "require-dev": {
+        "phpunit/phpunit": "^7.0"
+    },
+    "license": "private",
+    "authors": [
+        {
+            "name": "Arseto Nugroho",
+            "email": "satriyo.796@gmail.com"
+        }
+    ],
+    "require": {
+    },
+    "autoload": {
+        "psr-4": {
+            "Frontend\\Aksara\\": "src/"
+        }
+    }
+}
+

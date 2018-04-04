@@ -9,6 +9,7 @@ class ModuleManifest
     private $providers;
     private $aliases;
     private $active;
+    private $title;
 
     private function __construct(
         string $name,
@@ -18,6 +19,7 @@ class ModuleManifest
         array $providers = [],
         array $aliases = [],
         string $type = 'plugin',
+        ?string $title = null,
         bool $active = false
     ){
         $this->name = $name;
@@ -27,6 +29,7 @@ class ModuleManifest
         $this->providers = $providers;
         $this->aliases = $aliases;
         $this->type = $type;
+        $this->title = $title;
         $this->active = $active;
     }
 
@@ -75,6 +78,11 @@ class ModuleManifest
         return $this->type;
     }
 
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
     public static function fromModuleConfig(array $array, string $moduleRoot)
     {
         $module = new static (
@@ -84,7 +92,8 @@ class ModuleManifest
             isset($array['dependencies']) ? $array['dependencies'] : [],
             isset($array['providers']) ? $array['providers'] : [],
             isset($array['aliases']) ? $array['aliases'] : [],
-            isset($array['type']) ? $array['type'] : 'plugin'
+            isset($array['type']) ? $array['type'] : 'plugin',
+            isset($array['title']) ? $array['title'] : null
         );
         return $module;
     }
@@ -99,6 +108,7 @@ class ModuleManifest
                 'providers' => $this->providers,
                 'aliases' => $this->aliases,
                 'type' => $this->type,
+                'title' => $this->title,
             ]
         ];
     }

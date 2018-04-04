@@ -46,7 +46,7 @@
             @endif
           </td>
           <td>
-            <p>{{ slug_to_title($module->getName()) }}</p>
+            <p>{{ $module->getTitle()?? slug_to_title($module->getName()) }}</p>
             <p>{{ __('core:module-manager::default.description') }}: {{ $module->getDescription() }}</p>
             @if( sizeof($module->getDependencies()) >0 )
               <p>{{ __('core:module-manager::default.dependencies') }}: {{ implode(',',$module->getDependencies() ) }}</p>

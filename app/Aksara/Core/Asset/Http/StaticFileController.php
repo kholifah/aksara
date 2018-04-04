@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 class StaticFileController extends Controller
 {
+    //TODO serve V2
     public function serve($module_type, $module_name)
     {
         // if( $routeParams['module_type'] == 'plugins' )

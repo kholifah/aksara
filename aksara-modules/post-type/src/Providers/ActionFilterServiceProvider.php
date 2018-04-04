@@ -160,8 +160,8 @@ class ActionFilterServiceProvider extends AbstractModuleProvider
                 // Return default single page priority
                 else {
                     return [
-                        'front-end:aksara::single-'.$data['postType'],
-                        'front-end:aksara::single'
+                        'aksara-frontend::single-'.$data['postType'],
+                        'aksara-frontend::single'
                     ];
                 }
             }

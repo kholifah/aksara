@@ -35,8 +35,8 @@ class FrontEndController extends Controller
             $aksaraQueryArgs['post_slug'] = \Request::route('slug');
 
             $viewPriorities = [
-                'front-end:aksara::single-'.$data['postType'],
-                'front-end:aksara::single'
+                'aksara-frontend::single-'.$data['postType'],
+                'aksara-frontend::single'
             ];
         }
         elseif (str_contains($routeName,'archive-taxonomy') ) {
@@ -46,9 +46,9 @@ class FrontEndController extends Controller
             $data['taxonomy'] = get_current_taxonomy();
 
             $viewPriorities = [
-                'front-end:aksara::archive-'.$data['taxonomy'] ,
-                'front-end:aksara::archive-taxonomy',
-                'front-end:aksara::archive'
+                'aksara-frontend::archive-'.$data['taxonomy'] ,
+                'aksara-frontend::archive-taxonomy',
+                'aksara-frontend::archive'
             ];
 
             $term = \Request::route('term');
@@ -75,8 +75,8 @@ class FrontEndController extends Controller
 
             $data['postType'] =  get_current_post_type();
             $viewPriorities = [
-                'front-end:aksara::archive-'.$data['postType'],
-                'front-end:aksara::archive'
+                'aksara-frontend::archive-'.$data['postType'],
+                'aksara-frontend::archive'
             ];
             $aksaraQueryArgs['post_type'] = $data['postType'];
         }
@@ -87,7 +87,7 @@ class FrontEndController extends Controller
             $aksaraQueryArgs['post_type'] = 'post' ;
 
             $viewPriorities = [
-                'front-end:aksara::home'
+                'aksara-frontend::home'
             ];
         }
         elseif (str_contains($routeName,'search') ) {
@@ -98,8 +98,8 @@ class FrontEndController extends Controller
             $aksaraQueryArgs['post_type'] = false;
 
             $viewPriorities = [
-                'front-end:aksara::search',
-                'front-end:aksara::archive'
+                'aksara-frontend::search',
+                'aksara-frontend::archive'
             ];
         }
 
