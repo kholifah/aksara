@@ -74,11 +74,9 @@ class ModuleManagerController extends Controller
         $moduleV1 = $this->module;
         $moduleV1->moduleStatusChangeListener();
 
-        $pluginRequiredBy = $this->pluginRequiredBy;
-
         $moduleGroup = $this->moduleRegistry->getRegisteredModulesGrouped();
 
-        $param = compact('moduleV1', 'pluginRequiredBy', 'moduleGroup');
+        $param = compact('moduleV1', 'moduleGroup');
 
         return view('core:module-manager::index', $param)->render();
     }

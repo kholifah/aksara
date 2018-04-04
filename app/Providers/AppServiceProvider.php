@@ -50,11 +50,6 @@ class AppServiceProvider extends ServiceProvider
         );
 
         $this->app->bind(
-            \Aksara\ModuleDependency\PluginRequiredBy::class,
-            \Aksara\ModuleDependency\PluginRequiredByInteractor::class
-        );
-
-        $this->app->bind(
             \Aksara\ErrorLoadModule\ErrorLoadModuleHandler::class,
             \Aksara\ErrorLoadModule\Interactor::class
         );

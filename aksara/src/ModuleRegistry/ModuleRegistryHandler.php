@@ -8,6 +8,7 @@ interface ModuleRegistryHandler
     public function getRegisteredModules();
     public function getRegisteredModulesGrouped();
     public function getActiveModules();
+    public function getActiveModuleByType($type);
     public function isActive($name);
     public function isRegistered($name);
     public function activateModule($name);

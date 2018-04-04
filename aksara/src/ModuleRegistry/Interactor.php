@@ -57,6 +57,15 @@ class Interactor implements ModuleRegistryHandler
         return $result;
     }
 
+    public function getActiveModuleByType($type)
+    {
+        $grouped = $this->getActiveModulesGrouped();
+        if (isset($grouped[$type])) {
+            return $grouped[$type];
+        }
+        return null;
+    }
+
     private function groupResult($registeredModules)
     {
         $result = array();

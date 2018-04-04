@@ -178,6 +178,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         Collective\Html\HtmlServiceProvider::class,
         'App\Aksara\Core\Eventy\EventServiceProvider',
+        Aksara\Providers\ModuleDependencyServiceProvider::class,
         App\Providers\ModuleServiceProvider::class,
         'App\Providers\AksaraServiceProvider',
         Aksara\Providers\AssetServiceProvider::class,
@@ -240,6 +241,7 @@ return [
         'Arrays' => Aksara\Facades\ArraysFacade::class,
         'AssetRenderer' => Aksara\Facades\AssetRendererFacade::class,
         'AssetQueue' => Aksara\Facades\AssetQueueFacade::class,
+        'PluginRequiredBy' => Aksara\Facades\PluginRequiredByFacade::class,
     ],
 
 ];
