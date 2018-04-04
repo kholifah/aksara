@@ -12,10 +12,10 @@ use Plugins\PostType\Repository\TaxonomyRepositoryInterface;
 
 class TaxonomyController extends Controller
 {
-    public function __construct(TaxonomyRepositoryInterface $term)
-    {
-        $this->term = $term;
-    }
+    //public function __construct(TaxonomyRepositoryInterface $term)
+    //{
+    //    $this->term = $term;
+    //}
 
     public function index(Request $request)
     {
