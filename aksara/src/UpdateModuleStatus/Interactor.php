@@ -4,23 +4,18 @@ namespace Aksara\UpdateModuleStatus;
 use Aksara\ModuleIdentifier;
 use Aksara\ModuleStatus\ModuleStatus;
 use Aksara\Repository\OptionRepository;
-use Aksara\AdminNotif\AdminNotifRequest;
-use Aksara\AdminNotif\AdminNotifHandler;
 
 class Interactor implements UpdateModuleStatusHandler
 {
     private $moduleStatus;
     private $optionRepo;
-    private $notifHandler;
 
     public function __construct(
         ModuleStatus $moduleStatus,
-        OptionRepository $optionRepo,
-        AdminNotifHandler $notifHandler
+        OptionRepository $optionRepo
     ){
         $this->moduleStatus = $moduleStatus;
         $this->optionRepo = $optionRepo;
-        $this->notifHandler = $notifHandler;
     }
 
     public function activate(ModuleIdentifier $key)
@@ -43,23 +38,8 @@ class Interactor implements UpdateModuleStatusHandler
 
         $this->optionRepo->setOptions('aksara.modules.actives', $activeModules);
 
-        $this->successNotify($key);
 
         return true;
-    }
-
-    private function successNotify(ModuleIdentifier $key, $active = true)
-    {
-
-        $notifRequest = new AdminNotifRequest(
-            'success',
-            ($active ?
-            __('core:module-manager::message.activate-module-successfully', [ 'moduleType' => $key->getType(), 'moduleName' => $key->getModuleName()] ) :
-            __('core:module-manager::message.deactivate-module-successfully', [ 'moduleType' => $key->getType(), 'moduleName' => $key->getModuleName()] )
-            )
-           );
-
-        $this->notifHandler->handle($notifRequest);
     }
 
     public function deactivate(ModuleIdentifier $moduleId)
@@ -80,7 +60,6 @@ class Interactor implements UpdateModuleStatusHandler
         }
 
         $this->optionRepo->setOptions('aksara.modules.actives', $activeModules);
-        $this->successNotify($moduleId, false);
 
         return true;
     }

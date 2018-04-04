@@ -2,11 +2,11 @@
 
 namespace Backend\Aksara\Providers;
 
-use Illuminate\Support\ServiceProvider;
+use Aksara\Providers\AbstractModuleProvider;
 
-class BackendServiceProvider extends ServiceProvider
+class BackendServiceProvider extends AbstractModuleProvider
 {
-    public function boot()
+    public function safeBoot()
     {
         \Eventy::addAction('aksara.init', function () {
             // Load Jquery on Top

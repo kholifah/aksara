@@ -2,17 +2,16 @@
 
 namespace Plugins\AksaraMultiBas\Providers;
 
-use Illuminate\Support\ServiceProvider;
-use Illuminate\Foundation\Http\Kernel;
+use Aksara\Providers\AbstractModuleProvider;
 
-class MultiBasServiceProvider extends ServiceProvider
+class MultiBasServiceProvider extends AbstractModuleProvider
 {
     /**
      * Bootstrap the application services.
      *
      * @return void
      */
-    public function boot()
+    public function safeBoot()
     {
         \Eventy::addAction('aksara.init', function () {
             $optionIndex = [
@@ -69,7 +68,7 @@ class MultiBasServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function register()
+    public function safeRegister()
     {
         $this->app->bind(
             \Plugins\AksaraMultiBas\LocaleSwitcher\LocaleSwitcherInterface::class,

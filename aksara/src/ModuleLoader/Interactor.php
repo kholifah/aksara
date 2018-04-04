@@ -11,7 +11,12 @@ class Interactor implements ModuleLoaderInterface
     {
         $providers = $module->getProviders();
         foreach ($providers as $provider) {
-            app()->register($provider);
+            $providerInstance = new $provider(
+                app(),
+                $module->getName(),
+                $module->getType()
+            );
+            app()->register($providerInstance);
         }
 
         //register aliases

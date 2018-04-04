@@ -1,16 +1,16 @@
 <?php
 namespace Plugins\AksaraCommerce\Providers;
 
-use Illuminate\Support\ServiceProvider;
+use Aksara\Providers\AbstractModuleProvider;
 
-class RouteServiceProvider extends ServiceProvider
+class RouteServiceProvider extends AbstractModuleProvider
 {
     /**
      * Boot application services
      *
      * e.g, route, anything needs to be preload
      */
-    public function boot()
+    public function safeBoot()
     {
         \Eventy::addAction('aksara.init-completed', function () {
 

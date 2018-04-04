@@ -1,11 +1,11 @@
 <?php
 namespace Plugins\User\Providers;
 
-use Illuminate\Support\ServiceProvider;
+use Aksara\Providers\AbstractModuleProvider;
 
-class UserServiceProvider extends ServiceProvider
+class UserServiceProvider extends AbstractModuleProvider
 {
-    public function register()
+    public function safeRegister()
     {
         $this->app->bind(
             \Plugins\User\RoleCapability\ConfigRepository::class,

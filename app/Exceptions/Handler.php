@@ -6,6 +6,7 @@ use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Contracts\Container\Container;
 use Aksara\Exceptions\LoadModuleException;
+use Aksara\ErrorLoadModule\ErrorLoadModuleHandler;
 
 class Handler extends ExceptionHandler
 {
@@ -29,11 +30,14 @@ class Handler extends ExceptionHandler
         'password_confirmation',
     ];
 
+    private $loadErrorHandler;
 
     public function __construct(
-        Container $container
+        Container $container,
+        ErrorLoadModuleHandler $loadErrorHandler
     ){
         parent::__construct($container);
+        $this->loadErrorHandler = $loadErrorHandler;
     }
 
     /**
@@ -59,15 +63,16 @@ class Handler extends ExceptionHandler
     public function render($request, Exception $exception)
     {
         if ($exception instanceof LoadModuleException) {
-            if (is_admin()) {
-                $queryParams = [
-                    'msg' => $exception->getMessage(),
-                    'link_name' => 'Back to module manager index',
-                    'link_url' => url('/admin/aksara-module-manager'),
-                ];
-                $query = http_build_query($queryParams);
-                return redirect('error-fallback?' . $query);
-            }
+            $this->loadErrorHandler->handle($exception);
+
+            $queryParams = [
+                'msg' => $exception->getMessage(),
+                'link_name' => 'Back to module manager index',
+                'link_url' => url('/admin/aksara-module-manager'),
+            ];
+
+            $query = http_build_query($queryParams);
+            return redirect('error-fallback?' . $query);
         }
         return parent::render($request, $exception);
     }

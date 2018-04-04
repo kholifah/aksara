@@ -4,29 +4,55 @@ namespace Aksara\ErrorLoadModule;
 use Aksara\Exceptions\LoadModuleException;
 use Aksara\Repository\SessionRepository;
 use Aksara\UpdateModuleStatus\UpdateModuleStatusHandler;
+use Aksara\ModuleRegistry\ModuleRegistryHandler;
 
 class Interactor implements ErrorLoadModuleHandler
 {
     private $sessionRepo;
     private $updateStatusHandler;
+    private $moduleRegistry;
 
     public function __construct(
         SessionRepository $sessionRepo,
-        UpdateModuleStatusHandler $updateStatusHandler
+        UpdateModuleStatusHandler $updateStatusHandler,
+        ModuleRegistryHandler $moduleRegistry
     ){
         $this->sessionRepo = $sessionRepo;
         $this->updateStatusHandler = $updateStatusHandler;
+        $this->moduleRegistry = $moduleRegistry;
     }
 
     public function handle(LoadModuleException $exception) : ErrorLoadModuleResponse
+    {
+        if ($this->moduleRegistry->isRegistered(
+            $exception->getKey()->getModuleName()
+        )) {
+            return $this->handleV2($exception);
+        }
+        return $this->handleV1($exception);
+    }
+
+    private function handleV2(LoadModuleException $exception)
+    {
+        $moduleName = $exception->getKey()->getModuleName();
+        $this->moduleRegistry->deactivateModule($moduleName);
+        $info = 'Module ' . $moduleName . ' deactivated.';
+
+        $response = new ErrorLoadModuleResponse(
+            $exception,
+            $info
+        );
+
+        return $response;
+    }
+
+    private function handleV1(LoadModuleException $exception)
     {
         $info = '';
 
         if (!$this->sessionRepo->has('activating_module') &&
             !$this->sessionRepo->has('deactivating_module')
         ){
-            //error not occured when changing module status, simply deactivate
-            //module that causes problem
             $this->updateStatusHandler->deactivate($exception->getKey());
             $info .= 'Module ' . $exception->getKey()->getModuleName() . ' deactivated.';
         }
@@ -65,6 +91,5 @@ class Interactor implements ErrorLoadModuleHandler
         );
 
         return $response;
-
     }
 }

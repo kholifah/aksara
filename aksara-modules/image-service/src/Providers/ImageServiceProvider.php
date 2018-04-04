@@ -1,17 +1,17 @@
 <?php
 namespace Plugins\ImageService\Providers;
 
-use Illuminate\Support\ServiceProvider;
 use Plugins\ImageService\Http\Controllers\ImageServiceController;
+use Aksara\Providers\AbstractModuleProvider;
 
-class ImageServiceProvider extends ServiceProvider
+class ImageServiceProvider extends AbstractModuleProvider
 {
     /**
      * Boot application services
      *
      * e.g, route, anything needs to be preload
      */
-    public function boot()
+    public function safeBoot()
     {
         $pathArray = [];
 
@@ -30,7 +30,7 @@ class ImageServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function register()
+    public function safeRegister()
     {
         $this->app->bind(
             \Plugins\ImageService\ConfigRepository::class,
@@ -63,5 +63,6 @@ class ImageServiceProvider extends ServiceProvider
                 return new \Intervention\Image\ImageManager(array('driver' => 'gd'));
             }
         );
+
     }
 }

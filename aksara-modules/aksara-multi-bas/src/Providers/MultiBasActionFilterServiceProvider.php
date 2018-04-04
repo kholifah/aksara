@@ -2,16 +2,16 @@
 
 namespace Plugins\AksaraMultiBas\Providers;
 
-use Illuminate\Support\ServiceProvider;
+use Aksara\Providers\AbstractModuleProvider;
 
-class MultiBasActionFilterServiceProvider extends ServiceProvider
+class MultiBasActionFilterServiceProvider extends AbstractModuleProvider
 {
     /**
      * Bootstrap the application services.
      *
      * @return void
      */
-    public function boot()
+    public function safeBoot()
     {
         /**
          * table.php
@@ -190,15 +190,5 @@ class MultiBasActionFilterServiceProvider extends ServiceProvider
             }
         });
 
-    }
-
-    /**
-     * Register the application services.
-     *
-     * @return void
-     */
-    public function register()
-    {
-        //
     }
 }

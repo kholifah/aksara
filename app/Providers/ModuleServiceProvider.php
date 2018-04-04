@@ -39,7 +39,7 @@ class ModuleServiceProvider extends ServiceProvider
 
         if (!$hasBackend) {
             $defaultBackendConfig = config('aksara.default_backend');
-            \ModuleRegistry::activateModule($defaultBackendConfig, true);
+            \ModuleRegistry::activateModule($defaultBackendConfig);
             $defaultBackend = \ModuleRegistry::getManifest(
                 $defaultBackendConfig);
             \ModuleLoader::load($defaultBackend);

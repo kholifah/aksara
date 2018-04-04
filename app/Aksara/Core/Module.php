@@ -20,36 +20,29 @@ class Module
     // $type = front-end, plugin, admin,core
     public function loadModules($type, $path)
     {
-        try {
-            $modules = \File::directories($path);
+        $modules = \File::directories($path);
 
-            foreach ($modules as $modulePath) {
-                $this->registerModule($type, $modulePath);
-            }
-
-            foreach ($modules as $modulePath) {
-                // non active module don't need to be loaded
-                $moduleName = $this->getModuleSlug($modulePath);
-
-                if (!$this->getModuleStatus($type, $moduleName)) {
-                    continue;
-                }
-                $this->loadModule($type, $moduleName);
-            }
-
-            //module successfully loaded, remove any init vars
-            if (session()->has('activating_module')) {
-                session()->forget('activating_module');
-            }
-            if (session()->has('deactivating_module')) {
-                session()->forget('deactivating_module');
-            }
-        } catch (LoadModuleException $e) {
-            $handler = app(ErrorLoadModuleHandler::class);
-            $handler->handle($e);
-            throw $e;
+        foreach ($modules as $modulePath) {
+            $this->registerModule($type, $modulePath);
         }
 
+        foreach ($modules as $modulePath) {
+            // non active module don't need to be loaded
+            $moduleName = $this->getModuleSlug($modulePath);
+
+            if (!$this->getModuleStatus($type, $moduleName)) {
+                continue;
+            }
+            $this->loadModule($type, $moduleName);
+        }
+
+        //module successfully loaded, remove any init vars
+        if (session()->has('activating_module')) {
+            session()->forget('activating_module');
+        }
+        if (session()->has('deactivating_module')) {
+            session()->forget('deactivating_module');
+        }
     }
 
     // $type = front-end, plugin, cms

@@ -10,7 +10,7 @@ interface ModuleRegistryHandler
     public function getActiveModules();
     public function isActive($name);
     public function isRegistered($name);
-    public function activateModule($name, bool $silent = false);
+    public function activateModule($name);
     public function deactivateModule($name);
     public function getManifest($name);
 }

@@ -1,16 +1,16 @@
 <?php
 namespace Plugins\PostType\Providers;
 
-use Illuminate\Support\ServiceProvider;
+use Aksara\Providers\AbstractModuleProvider;
 
-class ActionFilterServiceProvider extends ServiceProvider
+class ActionFilterServiceProvider extends AbstractModuleProvider
 {
     /**
      * Boot application services
      *
      * e.g, route, anything needs to be preload
      */
-    public function boot()
+    public function safeBoot()
     {
         /**
          * post-index-list

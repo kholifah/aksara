@@ -40,12 +40,6 @@ class ModuleManagerController extends Controller
         //Modules V1
         $modules = config('aksara.modules');
 
-        foreach ($modules as &$type) {
-            foreach ($type as &$module) {
-                $module['version'] = 1;
-            }
-        }
-
         //Plugins V2
         $grouped = $this->moduleRegistry->getRegisteredModulesGrouped();
         foreach ($grouped as $type => $plugins) {
@@ -101,7 +95,7 @@ class ModuleManagerController extends Controller
 
         //TODO: refactor to separate migration resolver
         $migrations = $this->getPendingMigrations(
-            $type, $slug, $dependenciesInfo, $module['version']
+            $type, $slug, $dependenciesInfo, isset($module['version']) ? $module['version'] : 1
         );
 
         $data = new ModuleActivationCheckInfo(
@@ -143,7 +137,7 @@ class ModuleManagerController extends Controller
                 $dependencyInfo->getType(),
                 $dependencyInfo->getModuleName(),
                 $paths,
-                $dep['version']
+                isset($dep['version']) ? $dep['version'] : 1
             );
             $depsMigrations = array_merge($depsMigrations, $depsMigration);
         }
@@ -241,7 +235,7 @@ class ModuleManagerController extends Controller
             }
 
             $pendingMigrations = $this->getPendingMigrations(
-                $type, $slug, $dependenciesInfo, $module['version']
+                $type, $slug, $dependenciesInfo, isset($module['version']) ? $module['version'] : 1
             );
 
             if (count($pendingMigrations) > 0) {
@@ -288,6 +282,11 @@ class ModuleManagerController extends Controller
                         $itemToBeActivated->getModuleName());
                 }
                 $activated[] = $itemToBeActivated;
+                admin_notice('success', __('core:module-manager::message.activate-module-successfully', [
+                        'moduleType' => $itemToBeActivated->getType(),
+                        'moduleName' => $itemToBeActivated->getModuleName(),
+                    ])
+                );
             }
 
             session()->put('activating_module', $activated);
@@ -316,6 +315,12 @@ class ModuleManagerController extends Controller
             } else {
                 $this->moduleRegistry->deactivateModule($slug);
             }
+            admin_notice('success',
+                __('core:module-manager::message.deactivate-module-successfully', [
+                    'moduleType' => $type,
+                    'moduleName' => $slug,
+                ])
+            );
             session()->put('deactivating_module', new ModuleKey($type, $slug));
 
             return redirect()->route('module-manager.index');

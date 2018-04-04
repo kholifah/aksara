@@ -3,9 +3,6 @@
 namespace Aksara\ModuleRegistry;
 
 use Illuminate\Filesystem\Filesystem;
-use Aksara\ModuleIdentifier;
-use Aksara\AdminNotif\AdminNotifRequest;
-use Aksara\AdminNotif\AdminNotifHandler;
 use Aksara\Application\ApplicationInterface;
 use Aksara\Repository\ConfigRepository;
 
@@ -23,8 +20,7 @@ class Interactor implements ModuleRegistryHandler
 
     public function __construct(
         ApplicationInterface $app,
-        FileSystem $filesystem,
-        AdminNotifHandler $notifHandler,
+        Filesystem $filesystem,
         ConfigRepository $config
     ){
         $this->app = $app;
@@ -32,7 +28,6 @@ class Interactor implements ModuleRegistryHandler
         $this->moduleRoot = $this->app->basePath(self::MODULE_FOLDER);
         $this->activeManifestPath = $this->moduleRoot.
             DIRECTORY_SEPARATOR.self::ACTIVE_MANIFEST;
-        $this->notifHandler = $notifHandler;
         $this->config = $config;
     }
 
@@ -146,15 +141,7 @@ class Interactor implements ModuleRegistryHandler
         return in_array($name, $registeredModuleNames);
     }
 
-    public function activateModule($name, bool $silent = false)
-    {
-        $this->includeToActiveManifest($name);
-        if (!$silent) {
-            $this->successNotify($name);
-        }
-    }
-
-    private function includeToActiveManifest($name)
+    public function activateModule($name)
     {
         $activeManifest = $this->getActiveManifest();
         if (!in_array($name, $activeManifest)) {
@@ -168,22 +155,6 @@ class Interactor implements ModuleRegistryHandler
         $activeManifest = $this->filesystem->getRequire($this->activeManifestPath);
         $newManifest = array_diff($activeManifest, [ $name ]);
         $this->writeActiveManifest($newManifest);
-        $this->successNotify($name, false);
-    }
-
-    private function successNotify($name, $active = true)
-    {
-        $notifRequest = new AdminNotifRequest(
-            'success',
-            ($active ? 
-            __('core:module-manager::message.activate-module-successfully', [
-                'moduleType' => 'plugin', 'moduleName' => $name] ) :
-                __('core:module-manager::message.deactivate-module-successfully', [
-                    'moduleType' => 'plugin', 'moduleName' => $name] )
-                )
-            );
-
-        $this->notifHandler->handle($notifRequest);
     }
 
     private function writeActiveManifest(array $manifest)

@@ -1,16 +1,16 @@
 <?php
 namespace Plugins\PostType\Providers;
 
-use Illuminate\Support\ServiceProvider;
+use Aksara\Providers\AbstractModuleProvider;
 
-class PostTypeServiceProvider extends ServiceProvider
+class PostTypeServiceProvider extends AbstractModuleProvider
 {
     /**
      * Boot application services
      *
      * e.g, route, anything needs to be preload
      */
-    public function boot()
+    public function safeBoot()
     {
         \PostType::boot();
 
@@ -130,7 +130,7 @@ class PostTypeServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function register()
+    public function safeRegister()
     {
         $this->app->singleton(
             \Plugins\PostType\Post\PostInterface::class,

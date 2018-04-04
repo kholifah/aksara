@@ -3,13 +3,13 @@ namespace Aksara\Exceptions;
 
 use Aksara\ModuleIdentifier;
 
-class LoadModuleException extends AppException
+class ModuleRegistrationException extends AppException
 {
     private $key;
 
     public function __construct(ModuleIdentifier $key)
     {
-        $message = sprintf('Failed to load module: %s-%s.',
+        $message = sprintf('Error registering module %s/%s.',
             $key->getType(),
             $key->getModuleName()
         );
@@ -32,4 +32,5 @@ class LoadModuleException extends AppException
         ];
     }
 }
+
 
