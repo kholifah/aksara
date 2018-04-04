@@ -108,6 +108,9 @@ class Interactor implements ModuleRegistryHandler
 
         foreach ($pluginNames as $pluginName) {
             $plugin = $this->loadModuleManifest($pluginName, $active);
+            if (!$plugin) {
+                continue;
+            }
             $plugins[] = $plugin;
         }
         return $plugins;
@@ -120,7 +123,7 @@ class Interactor implements ModuleRegistryHandler
             self::MODULE_MANIFEST;
 
         if (!$this->filesystem->exists($pluginManifestFile)) {
-            throw new \Exception('Module manifest file not found');
+            return false;
         }
 
         $configArray = $this->filesystem->getRequire($pluginManifestFile);
@@ -181,7 +184,10 @@ class Interactor implements ModuleRegistryHandler
 
     public function getManifest($name)
     {
-        return $this->loadModuleManifest($name);
+        $module = $this->loadModuleManifest($name);
+        if (!$module) {
+            throw new \Exception('Module manifest file not found');
+        }
     }
 }
 
