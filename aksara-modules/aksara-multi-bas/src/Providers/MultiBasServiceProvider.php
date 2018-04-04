@@ -11,7 +11,7 @@ class MultiBasServiceProvider extends AbstractModuleProvider
      *
      * @return void
      */
-    public function safeBoot()
+    protected function safeBoot()
     {
         \Eventy::addAction('aksara.init', function () {
             $optionIndex = [
@@ -68,7 +68,7 @@ class MultiBasServiceProvider extends AbstractModuleProvider
      *
      * @return void
      */
-    public function safeRegister()
+    protected function safeRegister()
     {
         $this->app->bind(
             \Plugins\AksaraMultiBas\LocaleSwitcher\LocaleSwitcherInterface::class,

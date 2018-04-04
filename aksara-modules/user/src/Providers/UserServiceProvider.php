@@ -5,7 +5,7 @@ use Aksara\Providers\AbstractModuleProvider;
 
 class UserServiceProvider extends AbstractModuleProvider
 {
-    public function safeRegister()
+    protected function safeRegister()
     {
         $this->app->bind(
             \Plugins\User\RoleCapability\ConfigRepository::class,

@@ -10,7 +10,7 @@ class PostTypeServiceProvider extends AbstractModuleProvider
      *
      * e.g, route, anything needs to be preload
      */
-    public function safeBoot()
+    protected function safeBoot()
     {
         \PostType::boot();
 
@@ -130,7 +130,7 @@ class PostTypeServiceProvider extends AbstractModuleProvider
      *
      * @return void
      */
-    public function safeRegister()
+    protected function safeRegister()
     {
         $this->app->singleton(
             \Plugins\PostType\Post\PostInterface::class,

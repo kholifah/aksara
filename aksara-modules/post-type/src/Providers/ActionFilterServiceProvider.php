@@ -10,7 +10,7 @@ class ActionFilterServiceProvider extends AbstractModuleProvider
      *
      * e.g, route, anything needs to be preload
      */
-    public function safeBoot()
+    protected function safeBoot()
     {
         /**
          * post-index-list

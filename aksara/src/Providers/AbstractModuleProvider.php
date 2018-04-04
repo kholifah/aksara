@@ -4,7 +4,6 @@ namespace Aksara\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Aksara\Exceptions\LoadModuleException;
-use Aksara\Exceptions\ModuleRegistrationException;
 use Aksara\ModuleKey;
 
 abstract class AbstractModuleProvider extends ServiceProvider

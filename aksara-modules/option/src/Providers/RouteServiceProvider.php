@@ -10,7 +10,7 @@ class RouteServiceProvider extends AbstractModuleProvider
      *
      * e.g, route, anything needs to be preload
      */
-    public function safeBoot()
+    protected function safeBoot()
     {
         \Eventy::addAction('aksara.init-completed', function () {
             $optionIndex = [

@@ -6,7 +6,7 @@ use Aksara\Providers\AbstractModuleProvider;
 
 class BackendServiceProvider extends AbstractModuleProvider
 {
-    public function safeBoot()
+    protected function safeBoot()
     {
         \Eventy::addAction('aksara.init', function () {
             // Load Jquery on Top

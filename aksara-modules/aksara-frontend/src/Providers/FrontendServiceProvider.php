@@ -6,7 +6,7 @@ use Aksara\Providers\AbstractModuleProvider;
 
 class FrontendServiceProvider extends AbstractModuleProvider
 {
-    public function safeBoot()
+    protected function safeBoot()
     {
         \Eventy::addAction('aksara.init', function () {
             register_menu(

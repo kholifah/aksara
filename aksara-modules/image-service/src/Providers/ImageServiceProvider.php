@@ -11,7 +11,7 @@ class ImageServiceProvider extends AbstractModuleProvider
      *
      * e.g, route, anything needs to be preload
      */
-    public function safeBoot()
+    protected function safeBoot()
     {
         $pathArray = [];
 
@@ -30,7 +30,7 @@ class ImageServiceProvider extends AbstractModuleProvider
      *
      * @return void
      */
-    public function safeRegister()
+    protected function safeRegister()
     {
         $this->app->bind(
             \Plugins\ImageService\ConfigRepository::class,

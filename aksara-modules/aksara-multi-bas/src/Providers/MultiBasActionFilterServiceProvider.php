@@ -11,7 +11,7 @@ class MultiBasActionFilterServiceProvider extends AbstractModuleProvider
      *
      * @return void
      */
-    public function safeBoot()
+    protected function safeBoot()
     {
         /**
          * table.php
