@@ -3,13 +3,34 @@ namespace App\Aksara\Core\Asset\Http;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Aksara\ModuleRegistry\ModuleRegistryHandler;
 
 class StaticFileController extends Controller
 {
-    //TODO serve V2
-    public function serve($module_type, $module_name)
+    public function __construct(ModuleRegistryHandler $moduleRegistry)
     {
-        // if( $routeParams['module_type'] == 'plugins' )
+        $this->moduleRegistry = $moduleRegistry;
+    }
+
+    public function serveV2($module_name)
+    {
+        if (!$this->moduleRegistry->isRegistered($module_name)) {
+            abort(404,'file not found');
+            die();
+        }
+
+        $module = $this->moduleRegistry->getManifest($module_name);
+
+        $routeParams = \Route::getCurrentRoute()->parameters();
+        unset($routeParams['module_name']);
+        $pathAsset = implode('/', $routeParams);
+
+        $realPath = $module->getModulePath()->asset() . '/' . $pathAsset;
+        $this->readFile($realPath);
+    }
+
+    public function serveV1($module_type, $module_name)
+    {
         if ( str_contains(\Request::url(), '/Admin/') || str_contains(\Request::url(), '/FrontEnd/')  ) {
             $path = '/Modules/Themes/'.$module_type.'/'.$module_name.'/assets/';
         } else {
@@ -30,17 +51,20 @@ class StaticFileController extends Controller
         $path = $path.$pathAsset;
         $realPath = app_path().$path;
 
+        $this->readFile($realPath);
+    }
+
+    private function readFile($realPath)
+    {
         if (!file_exists($realPath)) {
             abort(404,'file not found');
             die();
         }
 
-        // get extension
         $extension = \File::extension($realPath);
 
         $mimes = new \Mimey\MimeTypes;
 
-        // Convert extension to MIME type:
         $mime = $mimes->getMimeType($extension); // application/json
 
         header("Content-Type: ".$mime);

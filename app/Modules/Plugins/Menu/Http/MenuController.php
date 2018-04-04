@@ -12,7 +12,7 @@ class MenuController extends Controller
     {
         $menus = get_registered_menu();
 
-        aksara_admin_enqueue_style(url("assets/modules/Plugins/Menu/assets/menu.css"));
+        aksara_admin_enqueue_style(url("assets/modules/Plugins/Menu/menu.css"));
 
         if (sizeof($menus) == 0) {
             return view('plugin:menu::empty');
