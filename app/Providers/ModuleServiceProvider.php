@@ -7,7 +7,6 @@ use Illuminate\Foundation\AliasLoader;
 
 class ModuleServiceProvider extends ServiceProvider
 {
-    private $hasBackend;
     /**
      * Bootstrap the application services.
      *
@@ -29,22 +28,23 @@ class ModuleServiceProvider extends ServiceProvider
          */
 
         $modules = \ModuleRegistry::getActiveModules();
-        $this->hasBackend = false;
+        $hasBackend = false;
 
         foreach ($modules as $module) {
             \ModuleLoader::load($module);
             if ($module->getType() == 'backend') {
-                $this->hasBackend = true;
+                $hasBackend = true;
             }
         }
 
-        if (!$this->hasBackend) {
+        if (!$hasBackend) {
             $defaultBackendConfig = config('aksara.default_backend');
             \ModuleRegistry::activateModule($defaultBackendConfig, true);
             $defaultBackend = \ModuleRegistry::getManifest(
                 $defaultBackendConfig);
             \ModuleLoader::load($defaultBackend);
-            admin_notice('warning', 'No backend activated, default backend will be activated', true);
+            admin_notice('warning',
+                'No backend activated, default backend will be activated', true);
         }
     }
 }
