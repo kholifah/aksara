@@ -28,3 +28,8 @@ function can_disable_module($type, $moduleName)
 
     return true;
 }
+
+function is_module_active($moduleName)
+{
+    return \ModuleRegistry::isActive($moduleName);
+}
