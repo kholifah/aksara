@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use Faker\Factory as Faker;
+use Illuminate\Database\Eloquent\Model;
 use App\User;
 
 class UsersSeeder extends Seeder
@@ -15,6 +15,7 @@ class UsersSeeder extends Seeder
     public function run()
     {
         //admin sample
+        Model::unguard();
         App\User::truncate();
 
         App\User::create([
@@ -23,6 +24,7 @@ class UsersSeeder extends Seeder
             'password' => '123456',
             'active' => true,
         ]);
+        Model::reguard();
     }
 
 }
