@@ -188,6 +188,7 @@ class Interactor implements ModuleRegistryHandler
         if (!$module) {
             throw new \Exception('Module manifest file not found');
         }
+        return $module;
     }
 }
 
