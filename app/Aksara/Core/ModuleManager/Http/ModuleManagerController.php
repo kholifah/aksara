@@ -257,12 +257,12 @@ class ModuleManagerController extends Controller
 
             foreach ($toBeActivated as $itemToBeActivated) {
                 if ($itemToBeActivated->getVersion() == 1) {
-                    if (!$this->updateModuleStatus->activate(
+                    $success = $this->updateModuleStatus->activate(
                         new ModuleKey(
                             $itemToBeActivated->getType(),
                             $itemToBeActivated->getModuleName())
-                        )
-                    ){
+                        );
+                    if (!$success) {
                         //rollback
                         foreach ($activated as $itemActivated) {
                             $this->updateModuleStatus->deactivate(
@@ -275,6 +275,7 @@ class ModuleManagerController extends Controller
                         //raise error
                         throw new \Exception(__('core:module-manager::message.error-activating-module-message'));
                     }
+                    session()->put('activating_module', $activated);//v1 only activating flag
                 } else {
                     $this->moduleRegistry->activateModule(
                         $itemToBeActivated->getModuleName());
@@ -287,7 +288,6 @@ class ModuleManagerController extends Controller
                 );
             }
 
-            session()->put('activating_module', $activated);
 
             return redirect()->route('module-manager.index');
         } catch (\Exception $e) {
@@ -310,6 +310,7 @@ class ModuleManagerController extends Controller
             }
             if ($this->moduleStatus->getVersion($type, $slug) == 1) {
                 $this->updateModuleStatus->deactivate(new ModuleKey($type, $slug));
+                session()->put('deactivating_module', new ModuleKey($type, $slug));//v1 deactivation flag
             } else {
                 $this->moduleRegistry->deactivateModule($slug);
             }
@@ -319,7 +320,6 @@ class ModuleManagerController extends Controller
                     'moduleName' => $slug,
                 ])
             );
-            session()->put('deactivating_module', new ModuleKey($type, $slug));
 
             return redirect()->route('module-manager.index');
         } catch (\Exception $e) {
