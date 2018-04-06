@@ -180,6 +180,11 @@ class Interactor implements ModuleRegistryHandler
         $this->filesystem->put(
             $this->activeManifestPath, '<?php return '.var_export($manifest, true).';'
         );
+
+        // reset opcache and force to read new manifest for later calls
+        if (function_exists('opcache_reset')) {
+            opcache_reset();
+        }
     }
 
     public function getManifest($name)
