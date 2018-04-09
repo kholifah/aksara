@@ -2,6 +2,33 @@
 
 use \App\Aksara\Core\Menu as Menu;
 
+function get_active_backend()
+{
+    $activeBackends = \ModuleRegistry::getActiveModuleByType('backend');
+    //get last backend
+    $backend = $activeBackends[count($activeBackends) - 1];
+    return $backend;
+}
+
+function get_active_backend_name()
+{
+    return get_active_backend()->getName();
+}
+
+function get_active_backend_view($view)
+{
+    $backend = get_active_backend_name();
+    $customView = sprintf("%s::%s", $backend, $view);
+
+    if (view()->exists($customView)) {
+        return $customView;
+    } else {
+        $defaultBackendConfig = config('aksara.default_backend');
+        $defaultView = sprintf("%s::%s", $defaultBackendConfig, $view);
+        return $defaultView;
+    }
+    return false;
+}
 
 function render_admin_menu()
 {
@@ -44,7 +71,7 @@ function render_admin_notice()
     $notices = array_merge($notices, \Config::get('aksara.admin_notice', []));
 
     foreach ($notices as $data) {
-        echo view('aksara-backend::partials.notice', $data)->render();
+        echo view(get_active_backend_view('partials.notice'), $data)->render();
     }
 
     \Config::set('aksara.admin_notice', []);

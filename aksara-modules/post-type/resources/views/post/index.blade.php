@@ -1,4 +1,4 @@
-@extends('aksara-backend::layouts.layout')
+@extends_backend('layouts.layout')
 @section('breadcrumb')
 <ol class="breadcrumb">
     <li class="breadcrumb-item"><a href="{{ route('admin.root') }}">{{__('post-type::default.dashboard') }}</a></li>
@@ -67,7 +67,7 @@
             <input name="bsearch" type="submit" class="btn btn-secondary" value="{{__('post-type::default.search') }}">
         </div>
         <div class="tablenav-pages"><span class="displaying-num">{{ $viewData['total'] }} @if($viewData['total'] > 1 ){{__('post-type::default.items') }} @else {{__('post-type::default.item') }} @endif</span>
-            {!! $posts->links('aksara-backend::partials.pagination') !!}
+            {!! $posts->links(get_active_backend_name().'::partials.pagination') !!}
         </div>
     </div>
     <div class="table-box">
@@ -120,7 +120,7 @@
         </div>
         @endif
         <div class="tablenav-pages"><span class="displaying-num">{{ $viewData['total'] }} @if($viewData['total'] > 1 ) {{__('post-type::default.items') }} @else {{__('post-type::default.item') }} @endif</span>
-            {!! $posts->links('aksara-backend::partials.pagination') !!}
+            {!! $posts->links(get_active_backend_name().'::partials.pagination') !!}
         </div>
     </div>
     </form>

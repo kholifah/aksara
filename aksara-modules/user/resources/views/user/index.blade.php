@@ -1,4 +1,4 @@
-@extends('aksara-backend::layouts.layout')
+@extends_backend('layouts.layout')
 
 @section('breadcrumb')
 <ol class="breadcrumb">

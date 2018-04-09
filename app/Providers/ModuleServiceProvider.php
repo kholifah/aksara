@@ -14,6 +14,17 @@ class ModuleServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        \Blade::directive('extends_backend', function ($view) {
+            $view = str_replace("'", "", $view);
+            $activeView = get_active_backend_view($view);
+            if (!$activeView) {
+                \Blade::compileString("@extends('$view')");
+                return;
+            }
+            $extended = "@extends('$activeView')";
+
+            \Blade::compileString($extended);
+        });
     }
 
     /**

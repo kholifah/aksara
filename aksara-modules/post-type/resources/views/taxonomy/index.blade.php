@@ -1,4 +1,4 @@
-@extends('aksara-backend::layouts.layout')
+@extends_backend('layouts.layout')
 
 @section('breadcrumb')
 <ol class="breadcrumb">
@@ -25,7 +25,7 @@
                     </form>
                 </div>
                 <div class="tablenav-pages"><span class="displaying-num">{{ $total }} @if($total > 1 ){{__('post-type::default.items') }} @else {{__('post-type::default.item') }} @endif</span>
-                    {!! $terms->links('aksara-backend::partials.pagination') !!}
+                    {!! $terms->links(get_active_backend_name().'::partials.pagination') !!}
                 </div>
             </div>
             <div class="table-box">
@@ -65,7 +65,7 @@
             </div>
             <div class="tablenav bottom clearfix">
                 <div class="tablenav-pages"><span class="displaying-num">{{ $total }} @if($total > 1 ){{__('post-type::default.items') }} @else {{__('post-type::default.item') }} @endif</span>
-                   {!! $terms->links('aksara-backend::partials.pagination') !!}
+                   {!! $terms->links(get_active_backend_name().'::partials.pagination') !!}
                 </div>
             </div>
         </div>

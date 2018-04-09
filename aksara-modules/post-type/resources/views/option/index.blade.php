@@ -1,4 +1,4 @@
-@extends('aksara-backend::layouts.layout')
+@extends_backend('layouts.layout')
 
 @section('breadcrumb')
 <ol class="breadcrumb">
@@ -6,8 +6,6 @@
     <li class="breadcrumb-item active">{{__('post-type::default.option') }}</li>
 </ol>
 @endsection
-
-
 
 @section('content')
     <script>

@@ -187,7 +187,7 @@ class AdminMenu
             }
         }
 
-        echo view('aksara-backend::partials.admin-menu', compact('adminMenu', 'adminSubMenu'))->render();
+        echo view(get_active_backend_view('partials.admin-menu'), compact('adminMenu', 'adminSubMenu'))->render();
     }
 
     public function removeAdminMenu($adminMenuRoute)
