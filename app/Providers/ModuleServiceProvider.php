@@ -39,16 +39,16 @@ class ModuleServiceProvider extends ServiceProvider
          */
 
         $modules = \ModuleRegistry::getActiveModules();
-        $hasBackend = false;
+        $activeBackend = 0;
 
         foreach ($modules as $module) {
             \ModuleLoader::load($module);
             if ($module->getType() == 'backend') {
-                $hasBackend = true;
+                $activeBackend++;
             }
         }
 
-        if (!$hasBackend) {
+        if ($activeBackend <= 0) {
             $defaultBackendConfig = config('aksara.default_backend');
             \ModuleRegistry::activateModule($defaultBackendConfig);
             $defaultBackend = \ModuleRegistry::getManifest(
@@ -56,6 +56,13 @@ class ModuleServiceProvider extends ServiceProvider
             \ModuleLoader::load($defaultBackend);
             admin_notice('warning',
                 'No backend activated, default backend will be activated', true);
+        }
+
+        if ($activeBackend > 1) {
+            $deactivates = get_deactivate_backends();
+            foreach ($deactivates as $deactivate) {
+                \ModuleRegistry::deactivateModule($deactivate->getName());
+            }
         }
     }
 }

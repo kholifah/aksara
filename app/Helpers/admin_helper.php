@@ -2,9 +2,24 @@
 
 use \App\Aksara\Core\Menu as Menu;
 
+function get_active_backends()
+{
+    return \ModuleRegistry::getActiveModuleByType('backend');
+}
+
+function get_deactivate_backends()
+{
+    $activeBackends = get_active_backends();
+    $deactivates = [];
+    for ($i = 0; $i < count($activeBackends)-1; $i++) {
+        $deactivates[] = $activeBackends[$i];
+    }
+    return $deactivates;
+}
+
 function get_active_backend()
 {
-    $activeBackends = \ModuleRegistry::getActiveModuleByType('backend');
+    $activeBackends = get_active_backends();
     //get last backend
     $backend = $activeBackends[count($activeBackends) - 1];
     return $backend;

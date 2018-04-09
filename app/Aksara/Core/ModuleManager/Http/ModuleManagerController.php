@@ -288,6 +288,8 @@ class ModuleManagerController extends Controller
                 );
             }
 
+            //must be cleared to force recompile views in case of changing theme
+            \Artisan::call('view:clear');
 
             return redirect()->route('module-manager.index');
         } catch (\Exception $e) {
@@ -298,29 +300,36 @@ class ModuleManagerController extends Controller
         }
     }
 
+    private function doDeactivate($type, $slug)
+    {
+        if (strtolower($type) == 'plugin') {
+            if ($this->pluginRequiredBy->isRequired($slug)) {
+                throw new \Exception(
+                    __('core:module-manager::message.cannot-deactivate-module-message', ['moduleType' => $type, 'moduleName' => $slug])
+                );
+            }
+        }
+        if ($this->moduleStatus->getVersion($type, $slug) == 1) {
+            $this->updateModuleStatus->deactivate(new ModuleKey($type, $slug));
+            session()->put('deactivating_module', new ModuleKey($type, $slug));//v1 deactivation flag
+        } else {
+            $this->moduleRegistry->deactivateModule($slug);
+        }
+        admin_notice('success',
+            __('core:module-manager::message.deactivate-module-successfully', [
+                'moduleType' => $type,
+                'moduleName' => $slug,
+            ])
+        );
+    }
+
     public function deactivate($type, $slug)
     {
         try {
-            if (strtolower($type) == 'plugin') {
-                if ($this->pluginRequiredBy->isRequired($slug)) {
-                    throw new \Exception(
-                        __('core:module-manager::message.cannot-deactivate-module-message', ['moduleType' => $type, 'moduleName' => $slug])
-                    );
-                }
-            }
-            if ($this->moduleStatus->getVersion($type, $slug) == 1) {
-                $this->updateModuleStatus->deactivate(new ModuleKey($type, $slug));
-                session()->put('deactivating_module', new ModuleKey($type, $slug));//v1 deactivation flag
-            } else {
-                $this->moduleRegistry->deactivateModule($slug);
-            }
-            admin_notice('success',
-                __('core:module-manager::message.deactivate-module-successfully', [
-                    'moduleType' => $type,
-                    'moduleName' => $slug,
-                ])
-            );
+            $this->doDeactivate($type, $slug);
 
+            //must be cleared to force recompile views in case of changing theme
+            \Artisan::call('view:clear');
             return redirect()->route('module-manager.index');
         } catch (\Exception $e) {
             admin_notice('warning',
