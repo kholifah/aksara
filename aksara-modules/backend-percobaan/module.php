@@ -7,6 +7,6 @@ return [
   'type' => 'backend',
 
   'providers' => [
-      'Backend\\Aksara\\Providers\\BackendServiceProvider',
+      'Backend\\Percobaan\\Providers\\BackendServiceProvider',
   ],
 ];
