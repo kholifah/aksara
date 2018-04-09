@@ -181,9 +181,9 @@ class Interactor implements ModuleRegistryHandler
             $this->activeManifestPath, '<?php return '.var_export($manifest, true).';'
         );
 
-        // reset opcache and force to read new manifest for later calls
-        if (function_exists('opcache_reset')) {
-            opcache_reset();
+        // invalidate manifest in opcache and force to read new manifest for later calls
+        if (function_exists('opcache_invalidate')) {
+            opcache_invalidate($this->activeManifestPath);
         }
     }
 
