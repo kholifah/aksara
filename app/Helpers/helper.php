@@ -1,6 +1,4 @@
 <?php
-include "admin_helper.php";
-include "option_helper.php";
 
 function get_calback($callback)
 {

@@ -23,7 +23,7 @@
             <div class="search-toggle">
                 <i class="fa fa-search"></i>
             </div>
-            @if(checkPlugin('aksara-multi-bas'))
+            @if(is_module_active('aksara-multi-bas'))
             @if(count(get_registered_locales()))
             <div class="lang">
                 @foreach(get_registered_locales() as $locale)
@@ -44,17 +44,17 @@
             @endif
             @endif
             <div class="header-search active" id="header-search">
-               @if(checkPlugin('aksara-multi-bas'))
+               @if(is_module_active('aksara-multi-bas'))
                     @if(is_default_multibas_locale())
                     <form action="{{url('/search')}}">
-                            <input type="text" name="query" placeholder="{{  __('aksara::validation.search-keyword-message') }}" class="form-control">
+                            <input type="text" name="query" placeholder="{{  __('sample-frontend::validation.search-keyword-message') }}" class="form-control">
                     @else
                     <form action="{{url('/'.get_current_multibas_locale().'/search')}}">
                             <input type="text" name="query" placeholder="Enter your search query" class="form-control">
                     @endif
                 @else
                     <form action="{{url('/search')}}">
-                        <input type="text" name="query" placeholder="{{  __('aksara::validation.search-keyword-message') }}" class="form-control">
+                        <input type="text" name="query" placeholder="{{  __('sample-frontend::validation.search-keyword-message') }}" class="form-control">
                 @endif
                     <button class="header-search__submit"><i class="fa fa-search"></i></button>
                 </form>

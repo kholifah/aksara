@@ -40,29 +40,48 @@ class ModuleServiceProvider extends ServiceProvider
 
         $modules = \ModuleRegistry::getActiveModules();
         $activeBackend = 0;
+        $activeFrontend = 0;
 
         foreach ($modules as $module) {
             \ModuleLoader::load($module);
             if ($module->getType() == 'backend') {
                 $activeBackend++;
             }
+            if ($module->getType() == 'frontend') {
+                $activeFrontend++;
+            }
         }
 
         if ($activeBackend <= 0) {
-            $defaultBackendConfig = config('aksara.default_backend');
-            \ModuleRegistry::activateModule($defaultBackendConfig);
-            $defaultBackend = \ModuleRegistry::getManifest(
-                $defaultBackendConfig);
-            \ModuleLoader::load($defaultBackend);
-            admin_notice('warning',
-                'No backend activated, default backend will be activated', true);
+            $this->activateDefaultTheme('backend');
         }
 
         if ($activeBackend > 1) {
-            $deactivates = get_deactivate_backends();
-            foreach ($deactivates as $deactivate) {
-                \ModuleRegistry::deactivateModule($deactivate->getName());
-            }
+            $this->deactivateOtherThemes('backend');
         }
+
+        if ($activeFrontend > 1) {
+            $this->deactivateOtherThemes('frontend');
+        }
+    }
+
+    private function deactivateOtherThemes($type)
+    {
+        $deactivates = get_deactivate_themes($type);
+        foreach ($deactivates as $deactivate) {
+            \ModuleRegistry::deactivateModule($deactivate->getName());
+        }
+    }
+
+    private function activateDefaultTheme($type)
+    {
+        $defaultThemeConfig = config("aksara.default.$type");
+
+        \ModuleRegistry::activateModule($defaultThemeConfig);
+        $defaultTheme = \ModuleRegistry::getManifest(
+            $defaultThemeConfig);
+        \ModuleLoader::load($defaultTheme);
+        admin_notice('warning',
+            "No $type activated, default $type will be activated", true);
     }
 }

@@ -2,47 +2,9 @@
 
 use \App\Aksara\Core\Menu as Menu;
 
-function get_active_backends()
+function get_active_module_by_type($type)
 {
-    return \ModuleRegistry::getActiveModuleByType('backend');
-}
-
-function get_deactivate_backends()
-{
-    $activeBackends = get_active_backends();
-    $deactivates = [];
-    for ($i = 0; $i < count($activeBackends)-1; $i++) {
-        $deactivates[] = $activeBackends[$i];
-    }
-    return $deactivates;
-}
-
-function get_active_backend()
-{
-    $activeBackends = get_active_backends();
-    //get last backend
-    $backend = $activeBackends[count($activeBackends) - 1];
-    return $backend;
-}
-
-function get_active_backend_name()
-{
-    return get_active_backend()->getName();
-}
-
-function get_active_backend_view($view)
-{
-    $backend = get_active_backend_name();
-    $customView = sprintf("%s::%s", $backend, $view);
-
-    if (view()->exists($customView)) {
-        return $customView;
-    } else {
-        $defaultBackendConfig = config('aksara.default_backend');
-        $defaultView = sprintf("%s::%s", $defaultBackendConfig, $view);
-        return $defaultView;
-    }
-    return false;
+    return \ModuleRegistry::getActiveModuleByType($type);
 }
 
 function render_admin_menu()

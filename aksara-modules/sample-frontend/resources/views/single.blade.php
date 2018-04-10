@@ -1,4 +1,4 @@
-@extends('aksara::layouts.layout')
+@extends('sample-frontend::layouts.layout')
 @section('content')
 <!-- Page Header -->
 <header class="masthead"

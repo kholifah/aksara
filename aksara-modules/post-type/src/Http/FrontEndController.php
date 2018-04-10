@@ -35,8 +35,8 @@ class FrontEndController extends Controller
             $aksaraQueryArgs['post_slug'] = \Request::route('slug');
 
             $viewPriorities = [
-                'aksara-frontend::single-'.$data['postType'],
-                'aksara-frontend::single'
+                get_active_frontend_view('single-'.$data['postType']),
+                get_active_frontend_view('single'),
             ];
         }
         elseif (str_contains($routeName,'archive-taxonomy') ) {
@@ -46,9 +46,9 @@ class FrontEndController extends Controller
             $data['taxonomy'] = get_current_taxonomy();
 
             $viewPriorities = [
-                'aksara-frontend::archive-'.$data['taxonomy'] ,
-                'aksara-frontend::archive-taxonomy',
-                'aksara-frontend::archive'
+                get_active_frontend_view('archive-'.$data['taxonomy']),
+                get_active_frontend_view('archive-taxonomy'),
+                get_active_frontend_view('archive'),
             ];
 
             $term = \Request::route('term');
@@ -75,8 +75,8 @@ class FrontEndController extends Controller
 
             $data['postType'] =  get_current_post_type();
             $viewPriorities = [
-                'aksara-frontend::archive-'.$data['postType'],
-                'aksara-frontend::archive'
+                get_active_frontend_view('archive-'.$data['postType']),
+                get_active_frontend_view('archive'),
             ];
             $aksaraQueryArgs['post_type'] = $data['postType'];
         }
@@ -87,7 +87,7 @@ class FrontEndController extends Controller
             $aksaraQueryArgs['post_type'] = 'post' ;
 
             $viewPriorities = [
-                'aksara-frontend::home'
+                get_active_frontend_view('home'),
             ];
         }
         elseif (str_contains($routeName,'search') ) {
@@ -98,8 +98,8 @@ class FrontEndController extends Controller
             $aksaraQueryArgs['post_type'] = false;
 
             $viewPriorities = [
-                'aksara-frontend::search',
-                'aksara-frontend::archive'
+                get_active_frontend_view('search'),
+                get_active_frontend_view('archive'),
             ];
         }
 

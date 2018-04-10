@@ -1,5 +1,8 @@
 <?php
 
 return [
-    'default_backend' => env('AKSARA_DEFAULT_BACKEND', 'aksara-backend'),
+    'default' => [
+        'backend' => env('AKSARA_DEFAULT_BACKEND', 'aksara-backend'),
+        'frontend' => env('AKSARA_DEFAULT_FRONTEND', 'aksara-frontend'),
+    ],
 ];

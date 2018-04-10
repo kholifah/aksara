@@ -1,4 +1,4 @@
-@extends('aksara::layouts.layout') @section('content')
+@extends('sample-frontend::layouts.layout') @section('content')
 <!-- Page Header -->
 <header class="masthead"
     @if(get_post_featured_image($data['post']->id))

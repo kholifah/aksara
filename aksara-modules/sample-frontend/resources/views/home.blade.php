@@ -1,12 +1,12 @@
-@extends('aksara::layouts.layout') @section('content')
+@extends('sample-frontend::layouts.layout') @section('content')
 <!-- Page Header -->
 <header class="masthead" style="background-image: url('img/home-bg.jpg')">
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-md-10 mx-auto">
-                <div class="site-heading heading-archive">
-                    <h2>{{ get_archive_title() }}</h2>
-                    <span class="subheading">{{ get_search_results() }}</span>
+                <div class="site-heading">
+                    <h1>Aksara Homepage Sample</h1>
+                    <span class="subheading">Super Aksara CMS</span>
                 </div>
             </div>
         </div>
@@ -16,7 +16,7 @@
 <div class="container">
     <div class="row">
         <div class="col-lg-8 col-md-10 mx-auto">
-            @if( sizeof($data['posts']) > 0 )
+            @if( $data['posts'] )
                 @foreach ($data['posts'] as $post)
                     <div class="post-preview">
                         <a href="{{ get_post_permalink($post) }}">
@@ -28,14 +28,14 @@
                             </h3>
                         </a>
                         <p class="post-meta">
-                            @lang('aksara::global.posted-by') <a href="#">{{ $post->author->name }}</a> {{ $post->post_date }}
+                            Posted by <a href="#">{{ $post->author->name }}</a> {{ $post->post_date }}
                         </p>
                     </div>
                     <hr>
                 @endforeach
-                {{ $data['posts']->appends(\Request::except('page'))->links('aksara::partials.pagination') }}
+                {{ $data['posts']->appends(\Request::except('page'))->links('sample-frontend::partials.pagination') }}
             @else
-            <h2>@lang('aksara::validation.no-posttype-found-message')</h2>
+            <h2> No Post Found.. </h2>
             @endif
         </div>
     </div>
