@@ -44,18 +44,14 @@ function get_active_theme_name($type)
 
 function get_active_theme_view($type, $view)
 {
-    $backend = get_active_theme_name($type);
-    if (!$backend) {
+    $theme = get_active_theme_name($type);
+    if (!$theme) {
         return false;
     }
-    $customView = sprintf("%s::%s", $backend, $view);
+    $customView = sprintf("%s::%s", $theme, $view);
 
     if (view()->exists($customView)) {
         return $customView;
-    } else {
-        $defaultThemeConfig = config("aksara.default.$type");
-        $defaultView = sprintf("%s::%s", $defaultThemeConfig, $view);
-        return $defaultView;
     }
     return false;
 }
