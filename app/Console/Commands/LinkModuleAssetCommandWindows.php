@@ -22,7 +22,7 @@ class LinkModuleAssetCommandWindows extends Command
      *
      * @var string
      */
-    protected $description = 'Generate asset symlink for loaded aksara modules for windows';
+    protected $description = 'Generate asset for loaded aksara modules for windows';
 
     private $fileSystem;
     private $config;
@@ -51,13 +51,13 @@ class LinkModuleAssetCommandWindows extends Command
      */
     public function handle()
     {
-        $this->linkModulesV1();
-        $this->linkModulesV2();
+        $this->copyModulesV1();
+        $this->copyModulesV2();
 
         $this->info("Please run aksara:storage:copy each deployment\n");
     }
 
-    private function linkModulesV2()
+    private function copyModulesV2()
     {
         $modules = $this->moduleRegistry->getRegisteredModules();
 
@@ -81,7 +81,7 @@ class LinkModuleAssetCommandWindows extends Command
                 continue;
             }
 
-            $this->copyDirectory(
+            $this->fileSystem->copyDirectory(
                 $assetPath,
                 $publicPath
             );
@@ -91,7 +91,7 @@ class LinkModuleAssetCommandWindows extends Command
         }
     }
 
-    private function linkModulesV1()
+    private function copyModulesV1()
     {
         $modulesArray = $this->config->get('aksara.modules');
         $modules = Module::fromConfigArray($modulesArray);
@@ -102,39 +102,39 @@ class LinkModuleAssetCommandWindows extends Command
         foreach ($modules as $module) {
             switch ($module->getType()) {
             case Module::PLUGIN_TYPE:
-                $this->linkPluginAssets($module);
+                $this->copyPluginAssets($module);
                 break;
             case Module::FRONTEND_TYPE:
-                $this->linkFrontEndAssets($module);
+                $this->copyFrontEndAssets($module);
                 break;
             case Module::ADMIN_TYPE:
-                $this->linkAdminAssets($module);
+                $this->copyAdminAssets($module);
             case Module::CORE_TYPE:
-                $this->linkCoreAssets($module);
+                $this->copyCoreAssets($module);
             default: continue;
             }
         }
     }
 
-    private function linkCoreAssets(Module $module)
+    private function copyCoreAssets(Module $module)
     {
         $publicAssetRoot = public_path("assets/modules/Core/");
         $this->createSymLink($module, $publicAssetRoot);
     }
 
-    private function linkAdminAssets(Module $module)
+    private function copyAdminAssets(Module $module)
     {
         $publicAssetRoot = public_path("assets/modules/Admin/");
         $this->createSymLink($module, $publicAssetRoot);
     }
 
-    private function linkFrontEndAssets(Module $module)
+    private function copyFrontEndAssets(Module $module)
     {
         $publicAssetRoot = public_path("assets/modules/FrontEnd/");
         $this->createSymLink($module, $publicAssetRoot);
     }
 
-    private function linkPluginAssets(Module $module)
+    private function copyPluginAssets(Module $module)
     {
         $publicAssetRoot = public_path("assets/modules/Plugins/");
         $this->createSymLink($module, $publicAssetRoot);
@@ -160,30 +160,12 @@ class LinkModuleAssetCommandWindows extends Command
             return false;
         }
 
-        $this->copyDirectory(
+        $this->fileSystem->copyDirectory(
             $assetPath,
             $publicPath
         );
 
         $this->info("Copy $assetPath to $publicPath\n");
-    }
-
-    function copyDirectory($src, $dst) {
-        $dir = opendir($src);
-        mkdir($dst);
-        while(false !== ( $file = readdir($dir)) ) {
-            if (( $file != '.' ) && ( $file != '..' )) {
-                if ( is_dir($src . '/' . $file) ) {
-                    $this->copyDirectory(
-                        $src . '/' . $file, 
-                        $dst . '/' . $file
-                    );      
-                } else {
-                    copy($src . '/' . $file,$dst . '/' . $file);
-                }
-            }
-        }
-        closedir($dir);
     }
 
 }
