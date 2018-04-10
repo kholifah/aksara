@@ -8,7 +8,7 @@ use Illuminate\Console\Command;
 use Illuminate\FileSystem\FileSystem;
 use Illuminate\Config\Repository as Config;
 
-class LinkModuleAssetCommandWindows extends Command
+class CopyModuleAssetCommand extends Command
 {
     /**
      * The name and signature of the console command.
@@ -22,7 +22,7 @@ class LinkModuleAssetCommandWindows extends Command
      *
      * @var string
      */
-    protected $description = 'Generate asset for loaded aksara modules for windows';
+    protected $description = 'Copy asset for loaded aksara modules for windows';
 
     private $fileSystem;
     private $config;
