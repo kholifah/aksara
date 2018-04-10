@@ -6,6 +6,7 @@ public/robots.txt
 public/assets
 storage/*.key
 vendor
+!aksara-modules/*/assets/vendor
 .idea
 .vagrant
 Homestead.json
