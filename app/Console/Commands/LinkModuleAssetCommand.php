@@ -51,8 +51,12 @@ class LinkModuleAssetCommand extends Command
      */
     public function handle()
     {
-        $this->linkModulesV1();
-        $this->linkModulesV2();
+        if (windows_os()) {
+            $this->error("Symlink is not available in this operating system, please run aksara:storage:copy instead");
+        } else{
+            $this->linkModulesV1();
+            $this->linkModulesV2();
+        }
     }
 
     private function linkModulesV2()
