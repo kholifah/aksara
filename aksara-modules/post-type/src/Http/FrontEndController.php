@@ -35,8 +35,8 @@ class FrontEndController extends Controller
             $aksaraQueryArgs['post_slug'] = \Request::route('slug');
 
             $viewPriorities = [
-                get_active_frontend_view('single-'.$data['postType']),
-                get_active_frontend_view('single'),
+                'single-'.$data['postType'],
+                'single',
             ];
         }
         elseif (str_contains($routeName,'archive-taxonomy') ) {
@@ -46,9 +46,9 @@ class FrontEndController extends Controller
             $data['taxonomy'] = get_current_taxonomy();
 
             $viewPriorities = [
-                get_active_frontend_view('archive-'.$data['taxonomy']),
-                get_active_frontend_view('archive-taxonomy'),
-                get_active_frontend_view('archive'),
+                'archive-'.$data['taxonomy'],
+                'archive-taxonomy',
+                'archive',
             ];
 
             $term = \Request::route('term');
@@ -75,8 +75,8 @@ class FrontEndController extends Controller
 
             $data['postType'] =  get_current_post_type();
             $viewPriorities = [
-                get_active_frontend_view('archive-'.$data['postType']),
-                get_active_frontend_view('archive'),
+                'archive-'.$data['postType'],
+                'archive',
             ];
             $aksaraQueryArgs['post_type'] = $data['postType'];
         }
@@ -87,7 +87,7 @@ class FrontEndController extends Controller
             $aksaraQueryArgs['post_type'] = 'post' ;
 
             $viewPriorities = [
-                get_active_frontend_view('home'),
+                'home',
             ];
         }
         elseif (str_contains($routeName,'search') ) {
@@ -98,8 +98,8 @@ class FrontEndController extends Controller
             $aksaraQueryArgs['post_type'] = false;
 
             $viewPriorities = [
-                get_active_frontend_view('search'),
-                get_active_frontend_view('archive'),
+                'search',
+                'archive',
             ];
         }
 
@@ -144,9 +144,9 @@ class FrontEndController extends Controller
 
         \Eventy::action('aksara.post-type.front-end.before-render',$data);
 
-        foreach ( $viewPriorities as $viewPriority ) {
-            if( view()->exists($viewPriority) ) {
-                return view($viewPriority,compact('data'));
+        foreach ($viewPriorities as $viewPriority) {
+            if(frontend_view_exists($viewPriority)) {
+                return frontend_view($viewPriority, compact('data'));
             }
         }
 

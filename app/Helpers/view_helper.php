@@ -24,6 +24,9 @@ function get_active_theme($type)
     validate_theme_type($type);
 
     $activeThemes = get_active_module_by_type($type);
+    if (empty($activeThemes)) {
+        return false;
+    }
     //get last theme
     $theme = $activeThemes[count($activeThemes) - 1];
     return $theme;
@@ -32,12 +35,19 @@ function get_active_theme($type)
 function get_active_theme_name($type)
 {
     validate_theme_type($type);
-    return get_active_theme($type)->getName();
+    $active = get_active_theme($type);
+    if (!$active) {
+        return false;
+    }
+    return $active->getName();
 }
 
 function get_active_theme_view($type, $view)
 {
     $backend = get_active_theme_name($type);
+    if (!$backend) {
+        return false;
+    }
     $customView = sprintf("%s::%s", $backend, $view);
 
     if (view()->exists($customView)) {
@@ -58,4 +68,29 @@ function get_active_backend_view($view)
 function get_active_frontend_view($view)
 {
     return get_active_theme_view('frontend', $view);
+}
+
+function theme_view_exists($type, $view)
+{
+    $themeView = get_active_theme_view($type, $view);
+    if (!$themeView) {
+        return false;
+    }
+    return true;
+}
+
+function theme_view($type, $view, $data = [], $mergeData = [])
+{
+    $themeView = get_active_theme_view($type, $view);
+    return view($themeView, $data, $mergeData);
+}
+
+function frontend_view_exists($view)
+{
+    return theme_view_exists('frontend', $view);
+}
+
+function frontend_view($view, $data = [], $mergeData = [])
+{
+    return theme_view('frontend', $view, $data, $mergeData);
 }
