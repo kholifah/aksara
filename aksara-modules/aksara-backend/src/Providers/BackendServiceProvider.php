@@ -15,7 +15,7 @@ class BackendServiceProvider extends AbstractModuleProvider
 
             // Code Miror
             aksara_admin_enqueue_script(url('assets/modules-v2/aksara-backend/lib/codemirror/js/codemirror.js'),'codemirror',10,true);
-            aksara_admin_enqueue_style(url('assets/module-v2/aksara-backend//lib/codemirror/css/codemirror.css'),'codemirror');
+            aksara_admin_enqueue_style(url('assets/modules-v2/aksara-backend/lib/codemirror/css/codemirror.css'),'codemirror');
 
             // Base Script
             aksara_admin_enqueue_script(url('assets/modules-v2/aksara-backend/js/script.min.js'),'aksara-admin-script',10,true);
