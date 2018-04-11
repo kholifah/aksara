@@ -18,8 +18,6 @@
 
     add_admin_sub_menu_route('aksara-menu-options-appereance',$menuIndex);
 
-    $route = \App::make('route');
-
     $menuSave = [
      'slug' => '/aksara-menu',
      'method' => 'POST',
@@ -29,7 +27,7 @@
                 ],
      ];
 
-    $route->addRoute($menuSave);
+    \AksaraRoute::addRoute($menuSave);
 });
 
 \Eventy::addAction('aksara.admin.footer', function () {

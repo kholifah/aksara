@@ -45,7 +45,6 @@ class RouteServiceProvider extends AbstractModuleProvider
             ];
             add_admin_sub_menu_route('aksara-menu-user', $args);
 
-            $route = \App::make('route');
             $userCreate = [
                 'slug' => '/aksara-user/create',
                 'method' => 'GET',
@@ -54,7 +53,7 @@ class RouteServiceProvider extends AbstractModuleProvider
                     'uses' => '\Plugins\User\Http\Controllers\UserController@create',
                 ],
             ];
-            $route->addRoute($userCreate);
+            \AksaraRoute::addRoute($userCreate);
             $userStore = [
                 'slug' => '/aksara-user/store',
                 'method' => 'POST',
@@ -63,7 +62,7 @@ class RouteServiceProvider extends AbstractModuleProvider
                     'uses' => '\Plugins\User\Http\Controllers\UserController@store',
                 ],
             ];
-            $route->addRoute($userStore);
+            \AksaraRoute::addRoute($userStore);
             $userEdit = [
                 'slug' => '/aksara-user/{id}/edit',
                 'method' => 'GET',
@@ -72,7 +71,7 @@ class RouteServiceProvider extends AbstractModuleProvider
                     'uses' => '\Plugins\User\Http\Controllers\UserController@edit',
                 ],
             ];
-            $route->addRoute($userEdit);
+            \AksaraRoute::addRoute($userEdit);
             $userUpdate = [
                 'slug' => '/aksara-user/{id}/update',
                 'method' => 'PUT',
@@ -81,7 +80,7 @@ class RouteServiceProvider extends AbstractModuleProvider
                     'uses' => '\Plugins\User\Http\Controllers\UserController@update',
                 ],
             ];
-            $route->addRoute($userUpdate);
+            \AksaraRoute::addRoute($userUpdate);
 
             $userUpdate = [
                 'slug' => '/aksara/user/update-profile',
@@ -91,7 +90,7 @@ class RouteServiceProvider extends AbstractModuleProvider
                     'uses' => '\Plugins\User\Http\Controllers\UserController@update',
                 ],
             ];
-            $route->addRoute($userUpdate);
+            \AksaraRoute::addRoute($userUpdate);
 
             $userDestroy = [
                 'slug' => '/aksara-user/{id}/destroy',
@@ -101,7 +100,7 @@ class RouteServiceProvider extends AbstractModuleProvider
                     'uses' => '\Plugins\User\Http\Controllers\UserController@destroy',
                 ],
             ];
-            $route->addRoute($userDestroy);
+            \AksaraRoute::addRoute($userDestroy);
 
             $args = [
                 'page_title' => __('user::page.role'),
@@ -118,7 +117,6 @@ class RouteServiceProvider extends AbstractModuleProvider
             ];
             add_admin_sub_menu_route('aksara-menu-user', $args);
 
-            $route = \App::make('route');
             $userCreate = [
                 'slug' => '/aksara-role/create',
                 'method' => 'GET',
@@ -127,7 +125,7 @@ class RouteServiceProvider extends AbstractModuleProvider
                     'uses' => '\Plugins\User\Http\Controllers\RoleController@create',
                 ],
             ];
-            $route->addRoute($userCreate);
+            \AksaraRoute::addRoute($userCreate);
             $userStore = [
                 'slug' => '/aksara-role/store',
                 'method' => 'POST',
@@ -136,7 +134,7 @@ class RouteServiceProvider extends AbstractModuleProvider
                     'uses' => '\Plugins\User\Http\Controllers\RoleController@store',
                 ],
             ];
-            $route->addRoute($userStore);
+            \AksaraRoute::addRoute($userStore);
             $userEdit = [
                 'slug' => '/aksara-role/{id}/edit',
                 'method' => 'GET',
@@ -145,7 +143,7 @@ class RouteServiceProvider extends AbstractModuleProvider
                     'uses' => '\Plugins\User\Http\Controllers\RoleController@edit',
                 ],
             ];
-            $route->addRoute($userEdit);
+            \AksaraRoute::addRoute($userEdit);
             $userUpdate = [
                 'slug' => '/aksara-role/{id}/update',
                 'method' => 'PUT',
@@ -154,7 +152,7 @@ class RouteServiceProvider extends AbstractModuleProvider
                     'uses' => '\Plugins\User\Http\Controllers\RoleController@update',
                 ],
             ];
-            $route->addRoute($userUpdate);
+            \AksaraRoute::addRoute($userUpdate);
             $userDestroy = [
                 'slug' => '/aksara-role/{id}/destroy',
                 'method' => 'GET',
@@ -163,7 +161,7 @@ class RouteServiceProvider extends AbstractModuleProvider
                     'uses' => '\Plugins\User\Http\Controllers\RoleController@destroy',
                 ],
             ];
-            $route->addRoute($userDestroy);
+            \AksaraRoute::addRoute($userDestroy);
 
             add_capability('User');
             add_capability('Add User', 'add-user', 'user');

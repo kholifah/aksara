@@ -16,8 +16,6 @@
 
     add_admin_menu_route($sliderIndex);
 
-    $route = \App::make('route');
-
     $sliderSave = [
              'slug' => '/aksara-slider-save',
              'method' => 'POST',
@@ -27,5 +25,5 @@
                         ],
              ];
 
-    $route->addRoute($sliderSave);
+    \AksaraRoute::addRoute($sliderSave);
 });

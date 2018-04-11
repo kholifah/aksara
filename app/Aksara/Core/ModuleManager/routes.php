@@ -1,7 +1,6 @@
 <?php
 
 \Eventy::addAction('aksara.init', function () {
-    $route = \App::make('route');
 
     $moduleManagerDeactivate = [
              'slug' => '/aksara-module-manager/deactivate/{type}/{slug}',
@@ -12,7 +11,7 @@
                         ],
              ];
 
-    $route->addRoute($moduleManagerDeactivate);
+    \AksaraRoute::addRoute($moduleManagerDeactivate);
 
     $moduleManagerCheck = [
              'slug' => '/aksara-module-manager/check/{type}/{slug}',
@@ -23,7 +22,7 @@
                         ],
              ];
 
-    $route->addRoute($moduleManagerCheck);
+    \AksaraRoute::addRoute($moduleManagerCheck);
 
     $recursiveActivate = [
              'slug' => '/aksara-module-manager/activate-recursive/{type}/{slug}',
@@ -34,5 +33,5 @@
                         ],
              ];
 
-    $route->addRoute($recursiveActivate);
+    \AksaraRoute::addRoute($recursiveActivate);
 });

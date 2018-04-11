@@ -90,3 +90,8 @@ function frontend_view($view, $data = [], $mergeData = [])
 {
     return theme_view('frontend', $view, $data, $mergeData);
 }
+
+function backend_view($view, $data = [], $mergeData = [])
+{
+    return theme_view('backend', $view, $data, $mergeData);
+}

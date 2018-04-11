@@ -29,8 +29,6 @@ class RouteServiceProvider extends AbstractModuleProvider
 
             add_admin_sub_menu_route('aksara-menu-options',$optionIndex);
 
-            $route = \App::make('route');
-
             $optionSave = [
                      'slug' => '/aksara-option-save',
                      'method' => 'POST',
@@ -40,7 +38,7 @@ class RouteServiceProvider extends AbstractModuleProvider
                                 ],
                      ];
 
-            $route->addRoute($optionSave);
+            \AksaraRoute::addRoute($optionSave);
         });
 
         /*

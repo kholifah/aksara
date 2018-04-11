@@ -93,5 +93,15 @@ class AppServiceProvider extends ServiceProvider
             'module_loader',
             \Aksara\ModuleLoader\ModuleLoaderInterface::class
         );
+
+        $this->app->singleton(
+            'admin_menu',
+            \App\Aksara\Core\AdminMenu\AdminMenu::class
+        );
+
+        $this->app->singleton(
+            'aksara_router',
+            \App\Aksara\Core\Route::class
+        );
     }
 }

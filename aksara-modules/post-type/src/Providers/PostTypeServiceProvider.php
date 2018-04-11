@@ -105,8 +105,6 @@ class PostTypeServiceProvider extends AbstractModuleProvider
 
             add_admin_sub_menu_route('aksara-menu-options',$optionIndex);
 
-            $route = \App::make('route');
-
             $optionSave = [
                 'slug' => '/aksara-post-type-option-save',
                 'method' => 'POST',
@@ -116,7 +114,7 @@ class PostTypeServiceProvider extends AbstractModuleProvider
                 ],
             ];
 
-            $route->addRoute($optionSave);
+            \AksaraRoute::addRoute($optionSave);
         });
 
         \Eventy::addAction('aksara.routes.before',function(){

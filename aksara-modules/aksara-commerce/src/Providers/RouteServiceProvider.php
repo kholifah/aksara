@@ -37,7 +37,6 @@ class RouteServiceProvider extends AbstractModuleProvider
 
         \Eventy::addAction('aksara.init', function () {
 
-          // $metabox = \App::make('metabox');
             // bisa juga pake kelas kalau mau
             add_meta_box(
                 'e-commerce-metabox',

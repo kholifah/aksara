@@ -130,7 +130,6 @@ class PostController extends Controller
     public function edit($id)
     {
         $post = Post::find($id);
-        // $metabox = \App::make('metabox');
 
         return view('post-type::post.edit', compact('post'));
     }

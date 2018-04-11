@@ -45,7 +45,7 @@ class AdminMenu
                 return;
             }
 
-            \App::make('route')->addRoute($args['route']);
+            \AksaraRoute::addRoute($args['route']);
 
             // register named route
             $args['routeName'] = $args['route']['args']['as'];
@@ -99,7 +99,7 @@ class AdminMenu
                 return;
             }
 
-            \App::make('route')->addRoute($args['route']);
+            \AksaraRoute::addRoute($args['route']);
 
             // register named route
             $args['routeName'] = $args['route']['args']['as'];
@@ -187,7 +187,8 @@ class AdminMenu
             }
         }
 
-        echo view(get_active_backend_view('partials.admin-menu'), compact('adminMenu', 'adminSubMenu'))->render();
+        echo backend_view('partials.admin-menu',
+            compact('adminMenu', 'adminSubMenu'))->render();
     }
 
     public function removeAdminMenu($adminMenuRoute)
