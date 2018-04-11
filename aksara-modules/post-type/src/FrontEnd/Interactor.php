@@ -61,7 +61,7 @@ class Interactor implements FrontEndInterface
 
             // register archive
             if( get_post_type_args('publicly_queryable',$postType) && get_post_type_args('has_archive',$postType) ) {
-                \Route::get( get_post_type_args('slug_plural',$postType), ['as' => 'aksara.post-type.front-end.archive-post-type.'.$postType, 'uses' =>'\App\Modules\Plugins\PostType\Http\FrontEndController@serve']);
+                \Route::get( get_post_type_args('slug_plural',$postType), ['as' => 'aksara.post-type.front-end.archive-post-type.'.$postType, 'uses' =>'\Plugins\PostType\Http\FrontEndController@serve']);
                 \Eventy::action('aksara.post-type.permalink.archive-post-type', get_post_type_args('slug_plural',$postType), 'aksara.post-type.front-end.archive-post-type.'.$postType);
             }
 

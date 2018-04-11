@@ -23,7 +23,7 @@
              'method' => 'POST',
              'args' => [
                           'as' => 'aksara-slider-save',
-                          'uses' => '\App\Modules\Plugins\Slider\Http\SliderControlle@save',
+                          'uses' => '\App\Modules\Plugins\Slider\Http\SliderController@save',
                         ],
              ];
 
