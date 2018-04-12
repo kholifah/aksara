@@ -38,6 +38,6 @@
 <script src="{{ asset('assets/js/jquery-2.2.0.min.js') }}"></script>
 <script src="{{ asset('assets/js/bootstrap.min.js') }}"></script>
 
-</script>-->
+</script>
 </body>
 </html>

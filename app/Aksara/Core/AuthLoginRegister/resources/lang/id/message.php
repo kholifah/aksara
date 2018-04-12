@@ -8,5 +8,6 @@ return [
     'login-to-start-your-session' => 'Masuk untuk memulai',
     'reset-email-success' => 'Email berhasil terkirim',
     'reset-email-fail' => 'Email gagal terkirim',
+    'user-invalid' => "Kami tidak bisa menemukan user dengan alamat e-mail ini."
 
 ];

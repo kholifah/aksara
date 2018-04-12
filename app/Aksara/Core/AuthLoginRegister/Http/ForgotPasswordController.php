@@ -40,18 +40,18 @@ class ForgotPasswordController extends Controller
     }
 
     public function sendResetLinkEmail(Request $request)
-    {
+    { 
         $this->validate($request, ['email' => 'required|email']);
 
-        $response = $this->broker()->sendResetLink(
+        $user = $this->broker()->getUser(
             $request->only('email')
         );
 
-        if($response == Password::RESET_LINK_SENT){
-            EmailResetPassword::dispatch($request->only('email'));
-            return $this->sendResetLinkResponse($response)->with('message', __('core:auth-login-register::message.reset-email-success'));;          
+        if (is_null($user)) {            
+            return redirect()->back()->with('message', __('core:auth-login-register::message.user-invalid'));
         } else {
-            return $this->sendResetLinkFailedResponse($request, $response);
+            EmailResetPassword::dispatch($request->only('email'));
+            return redirect()->route('admin.login')->with('message', __('core:auth-login-register::message.reset-email-success'));
         }
         
     }

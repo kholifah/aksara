@@ -10,6 +10,7 @@ use Illuminate\Notifications\Messages\MailMessage;
 class ResetPassword extends Notification
 {
     use Queueable;
+
     public $token;
 
     /**
@@ -46,7 +47,7 @@ class ResetPassword extends Notification
             //->line('You are receiving this email because we received a password reset request for your account.')
             //->action('Reset Password', url(config('app.url').route('password.reset', $this->token, false)))
             //->line('If you did not request a password reset, no further action is required.')
-            ->view('aksara-backend::emails.forgot-password', ['token' => $this->token]);
+            ->view(\Eventy::filter('aksara.email_reset_password', 'aksara-backend::emails.forgot-password'), ['token' => $this->token]);
     }
 
     /**

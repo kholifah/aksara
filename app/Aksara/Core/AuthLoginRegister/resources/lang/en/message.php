@@ -8,5 +8,6 @@ return [
     'login-to-start-your-session' => 'Login to start your session',
     'reset-email-success' => 'Email send successfully',
     'reset-email-fail' => 'Email send fail',
+    'user-invalid' => "We can't find a user with that e-mail address."
 
 ];

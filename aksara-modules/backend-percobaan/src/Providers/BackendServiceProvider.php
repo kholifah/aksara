@@ -28,5 +28,9 @@ class BackendServiceProvider extends AbstractModuleProvider
             aksara_admin_enqueue_style(url('assets/plugins/datatables/jquery.dataTables.min.css'));
             aksara_admin_enqueue_style(url('assets/plugins/datatables/responsive.bootstrap.min.css'));
         });
+
+        \Eventy::addFilter('aksara.email_reset_password', function ($name) {
+            return 'backend-percobaan::emails.forgot-password';
+        });
     }
 }
