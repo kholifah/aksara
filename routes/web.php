@@ -25,3 +25,5 @@ use Illuminate\Http\Request;
 Route::get('/error-fallback', function (Request $request) {
     return view('errors.fallback', $request->all());
 });
+
+Auth::routes();

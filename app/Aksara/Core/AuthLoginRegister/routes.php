@@ -13,12 +13,12 @@
     // \Route::get($registerRoute, ['as' => 'register', 'uses' => '\App\Aksara\Core\AuthLoginRegister\Http\AuthController@register']);
     // \Route::post($registerRoute, ['as' => 'doRegister', 'uses' => '\App\Aksara\Core\AuthLoginRegister\Http\AuthController@doRegister']);
     // \Route::get('/registration/activate/{code}', ['as' => 'activate', 'uses' => '\App\Aksara\Core\AuthLoginRegister\Http\AuthController@activate']);
-    //
-    // // Password reset link request routes...
-    // \Route::get('password/email', ['as' => 'password_reset', 'uses' => '\App\Aksara\Core\AuthLoginRegister\Http\AuthController@getEmail']);
-    // \Route::post('password/email', '\App\Aksara\Core\AuthLoginRegister\Http\AuthController@postEmail');
-    //
-    // // Password reset routes...
-    // \Route::get('password/reset/{token}', '\App\Aksara\Core\AuthLoginRegister\Http\AuthController@getReset');
-    // \Route::post('password/reset', '\App\Aksara\Core\AuthLoginRegister\Http\AuthController@postReset');
+    
+    // Password reset link request routes...
+    \Route::get('password/email', ['as' => 'admin.passwordReset', 'uses' => '\App\Aksara\Core\AuthLoginRegister\Http\ForgotPasswordController@showLinkRequestForm']);
+    \Route::post('password/email', '\App\Aksara\Core\AuthLoginRegister\Http\ForgotPasswordController@sendResetLinkEmail');
+    
+    // Password reset routes...
+    \Route::get('password/reset/{token}', '\App\Aksara\Core\AuthLoginRegister\Http\ResetPasswordController@showResetForm')->name('password.reset');
+    \Route::post('password/reset', '\App\Aksara\Core\AuthLoginRegister\Http\ResetPasswordController@reset');
 });

@@ -46,7 +46,28 @@
                             <div class="form-group row">
                                 <label class="col-sm-2 col-xs-4 col-xxs-12 col-form-label">@lang('option::global.tagline')</label>
                                 <div class="col-sm-10 col-xs-8 col-xxs-12">
-                                    {!! Form::text('options[tagline]', @$site_options['tagline'], ['class'=>'form-control', 'placeholder' =>  __('option::global.tagline-placholder') ]) !!}
+                                    {!! Form::text('options[tagline]', @$site_options['tagline'], ['class'=>'form-control', 'placeholder' =>  __('option::global.tagline-placeholder') ]) !!}
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-xs-4 col-xxs-12 col-form-label">@lang('option::global.login-page-title')</label>
+                                <div class="col-sm-10 col-xs-8 col-xxs-12">
+                                    {!! Form::text('options[login_page_title]', @$site_options['login_page_title'], ['class'=>'form-control', 'placeholder' =>  __('option::global.login-page-title-placeholder') ]) !!}
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-xs-4 col-xxs-12 col-form-label">@lang('option::global.login-page-tagline')</label>
+                                <div class="col-sm-10 col-xs-8 col-xxs-12">
+                                    {!! Form::text('options[login_page_tagline]', @$site_options['login_page_tagline'], ['class'=>'form-control', 'placeholder' =>  __('option::global.login-page-tagline-placeholder') ]) !!}
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-xs-4 col-xxs-12 col-form-label">@lang('option::global.enabled-reset-password')</label>
+                                <div class="col-sm-10 col-xs-8 col-xxs-12">
+                                    {!! Form::select('options[enabled_reset_password]', ['1' => __('option::global.yes'), '0' => __('option::global.no')], @$site_options['enabled_reset_password'], ['class'=>'form-control']) !!}
                                 </div>
                             </div>
 

@@ -3,11 +3,11 @@
 @section('content')
 <div class="login-box">
   <div class="login-logo">
-    <a href="#">Admin</a>
+    <a href="#">@filter('aksara.login_page_title', 'Aksara Login')</a>
   </div>
   <!-- /.login-logo -->
   <div class="login-box-body">
-    <p class="login-box-msg">{{ __('core:auth-login-register::message.login-to-start-your-session') }}</p>
+    <p class="login-box-msg">@filter('aksara.login_page_tagline', 'Sign in to start your session')</p>
     @if(session('message'))
       <p class="login-box-msg"><b>{{ session('message') }}</b></p>
     @endif
@@ -40,7 +40,15 @@
         <!-- /.col -->
       </div>
     {!!Form::close()!!}
-
+    <div class="row">
+      <div class="col-xs-12">
+        @if(\Eventy::filter('aksara.enabled_reset_password', '1'))     
+        <a href="{{ route('admin.passwordReset') }}">  
+        {{ __('core:auth-login-register::default.reset-password') }}
+        </a>
+        @endif
+      </div>
+    </div>
 
 
   </div>

@@ -108,6 +108,47 @@ class RouteServiceProvider extends AbstractModuleProvider
             return $name;
         });
 
+
+        /*
+         *  Apply filter for login_page_title
+         */
+        \Eventy::addFilter('aksara.login_page_title', function ($name) {
+            $site_options = get_options('site_options', []);
+
+            if (isset($site_options['login_page_title']) && $site_options['login_page_title'] !== "") {
+                return $site_options['login_page_title'];
+            }
+
+            return $name;
+        });
+
+        /*
+         *  Apply filter for site tagline
+         */
+        \Eventy::addFilter('aksara.login_page_tagline', function ($name) {
+            $site_options = get_options('site_options', []);
+
+            if (isset($site_options['login_page_tagline']) && $site_options['login_page_tagline'] !== "") {
+                return $site_options['login_page_tagline'];
+            }
+
+            return $name;
+        });
+
+        /*
+         *  Apply filter for site tagline
+         */
+        \Eventy::addFilter('aksara.enabled_reset_password', function ($name) {
+            $site_options = get_options('site_options', []);
+
+            if (isset($site_options['enabled_reset_password']) && $site_options['enabled_reset_password'] !== "") {
+                return $site_options['enabled_reset_password'];
+            }
+
+            return $name;
+        });
+
+
     }
 }
 
