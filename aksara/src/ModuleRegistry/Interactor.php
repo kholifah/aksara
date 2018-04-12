@@ -78,10 +78,8 @@ class Interactor implements ModuleRegistryHandler
     private function getRegisteredModuleNames()
     {
         $pluginDirs = $this->filesystem->directories($this->moduleRoot);
-        //take last part only
         $registeredModuleNames = array_map(function ($fullDir) {
-            $segments = explode('/', $fullDir);
-            return $segments[count($segments)-1];
+            return basename($fullDir);
         }, $pluginDirs);
         return $registeredModuleNames;
     }

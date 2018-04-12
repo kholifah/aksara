@@ -7,11 +7,12 @@ class LoadModuleException extends AppException
 {
     private $key;
 
-    public function __construct(ModuleIdentifier $key)
+    public function __construct(ModuleIdentifier $key, $errorMessage = '')
     {
-        $message = sprintf('Failed to load module: %s-%s.',
+        $message = sprintf('Failed to load module: %s-%s:%s.',
             $key->getType(),
-            $key->getModuleName()
+            $key->getModuleName(),
+            $errorMessage
         );
         parent::__construct($message, 500, null);
         $this->key = $key;

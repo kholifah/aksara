@@ -30,7 +30,7 @@ abstract class AbstractModuleProvider extends ServiceProvider
                 new ModuleKey(
                     $this->type,
                     $this->moduleName
-                ));
+                ), $e->getMessage());
         }
     }
 
@@ -43,7 +43,8 @@ abstract class AbstractModuleProvider extends ServiceProvider
                 new ModuleKey(
                     $this->type,
                     $this->moduleName
-                )
+                ),
+                $e->getMessage()
             );
         }
     }

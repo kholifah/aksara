@@ -52,6 +52,11 @@ class ModulePath
         return $this->root().DIRECTORY_SEPARATOR.'assets';
     }
 
+    public function config()
+    {
+        return $this->root().DIRECTORY_SEPARATOR.'config';
+    }
+
     public function toArray()
     {
         return [
