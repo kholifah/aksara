@@ -5,46 +5,28 @@ namespace Plugins\SampleMaster\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Plugins\SampleMaster\Models\Supplier;
+use Plugins\SampleMaster\Repositories\SupplierRepository;
 use Plugins\SampleMaster\Http\Requests\CreateSupplierRequest;
 
 class SupplierController extends Controller
 {
+    private $presenter;
+    private $repo;
+
+    public function __construct(SupplierRepository $repo, Request $request)
+    {
+        $this->repo = $repo;
+        $this->presenter = new SupplierPresenter($repo, $request);
+    }
 
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
-        $suppliers = Supplier::orderBy('id');
-        if ($request->get('bapply')) {
-            if ($request->input('apply')) {
-                $apply = $request->input('apply');
-                if ($apply == 'destroy') {
-                    if ($request->input('id')) {
-                        $id = $request->input('id');
-                        $this->deleteMultipleSupplier($id);
-                    }
-                }
-            }
-            //prevent delete repeating with refresh button
-            //remove bapply, apply, then redirect
-            //include other parameters
-            return redirect()->back()->withInput(
-                $request->except([ 'bapply', 'apply' ])
-            );
-        }
-        if ($request->input('search')) {
-            $search = $request->input('search');
-            $suppliers = $suppliers->where('supplier_name', 'like', '%' . $search . '%');
-        } else {
-            $search = '';
-        }
-
-        $total = $suppliers->count();
-        $suppliers = $suppliers->paginate(10);
-        return view('sample-master::supplier.index', compact('suppliers', 'search', 'total'));
+        return $this->presenter->index('sample-master::supplier.index');
     }
 
     /**
@@ -54,8 +36,18 @@ class SupplierController extends Controller
      */
     public function create()
     {
-        $supplier = new Supplier;
-        return view('sample-master::supplier.create', compact('supplier'));
+        return $this->presenter->create('sample-master::supplier.create');
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        return $this->presenter->edit($id, 'sample-master::supplier.edit');
     }
 
     /**
@@ -66,11 +58,12 @@ class SupplierController extends Controller
      */
     public function store(CreateSupplierRequest $request)
     {
-        $supplier = Supplier::create($request->input());
-        if (!$supplier) {
-            admin_notice('danger', 'Failed to create supplier');
+        $success = $this->repo->store($request);
+        if (!$success) {
+            admin_notice('danger', __('sample-master::supplier.messages.create_failed'));
+        } else {
+            admin_notice('success', __('sample-master::supplier.messages.created'));
         }
-        admin_notice('success', __('sample-master::supplier.messages.created'));
         return redirect()->route('sample-supplier');
     }
 
@@ -86,27 +79,6 @@ class SupplierController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        $supplier = $this->findSupplier($id);
-        return view('sample-master::supplier.edit', compact('supplier'));
-    }
-
-    private function findSupplier($id)
-    {
-        $supplier = Supplier::find($id);
-        if (!$id) {
-            abort(404, 'Page Not Found');
-        }
-        return $supplier;
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -115,10 +87,12 @@ class SupplierController extends Controller
      */
     public function update(CreateSupplierRequest $request, $id)
     {
-        $supplier = $this->findSupplier($id);
-        $supplier->fill($request->input());
-        $supplier->save();
-        admin_notice('success', __('sample-master::supplier.messages.updated'));
+        $success = $this->repo->update($id, $request);
+        if (!$success) {
+            admin_notice('danger', __('sample-master::supplier.messages.update_failed'));
+        } else {
+            admin_notice('success', __('sample-master::supplier.messages.updated'));
+        }
         return redirect()->route('sample-supplier');
     }
 
@@ -130,30 +104,13 @@ class SupplierController extends Controller
      */
     public function destroy($id)
     {
-        $success = $this->deleteSupplier($id);
-        if ($success) {
+        $success = $this->repo->delete($id);
+        if (!$success) {
+            admin_notice('danger', __('sample-master::supplier.messages.delete_failed'));
+        } else {
             admin_notice('success', __('sample-master::supplier.messages.deleted'));
         }
         return redirect()->route('sample-supplier');
     }
 
-    private function deleteMultipleSupplier(array $idList)
-    {
-        foreach ($idList as $id) {
-            $success = $this->deleteSupplier($id);
-        }
-        $count = count($idList);
-        admin_notice('success', trans_choice('sample-master::supplier.messages.multiple_deleted',
-            $count, [ 'count' => $count ]));
-    }
-
-    private function deleteSupplier($id)
-    {
-        $supplier = $this->findSupplier($id);
-        if (!$supplier->delete()) {
-            admin_notice('danger', __('sample-master::supplier.messages.failed_delete'));
-            return false;
-        }
-        return true;
-    }
 }
