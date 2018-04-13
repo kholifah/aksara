@@ -10,15 +10,15 @@ use Plugins\SampleMaster\Http\Requests\CreateSupplierRequest;
 
 class SupplierController extends Controller
 {
-    private $table;
+    private $tableController;
     private $repo;
 
     public function __construct(
         SupplierRepository $repo,
-        SupplierTable $table
+        SupplierTable $tableController
     ){
         $this->repo = $repo;
-        $this->table = $table;
+        $this->tableController = $tableController;
     }
 
     /**
@@ -28,7 +28,8 @@ class SupplierController extends Controller
      */
     public function index(Request $request)
     {
-        return $this->table->index('sample-master::supplier.index', $request);
+        $table = $this->tableController->handle($request);
+        return view('sample-master::supplier.index', compact('table'));
     }
 
     /**

@@ -13,7 +13,7 @@
   </div>
   <!-- /.content__head -->
 
-  @include('sample-master::supplier.table', compact('data', 'search', 'total'))
+  {!! $table->render('basic_table') !!}
 
 @endsection
 

@@ -2,12 +2,11 @@
 
 namespace Plugins\SampleMaster\Http\Controllers;
 
-use Aksara\TableView\TableController;
-use Illuminate\Http\Request;
-use Plugins\SampleMaster\Models\Supplier;
+use Aksara\TableView\BasicTableController;
 use Plugins\SampleMaster\Repositories\SupplierRepository;
+use Plugins\SampleMaster\Presenters\SupplierTablePresenter;
 
-class SupplierTable extends TableController
+class SupplierTable extends BasicTableController
 {
     protected $searchable = [
         'supplier_name',
@@ -15,8 +14,8 @@ class SupplierTable extends TableController
 
     protected $defaultSortColumn = 'id';
 
-    public function __construct(SupplierRepository $repo)
+    public function __construct(SupplierRepository $repo, SupplierTablePresenter $table)
     {
-        parent::__construct($repo);
+        parent::__construct($repo, $table);
     }
 }

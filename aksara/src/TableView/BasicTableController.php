@@ -4,18 +4,21 @@ namespace Aksara\TableView;
 
 use Illuminate\Http\Request;
 
-abstract class TableController
+abstract class BasicTableController
 {
     protected $repo;
     protected $searchable = [];
     protected $defaultSortColumn = 'id';
 
-    public function __construct(TableRepository $repo)
-    {
+    public function __construct(
+        TableRepository $repo,
+        BasicTablePresenter $table
+    ){
         $this->repo = $repo;
+        $this->table = $table;
     }
 
-    public function index($viewName, Request $request)
+    public function handle(Request $request)
     {
         if ($request->get('bapply')) {
             return $this->apply($request);
@@ -33,7 +36,10 @@ abstract class TableController
 
         $total = $data->count();
         $data = $data->paginate(10);
-        return view($viewName, compact('data', 'search', 'total'));
+
+        $this->table->setData($data);
+        $this->table->setSearch($search);
+        return $this->table;
     }
 
     private function apply($request)
@@ -63,13 +69,13 @@ abstract class TableController
     private function deleteMultiple(array $idList)
     {
         foreach ($idList as $id) {
-            $success = $this->deleteSupplier($id);
+            $success = $this->delete($id);
         }
         $count = count($idList);
         admin_notice('success', $this->getMultipleDeletedMessage($count));
     }
 
-    private function deleteSupplier($id)
+    private function delete($id)
     {
         $success = $this->repo->delete($id);
         if (!$success) {
@@ -79,7 +85,7 @@ abstract class TableController
         return true;
     }
 
-    protected function find($id)
+    private function find($id)
     {
         $data = $this->repo->find($id);
         if (!$data) {
