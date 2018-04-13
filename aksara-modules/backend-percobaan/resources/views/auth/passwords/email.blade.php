@@ -10,7 +10,7 @@
         @if(session('message'))
             <p class="login-box-msg"><b>{{ session('message') }}</b></p>
         @endif
-    
+        
         <form class="form-horizontal" method="POST">
             {{ csrf_field() }}
 
