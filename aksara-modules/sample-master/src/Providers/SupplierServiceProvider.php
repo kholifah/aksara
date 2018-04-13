@@ -10,9 +10,8 @@ class SupplierServiceProvider extends AbstractModuleProvider
     {
         \Eventy::addAction('aksara.init-completed', function () {
             $args = [
-                'page_title' => 'Supplier',
-                'menu_title' => 'Supplier',
-                'icon' => 'ti-user',
+                'page_title' => __('sample-master::supplier.title'),
+                'menu_title' => __('sample-master::supplier.title'),
                 'capability' => '',
                 'route' => [
                     'slug' => '/sample-supplier',

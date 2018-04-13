@@ -12,4 +12,5 @@ interface HttpCrudRepository
     public function delete($id);
     public function sort($column, $order = 'ASC');
     public function new($attributes = []);
+    public function all();
 }

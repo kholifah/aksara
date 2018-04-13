@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'title' => 'Toko',
     'labels' => [
         'name' => 'Nama Toko',
         'address' => 'Alamat Toko',

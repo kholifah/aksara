@@ -35,12 +35,35 @@ abstract class BasicTablePresenter implements TablePresenter
 
     public function getColumnLabels()
     {
-        return array_values($this->getColumns());
+        $values = array_values($this->getColumns());
+        $valuesCopy = [];
+        foreach ($values as $value) {
+            if (is_array($value)) {
+                $valuesCopy[] = $value['label'];
+            } else {
+                $valuesCopy[] = $value;
+            }
+        }
+        return $valuesCopy;
     }
 
     public function getColumnKeys()
     {
         return array_keys($this->getColumns());
+    }
+
+    private function hasColumnFormatter($key)
+    {
+        return isset($this->getColumns()[$key]['formatter']);
+    }
+
+    private function formatColumn($key, $value)
+    {
+        if (!$this->hasColumnFormatter($key)) {
+            return $value;
+        }
+        $formatter = $this->getColumns()[$key]['formatter'];
+        return $formatter($value);
     }
 
     public function getRows()
@@ -54,7 +77,7 @@ abstract class BasicTablePresenter implements TablePresenter
             $rowItem['id'] = $item->{$this->identifier};
 
             foreach ($keys as $key) {
-                $rowItem['fields'][$key] = $item->$key;
+                $rowItem['fields'][$key] = $this->formatColumn($key, $item->$key);
             }
 
             $rowItem['url']['edit'] = $this->getEditUrl($item->{$this->identifier});

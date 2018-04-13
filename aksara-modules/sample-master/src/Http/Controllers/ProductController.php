@@ -5,21 +5,24 @@ namespace Plugins\SampleMaster\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controller;
-use Plugins\SampleMaster\Models\Supplier;
-use Plugins\SampleMaster\Repositories\SupplierRepository;
-use Plugins\SampleMaster\Http\Requests\CreateSupplierRequest;
+use Plugins\SampleMaster\Models\Product;
+use Plugins\SampleMaster\Repositories\ProductRepository;
+use Plugins\SampleMaster\Presenters\ProductFormPresenter;
+use Plugins\SampleMaster\Http\Requests\CreateProductRequest;
 
-class SupplierController extends Controller
+class ProductController extends Controller
 {
     private $tableController;
-    private $repo;
+    private $productRepo;
 
     public function __construct(
-        SupplierRepository $repo,
-        SupplierTable $tableController
+        ProductRepository $productRepo,
+        ProductTable $tableController,
+        ProductFormPresenter $form
     ){
-        $this->repo = $repo;
+        $this->productRepo = $productRepo;
         $this->tableController = $tableController;
+        $this->form = $form;
     }
 
     /**
@@ -33,7 +36,7 @@ class SupplierController extends Controller
         if ($response instanceof RedirectResponse) {
             return $response;
         }
-        return view('sample-master::supplier.index', [ 'table' => $response ]);
+        return view('sample-master::product.index', [ 'table' => $response ]);
     }
 
     /**
@@ -43,9 +46,9 @@ class SupplierController extends Controller
      */
     public function create()
     {
-        $supplier = $this->repo->new();
-        $viewName = 'sample-master::supplier.create';
-        return view($viewName, compact('supplier'));
+        $product = $this->productRepo->new();
+        $viewData = $this->form->create($product);
+        return view('sample-master::product.create', $viewData);
     }
 
     /**
@@ -56,9 +59,9 @@ class SupplierController extends Controller
      */
     public function edit($id)
     {
-        $supplier = $this->repo->find($id);
-        $viewName = 'sample-master::supplier.edit';
-        return view($viewName, compact('supplier'));
+        $product = $this->productRepo->find($id);
+        $viewData = $this->form->create($product);
+        return view('sample-master::product.edit', $viewData);
     }
 
     /**
@@ -67,15 +70,15 @@ class SupplierController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(CreateSupplierRequest $request)
+    public function store(CreateProductRequest $request)
     {
-        $success = $this->repo->store($request);
+        $success = $this->productRepo->store($request);
         if (!$success) {
-            admin_notice('danger', __('sample-master::supplier.messages.create_failed'));
+            admin_notice('danger', __('sample-master::product.messages.create_failed'));
         } else {
-            admin_notice('success', __('sample-master::supplier.messages.created'));
+            admin_notice('success', __('sample-master::product.messages.created'));
         }
-        return redirect()->route('sample-supplier');
+        return redirect()->route('sample-product');
     }
 
     /**
@@ -96,15 +99,15 @@ class SupplierController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(CreateSupplierRequest $request, $id)
+    public function update(CreateProductRequest $request, $id)
     {
-        $success = $this->repo->update($id, $request);
+        $success = $this->productRepo->update($id, $request);
         if (!$success) {
-            admin_notice('danger', __('sample-master::supplier.messages.update_failed'));
+            admin_notice('danger', __('sample-master::product.messages.update_failed'));
         } else {
-            admin_notice('success', __('sample-master::supplier.messages.updated'));
+            admin_notice('success', __('sample-master::product.messages.updated'));
         }
-        return redirect()->route('sample-supplier');
+        return redirect()->route('sample-product');
     }
 
     /**
@@ -115,13 +118,14 @@ class SupplierController extends Controller
      */
     public function destroy($id)
     {
-        $success = $this->repo->delete($id);
+        $success = $this->productRepo->delete($id);
         if (!$success) {
-            admin_notice('danger', __('sample-master::supplier.messages.delete_failed'));
+            admin_notice('danger', __('sample-master::product.messages.delete_failed'));
         } else {
-            admin_notice('success', __('sample-master::supplier.messages.deleted'));
+            admin_notice('success', __('sample-master::product.messages.deleted'));
         }
-        return redirect()->route('sample-supplier');
+        return redirect()->route('sample-product');
     }
 
 }
+

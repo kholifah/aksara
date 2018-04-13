@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'title' => 'Supplier',
     'labels' => [
         'name' => 'Supplier Name',
         'address' => 'Supplier Address',

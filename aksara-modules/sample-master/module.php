@@ -9,6 +9,7 @@ return [
         'Plugins\\SampleMaster\\Providers\\SampleMasterServiceProvider',
         'Plugins\\SampleMaster\\Providers\\SupplierServiceProvider',
         'Plugins\\SampleMaster\\Providers\\StoreServiceProvider',
+        'Plugins\\SampleMaster\\Providers\\ProductServiceProvider',
     ],
 
 ];

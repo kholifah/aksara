@@ -2,8 +2,8 @@
 
 namespace Plugins\SampleMaster\Http\Controllers;
 
-use Aksara\TableView\TablePresenter;
 use Illuminate\Http\Request;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controller;
 use Plugins\SampleMaster\Models\Store;
 use Plugins\SampleMaster\Repositories\StoreRepository;
@@ -30,10 +30,10 @@ class StoreController extends Controller
     public function index(Request $request)
     {
         $response = $this->tableController->handle($request);
-        if ($response instanceof TablePresenter) {
-            return view('sample-master::store.index', [ 'table' => $response ]);
+        if ($response instanceof RedirectResponse) {
+            return $response;
         }
-        return $response;
+        return view('sample-master::store.index', [ 'table' => $response ]);
     }
 
     /**

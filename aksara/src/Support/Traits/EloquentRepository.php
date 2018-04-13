@@ -62,4 +62,9 @@ trait EloquentRepository
         }
         return $data;
     }
+
+    public function all()
+    {
+        return $this->model->all();
+    }
 }
