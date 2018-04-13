@@ -13,7 +13,7 @@
   </div>
   <!-- /.content__head -->
 
-  {!! $table->render('basic_table') !!}
+  {!! $table->render() !!}
 
 @endsection
 

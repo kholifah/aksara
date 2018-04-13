@@ -109,7 +109,7 @@ abstract class BasicTablePresenter implements TablePresenter
         return $this->data->count();
     }
 
-    public function render($viewName, $presenterName = 'table')
+    public function render($viewName = 'basic_table', $presenterName = 'table')
     {
         return view($viewName, [ $presenterName => $this ])->render();
     }
