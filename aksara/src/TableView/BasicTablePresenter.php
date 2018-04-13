@@ -2,7 +2,7 @@
 
 namespace Aksara\TableView;
 
-abstract class BasicTablePresenter
+abstract class BasicTablePresenter implements TablePresenter
 {
     private $data;
     private $search;
@@ -13,7 +13,7 @@ abstract class BasicTablePresenter
      *
      * format [ 'column_name' => 'Column Label' ]
      */
-    public abstract function getColumns();
+    protected abstract function getColumns();
     protected abstract function getEditUrl($identifier);
     protected abstract function getDeleteUrl($identifier);
 
@@ -31,16 +31,6 @@ abstract class BasicTablePresenter
     public function setSearch($search)
     {
         $this->search = $search;
-    }
-
-    public function getIdentifier()
-    {
-        return $this->identifier;
-    }
-
-    public function getData()
-    {
-        return $this->data;
     }
 
     public function getColumnLabels()

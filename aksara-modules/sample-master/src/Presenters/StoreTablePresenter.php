@@ -6,7 +6,7 @@ use Aksara\TableView\BasicTablePresenter;
 
 class StoreTablePresenter extends BasicTablePresenter
 {
-    public function getColumns()
+    protected function getColumns()
     {
         return [
             'store_name' => __('sample-master::store.labels.name'),

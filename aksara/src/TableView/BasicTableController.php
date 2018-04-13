@@ -13,7 +13,7 @@ abstract class BasicTableController
 
     public function __construct(
         TableRepository $repo,
-        BasicTablePresenter $table
+        TablePresenter $table
     ){
         $this->repo = $repo;
         $this->table = $table;
