@@ -12,7 +12,7 @@
             <p class="login-box-msg"><b>{{ session('message') }}</b></p>
         @endif
     
-        <form class="form-horizontal" method="POST" action="{{ route('password.request') }}">
+        <form class="form-horizontal" method="POST" action="{{ route('password.doReset') }}">
             {{ csrf_field() }}
 
             <input type="hidden" name="token" value="{{ $token }}">

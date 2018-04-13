@@ -43,7 +43,7 @@
     <div class="row">
       <div class="col-xs-12">
         @if(\Eventy::filter('aksara.enabled_reset_password', '1'))     
-        <a href="{{ route('admin.passwordReset') }}">  
+        <a href="{{ route('password.request') }}">  
         {{ __('core:auth-login-register::default.reset-password') }}
         </a>
         @endif
