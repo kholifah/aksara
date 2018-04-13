@@ -3,21 +3,22 @@
 namespace Plugins\SampleMaster\Http\Controllers;
 
 use Aksara\TableView\BasicTableController;
-use Plugins\SampleMaster\Repositories\SupplierRepository;
-use Plugins\SampleMaster\Presenters\SupplierTablePresenter;
+use Plugins\SampleMaster\Repositories\StoreRepository;
+use Plugins\SampleMaster\Presenters\StoreTablePresenter;
 
-class SupplierTable extends BasicTableController
+class StoreTable extends BasicTableController
 {
     protected $searchable = [
-        'supplier_name',
+        'store_name',
     ];
 
     protected $defaultSortColumn = 'id';
 
     public function __construct(
-        SupplierRepository $repo,
-        SupplierTablePresenter $table
+        StoreRepository $repo,
+        StoreTablePresenter $table
     ){
         parent::__construct($repo, $table);
     }
 }
+

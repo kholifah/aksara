@@ -5,14 +5,15 @@ namespace Plugins\SampleMaster\Repositories;
 use Aksara\Support\Contracts\HttpCrudRepository;
 use Aksara\TableView\TableRepository;
 use Aksara\Support\Traits\EloquentRepository;
-use Plugins\SampleMaster\Models\Supplier;
+use Plugins\SampleMaster\Models\Store;
 
-class SupplierRepository implements HttpCrudRepository, TableRepository
+class StoreRepository implements HttpCrudRepository, TableRepository
 {
     use EloquentRepository;
 
-    public function __construct(Supplier $model)
+    public function __construct(Store $model)
     {
         $this->model = $model;
     }
 }
+

@@ -9,6 +9,7 @@ abstract class BasicTableController
     protected $repo;
     protected $searchable = [];
     protected $defaultSortColumn = 'id';
+    private $redirecting = false;
 
     public function __construct(
         TableRepository $repo,
@@ -42,6 +43,11 @@ abstract class BasicTableController
         return $this->table;
     }
 
+    public function isRedirecting()
+    {
+        return $this->redirecting;
+    }
+
     private function apply($request)
     {
         if ($request->input('apply')) {
@@ -53,6 +59,7 @@ abstract class BasicTableController
         //prevent delete repeating with refresh button
         //remove bapply, apply, then redirect
         //include other parameters
+        $this->redirecting = true;
         return redirect()->back()->withInput(
             $request->except([ 'bapply', 'apply' ])
         );

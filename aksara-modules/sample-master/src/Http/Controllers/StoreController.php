@@ -5,18 +5,18 @@ namespace Plugins\SampleMaster\Http\Controllers;
 use Aksara\TableView\BasicTablePresenter;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Plugins\SampleMaster\Models\Supplier;
-use Plugins\SampleMaster\Repositories\SupplierRepository;
-use Plugins\SampleMaster\Http\Requests\CreateSupplierRequest;
+use Plugins\SampleMaster\Models\Store;
+use Plugins\SampleMaster\Repositories\StoreRepository;
+use Plugins\SampleMaster\Http\Requests\CreateStoreRequest;
 
-class SupplierController extends Controller
+class StoreController extends Controller
 {
     private $tableController;
     private $repo;
 
     public function __construct(
-        SupplierRepository $repo,
-        SupplierTable $tableController
+        StoreRepository $repo,
+        StoreTable $tableController
     ){
         $this->repo = $repo;
         $this->tableController = $tableController;
@@ -31,7 +31,7 @@ class SupplierController extends Controller
     {
         $response = $this->tableController->handle($request);
         if ($response instanceof BasicTablePresenter) {
-            return view('sample-master::supplier.index', [ 'table' => $response ]);
+            return view('sample-master::store.index', [ 'table' => $response ]);
         }
         return $response;
     }
@@ -43,9 +43,9 @@ class SupplierController extends Controller
      */
     public function create()
     {
-        $supplier = $this->repo->new();
-        $viewName = 'sample-master::supplier.create';
-        return view($viewName, compact('supplier'));
+        $store = $this->repo->new();
+        $viewName = 'sample-master::store.create';
+        return view($viewName, compact('store'));
     }
 
     /**
@@ -56,9 +56,9 @@ class SupplierController extends Controller
      */
     public function edit($id)
     {
-        $supplier = $this->repo->find($id);
-        $viewName = 'sample-master::supplier.edit';
-        return view($viewName, compact('supplier'));
+        $store = $this->repo->find($id);
+        $viewName = 'sample-master::store.edit';
+        return view($viewName, compact('store'));
     }
 
     /**
@@ -67,15 +67,15 @@ class SupplierController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(CreateSupplierRequest $request)
+    public function store(CreateStoreRequest $request)
     {
         $success = $this->repo->store($request);
         if (!$success) {
-            admin_notice('danger', __('sample-master::supplier.messages.create_failed'));
+            admin_notice('danger', __('sample-master::store.messages.create_failed'));
         } else {
-            admin_notice('success', __('sample-master::supplier.messages.created'));
+            admin_notice('success', __('sample-master::store.messages.created'));
         }
-        return redirect()->route('sample-supplier');
+        return redirect()->route('sample-store');
     }
 
     /**
@@ -96,15 +96,15 @@ class SupplierController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(CreateSupplierRequest $request, $id)
+    public function update(CreateStoreRequest $request, $id)
     {
         $success = $this->repo->update($id, $request);
         if (!$success) {
-            admin_notice('danger', __('sample-master::supplier.messages.update_failed'));
+            admin_notice('danger', __('sample-master::store.messages.update_failed'));
         } else {
-            admin_notice('success', __('sample-master::supplier.messages.updated'));
+            admin_notice('success', __('sample-master::store.messages.updated'));
         }
-        return redirect()->route('sample-supplier');
+        return redirect()->route('sample-store');
     }
 
     /**
@@ -117,11 +117,12 @@ class SupplierController extends Controller
     {
         $success = $this->repo->delete($id);
         if (!$success) {
-            admin_notice('danger', __('sample-master::supplier.messages.delete_failed'));
+            admin_notice('danger', __('sample-master::store.messages.delete_failed'));
         } else {
-            admin_notice('success', __('sample-master::supplier.messages.deleted'));
+            admin_notice('success', __('sample-master::store.messages.deleted'));
         }
-        return redirect()->route('sample-supplier');
+        return redirect()->route('sample-store');
     }
 
 }
+

@@ -7,6 +7,7 @@ return [
 
     'providers' => [
         'Plugins\\SampleMaster\\Providers\\SampleMasterServiceProvider',
+        'Plugins\\SampleMaster\\Providers\\StoreServiceProvider',
     ],
 
 ];
