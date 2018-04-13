@@ -2,10 +2,12 @@
 
 namespace Plugins\SampleMaster\Repositories;
 
+use Aksara\Support\Contracts\HttpCrudRepository;
+use Aksara\TableView\TableRepository;
 use Plugins\SampleMaster\Models\Supplier;
 use Illuminate\Http\Request;
 
-class SupplierRepository implements RepositoryInterface
+class SupplierRepository implements HttpCrudRepository, TableRepository
 {
     private $model;
 

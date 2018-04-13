@@ -1,32 +1,29 @@
 <?php
 
-namespace Plugins\SampleMaster\Http\Controllers;
+namespace Aksara\TableView;
 
 use Illuminate\Http\Request;
-use Plugins\SampleMaster\Repositories\RepositoryInterface;
 
-abstract class BasePresenter
+abstract class TableController
 {
     protected $repo;
-    protected $request;
     protected $searchable = [];
     protected $defaultSortColumn = 'id';
 
-    public function __construct(RepositoryInterface $repo, Request $request)
+    public function __construct(TableRepository $repo)
     {
         $this->repo = $repo;
-        $this->request = $request;
     }
 
-    public function index($viewName)
+    public function index($viewName, Request $request)
     {
-        if ($this->request->get('bapply')) {
-            return $this->apply();
+        if ($request->get('bapply')) {
+            return $this->apply($request);
         }
 
         $data = $this->repo->sort($this->defaultSortColumn);
-        if ($this->request->input('search')) {
-            $search = $this->request->input('search');
+        if ($request->input('search')) {
+            $search = $request->input('search');
             foreach ($this->searchable as $field) {
                 $data = $data->orWhere($field, 'like', '%' . $search . '%');
             }
@@ -39,26 +36,26 @@ abstract class BasePresenter
         return view($viewName, compact('data', 'search', 'total'));
     }
 
-    private function apply()
+    private function apply($request)
     {
-        if ($this->request->input('apply')) {
-            $apply = $this->request->input('apply');
+        if ($request->input('apply')) {
+            $apply = $request->input('apply');
             if ($apply == 'destroy') {
-                $this->applyDelete();
+                $this->applyDelete($request);
             }
         }
         //prevent delete repeating with refresh button
         //remove bapply, apply, then redirect
         //include other parameters
         return redirect()->back()->withInput(
-            $this->request->except([ 'bapply', 'apply' ])
+            $request->except([ 'bapply', 'apply' ])
         );
     }
 
-    private function applyDelete()
+    private function applyDelete($request)
     {
-        if ($this->request->input('id')) {
-            $id = $this->request->input('id');
+        if ($request->input('id')) {
+            $id = $request->input('id');
             $this->deleteMultiple($id);
         }
     }
@@ -93,15 +90,14 @@ abstract class BasePresenter
 
     protected function getMultipleDeletedMessage($count)
     {
-        return "$count item(s) deleted";//TODO global language
+        return trans_choice(
+            'tableview.messages.multiple_deleted',
+            $count, [ 'count' => $count ]
+        );
     }
 
     protected function getFailedDeleteMessage()
     {
-        return 'Failed to delete data';//TODO global language
+        return __('tableview.messages.failed_delete');
     }
-
-    public abstract function create($viewName);
-
-    public abstract function edit($id, $viewName);
 }

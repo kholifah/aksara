@@ -1,10 +1,10 @@
 <?php
 
-namespace Plugins\SampleMaster\Repositories;
+namespace Aksara\Support\Contracts;
 
 use Illuminate\Http\Request;
 
-interface RepositoryInterface
+interface HttpCrudRepository
 {
     public function find($id);
     public function store(Request $request);

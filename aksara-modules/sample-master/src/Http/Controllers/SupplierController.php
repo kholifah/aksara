@@ -10,13 +10,15 @@ use Plugins\SampleMaster\Http\Requests\CreateSupplierRequest;
 
 class SupplierController extends Controller
 {
-    private $presenter;
+    private $table;
     private $repo;
 
-    public function __construct(SupplierRepository $repo, Request $request)
-    {
+    public function __construct(
+        SupplierRepository $repo,
+        SupplierTable $table
+    ){
         $this->repo = $repo;
-        $this->presenter = new SupplierPresenter($repo, $request);
+        $this->table = $table;
     }
 
     /**
@@ -24,9 +26,9 @@ class SupplierController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return $this->presenter->index('sample-master::supplier.index');
+        return $this->table->index('sample-master::supplier.index', $request);
     }
 
     /**
@@ -36,7 +38,9 @@ class SupplierController extends Controller
      */
     public function create()
     {
-        return $this->presenter->create('sample-master::supplier.create');
+        $supplier = $this->repo->new();
+        $viewName = 'sample-master::supplier.create';
+        return view($viewName, compact('supplier'));
     }
 
     /**
@@ -47,7 +51,9 @@ class SupplierController extends Controller
      */
     public function edit($id)
     {
-        return $this->presenter->edit($id, 'sample-master::supplier.edit');
+        $supplier = $this->repo->find($id);
+        $viewName = 'sample-master::supplier.edit';
+        return view($viewName, compact('supplier'));
     }
 
     /**
