@@ -2,7 +2,7 @@
 
 @section('content')
 
-<div class="login-box" style="width:30%">
+<div class="login-box" style="width:35%">
     <div class="login-logo">
         <a href="#">{{ __('core:auth-login-register::default.reset-password') }}</a>
     </div>
@@ -20,7 +20,7 @@
             <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
                 <label for="email" class="col-md-4 control-label">{{ __('core:auth-login-register::default.email') }}</label>
 
-                <div class="col-md-6">
+                <div class="col-md-8">
                     <input id="email" type="email" class="form-control" name="email" value="{{ $email or old('email') }}" placeholder="{{ __('core:auth-login-register::default.email-placeholder') }}" required autofocus>
 
                     @if ($errors->has('email'))
@@ -34,7 +34,7 @@
             <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
                 <label for="password" class="col-md-4 control-label">{{ __('core:auth-login-register::default.password') }}</label>
 
-                <div class="col-md-6">
+                <div class="col-md-8">
                     <input id="password" type="password" class="form-control" name="password" placeholder="{{ __('core:auth-login-register::default.password-placeholder') }}" required>
 
                     @if ($errors->has('password'))
@@ -47,7 +47,7 @@
 
             <div class="form-group{{ $errors->has('password_confirmation') ? ' has-error' : '' }}">
                 <label for="password-confirm" class="col-md-4 control-label">{{ __('core:auth-login-register::default.password-confirmation') }}</label>
-                <div class="col-md-6">
+                <div class="col-md-8">
                     <input id="password-confirm" type="password" class="form-control" name="password_confirmation" placeholder="{{ __('core:auth-login-register::default.password-confirmation-placeholder') }}" required>
 
                     @if ($errors->has('password_confirmation'))
