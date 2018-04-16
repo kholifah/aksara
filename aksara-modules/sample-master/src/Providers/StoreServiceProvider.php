@@ -78,6 +78,28 @@ class StoreServiceProvider extends AbstractModuleProvider
 
             \AksaraRoute::addRoute($storeDestroy);
 
+            $managerStore = [
+                'slug' => '/sample-store/{store_id}/manager/store',
+                'method' => 'POST',
+                'args' => [
+                    'as' => 'sample-store-manager-store',
+                    'uses' => '\Plugins\SampleMaster\Http\Controllers\StoreController@storeManager',
+                ],
+            ];
+
+            \AksaraRoute::addRoute($managerStore);
+
+            $managerUpdate = [
+                'slug' => '/sample-store/{store_id}/manager/{id}/update',
+                'method' => 'POST',
+                'args' => [
+                    'as' => 'sample-store-manager-update',
+                    'uses' => '\Plugins\SampleMaster\Http\Controllers\StoreController@updateManager',
+                ],
+            ];
+
+            \AksaraRoute::addRoute($managerUpdate);
+
         });
     }
 }

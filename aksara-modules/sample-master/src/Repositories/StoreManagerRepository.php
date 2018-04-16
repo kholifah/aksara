@@ -5,15 +5,15 @@ namespace Plugins\SampleMaster\Repositories;
 use Aksara\Support\Contracts\HttpCrudRepository;
 use Aksara\TableView\TableRepository;
 use Aksara\Support\EloquentRepository;
-use Illuminate\Http\Request;
-use Plugins\SampleMaster\Models\Store;
+use Plugins\SampleMaster\Models\StoreManager;
 
-class StoreRepository
+class StoreManagerRepository
     extends EloquentRepository implements HttpCrudRepository, TableRepository
 {
-    public function __construct(Store $model)
+    public function __construct(StoreManager $model)
     {
         $this->model = $model;
     }
 }
+
 

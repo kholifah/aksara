@@ -8,18 +8,23 @@ use Illuminate\Routing\Controller;
 use Plugins\SampleMaster\Models\Store;
 use Plugins\SampleMaster\Repositories\StoreRepository;
 use Plugins\SampleMaster\Http\Requests\CreateStoreRequest;
+use Plugins\SampleMaster\Http\Requests\CreateManagerRequest;
+use Plugins\SampleMaster\Presenters\StoreFormPresenter;
 
 class StoreController extends Controller
 {
     private $tableController;
     private $repo;
+    private $form;
 
     public function __construct(
         StoreRepository $repo,
-        StoreTable $tableController
+        StoreTable $tableController,
+        StoreFormPresenter $form
     ){
         $this->repo = $repo;
         $this->tableController = $tableController;
+        $this->form = $form;
     }
 
     /**
@@ -43,9 +48,8 @@ class StoreController extends Controller
      */
     public function create()
     {
-        $store = $this->repo->new();
-        $viewName = 'sample-master::store.create';
-        return view($viewName, compact('store'));
+        $viewData = $this->form->create();
+        return view('sample-master::store.create', $viewData);
     }
 
     /**
@@ -56,9 +60,11 @@ class StoreController extends Controller
      */
     public function edit($id)
     {
-        $store = $this->repo->find($id);
-        $viewName = 'sample-master::store.edit';
-        return view($viewName, compact('store'));
+        $viewData = $this->form->edit($id);
+        if (!$viewData) {
+            abort(404, 'Not found');
+        }
+        return view('sample-master::store.edit', $viewData);
     }
 
     /**
@@ -69,13 +75,13 @@ class StoreController extends Controller
      */
     public function store(CreateStoreRequest $request)
     {
-        $success = $this->repo->store($request);
-        if (!$success) {
+        $data = $this->repo->store($request);
+        if (!$data) {
             admin_notice('danger', __('sample-master::store.messages.create_failed'));
         } else {
             admin_notice('success', __('sample-master::store.messages.created'));
         }
-        return redirect()->route('sample-store');
+        return redirect()->route('sample-store-edit', $data->id);
     }
 
     /**
@@ -104,7 +110,7 @@ class StoreController extends Controller
         } else {
             admin_notice('success', __('sample-master::store.messages.updated'));
         }
-        return redirect()->route('sample-store');
+        return redirect()->route('sample-store-edit', $id);
     }
 
     /**
@@ -122,6 +128,28 @@ class StoreController extends Controller
             admin_notice('success', __('sample-master::store.messages.deleted'));
         }
         return redirect()->route('sample-store');
+    }
+
+    public function storeManager($store_id, CreateManagerRequest $request)
+    {
+        $success = $this->repo->storeRelation($store_id, 'manager', $request);
+        if (!$success) {
+            admin_notice('danger', __('sample-master::store.manager.messages.create_failed'));
+        } else {
+            admin_notice('success', __('sample-master::store.manager.messages.created'));
+        }
+        return redirect()->route('sample-store-edit', $store_id);
+    }
+
+    public function updateManager($store_id, $id, CreateManagerRequest $request)
+    {
+        $success = $this->repo->storeRelation($store_id, 'manager', $request);
+        if (!$success) {
+            admin_notice('danger', __('sample-master::store.manager.messages.update_failed'));
+        } else {
+            admin_notice('success', __('sample-master::store.manager.messages.updated'));
+        }
+        return redirect()->route('sample-store-edit', $store_id);
     }
 
 }

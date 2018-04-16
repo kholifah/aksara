@@ -1,10 +1,11 @@
 <?php
 
-namespace Aksara\Support\Traits;
+namespace Aksara\Support;
 
 use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
-trait EloquentRepository
+abstract class EloquentRepository
 {
     protected $model;
 
@@ -15,6 +16,20 @@ trait EloquentRepository
             return false;
         }
         return $data;
+    }
+
+    public function storeRelation($id, $relationName, Request $request)
+    {
+        $data = $this->find($id);
+        if (!$data) {
+            return false;
+        }
+
+        if ($data->$relationName() instanceof HasOne) {
+            $data->$relationName->fill($request->input());
+            return $data->$relationName->save();
+        }
+        throw new \Exception('Relation type not supported yet');
     }
 
     public function store(Request $request)

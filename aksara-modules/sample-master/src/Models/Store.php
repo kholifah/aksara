@@ -11,6 +11,10 @@ class Store extends Model
         'store_phone',
         'store_address',
     ];
-}
 
+    public function manager()
+    {
+        return $this->hasOne(StoreManager::class)->withDefault();
+    }
+}
 

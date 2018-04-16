@@ -20,7 +20,7 @@
         <div class="col-lg-6 col-md-8">
             <div class="card-box">
                 <div class="card-box__header">
-                    <h2>@lang('sample-master::store.labels.add_store')</h2>
+                    <h2>@lang('sample-master::store.title')</h2>
                 </div>
                 <div class="card-box__body">
                     {!! Form::open(['route' => 'sample-store-store', 'role' => 'form', 'class' => 'form-horizontal'])!!}

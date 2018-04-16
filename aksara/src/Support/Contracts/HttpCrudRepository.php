@@ -13,4 +13,5 @@ interface HttpCrudRepository
     public function sort($column, $order = 'ASC');
     public function new($attributes = []);
     public function all();
+    public function storeRelation($id, $relationName, Request $request);
 }

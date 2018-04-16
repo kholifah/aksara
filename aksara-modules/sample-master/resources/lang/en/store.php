@@ -21,4 +21,18 @@ return [
         'created' => 'Store created succesfully',
         'create_failed' => 'Failed to create store data',
     ],
+    'manager' => [
+        'title' => 'Store Manager',
+        'labels' => [
+            'name' => 'Manager Name',
+            'phone' => 'Manager Phone',
+            'address' => 'Manager Address',
+        ],
+        'messages' => [
+            'updated' => 'Store Manager updated succesfully',
+            'update_failed' => 'Failed to update store manager data',
+            'created' => 'Store manager created succesfully',
+            'create_failed' => 'Failed to create store manager data',
+        ],
+    ],
 ];

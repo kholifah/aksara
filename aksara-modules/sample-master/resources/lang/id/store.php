@@ -21,4 +21,18 @@ return [
         'created' => 'Toko berhasil disimpan',
         'create_failed' => 'Gagal menyimpan data toko',
     ],
+    'manager' => [
+        'title' => 'Manajer Toko',
+        'labels' => [
+            'name' => 'Nama Manajer',
+            'phone' => 'Telp Manajer',
+            'address' => 'Alamat Manajer',
+        ],
+        'messages' => [
+            'updated' => 'Manajer Toko berhasil diubah',
+            'update_failed' => 'Gagal mengubah data manajer toko',
+            'created' => 'Manajer Toko berhasil disimpan',
+            'create_failed' => 'Gagal menyimpan data manajer toko',
+        ],
+    ],
 ];
