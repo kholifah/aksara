@@ -11,5 +11,8 @@ return [
     'password' => 'Password',
     'password-confirmation' => 'Password Confirmation',
     'send-prassword-reset-link' => 'Send Password Reset Link',
+    'email-placeholder' => 'E-Mail',
+    'password-placeholder' => 'Password',
+    'password-confirmation-placeholder' => 'Repeat Password',
 
 ];

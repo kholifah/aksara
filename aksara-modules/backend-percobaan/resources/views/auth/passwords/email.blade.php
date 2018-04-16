@@ -18,7 +18,7 @@
                 <label for="email" class="col-md-4 control-label">{{ __('core:auth-login-register::default.email') }}</label>
 
                 <div class="col-md-6">
-                    <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" required>
+                    <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" placeholder="{{ __('core:auth-login-register::default.email-placeholder') }}" required>
 
                     @if ($errors->has('email'))
                         <span class="help-block">
