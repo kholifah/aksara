@@ -18,7 +18,8 @@ class CreateStoreManagersTable extends Migration
             $table->integer('store_id')->unsigned();
             $table->foreign('store_id')
                 ->references('id')
-                ->on('stores');
+                ->on('stores')
+                ->onDelete('cascade');
 
             $table->string('manager_name', 15);
             $table->string('manager_phone', 100);
