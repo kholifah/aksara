@@ -36,4 +36,12 @@ return [
             'create_failed' => 'Failed to create store manager data',
         ],
     ],
+    'product' => [
+        'messages' => [
+            'add_failed' => 'Failed to add product to store',
+            'add_success' => 'Product added to store',
+            'delete_failed' => 'Failed to delete product from store',
+            'delete_success' => 'Product deleted from store',
+        ],
+    ],
 ];

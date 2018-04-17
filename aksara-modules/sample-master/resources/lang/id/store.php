@@ -36,4 +36,12 @@ return [
             'create_failed' => 'Gagal menyimpan data manajer toko',
         ],
     ],
+    'product' => [
+        'messages' => [
+            'add_failed' => 'Gagal menambahkan produk ke toko',
+            'add_success' => 'Berhasil menambahkan produk ke toko',
+            'delete_failed' => 'Gagal menghapus produk dari toko',
+            'delete_success' => 'Produk berhasil dihapus dari toko',
+        ],
+    ],
 ];
