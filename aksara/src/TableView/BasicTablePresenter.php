@@ -7,6 +7,7 @@ abstract class BasicTablePresenter implements TablePresenter
     private $data;
     private $search;
     protected $identifier = 'id';
+    protected $inputPrefix = '';
 
     /**
      * array
@@ -14,8 +15,13 @@ abstract class BasicTablePresenter implements TablePresenter
      * format [ 'column_name' => 'Column Label' ]
      */
     protected abstract function getColumns();
-    protected abstract function getEditUrl($identifier);
-    protected abstract function getDeleteUrl($identifier);
+    protected function getEditUrl($identifier) { return false; }
+    protected function getDeleteUrl($identifier) { return false; }
+
+    public function getIdentifier()
+    {
+        return $this->identifier;
+    }
 
     /**
      * Eloquent paginated collection
@@ -33,7 +39,7 @@ abstract class BasicTablePresenter implements TablePresenter
         $this->search = $search;
     }
 
-    public function getColumnLabels()
+    protected function getColumnLabels()
     {
         $values = array_values($this->getColumns());
         $valuesCopy = [];
@@ -47,7 +53,7 @@ abstract class BasicTablePresenter implements TablePresenter
         return $valuesCopy;
     }
 
-    public function getColumnKeys()
+    protected function getColumnKeys()
     {
         return array_keys($this->getColumns());
     }
@@ -66,7 +72,7 @@ abstract class BasicTablePresenter implements TablePresenter
         return $formatter($value);
     }
 
-    public function getRows()
+    protected function getRows()
     {
         $rows = [];
         $keys = $this->getColumnKeys();
@@ -89,28 +95,51 @@ abstract class BasicTablePresenter implements TablePresenter
         return $rows;
     }
 
-    public function empty()
+    protected function empty()
     {
         return $this->data->count() == 0;
     }
 
-    public function paginationLinks()
+    protected function paginationLinks()
     {
         return $this->data->links();
     }
 
-    public function getSearch()
+    protected function getSearch()
     {
         return $this->search;
     }
 
-    public function getTotal()
+    protected function getTotal()
     {
         return $this->data->count();
     }
 
+    public function getInputField($fieldName)
+    {
+        if (empty($this->inputPrefix)) {
+            return $fieldName;
+        }
+        return $this->inputPrefix.'_'.$fieldName;
+    }
+
     public function render($viewName = 'basic_table', $presenterName = 'table')
     {
-        return view($viewName, [ $presenterName => $this ])->render();
+        return view($viewName, [
+            $presenterName => [
+                'rows' => $this->getRows(),
+                'total' => $this->getTotal(),
+                'links' => $this->paginationLinks(),
+                'column_labels' => $this->getColumnLabels(),
+                'search' => $this->getSearch(),
+                'row_identifier' => $this->identifier,
+                'inputs' => [
+                    'search' => $this->getInputField('search'),
+                    'apply' => $this->getInputField('apply'),
+                    'bapply' => $this->getInputField('bapply'),
+                ]
+            ],
+        ])
+        ->render();
     }
 }

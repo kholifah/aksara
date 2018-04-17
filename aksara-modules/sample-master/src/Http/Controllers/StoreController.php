@@ -9,6 +9,7 @@ use Plugins\SampleMaster\Models\Store;
 use Plugins\SampleMaster\Repositories\StoreRepository;
 use Plugins\SampleMaster\Http\Requests\CreateStoreRequest;
 use Plugins\SampleMaster\Http\Requests\CreateManagerRequest;
+use Plugins\SampleMaster\Http\Requests\AddProductStoreRequest;
 use Plugins\SampleMaster\Presenters\StoreFormPresenter;
 
 class StoreController extends Controller
@@ -20,10 +21,12 @@ class StoreController extends Controller
     public function __construct(
         StoreRepository $repo,
         StoreTable $tableController,
-        StoreFormPresenter $form
+        StoreFormPresenter $form,
+        ProductStoreTable $productTableController
     ){
         $this->repo = $repo;
         $this->tableController = $tableController;
+        $this->productTableController = $productTableController;
         $this->form = $form;
     }
 
@@ -58,13 +61,19 @@ class StoreController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($id, Request $request)
     {
         $viewData = $this->form->edit($id);
         if (!$viewData) {
             abort(404, 'Not found');
         }
-        return view('sample-master::store.edit', $viewData);
+        $this->productTableController->setParentModel($viewData['store']);
+        $response = $this->productTableController->handle($request);
+        if ($response instanceof RedirectResponse) {
+            return $response;
+        }
+        return view('sample-master::store.edit', array_merge($viewData, [
+            'table' => $response ]));
     }
 
     /**
@@ -152,5 +161,27 @@ class StoreController extends Controller
         return redirect()->route('sample-store-edit', $store_id);
     }
 
+    public function addProduct($store_id, AddProductStoreRequest $request)
+    {
+        $productId = $request->input('product_id');
+        $success = $this->repo->attachOnce($store_id, 'products', $productId);
+        if (!$success) {
+            admin_notice('danger', __('sample-master::store.product.messages.add_failed'));
+        } else {
+            admin_notice('success', __('sample-master::store.product.messages.add_success'));
+        }
+        return redirect()->route('sample-store-edit', $store_id);
+    }
+
+    public function removeProduct($store_id, $product_id)
+    {
+        $success = $this->repo->detach($store_id, 'products', $product_id);
+        if (!$success) {
+            admin_notice('danger', __('sample-master::store.product.messages.add_failed'));
+        } else {
+            admin_notice('success', __('sample-master::store.product.messages.add_success'));
+        }
+        return redirect()->route('sample-store-edit', $store_id);
+    }
 }
 

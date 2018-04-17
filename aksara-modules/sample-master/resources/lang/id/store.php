@@ -10,6 +10,7 @@ return [
         'add_store' => 'Tambah Toko',
         'edit_store' => 'Ubah Toko',
         'store_list' => 'Daftar Toko',
+        'add_product' => 'Tambah Produk',
     ],
     'messages' => [
         'confirm_delete' => 'Apakah anda yakin akan menghapus data toko?',

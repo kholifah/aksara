@@ -4,12 +4,12 @@ namespace Aksara\TableView;
 
 use Illuminate\Http\Request;
 
-abstract class BasicTableController
+abstract class AbstractTableController
 {
     protected $repo;
     protected $searchable = [];
     protected $defaultSortColumn = 'id';
-    private $redirecting = false;
+    private $requestPrefix = '';
 
     public function __construct(
         TableRepository $repo,
@@ -21,13 +21,13 @@ abstract class BasicTableController
 
     public function handle(Request $request)
     {
-        if ($request->get('bapply')) {
+        if ($request->get($this->table->getInputField('bapply'))) {
             return $this->apply($request);
         }
 
         $data = $this->repo->sort($this->defaultSortColumn);
-        if ($request->input('search')) {
-            $search = $request->input('search');
+        if ($request->input($this->table->getInputField('search'))) {
+            $search = $request->input($this->table->getInputField('search'));
             foreach ($this->searchable as $field) {
                 $data = $data->orWhere($field, 'like', '%' . $search . '%');
             }
@@ -43,15 +43,10 @@ abstract class BasicTableController
         return $this->table;
     }
 
-    public function isRedirecting()
-    {
-        return $this->redirecting;
-    }
-
     private function apply($request)
     {
-        if ($request->input('apply')) {
-            $apply = $request->input('apply');
+        if ($request->input($this->table->getInputField('apply'))) {
+            $apply = $request->input($this->table->getInputField('apply'));
             if ($apply == 'destroy') {
                 $this->applyDelete($request);
             }
@@ -59,16 +54,18 @@ abstract class BasicTableController
         //prevent delete repeating with refresh button
         //remove bapply, apply, then redirect
         //include other parameters
-        $this->redirecting = true;
         return redirect()->back()->withInput(
-            $request->except([ 'bapply', 'apply' ])
+            $request->except([
+                $this->table->getInputField('bapply'),
+                $this->table->getInputField('apply'),
+            ])
         );
     }
 
     private function applyDelete($request)
     {
-        if ($request->input('id')) {
-            $id = $request->input('id');
+        if ($request->input($this->table->getIdentifier())) {
+            $id = $request->input($this->table->getIdentifier());
             $this->deleteMultiple($id);
         }
     }
@@ -111,6 +108,7 @@ abstract class BasicTableController
 
     protected function getFailedDeleteMessage()
     {
-        return __('tableview.messages.failed_delete');
+        return __('tableview.messages.delete_failed');
     }
 }
+

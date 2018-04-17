@@ -27,7 +27,7 @@
 <div class="form-group form-group--table {!! $errors->has('stock') ? 'error' : '' !!}">
     <label class="col-form-label">@lang('sample-master::product.labels.stock')</label>
     <div class="col-form-input">
-        {!! Form::number('stock', $product->code, ['class'=>'form-control']) !!}
+        {!! Form::number('stock', $product->stock, ['class'=>'form-control']) !!}
         {!! $errors->first('stock', '<p class="help-block">:message</p>') !!}
     </div>
 </div>

@@ -5,13 +5,13 @@
         <div class="tablenav top clearfix">
           <div class="alignleft search-box">
 
-            <input name="search" value="{{ $table->getSearch() }}" type="text" class="form-control">
+            <input name={{ $table['inputs']['search'] }} value="{{ $table['search'] }}" type="text" class="form-control">
             <input type="submit" class="btn btn-secondary" value=@lang('tableview.labels.search')>
 
           </div>
-          <div class="tablenav-pages"><span class="displaying-num">{{ $table->getTotal() }} {{ trans_choice('tableview.labels.items', $table->getTotal()) }}</span>
+          <div class="tablenav-pages"><span class="displaying-num">{{ $table['total'] }} {{ trans_choice('tableview.labels.items', $table['total']) }}</span>
             <span class="pagination-links">
-              {!! $table->paginationLinks() !!}
+              {!! $table['links'] !!}
             </span>
           </div>
         </div>
@@ -25,19 +25,19 @@
                     <label></label>
                   </div>
                 </th>
-                @foreach($table->getColumnLabels() as $label)
+                @foreach($table['column_labels'] as $label)
                   <th>{{ $label }}</th>
                 @endforeach
                 <th>&nbsp</th>
               </tr>
             </thead>
             <tbody>
-              @if(!$table->empty())
-                @foreach($table->getRows() as $row)
+              @if(!empty($table['rows']))
+                @foreach($table['rows'] as $row)
                   <tr>
                     <td class="check-column">
                       <div class="checkbox checkbox-single">
-                        <input name="id[]" type="checkbox" value="{{ $row['id'] }}">
+                        <input name={{ $table['row_identifier']."[]" }} type="checkbox" value="{{ $row[$table['row_identifier']] }}">
                         <label></label>
                       </div>
                     </td>
@@ -45,9 +45,12 @@
                       <td>{{ $field }}</td>
                     @endforeach
                     <td>
-                      <!-- TODO take edit and delete link out to presenter -->
-                      <a href="{{ $row['url']['edit'] }}" class="icon-edit"><i title="Edit" class="fa fa-pencil-square-o edit-row" data-toggle="modal" data-target="#edit-komponen"></i> </a>
-                      <a onclick='{{ "return confirm('".__('tableview.messages.confirm_delete')."');" }}' href="{{ $row['url']['delete'] }}" class="icon-delete sa-warning"><i title="Trash" class="fa fa-trash-o"></i></a>
+                      @if ($row['url']['edit'] != false)
+                        <a href="{{ $row['url']['edit'] }}" class="icon-edit"><i title="Edit" class="fa fa-pencil-square-o edit-row" data-toggle="modal" data-target="#edit-komponen"></i> </a>
+                      @endif
+                      @if ($row['url']['delete'] != false)
+                        <a onclick='{{ "return confirm('".__('tableview.messages.confirm_delete')."');" }}' href="{{ $row['url']['delete'] }}" class="icon-delete sa-warning"><i title="Trash" class="fa fa-trash-o"></i></a>
+                      @endif
                     </td>
                   </tr>
                 @endforeach
@@ -57,14 +60,14 @@
         </div>
         <div class="tablenav bottom clearfix">
           <div class="alignleft action bulk-action">
-            <select name="apply" class="form-control">
+            <select name={{ $table['inputs']['apply'] }} class="form-control">
               <option disabled selected>@lang('tableview.labels.bulk_action')</option>
               <option value='destroy'>@lang('tableview.labels.delete')</option>
             </select>
-            <input name="bapply" type="submit" class="btn btn-secondary" value=@lang('tableview.labels.apply')>
+            <input name={{ $table['inputs']['bapply'] }} type="submit" class="btn btn-secondary" value=@lang('tableview.labels.apply')>
           </div>
-          <div class="tablenav-pages"><span class="displaying-num">{{ $table->getTotal() }} {{ trans_choice('tableview.labels.items', $table->getTotal()) }}</span>
-            {!! $table->paginationLinks() !!}
+          <div class="tablenav-pages"><span class="displaying-num">{{ $table['total'] }} {{ trans_choice('tableview.labels.items', $table['total']) }}</span>
+            {!! $table['links'] !!}
           </div>
         </div>
       </form>

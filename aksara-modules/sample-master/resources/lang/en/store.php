@@ -10,6 +10,7 @@ return [
         'add_store' => 'Add Store',
         'edit_store' => 'Edit Store',
         'store_list' => 'Store List',
+        'add_product' => 'Add Product',
     ],
     'messages' => [
         'confirm_delete' => 'Are you sure to delete store?',

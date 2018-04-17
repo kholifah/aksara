@@ -14,4 +14,7 @@ interface HttpCrudRepository
     public function new($attributes = []);
     public function all();
     public function storeRelation($id, $relationName, Request $request);
+    public function attach($id, $relationName, $attachId, $once = false);
+    public function attachOnce($id, $relationName, $attachId);
+    public function detach($id, $relationName, $attachId);
 }

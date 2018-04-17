@@ -24,4 +24,9 @@ class Product extends Model
         'date_product',
         'date_expired',
     ];
+
+    public function stores()
+    {
+        return $this->belongsToMany(Store::class);
+    }
 }

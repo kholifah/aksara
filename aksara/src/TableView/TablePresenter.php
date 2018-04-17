@@ -13,13 +13,7 @@ interface TablePresenter
      * plain string
      */
     public function setSearch($search);
-    public function getColumnLabels();
-    public function getColumnKeys();
-    public function getRows();
-
-    public function empty();
-    public function paginationLinks();
-    public function getSearch();
-    public function getTotal();
+    public function getInputField($fieldName);
+    public function getIdentifier();
     public function render($viewName, $presenterName = 'table');
 }

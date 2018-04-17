@@ -16,5 +16,10 @@ class Store extends Model
     {
         return $this->hasOne(StoreManager::class)->withDefault();
     }
+
+    public function products()
+    {
+        return $this->belongsToMany(Product::class);
+    }
 }
 

@@ -2,11 +2,11 @@
 
 namespace Plugins\SampleMaster\Http\Controllers;
 
-use Aksara\TableView\BasicTableController;
+use Aksara\TableView\AbstractTableController;
 use Plugins\SampleMaster\Repositories\SupplierRepository;
 use Plugins\SampleMaster\Presenters\SupplierTablePresenter;
 
-class SupplierTable extends BasicTableController
+class SupplierTable extends AbstractTableController
 {
     protected $searchable = [
         'supplier_name',

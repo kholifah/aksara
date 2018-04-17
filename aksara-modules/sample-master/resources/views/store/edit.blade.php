@@ -40,6 +40,29 @@
                         @include('sample-master::store.manager_form')
                   {!! Form::close() !!}
                 </div>
+                <div class="card-box__header">
+                    <h2>@lang('sample-master::store.labels.add_product')</h2>
+                </div>
+                <div class="card-box__body">
+                  {!! Form::open(['route' => [ 'sample-store-product-store', $store->id ], 'role' => 'form', 'class' => 'form-horizontal']) !!}
+                  <div class="form-group form-group--table {!! $errors->has('product_id') ? 'error' : '' !!}">
+                    <label class="col-form-label">@lang('sample-master::global.search')</label>
+                    <div class="col-form-input">
+                      {!! Form::select('product_id', $all_products, null, ['class'=>'form-control']) !!}
+                      {!! $errors->first('product_id', '<p class="help-block">:message</p>') !!}
+                    </div>
+                  </div>
+                  <div class="submit-row clearfix">
+                    {!! Form::submit(__('sample-master::store.labels.add_product'), ['class'=>'btn btn-md btn-primary alignright']) !!}
+                  </div>
+                  {!! Form::close() !!}
+                </div>
+                <div class="card-box__header">
+                    <h2>@lang('sample-master::product.labels.product_list')</h2>
+                </div>
+                <div class="card-box__body">
+                  {!! $table->render() !!}
+                </div>
             </div>
         </div>
     </div>

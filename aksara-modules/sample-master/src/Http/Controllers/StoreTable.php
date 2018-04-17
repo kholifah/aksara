@@ -2,11 +2,11 @@
 
 namespace Plugins\SampleMaster\Http\Controllers;
 
-use Aksara\TableView\BasicTableController;
+use Aksara\TableView\AbstractTableController;
 use Plugins\SampleMaster\Repositories\StoreRepository;
 use Plugins\SampleMaster\Presenters\StoreTablePresenter;
 
-class StoreTable extends BasicTableController
+class StoreTable extends AbstractTableController
 {
     protected $searchable = [
         'store_name',

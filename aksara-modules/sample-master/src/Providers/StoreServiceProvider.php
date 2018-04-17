@@ -100,6 +100,28 @@ class StoreServiceProvider extends AbstractModuleProvider
 
             \AksaraRoute::addRoute($managerUpdate);
 
+            $productAdd = [
+                'slug' => '/sample-store/{store_id}/products',
+                'method' => 'POST',
+                'args' => [
+                    'as' => 'sample-store-product-store',
+                    'uses' => '\Plugins\SampleMaster\Http\Controllers\StoreController@addProduct',
+                ],
+            ];
+
+            \AksaraRoute::addRoute($productAdd);
+
+            $productRemove = [
+                'slug' => '/sample-store/{store_id}/products/{product_id}/remove',
+                'method' => 'GET',
+                'args' => [
+                    'as' => 'sample-store-product-remove',
+                    'uses' => '\Plugins\SampleMaster\Http\Controllers\StoreController@removeProduct',
+                ],
+            ];
+
+            \AksaraRoute::addRoute($productRemove);
+
         });
     }
 }
