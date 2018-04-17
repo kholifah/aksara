@@ -8,6 +8,7 @@ abstract class AbstractTableController
 {
     protected $repo;
     protected $searchable = [];
+    protected $sortable = [];
     protected $defaultSortColumn = 'id';
     private $requestPrefix = '';
 
@@ -17,6 +18,12 @@ abstract class AbstractTableController
     ){
         $this->repo = $repo;
         $this->table = $table;
+        $this->table->setSortable($this->sortable);
+    }
+
+    private function getRequestField(Request $request, $field)
+    {
+        return $request->get($this->table->getInputField($field));
     }
 
     public function handle(Request $request)
@@ -25,10 +32,22 @@ abstract class AbstractTableController
             return $this->apply($request);
         }
 
-        $data = $this->repo->sort($this->defaultSortColumn);
+        $sort = $this->getRequestField($request, 'sort_by');
+        $order = '';
+
+        if ($sort) {
+            $order = $this->getRequestField($request, 'sort_order');
+            if (!$order) {
+                $order = 'ASC';
+            }
+            $data = $this->repo->sort($sort, $order);
+        } else {
+            $data = $this->repo->sort($this->defaultSortColumn);
+        }
+
         if ($request->input($this->table->getInputField('search'))) {
             $search = $request->input($this->table->getInputField('search'));
-            $data = $this->repo->search($this->searchable, $search);
+            $data = $this->repo->search($this->searchable, $search, isset($data) ? $data : null);
         } else {
             $search = '';
         }
@@ -38,6 +57,8 @@ abstract class AbstractTableController
 
         $this->table->setData($data);
         $this->table->setSearch($search);
+        $this->table->setSort($sort, $order);
+        $this->table->setParentUrl($request->url());
         return $this->table;
     }
 

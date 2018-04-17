@@ -25,8 +25,8 @@
                     <label></label>
                   </div>
                 </th>
-                @foreach($table['column_labels'] as $label)
-                  <th>{{ $label }}</th>
+                @foreach($table['column_headers'] as $header)
+                  <th>{!! $header !!}</th>
                 @endforeach
                 <th>&nbsp</th>
               </tr>

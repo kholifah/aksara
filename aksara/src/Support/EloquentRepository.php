@@ -129,9 +129,9 @@ abstract class EloquentRepository
         return $result->get();
     }
 
-    public function search($columns, $value)
+    public function search($columns, $value, $referenceModel = null)
     {
-        $data = $this->model;
+        $data = $referenceModel ?? $this->model;
 
         if (empty($columns) || empty($value)) {
             return $data->all();

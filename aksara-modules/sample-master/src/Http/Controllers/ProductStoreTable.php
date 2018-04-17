@@ -14,7 +14,12 @@ class ProductStoreTable extends AbstractTableController
         'code',
     ];
 
-    protected $defaultSortColumn = 'id';
+    protected $sortable = [
+        'name',
+        'code',
+    ];
+
+    protected $defaultSortColumn = 'name';
 
     public function __construct(
         ProductStoreRepository $repo,

@@ -8,6 +8,10 @@ abstract class BasicTablePresenter implements TablePresenter
     private $search;
     protected $identifier = 'id';
     protected $inputPrefix = '';
+    protected $sort;
+    protected $order;
+    protected $parentUrl;
+    private $sortable;
 
     /**
      * array
@@ -37,6 +41,61 @@ abstract class BasicTablePresenter implements TablePresenter
     public function setSearch($search)
     {
         $this->search = $search;
+    }
+
+    public function setSort($sort, $order)
+    {
+        $this->sort = $sort;
+        $this->order = $order;
+    }
+
+    public function setParentUrl($url)
+    {
+        $this->parentUrl = $url;
+    }
+
+    public function setSortable($sortable = [])
+    {
+        $this->sortable = $sortable;
+    }
+
+    protected function getColumnHeaders()
+    {
+        $valuesCopy = [];
+        foreach ($this->getColumns() as $key => $value) {
+
+            if (is_array($value)) {
+                $label = $value['label'];
+            } else {
+                $label = $value;
+            }
+
+            $valuesCopy[] = $this->getHeader($key, $label);
+        }
+        return $valuesCopy;
+    }
+
+    private function getHeader($value, $label)
+    {
+        if (in_array($value, $this->sortable)) {
+            $sort = [
+                $this->getInputField('sort_by') => $value,
+                $this->getInputField('sort_order') =>
+                (strtoupper($this->order) == 'ASC' ? 'DESC' : 'ASC'),
+            ];
+            $params = $this->mergeParameters($sort);
+            $query = http_build_query($params);
+            $link = $this->parentUrl.'?'.$query;
+            return "<a href='$link'>$label</a>";
+        }
+        return $label;
+    }
+
+    private function mergeParameters($query)
+    {
+        $search = [ $this->getInputField('search') => $this->search ];
+        $merged = array_merge($query, $search);
+        return $merged;
     }
 
     protected function getColumnLabels()
@@ -131,6 +190,7 @@ abstract class BasicTablePresenter implements TablePresenter
                 'total' => $this->getTotal(),
                 'links' => $this->paginationLinks(),
                 'column_labels' => $this->getColumnLabels(),
+                'column_headers' => $this->getColumnHeaders(),
                 'search' => $this->getSearch(),
                 'row_identifier' => $this->identifier,
                 'inputs' => [

@@ -13,6 +13,14 @@ class ProductTable extends AbstractTableController
         'code',
     ];
 
+    protected $sortable = [
+        'name',
+        'code',
+        'stock',
+        'price',
+        'date_expired',
+    ];
+
     protected $defaultSortColumn = 'id';
 
     public function __construct(

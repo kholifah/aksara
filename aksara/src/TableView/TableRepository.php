@@ -7,6 +7,6 @@ interface TableRepository
     public function find($id);
     public function delete($id);
     public function sort($column, $order = 'ASC');
-    public function search($columns, $value);
+    public function search($columns, $value, $referenceModel = null);
 }
 
