@@ -31,7 +31,7 @@ abstract class EloquentRepository
             $data->$relationName->fill($request->input());
             return $data->$relationName->save();
         }
-        throw new \Exception('Relation type not supported yet');
+        throw new \Exception('Relation type not supported');
     }
 
     public function attach($id, $relationName, $attachId, $once = false)
@@ -46,7 +46,7 @@ abstract class EloquentRepository
             }
             return true;
         }
-        throw new \Exception('Relation type not supported yet');
+        throw new \Exception('Relation type not supported');
     }
 
     public function attachOnce($id, $relationName, $attachId)
@@ -66,7 +66,7 @@ abstract class EloquentRepository
             }
             return true;
         }
-        throw new \Exception('Relation type not supported yet');
+        throw new \Exception('Relation type not supported');
     }
 
     public function store(Request $request)
@@ -120,12 +120,35 @@ abstract class EloquentRepository
         return $this->model->all();
     }
 
+    public function allDetached($relationName, $relationId)
+    {
+        $result = $this->model->whereDoesntHave(
+            $relationName, function ($query) use ($relationName, $relationId) {
+                return $query->where($relationName.'.id', $relationId);
+            });
+        return $result->get();
+    }
+
     public function search($columns, $value)
     {
         $data = $this->model;
-        foreach ($columns as $field) {
-            $data = $data->orWhere($field, 'like', '%' . $value . '%');
+
+        if (empty($columns) || empty($value)) {
+            return $data->all();
         }
+
+        $data = $data->where(function ($query) use ($columns, $value) {
+            $first = true;
+            foreach ($columns as $field) {
+                if ($first) {
+                    $query = $query->where($field, 'like', '%' . $value . '%');
+                    $first = false;
+                } else {
+                    $query = $query->orWhere($field, 'like', '%' . $value . '%');
+                }
+            }
+        });
+
         return $data;
     }
 }

@@ -28,9 +28,7 @@ abstract class AbstractTableController
         $data = $this->repo->sort($this->defaultSortColumn);
         if ($request->input($this->table->getInputField('search'))) {
             $search = $request->input($this->table->getInputField('search'));
-            foreach ($this->searchable as $field) {
-                $data = $data->orWhere($field, 'like', '%' . $search . '%');
-            }
+            $data = $this->repo->search($this->searchable, $search);
         } else {
             $search = '';
         }

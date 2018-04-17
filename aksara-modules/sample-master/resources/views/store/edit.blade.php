@@ -48,7 +48,7 @@
                   <div class="form-group form-group--table {!! $errors->has('product_id') ? 'error' : '' !!}">
                     <label class="col-form-label">@lang('sample-master::global.search')</label>
                     <div class="col-form-input">
-                      {!! Form::select('product_id', $all_products, null, ['class'=>'form-control']) !!}
+                      {!! Form::select('product_id', $select_product, null, ['class'=>'form-control']) !!}
                       {!! $errors->first('product_id', '<p class="help-block">:message</p>') !!}
                     </div>
                   </div>

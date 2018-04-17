@@ -11,7 +11,7 @@ class ProductStoreRepository
 {
     public function setParentModel(Store $store)
     {
-        $this->model = $store->products()->getModel();
+        $this->model = $store->products();
     }
 
     public function delete($id)

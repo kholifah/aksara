@@ -3,24 +3,25 @@
 namespace Plugins\SampleMaster\Presenters;
 
 use Plugins\SampleMaster\Repositories\StoreRepository;
-use Plugins\SampleMaster\Repositories\StoreManagerRepository;
 use Plugins\SampleMaster\Repositories\ProductRepository;
+use Plugins\SampleMaster\Http\Controllers\ProductStoreTable;
 use Illuminate\Http\Request;
+use Illuminate\Http\RedirectResponse;
 
 class StoreFormPresenter
 {
     private $storeRepo;
-    private $managerRepo;
     private $productRepo;
+    private $tableController;
 
     public function __construct(
         StoreRepository $storeRepo,
-        StoreManagerRepository $managerRepo,
-        ProductRepository $productRepo
+        ProductRepository $productRepo,
+        ProductStoreTable $tableController
     ){
         $this->storeRepo = $storeRepo;
-        $this->managerRepo = $managerRepo;
         $this->productRepo = $productRepo;
+        $this->tableController = $tableController;
     }
 
     public function create()
@@ -34,24 +35,31 @@ class StoreFormPresenter
         ];
     }
 
-    public function edit($id)
+    public function edit($id, Request $request)
     {
         $store = $this->storeRepo->find($id);
         if (!$store) {
             return false;
         }
 
-        $manager = $store->manager;
+        $selectProduct = [];
+        foreach ($this->productRepo->allDetached(
+            'stores', $store->id) as $product) {
+            $selectProduct[$product->id] = $product->name;
+        }
 
-        $allProducts = [];
-        foreach ($this->productRepo->all() as $product) {
-            $allProducts[$product->id] = $product->name;
+        $this->tableController->setParentModel($store);
+        $table = $this->tableController->handle($request);
+
+        if ($table instanceof RedirectResponse) {
+            return $table;
         }
 
         return [
             'store' => $store,
-            'manager' => $manager,
-            'all_products' => $allProducts,
+            'manager' => $store->manager,
+            'select_product' => $selectProduct,
+            'table' => $table,
         ];
     }
 }

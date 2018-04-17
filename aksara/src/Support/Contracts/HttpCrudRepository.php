@@ -17,4 +17,6 @@ interface HttpCrudRepository
     public function attach($id, $relationName, $attachId, $once = false);
     public function attachOnce($id, $relationName, $attachId);
     public function detach($id, $relationName, $attachId);
+    public function allDetached($relationName, $relationId);
+    public function search($columns, $value);
 }

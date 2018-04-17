@@ -63,17 +63,14 @@ class StoreController extends Controller
      */
     public function edit($id, Request $request)
     {
-        $viewData = $this->form->edit($id);
+        $viewData = $this->form->edit($id, $request);
         if (!$viewData) {
             abort(404, 'Not found');
         }
-        $this->productTableController->setParentModel($viewData['store']);
-        $response = $this->productTableController->handle($request);
-        if ($response instanceof RedirectResponse) {
-            return $response;
+        if ($viewData instanceof RedirectResponse) {
+            return $viewData;
         }
-        return view('sample-master::store.edit', array_merge($viewData, [
-            'table' => $response ]));
+        return view('sample-master::store.edit', $viewData);
     }
 
     /**
