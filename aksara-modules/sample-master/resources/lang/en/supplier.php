@@ -10,6 +10,9 @@ return [
         'add_supplier' => 'Add Supplier',
         'edit_supplier' => 'Edit Supplier',
         'supplier_list' => 'Supplier List',
+        'active' => 'Active',
+        'inactive' => 'Inactive',
+        'all' => 'All',
     ],
     'messages' => [
         'confirm_delete' => 'Are you sure to delete supplier?',

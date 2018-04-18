@@ -36,6 +36,11 @@ function slug_to_title($string, $capitalizeFirstCharacter = false)
     return \Strings::slugToTitle($string, $capitalizeFirstCharacter);
 }
 
+function snake_to_camel($snake)
+{
+    return \Strings::snakeToCamel($snake);
+}
+
 // @todo segment ada cms berarti admin
 function is_admin()
 {

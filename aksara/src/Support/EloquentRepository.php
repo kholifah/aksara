@@ -151,4 +151,9 @@ abstract class EloquentRepository
 
         return $data;
     }
+
+    public function filter($callback, $referenceModel = null)
+    {
+        return $callback($referenceModel ?? $this->model);
+    }
 }

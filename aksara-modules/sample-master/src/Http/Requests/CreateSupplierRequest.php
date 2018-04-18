@@ -27,6 +27,7 @@ class CreateSupplierRequest extends FormRequest
             'supplier_name' => 'required|string',
             'supplier_phone' => 'nullable|string',
             'supplier_address' => 'nullable|string',
+            'is_active' => 'boolean',
         ];
     }
 }

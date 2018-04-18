@@ -32,4 +32,9 @@ class Strings
         $str[0] = strtoupper($str[0]);
         return $str;
     }
+
+    public function snakeToCamel($snake)
+    {
+        return str_replace('_', '', ucwords($snake, '_'));
+    }
 }

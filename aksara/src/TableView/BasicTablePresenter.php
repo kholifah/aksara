@@ -7,11 +7,15 @@ abstract class BasicTablePresenter implements TablePresenter
     private $data;
     private $search;
     protected $identifier = 'id';
+    protected $listIdentifier = 'id_list';
     protected $inputPrefix = '';
     protected $sort;
     protected $order;
     protected $parentUrl;
-    private $sortable;
+    protected $searchable = [];
+    protected $sortable = [];
+    protected $defaultSortColumn = 'id';
+    protected $baseRoute = '';
 
     /**
      * array
@@ -25,6 +29,21 @@ abstract class BasicTablePresenter implements TablePresenter
     public function getIdentifier()
     {
         return $this->identifier;
+    }
+
+    public function getListIdentifier()
+    {
+        return $this->listIdentifier;
+    }
+
+    public function getSearchable()
+    {
+        return $this->searchable;
+    }
+
+    public function getDefaultSortColumn()
+    {
+        return $this->defaultSortColumn;
     }
 
     /**
@@ -182,22 +201,55 @@ abstract class BasicTablePresenter implements TablePresenter
         return $this->inputPrefix.'_'.$fieldName;
     }
 
-    public function render($viewName = 'basic_table', $presenterName = 'table')
+    protected function getBulkActionOptions()
+    {
+        //TODO
+        //actions here should be able to be registered in service provider
+        //using event hooks
+        $actions = [
+            'destroy' => __('tableview.labels.delete'),
+        ];
+        return $actions;
+    }
+
+    protected function getFilters()
+    {
+        return [];
+    }
+
+    private function getFilterLinks()
+    {
+        $filterLinks = [];
+
+        foreach ($this->getFilters() as $filter => $label) {
+            $filterLinks[$label] = route($this->baseRoute, [
+                'filter' => $filter
+            ]);
+        }
+
+        return $filterLinks;
+    }
+
+    public function render($viewName = 'table.basic', $presenterName = 'table')
     {
         return view($viewName, [
             $presenterName => [
+                'searchable' => empty($this->searchable) ? false : true,
                 'rows' => $this->getRows(),
                 'total' => $this->getTotal(),
-                'links' => $this->paginationLinks(),
+                'pagination_links' => $this->paginationLinks(),
                 'column_labels' => $this->getColumnLabels(),
                 'column_headers' => $this->getColumnHeaders(),
                 'search' => $this->getSearch(),
                 'row_identifier' => $this->identifier,
+                'list_identifier' => $this->listIdentifier,
                 'inputs' => [
                     'search' => $this->getInputField('search'),
                     'apply' => $this->getInputField('apply'),
                     'bapply' => $this->getInputField('bapply'),
-                ]
+                ],
+                'bulk_actions' => $this->getBulkActionOptions(),
+                'filter_links' => $this->getFilterLinks(),
             ],
         ])
         ->render();

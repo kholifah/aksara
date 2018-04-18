@@ -8,21 +8,6 @@ use Plugins\SampleMaster\Presenters\ProductTablePresenter;
 
 class ProductTable extends AbstractTableController
 {
-    protected $searchable = [
-        'name',
-        'code',
-    ];
-
-    protected $sortable = [
-        'name',
-        'code',
-        'stock',
-        'price',
-        'date_expired',
-    ];
-
-    protected $defaultSortColumn = 'id';
-
     public function __construct(
         ProductRepository $repo,
         ProductTablePresenter $table

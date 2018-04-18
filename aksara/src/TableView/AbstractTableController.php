@@ -7,8 +7,6 @@ use Illuminate\Http\Request;
 abstract class AbstractTableController
 {
     protected $repo;
-    protected $searchable = [];
-    protected $sortable = [];
     protected $defaultSortColumn = 'id';
     private $requestPrefix = '';
 
@@ -18,7 +16,6 @@ abstract class AbstractTableController
     ){
         $this->repo = $repo;
         $this->table = $table;
-        $this->table->setSortable($this->sortable);
     }
 
     private function getRequestField(Request $request, $field)
@@ -28,7 +25,10 @@ abstract class AbstractTableController
 
     public function handle(Request $request)
     {
-        if ($request->get($this->table->getInputField('bapply'))) {
+        if (
+            $request->get($this->table->getInputField('bapply')) &&
+            $request->get($this->table->getInputField('apply'))
+        ) {
             return $this->apply($request);
         }
 
@@ -42,12 +42,17 @@ abstract class AbstractTableController
             }
             $data = $this->repo->sort($sort, $order);
         } else {
-            $data = $this->repo->sort($this->defaultSortColumn);
+            $data = $this->repo->sort($this->table->getDefaultSortColumn());
+        }
+
+        if ($request->input($this->table->getInputField('filter'))) {
+            $filterValue = $request->input($this->table->getInputField('filter'));
+            $data = $this->callFilter($filterValue, isset($data) ? $data : null);
         }
 
         if ($request->input($this->table->getInputField('search'))) {
             $search = $request->input($this->table->getInputField('search'));
-            $data = $this->repo->search($this->searchable, $search, isset($data) ? $data : null);
+            $data = $this->repo->search($this->table->getSearchable(), $search, isset($data) ? $data : null);
         } else {
             $search = '';
         }
@@ -59,16 +64,27 @@ abstract class AbstractTableController
         $this->table->setSearch($search);
         $this->table->setSort($sort, $order);
         $this->table->setParentUrl($request->url());
+
         return $this->table;
+    }
+
+    private function callFilter($filterValue, $referenceModel = null)
+    {
+        //TODO
+        //proper callback hook
+        $callable = [$this, 'filter'.snake_to_camel($filterValue)];
+        return $this->repo->filter($callable, $referenceModel);
     }
 
     private function apply($request)
     {
         if ($request->input($this->table->getInputField('apply'))) {
             $apply = $request->input($this->table->getInputField('apply'));
-            if ($apply == 'destroy') {
-                $this->applyDelete($request);
-            }
+            //TODO
+            //proper callback hook
+            $callable = [$this, 'action'.snake_to_camel($apply)];
+            $callable($request);
+            //$this->{'action'.snake_to_camel($apply)}($request);
         }
         //prevent delete repeating with refresh button
         //remove bapply, apply, then redirect
@@ -81,10 +97,12 @@ abstract class AbstractTableController
         );
     }
 
-    private function applyDelete($request)
+    //TODO dynamic function registration
+    //this function should be paired with getBulkActionOptions currently in presenter
+    protected function actionDestroy($request)
     {
-        if ($request->input($this->table->getIdentifier())) {
-            $id = $request->input($this->table->getIdentifier());
+        if ($request->input($this->table->getListIdentifier())) {
+            $id = $request->input($this->table->getListIdentifier());
             $this->deleteMultiple($id);
         }
     }

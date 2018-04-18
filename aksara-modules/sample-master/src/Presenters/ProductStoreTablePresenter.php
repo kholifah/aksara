@@ -6,6 +6,18 @@ use Aksara\TableView\BasicTablePresenter;
 
 class ProductStoreTablePresenter extends BasicTablePresenter
 {
+    protected $searchable = [
+        'name',
+        'code',
+    ];
+
+    protected $sortable = [
+        'name',
+        'code',
+    ];
+
+    protected $defaultSortColumn = 'name';
+
     protected $inputPrefix = 'product';
 
     protected function getColumns()

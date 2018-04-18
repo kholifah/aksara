@@ -18,5 +18,8 @@ interface TablePresenter
     public function setSortable($sortable = []);
     public function getInputField($fieldName);
     public function getIdentifier();
+    public function getListIdentifier();
+    public function getSearchable();
+    public function getDefaultSortColumn();
     public function render($viewName, $presenterName = 'table');
 }

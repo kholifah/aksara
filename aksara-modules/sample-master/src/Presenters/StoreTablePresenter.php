@@ -6,6 +6,12 @@ use Aksara\TableView\BasicTablePresenter;
 
 class StoreTablePresenter extends BasicTablePresenter
 {
+    protected $searchable = [
+        'store_name',
+    ];
+
+    protected $defaultSortColumn = 'id';
+
     protected function getColumns()
     {
         return [
@@ -13,6 +19,8 @@ class StoreTablePresenter extends BasicTablePresenter
             'store_phone' => __('sample-master::store.labels.phone'),
         ];
     }
+
+    protected $baseRoute = 'sample-store';
 
     protected function getEditUrl($identifier)
     {

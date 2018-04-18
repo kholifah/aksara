@@ -10,6 +10,9 @@ return [
         'add_supplier' => 'Tambah Pemasok',
         'edit_supplier' => 'Ubah Pemasok',
         'supplier_list' => 'Daftar Pemasok',
+        'active' => 'Aktif',
+        'inactive' => 'Nonaktif',
+        'all' => 'Semua',
     ],
     'messages' => [
         'confirm_delete' => 'Apakah anda yakin akan menghapus data pemasok?',

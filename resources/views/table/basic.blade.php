@@ -1,19 +1,24 @@
 <div class="content__body">
   <div class="row">
-    <div class="col-md-8">
+    <div class="col-md-12">
+      @if(!empty($table['filter_links']))
+        @include('table.components.filterlinks', $table)
+      @endif
       <form class="posts-filter clearfix">
         <div class="tablenav top clearfix">
-          <div class="alignleft search-box">
-
-            <input name={{ $table['inputs']['search'] }} value="{{ $table['search'] }}" type="text" class="form-control">
-            <input type="submit" class="btn btn-secondary" value=@lang('tableview.labels.search')>
-
-          </div>
+          @if(!empty($table['bulk_actions']))
+            @include('table.components.bulkaction', $table)
+          @endif
+          @if($table['searchable'])
+            @include('table.components.searchbox', $table)
+          @endif
+          <!-- pagination -->
           <div class="tablenav-pages"><span class="displaying-num">{{ $table['total'] }} {{ trans_choice('tableview.labels.items', $table['total']) }}</span>
             <span class="pagination-links">
-              {!! $table['links'] !!}
+              {!! $table['pagination_links'] !!}
             </span>
           </div>
+          <!-- /pagination -->
         </div>
         <div class="table-box">
           <table class="datatable-responsive table noborder-top display nowrap" cellspacing="0" width="100%">
@@ -37,7 +42,7 @@
                   <tr>
                     <td class="check-column">
                       <div class="checkbox checkbox-single">
-                        <input name={{ $table['row_identifier']."[]" }} type="checkbox" value="{{ $row[$table['row_identifier']] }}">
+                        <input name={{ $table['list_identifier']."[]" }} type="checkbox" value="{{ $row[$table['row_identifier']] }}">
                         <label></label>
                       </div>
                     </td>
@@ -59,16 +64,16 @@
           </table>
         </div>
         <div class="tablenav bottom clearfix">
-          <div class="alignleft action bulk-action">
-            <select name={{ $table['inputs']['apply'] }} class="form-control">
-              <option disabled selected>@lang('tableview.labels.bulk_action')</option>
-              <option value='destroy'>@lang('tableview.labels.delete')</option>
-            </select>
-            <input name={{ $table['inputs']['bapply'] }} type="submit" class="btn btn-secondary" value=@lang('tableview.labels.apply')>
-          </div>
+          @if(!empty($table['bulk_actions']))
+            @include('table.components.bulkaction', $table)
+          @endif
+          <!-- pagination -->
           <div class="tablenav-pages"><span class="displaying-num">{{ $table['total'] }} {{ trans_choice('tableview.labels.items', $table['total']) }}</span>
-            {!! $table['links'] !!}
+            <span class="pagination-links">
+              {!! $table['pagination_links'] !!}
+            </span>
           </div>
+          <!-- /pagination -->
         </div>
       </form>
     </div>

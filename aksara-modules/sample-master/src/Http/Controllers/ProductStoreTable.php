@@ -9,18 +9,6 @@ use Plugins\SampleMaster\Models\Store;
 
 class ProductStoreTable extends AbstractTableController
 {
-    protected $searchable = [
-        'name',
-        'code',
-    ];
-
-    protected $sortable = [
-        'name',
-        'code',
-    ];
-
-    protected $defaultSortColumn = 'name';
-
     public function __construct(
         ProductStoreRepository $repo,
         ProductStoreTablePresenter $table
