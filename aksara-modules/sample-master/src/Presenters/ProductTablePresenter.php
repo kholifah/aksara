@@ -3,9 +3,12 @@
 namespace Plugins\SampleMaster\Presenters;
 
 use Aksara\TableView\Presenter\BasicTablePresenter;
+use Aksara\TableView\Presenter\Concerns\DefaultSearch;
 
 class ProductTablePresenter extends BasicTablePresenter
 {
+    use DefaultSearch;
+
     protected $searchable = [
         'name',
         'code',
@@ -45,6 +48,13 @@ class ProductTablePresenter extends BasicTablePresenter
     protected function getDeleteUrl($identifier)
     {
         return route('sample-product-destroy', $identifier);
+    }
+
+    protected function registerFilters()
+    {
+        \Eventy::addAction('tableview.form_filter', function ($table) {
+            $this->renderDefaultSearch($table);
+        });
     }
 }
 

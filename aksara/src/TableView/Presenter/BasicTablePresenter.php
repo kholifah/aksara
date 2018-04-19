@@ -8,6 +8,7 @@ abstract class BasicTablePresenter implements TablePresenter
 {
     private $data;
     private $search;
+    private $filtered = [];
     protected $identifier = 'id';
     protected $listIdentifier = 'id_list';
     protected $inputPrefix = '';
@@ -62,6 +63,11 @@ abstract class BasicTablePresenter implements TablePresenter
     public function setSearch($search)
     {
         $this->search = $search;
+    }
+
+    public function setFiltered($filtered = [])
+    {
+        $this->filtered = $filtered ?? [];
     }
 
     public function setSort($sort, $order)
@@ -195,6 +201,11 @@ abstract class BasicTablePresenter implements TablePresenter
         return $this->search;
     }
 
+    protected function getFiltered()
+    {
+        return $this->filtered;
+    }
+
     protected function getTotal()
     {
         return $this->data->count();
@@ -239,6 +250,11 @@ abstract class BasicTablePresenter implements TablePresenter
         $this->filters[$name] = $label;
     }
 
+    protected function getFilters()
+    {
+        return $this->filters;
+    }
+
     protected function getFilterViews() { return []; }
 
     private function generateUrlFilterLinks()
@@ -248,11 +264,11 @@ abstract class BasicTablePresenter implements TablePresenter
         if (!empty($registered)) {
             $registeredOnly = [];
             foreach ($registered as $registeredKey) {
-                $registeredOnly[$registeredKey] = $this->filters[$registeredKey];
+                $registeredOnly[$registeredKey] = $this->getFilters()[$registeredKey];
             }
             $filters = $registeredOnly;
         } else {
-            $filters = $this->filters;
+            $filters = $this->getFilters();
         }
 
         $filterLinks = [];
@@ -280,6 +296,7 @@ abstract class BasicTablePresenter implements TablePresenter
                 'column_labels' => $this->getColumnLabels(),
                 'column_headers' => $this->getColumnHeaders(),
                 'search' => $this->getSearch(),
+                'filtered' => $this->getFiltered(),
                 'row_identifier' => $this->identifier,
                 'list_identifier' => $this->listIdentifier,
                 'inputs' => [

@@ -14,5 +14,6 @@ return [
         'delete' => 'Delete',
         'bulk_action' => 'Bulk Action',
         'apply' => 'Apply',
+        'no_filter' => 'No Filter',
     ],
 ];

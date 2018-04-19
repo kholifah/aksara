@@ -9,9 +9,7 @@
           @if(!empty($table['bulk_actions']))
             @include('table.components.bulkaction', $table)
           @endif
-          @if($table['searchable'])
-            @include('table.components.searchbox', $table)
-          @endif
+          @action('tableview.form_filter', $table)
           <!-- pagination -->
           <div class="tablenav-pages"><span class="displaying-num">{{ $table['total'] }} {{ trans_choice('tableview.labels.items', $table['total']) }}</span>
             <span class="pagination-links">

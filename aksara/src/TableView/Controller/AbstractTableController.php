@@ -50,6 +50,12 @@ abstract class AbstractTableController
             $data = $this->repo->sort($this->table->getDefaultSortColumn());
         }
 
+        /**
+         * TODO handle search + filter
+         *
+         * parameter yang digunakan akan mempengaruhi satu sama lain
+         */
+
         if ($request->input($this->table->getInputField('search')) &&
             $request->input($this->table->getInputField('bsearch'))
         ){
@@ -58,6 +64,21 @@ abstract class AbstractTableController
         } else {
             $search = '';
         }
+
+        $filters = null;
+
+        if ($request->input($this->table->getInputField('filter')) &&
+            $request->input($this->table->getInputField('bsearch'))
+        ){
+            $filters = $request->input($this->table->getInputField('filter'));
+            foreach ($filters as $filterValue) {
+                if (empty($filterValue)) {
+                    continue;
+                }
+                $data = $this->callFilter($filterValue, isset($data) ? $data : null);
+            }
+        }
+
 
         if ($request->input($this->table->getInputField('view'))) {
             $filterValue = $request->input($this->table->getInputField('view'));
@@ -69,6 +90,7 @@ abstract class AbstractTableController
 
         $this->table->setData($data);
         $this->table->setSearch($search);
+        $this->table->setFiltered($filters);
         $this->table->setSort($sort, $order);
         $this->table->setParentUrl($request->url());
         $this->table->setRouteName($request->route()->getName());

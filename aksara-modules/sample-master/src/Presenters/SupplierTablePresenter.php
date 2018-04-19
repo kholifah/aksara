@@ -3,9 +3,14 @@
 namespace Plugins\SampleMaster\Presenters;
 
 use Aksara\TableView\Presenter\BasicTablePresenter;
+use Aksara\TableView\Presenter\Concerns\DefaultSearch;
+use Aksara\TableView\Presenter\Concerns\DefaultFilter;
 
 class SupplierTablePresenter extends BasicTablePresenter
 {
+    use DefaultSearch;
+    use DefaultFilter;
+
     protected $searchable = [
         'supplier_name',
     ];
@@ -53,6 +58,11 @@ class SupplierTablePresenter extends BasicTablePresenter
         $this->addFilter('all', __('sample-master::supplier.labels.all'));
         $this->addFilter('active', __('sample-master::supplier.labels.active'));
         $this->addFilter('inactive', __('sample-master::supplier.labels.inactive'));
+
+        \Eventy::addAction('tableview.form_filter', function ($table) {
+            $this->renderDefaultFilter($table);
+            $this->renderDefaultSearch($table);
+        });
     }
 
     protected function getFilterViews()

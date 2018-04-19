@@ -14,6 +14,7 @@ return [
         'delete' => 'Hapus',
         'bulk_action' => 'Aksi Masal',
         'apply' => 'Terapkan',
+        'no_filter' => 'Tanpa Filter',
     ],
 ];
 
