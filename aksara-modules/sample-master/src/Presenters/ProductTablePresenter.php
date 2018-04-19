@@ -4,10 +4,12 @@ namespace Plugins\SampleMaster\Presenters;
 
 use Aksara\TableView\Presenter\BasicTablePresenter;
 use Aksara\TableView\Presenter\Concerns\DefaultSearch;
+use Aksara\TableView\Presenter\Concerns\DefaultFilter;
 
 class ProductTablePresenter extends BasicTablePresenter
 {
     use DefaultSearch;
+    use DefaultFilter;
 
     protected $searchable = [
         'name',
@@ -52,7 +54,11 @@ class ProductTablePresenter extends BasicTablePresenter
 
     protected function registerFilters()
     {
+        $this->addFilter('past_expired', __('sample-master::product.labels.past_expired'));
+        $this->addFilter('not_expired', __('sample-master::product.labels.not_expired'));
+
         \Eventy::addAction('tableview.form_filter', function ($table) {
+            $this->renderDefaultFilter($table);
             $this->renderDefaultSearch($table);
         });
     }

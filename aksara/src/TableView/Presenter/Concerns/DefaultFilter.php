@@ -4,9 +4,9 @@ namespace Aksara\TableView\Presenter\Concerns;
 
 trait DefaultFilter
 {
-    private function renderDefaultFilter($table)
+    private function renderDefaultFilter($table, $filters = null)
     {
-        $filters = $this->getFilters();
+        $filters = $filters ?? $this->getFilters();
         $options = [];
         $filtered = @$table['filtered'][0];//first selection index
 

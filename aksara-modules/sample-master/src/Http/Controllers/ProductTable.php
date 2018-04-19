@@ -14,5 +14,15 @@ class ProductTable extends AbstractTableController
     ){
         parent::__construct($repo, $table);
     }
+
+    public function filterPastExpired($model)
+    {
+        return $model->where('date_expired', '<', date('Y-m-d'));
+    }
+
+    public function filterNotExpired($model)
+    {
+        return $model->where('date_expired', '>=', date('Y-m-d'));
+    }
 }
 

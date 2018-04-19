@@ -14,6 +14,8 @@ return [
         'add_product' => 'Tambah Produk',
         'edit_product' => 'Ubah Produk',
         'product_list' => 'Daftar Produk',
+        'past_expired' => 'Kadaluarsa',
+        'not_expired' => 'Belum Kadaluarsa',
     ],
     'messages' => [
         'confirm_delete' => 'Apakah anda yakin akan menghapus produk?',

@@ -14,6 +14,8 @@ return [
         'add_product' => 'Add Product',
         'edit_product' => 'Edit Product',
         'product_list' => 'Product List',
+        'past_expired' => 'Past Expired',
+        'not_expired' => 'Not Expired',
     ],
     'messages' => [
         'confirm_delete' => 'Are you sure to delete product?',
