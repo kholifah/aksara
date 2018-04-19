@@ -1,6 +1,8 @@
 <?php
 
-namespace Aksara\TableView;
+namespace Aksara\TableView\Presenter;
+
+use Aksara\TableView\TablePresenter;
 
 abstract class BasicTablePresenter implements TablePresenter
 {
@@ -206,29 +208,58 @@ abstract class BasicTablePresenter implements TablePresenter
         return $this->inputPrefix.'_'.$fieldName;
     }
 
-    protected function getBulkActionOptions()
+    private $actions = [];
+
+    private function baseRegisterActions()
     {
-        //TODO
-        //actions here should be able to be registered in service provider
-        //using event hooks
-        $actions = [
-            'destroy' => __('tableview.labels.delete'),
-        ];
-        return $actions;
+        $this->addAction('destroy', __('tableview.labels.delete'));
+        $this->registerActions();
     }
 
-    protected function getFilters()
+    protected function registerActions() {}
+
+    protected function addAction($name, $label)
     {
-        return [];
+        $this->actions[$name] = $label;
     }
 
-    private function getFilterLinks()
+    private $filters = [];
+
+    private function baseRegisterFilters()
     {
+        //TODO add base filter
+        //hooks can also be registered here
+        $this->registerFilters();
+    }
+
+    protected function registerFilters() {}
+
+    protected function addFilter($name, $label)
+    {
+        $this->filters[$name] = $label;
+    }
+
+    protected function getFilterViews() { return []; }
+
+    private function generateUrlFilterLinks()
+    {
+        $registered = $this->getFilterViews();
+        $filters = $this->filters;
+
+        if (!empty($registered)) {
+            $registeredOnly = [];
+            foreach ($filters as $name => $label) {
+                if (in_array($name, $registered)) {
+                    $registeredOnly[$name] = $label;
+                }
+            }
+            $filters = $registeredOnly;
+        }
         $filterLinks = [];
 
-        foreach ($this->getFilters() as $filter => $label) {
+        foreach ($filters as $filter => $label) {
             $filterLinks[$label] = route($this->routeName, [
-                'filter' => $filter
+                'view' => $filter
             ]);
         }
 
@@ -237,6 +268,9 @@ abstract class BasicTablePresenter implements TablePresenter
 
     public function render($viewName = 'table.basic', $presenterName = 'table')
     {
+        $this->baseRegisterFilters();
+        $this->baseRegisterActions();
+
         return view($viewName, [
             $presenterName => [
                 'searchable' => empty($this->searchable) ? false : true,
@@ -250,13 +284,15 @@ abstract class BasicTablePresenter implements TablePresenter
                 'list_identifier' => $this->listIdentifier,
                 'inputs' => [
                     'search' => $this->getInputField('search'),
+                    'bsearch' => $this->getInputField('bsearch'),
                     'apply' => $this->getInputField('apply'),
                     'bapply' => $this->getInputField('bapply'),
                 ],
-                'bulk_actions' => $this->getBulkActionOptions(),
-                'filter_links' => $this->getFilterLinks(),
+                'bulk_actions' => $this->actions,
+                'filter_links' => $this->generateUrlFilterLinks(),
             ],
         ])
         ->render();
     }
 }
+

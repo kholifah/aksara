@@ -2,7 +2,7 @@
 
 namespace Plugins\SampleMaster\Presenters;
 
-use Aksara\TableView\BasicTablePresenter;
+use Aksara\TableView\Presenter\BasicTablePresenter;
 
 class StoreTablePresenter extends BasicTablePresenter
 {

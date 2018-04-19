@@ -2,15 +2,13 @@
 
 namespace Plugins\SampleMaster\Presenters;
 
-use Aksara\TableView\BasicTablePresenter;
+use Aksara\TableView\Presenter\BasicTablePresenter;
 
 class SupplierTablePresenter extends BasicTablePresenter
 {
     protected $searchable = [
         'supplier_name',
     ];
-
-    protected $defaultSortColumn = 'id';
 
     protected function getColumns()
     {
@@ -44,13 +42,27 @@ class SupplierTablePresenter extends BasicTablePresenter
      * misal untuk filter `all` maka harus ada method `filterAll`
      * perhatikan snake case akan diubah ke camel case
      */
-    protected function getFilters()
+    protected function registerFilters()
     {
-        return [
-            'all' => __('sample-master::supplier.labels.all'),
-            'active' => __('sample-master::supplier.labels.active'),
-            'inactive' => __('sample-master::supplier.labels.inactive'),
-        ];
+        /**
+         * function addFilter
+         *
+         * @param $key
+         * @param $label
+         */
+        $this->addFilter('all', __('sample-master::supplier.labels.all'));
+        $this->addFilter('active', __('sample-master::supplier.labels.active'));
+        $this->addFilter('inactive', __('sample-master::supplier.labels.inactive'));
+    }
+
+    protected function getFilterViews()
+    {
+        /**
+         * apabila method ini di-override,
+         * maka dari filter yang diregistrasikan di atas
+         * hanya akan ditampilkan yang didaftarkan di sini
+         */
+        return ['all', 'active'];
     }
 
     /**
@@ -60,15 +72,15 @@ class SupplierTablePresenter extends BasicTablePresenter
      * misal untuk action `sesuatu_aksi` maka harus ada method `actionSesuatuAksi`
      * perhatikan snake case akan diubah ke camel case
      */
-    protected function getBulkActionOptions()
+    protected function registerActions()
     {
-        $options = parent::getBulkActionOptions();
-
-        $merged = array_merge($options, [
-            'sesuatu_aksi' => 'Aksi tambahan',
-        ]);
-
-        return $merged;
+        /**
+         * function addAction
+         *
+         * @param $key
+         * @param $label
+         */
+        $this->addAction('sesuatu_aksi', 'Aksi Tambahan');
     }
 
 }

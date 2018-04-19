@@ -33,7 +33,7 @@ abstract class AbstractTableController
         if (
             $request->get($this->table->getInputField('bapply')) &&
             $request->get($this->table->getInputField('apply'))
-        ) {
+        ){
             return $this->callAction($request);
         }
 
@@ -50,16 +50,18 @@ abstract class AbstractTableController
             $data = $this->repo->sort($this->table->getDefaultSortColumn());
         }
 
-        if ($request->input($this->table->getInputField('filter'))) {
-            $filterValue = $request->input($this->table->getInputField('filter'));
-            $data = $this->callFilter($filterValue, isset($data) ? $data : null);
-        }
-
-        if ($request->input($this->table->getInputField('search'))) {
+        if ($request->input($this->table->getInputField('search')) &&
+            $request->input($this->table->getInputField('bsearch'))
+        ){
             $search = $request->input($this->table->getInputField('search'));
             $data = $this->repo->search($this->table->getSearchable(), $search, isset($data) ? $data : null);
         } else {
             $search = '';
+        }
+
+        if ($request->input($this->table->getInputField('view'))) {
+            $filterValue = $request->input($this->table->getInputField('view'));
+            $data = $this->callFilter($filterValue, isset($data) ? $data : null);
         }
 
         $total = $data->count();

@@ -1,0 +1,80 @@
+[1mdiff --git a/aksara-modules/sample-master/src/Presenters/SupplierTablePresenter.php b/aksara-modules/sample-master/src/Presenters/SupplierTablePresenter.php[m
+[1mindex d5b4544..a9f12ca 100644[m
+[1m--- a/aksara-modules/sample-master/src/Presenters/SupplierTablePresenter.php[m
+[1m+++ b/aksara-modules/sample-master/src/Presenters/SupplierTablePresenter.php[m
+[36m@@ -2,7 +2,7 @@[m
+ [m
+ namespace Plugins\SampleMaster\Presenters;[m
+ [m
+[31m-use Aksara\TableView\BasicTablePresenter;[m
+[32m+[m[32muse Aksara\TableView\Presenter\BasicTablePresenter;[m
+ [m
+ class SupplierTablePresenter extends BasicTablePresenter[m
+ {[m
+[36m@@ -10,8 +10,6 @@[m [mclass SupplierTablePresenter extends BasicTablePresenter[m
+         'supplier_name',[m
+     ];[m
+ [m
+[31m-    protected $defaultSortColumn = 'id';[m
+[31m-[m
+     protected function getColumns()[m
+     {[m
+         return [[m
+[36m@@ -44,13 +42,27 @@[m [mclass SupplierTablePresenter extends BasicTablePresenter[m
+      * misal untuk filter `all` maka harus ada method `filterAll`[m
+      * perhatikan snake case akan diubah ke camel case[m
+      */[m
+[31m-    protected function getFilters()[m
+[32m+[m[32m    protected function registerFilters()[m
+     {[m
+[31m-        return [[m
+[31m-            'all' => __('sample-master::supplier.labels.all'),[m
+[31m-            'active' => __('sample-master::supplier.labels.active'),[m
+[31m-            'inactive' => __('sample-master::supplier.labels.inactive'),[m
+[31m-        ];[m
+[32m+[m[32m        /**[m
+[32m+[m[32m         * function addFilter[m
+[32m+[m[32m         *[m
+[32m+[m[32m         * @param $key[m
+[32m+[m[32m         * @param $label[m
+[32m+[m[32m         */[m
+[32m+[m[32m        $this->addFilter('all', __('sample-master::supplier.labels.all'));[m
+[32m+[m[32m        $this->addFilter('active', __('sample-master::supplier.labels.active'));[m
+[32m+[m[32m        $this->addFilter('inactive', __('sample-master::supplier.labels.inactive'));[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m[32m    protected function getFilterViews()[m
+[32m+[m[32m    {[m
+[32m+[m[32m        /**[m
+[32m+[m[32m         * apabila method ini di-override,[m
+[32m+[m[32m         * maka dari filter yang diregistrasikan di atas[m
+[32m+[m[32m         * hanya akan ditampilkan yang didaftarkan di sini[m
+[32m+[m[32m         */[m
+[32m+[m[32m        return ['all', 'active'];[m
+     }[m
+ [m
+     /**[m
+[36m@@ -60,15 +72,15 @@[m [mclass SupplierTablePresenter extends BasicTablePresenter[m
+      * misal untuk action `sesuatu_aksi` maka harus ada method `actionSesuatuAksi`[m
+      * perhatikan snake case akan diubah ke camel case[m
+      */[m
+[31m-    protected function getBulkActionOptions()[m
+[32m+[m[32m    protected function registerActions()[m
+     {[m
+[31m-        $options = parent::getBulkActionOptions();[m
+[31m-[m
+[31m-        $merged = array_merge($options, [[m
+[31m-            'sesuatu_aksi' => 'Aksi tambahan',[m
+[31m-        ]);[m
+[31m-[m
+[31m-        return $merged;[m
+[32m+[m[32m        /**[m
+[32m+[m[32m         * function addAction[m
+[32m+[m[32m         *[m
+[32m+[m[32m         * @param $key[m
+[32m+[m[32m         * @param $label[m
+[32m+[m[32m         */[m
+[32m+[m[32m        $this->addAction('sesuatu_aksi', 'Aksi Tambahan');[m
+     }[m
+ [m
+ }[m

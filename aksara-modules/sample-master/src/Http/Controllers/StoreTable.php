@@ -8,7 +8,6 @@ use Plugins\SampleMaster\Presenters\StoreTablePresenter;
 
 class StoreTable extends AbstractTableController
 {
-
     public function __construct(
         StoreRepository $repo,
         StoreTablePresenter $table
