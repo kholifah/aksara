@@ -5,11 +5,13 @@ namespace Plugins\SampleMaster\Presenters;
 use Aksara\TableView\Presenter\BasicTablePresenter;
 use Aksara\TableView\Presenter\Concerns\DefaultSearch;
 use Aksara\TableView\Presenter\Concerns\DefaultFilter;
+use Aksara\TableView\Presenter\Concerns\DefaultViewFilter;
 
 class StoreTablePresenter extends BasicTablePresenter
 {
     use DefaultSearch;
     use DefaultFilter;
+    use DefaultViewFilter;
 
     protected $searchable = [
         'store_name',
@@ -44,15 +46,16 @@ class StoreTablePresenter extends BasicTablePresenter
             $this->renderDefaultFilter($table, $statusFilter);
             $this->renderDefaultSearch($table);
         });
-    }
 
-    protected function getFilterViews()
-    {
-        $statusFilter = [
+        $filterView = [
             'all' => __('sample-master::store.labels.all'),
             'active' => __('sample-master::store.labels.active'),
         ];
-        return $statusFilter;
+
+        \Eventy::addAction('tableview.view_filter', function () use (
+            $filterView) {
+            $this->renderDefaultViewFilter($filterView);
+        });
     }
 
     protected function getEditUrl($identifier)

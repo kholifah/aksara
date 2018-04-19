@@ -1,9 +1,7 @@
 <div class="content__body">
   <div class="row">
     <div class="col-md-12">
-      @if(!empty($table['filter_links']))
-        @include('table.components.filterlinks', $table)
-      @endif
+      @action('tableview.view_filter')
       <form class="posts-filter clearfix">
         <div class="tablenav top clearfix">
           @if(!empty($table['bulk_actions']))

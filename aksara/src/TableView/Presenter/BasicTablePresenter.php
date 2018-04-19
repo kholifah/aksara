@@ -243,23 +243,6 @@ abstract class BasicTablePresenter implements TablePresenter
 
     protected function registerFilters() {}
 
-    protected function getFilterViews() { return []; }
-
-    private function generateUrlFilterLinks()
-    {
-        $filters = $this->getFilterViews();
-
-        $filterLinks = [];
-
-        foreach ($filters as $filter => $label) {
-            $filterLinks[$label] = route($this->routeName, [
-                'view' => $filter
-            ]);
-        }
-
-        return $filterLinks;
-    }
-
     public function render($viewName = 'table.basic', $presenterName = 'table')
     {
         $this->baseRegisterFilters();
@@ -284,7 +267,6 @@ abstract class BasicTablePresenter implements TablePresenter
                     'bapply' => $this->getInputField('bapply'),
                 ],
                 'bulk_actions' => $this->actions,
-                'filter_links' => $this->generateUrlFilterLinks(),
             ],
         ])
         ->render();
