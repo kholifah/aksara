@@ -49,30 +49,26 @@ class SupplierTablePresenter extends BasicTablePresenter
      */
     protected function registerFilters()
     {
-        /**
-         * function addFilter
-         *
-         * @param $key
-         * @param $label
-         */
-        $this->addFilter('all', __('sample-master::supplier.labels.all'));
-        $this->addFilter('active', __('sample-master::supplier.labels.active'));
-        $this->addFilter('inactive', __('sample-master::supplier.labels.inactive'));
+        $statusFilter = [
+            'all' => __('sample-master::supplier.labels.all'),
+            'active' => __('sample-master::supplier.labels.active'),
+            'inactive' => __('sample-master::supplier.labels.inactive'),
+        ];
 
-        \Eventy::addAction('tableview.form_filter', function ($table) {
-            $this->renderDefaultFilter($table);
+        \Eventy::addAction('tableview.form_filter', function ($table) use (
+            $statusFilter) {
+            $this->renderDefaultFilter($table, $statusFilter);
             $this->renderDefaultSearch($table);
         });
     }
 
     protected function getFilterViews()
     {
-        /**
-         * apabila method ini di-override,
-         * maka dari filter yang diregistrasikan di atas
-         * hanya akan ditampilkan yang didaftarkan di sini
-         */
-        return ['all', 'active'];
+        $statusFilter = [
+            'all' => __('sample-master::supplier.labels.all'),
+            'active' => __('sample-master::supplier.labels.active'),
+        ];
+        return $statusFilter;
     }
 
     /**

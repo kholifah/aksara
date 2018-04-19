@@ -4,9 +4,8 @@ namespace Aksara\TableView\Presenter\Concerns;
 
 trait DefaultFilter
 {
-    private function renderDefaultFilter($table, $filters = null, $position = 0)
+    private function renderDefaultFilter($table, $filters, $position = 0)
     {
-        $filters = $filters ?? $this->getFilters();
         $options = [];
         $filtered = @$table['filtered'][$position];
 

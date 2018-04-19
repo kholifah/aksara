@@ -234,8 +234,6 @@ abstract class BasicTablePresenter implements TablePresenter
         $this->actions[$name] = $label;
     }
 
-    private $filters = [];
-
     private function baseRegisterFilters()
     {
         //TODO add base filter
@@ -245,26 +243,11 @@ abstract class BasicTablePresenter implements TablePresenter
 
     protected function registerFilters() {}
 
-    protected function addFilter($name, $label)
-    {
-        $this->filters[$name] = $label;
-    }
-
-    protected function getFilters()
-    {
-        return $this->filters;
-    }
-
     protected function getFilterViews() { return []; }
 
     private function generateUrlFilterLinks()
     {
-        $registered = $this->getFilterViews();
-        $registeredOnly = [];
-        foreach ($registered as $registeredKey) {
-            $registeredOnly[$registeredKey] = $this->getFilters()[$registeredKey];
-        }
-        $filters = $registeredOnly;
+        $filters = $this->getFilterViews();
 
         $filterLinks = [];
 

@@ -33,19 +33,26 @@ class StoreTablePresenter extends BasicTablePresenter
 
     protected function registerFilters()
     {
-        $this->addFilter('all', __('sample-master::supplier.labels.all'));
-        $this->addFilter('active', __('sample-master::supplier.labels.active'));
-        $this->addFilter('inactive', __('sample-master::supplier.labels.inactive'));
+        $statusFilter = [
+            'all' => __('sample-master::store.labels.all'),
+            'active' => __('sample-master::store.labels.active'),
+            'inactive' => __('sample-master::store.labels.inactive'),
+        ];
 
-        \Eventy::addAction('tableview.form_filter', function ($table) {
-            $this->renderDefaultFilter($table);
+        \Eventy::addAction('tableview.form_filter', function ($table) use (
+            $statusFilter) {
+            $this->renderDefaultFilter($table, $statusFilter);
             $this->renderDefaultSearch($table);
         });
     }
 
     protected function getFilterViews()
     {
-        return ['all', 'active'];
+        $statusFilter = [
+            'all' => __('sample-master::store.labels.all'),
+            'active' => __('sample-master::store.labels.active'),
+        ];
+        return $statusFilter;
     }
 
     protected function getEditUrl($identifier)
