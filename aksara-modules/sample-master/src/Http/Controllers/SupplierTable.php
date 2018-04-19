@@ -2,7 +2,7 @@
 
 namespace Plugins\SampleMaster\Http\Controllers;
 
-use Aksara\TableView\AbstractTableController;
+use Aksara\TableView\Controller\AbstractTableController;
 use Plugins\SampleMaster\Repositories\SupplierRepository;
 use Plugins\SampleMaster\Presenters\SupplierTablePresenter;
 

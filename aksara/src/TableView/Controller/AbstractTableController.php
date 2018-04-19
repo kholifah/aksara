@@ -1,11 +1,16 @@
 <?php
 
-namespace Aksara\TableView;
+namespace Aksara\TableView\Controller;
 
 use Illuminate\Http\Request;
+use Aksara\TableView\Controller\Concerns;
+use Aksara\TableView\TableRepository;
+use Aksara\TableView\TablePresenter;
 
 abstract class AbstractTableController
 {
+    use Concerns\HasDestroyAction;
+
     protected $repo;
     protected $defaultSortColumn = 'id';
     private $requestPrefix = '';
@@ -29,7 +34,7 @@ abstract class AbstractTableController
             $request->get($this->table->getInputField('bapply')) &&
             $request->get($this->table->getInputField('apply'))
         ) {
-            return $this->apply($request);
+            return $this->callAction($request);
         }
 
         $sort = $this->getRequestField($request, 'sort_by');
@@ -77,7 +82,7 @@ abstract class AbstractTableController
         return $this->repo->filter($callable, $referenceModel);
     }
 
-    private function apply($request)
+    private function callAction($request)
     {
         if ($request->input($this->table->getInputField('apply'))) {
             $apply = $request->input($this->table->getInputField('apply'));
@@ -85,7 +90,6 @@ abstract class AbstractTableController
             //proper callback hook
             $callable = [$this, 'action'.snake_to_camel($apply)];
             $callable($request);
-            //$this->{'action'.snake_to_camel($apply)}($request);
         }
         //prevent delete repeating with refresh button
         //remove bapply, apply, then redirect
@@ -96,57 +100,6 @@ abstract class AbstractTableController
                 $this->table->getInputField('apply'),
             ])
         );
-    }
-
-    //TODO dynamic function registration
-    //this function should be paired with getBulkActionOptions currently in presenter
-    protected function actionDestroy($request)
-    {
-        if ($request->input($this->table->getListIdentifier())) {
-            $id = $request->input($this->table->getListIdentifier());
-            $this->deleteMultiple($id);
-        }
-    }
-
-    private function deleteMultiple(array $idList)
-    {
-        foreach ($idList as $id) {
-            $success = $this->delete($id);
-        }
-        $count = count($idList);
-        admin_notice('success', $this->getMultipleDeletedMessage($count));
-    }
-
-    private function delete($id)
-    {
-        $success = $this->repo->delete($id);
-        if (!$success) {
-            admin_notice('danger', $this->getFailedDeleteMessage());
-            return false;
-        }
-        return true;
-    }
-
-    private function find($id)
-    {
-        $data = $this->repo->find($id);
-        if (!$data) {
-            abort(404, 'Page Not Found');
-        }
-        return $data;
-    }
-
-    protected function getMultipleDeletedMessage($count)
-    {
-        return trans_choice(
-            'tableview.messages.multiple_deleted',
-            $count, [ 'count' => $count ]
-        );
-    }
-
-    protected function getFailedDeleteMessage()
-    {
-        return __('tableview.messages.delete_failed');
     }
 }
 
