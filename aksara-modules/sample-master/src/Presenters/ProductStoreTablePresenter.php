@@ -3,7 +3,7 @@
 namespace Plugins\SampleMaster\Presenters;
 
 use Aksara\TableView\Presenter\BasicTablePresenter;
-use Aksara\TableView\Presenter\Concerns\DefaultSearch;
+use Aksara\TableView\Presenter\Components\DefaultSearch;
 
 class ProductStoreTablePresenter extends BasicTablePresenter
 {

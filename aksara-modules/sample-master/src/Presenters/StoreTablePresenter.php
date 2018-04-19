@@ -3,9 +3,9 @@
 namespace Plugins\SampleMaster\Presenters;
 
 use Aksara\TableView\Presenter\BasicTablePresenter;
-use Aksara\TableView\Presenter\Concerns\DefaultSearch;
-use Aksara\TableView\Presenter\Concerns\DefaultFilter;
-use Aksara\TableView\Presenter\Concerns\DefaultViewFilter;
+use Aksara\TableView\Presenter\Components\DefaultSearch;
+use Aksara\TableView\Presenter\Components\DefaultFilter;
+use Aksara\TableView\Presenter\Components\DefaultViewFilter;
 
 class StoreTablePresenter extends BasicTablePresenter
 {

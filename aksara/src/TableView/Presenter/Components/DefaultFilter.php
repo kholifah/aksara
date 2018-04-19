@@ -1,6 +1,6 @@
 <?php
 
-namespace Aksara\TableView\Presenter\Concerns;
+namespace Aksara\TableView\Presenter\Components;
 
 trait DefaultFilter
 {
