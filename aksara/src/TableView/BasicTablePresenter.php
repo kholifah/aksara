@@ -15,7 +15,7 @@ abstract class BasicTablePresenter implements TablePresenter
     protected $searchable = [];
     protected $sortable = [];
     protected $defaultSortColumn = 'id';
-    protected $baseRoute = '';
+    protected $routeName = '';
 
     /**
      * array
@@ -71,6 +71,11 @@ abstract class BasicTablePresenter implements TablePresenter
     public function setParentUrl($url)
     {
         $this->parentUrl = $url;
+    }
+
+    public function setRouteName($routeName)
+    {
+        $this->routeName = $routeName;
     }
 
     public function setSortable($sortable = [])
@@ -222,7 +227,7 @@ abstract class BasicTablePresenter implements TablePresenter
         $filterLinks = [];
 
         foreach ($this->getFilters() as $filter => $label) {
-            $filterLinks[$label] = route($this->baseRoute, [
+            $filterLinks[$label] = route($this->routeName, [
                 'filter' => $filter
             ]);
         }

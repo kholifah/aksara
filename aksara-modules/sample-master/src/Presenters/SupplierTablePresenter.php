@@ -12,8 +12,6 @@ class SupplierTablePresenter extends BasicTablePresenter
 
     protected $defaultSortColumn = 'id';
 
-    protected $baseRoute = 'sample-supplier';
-
     protected function getColumns()
     {
         return [

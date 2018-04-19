@@ -64,6 +64,7 @@ abstract class AbstractTableController
         $this->table->setSearch($search);
         $this->table->setSort($sort, $order);
         $this->table->setParentUrl($request->url());
+        $this->table->setRouteName($request->route()->getName());
 
         return $this->table;
     }

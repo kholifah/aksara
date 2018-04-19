@@ -21,8 +21,6 @@ class ProductTablePresenter extends BasicTablePresenter
 
     protected $defaultSortColumn = 'id';
 
-    protected $baseRoute = 'sample-product';
-
     protected function getColumns()
     {
         return [

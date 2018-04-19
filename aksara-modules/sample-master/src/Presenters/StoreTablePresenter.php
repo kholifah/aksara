@@ -20,8 +20,6 @@ class StoreTablePresenter extends BasicTablePresenter
         ];
     }
 
-    protected $baseRoute = 'sample-store';
-
     protected function getEditUrl($identifier)
     {
         return route('sample-store-edit', $identifier);
