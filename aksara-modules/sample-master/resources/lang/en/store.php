@@ -11,6 +11,9 @@ return [
         'edit_store' => 'Edit Store',
         'store_list' => 'Store List',
         'add_product' => 'Add Product',
+        'active' => 'Active',
+        'inactive' => 'Inactive',
+        'all' => 'All',
     ],
     'messages' => [
         'confirm_delete' => 'Are you sure to delete store?',

@@ -27,6 +27,7 @@ class CreateStoreRequest extends FormRequest
             'store_name' => 'required|string',
             'store_phone' => 'nullable|string',
             'store_address' => 'nullable|string',
+            'is_active' => 'boolean',
         ];
     }
 }

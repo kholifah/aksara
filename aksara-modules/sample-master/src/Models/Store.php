@@ -10,6 +10,11 @@ class Store extends Model
         'store_name',
         'store_phone',
         'store_address',
+        'is_active',
+    ];
+
+    protected $casts = [
+        'is_active' => 'boolean',
     ];
 
     public function manager()

@@ -11,6 +11,9 @@ return [
         'edit_store' => 'Ubah Toko',
         'store_list' => 'Daftar Toko',
         'add_product' => 'Tambah Produk',
+        'active' => 'Aktif',
+        'inactive' => 'Nonaktif',
+        'all' => 'Semua',
     ],
     'messages' => [
         'confirm_delete' => 'Apakah anda yakin akan menghapus data toko?',

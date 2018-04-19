@@ -244,17 +244,17 @@ abstract class BasicTablePresenter implements TablePresenter
     private function generateUrlFilterLinks()
     {
         $registered = $this->getFilterViews();
-        $filters = $this->filters;
 
         if (!empty($registered)) {
             $registeredOnly = [];
-            foreach ($filters as $name => $label) {
-                if (in_array($name, $registered)) {
-                    $registeredOnly[$name] = $label;
-                }
+            foreach ($registered as $registeredKey) {
+                $registeredOnly[$registeredKey] = $this->filters[$registeredKey];
             }
             $filters = $registeredOnly;
+        } else {
+            $filters = $this->filters;
         }
+
         $filterLinks = [];
 
         foreach ($filters as $filter => $label) {
