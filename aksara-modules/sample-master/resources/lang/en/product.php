@@ -16,6 +16,8 @@ return [
         'product_list' => 'Product List',
         'past_expired' => 'Past Expired',
         'not_expired' => 'Not Expired',
+        'critical_stock' => 'Critical Stock',
+        'exceeding_stock' => 'Exceeding Stock',
     ],
     'messages' => [
         'confirm_delete' => 'Are you sure to delete product?',

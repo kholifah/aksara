@@ -24,5 +24,15 @@ class ProductTable extends AbstractTableController
     {
         return $model->where('date_expired', '>=', date('Y-m-d'));
     }
+
+    public function filterCriticalStock($model)
+    {
+        return $model->where('stock', '<', 100);
+    }
+
+    public function filterExceedingStock($model)
+    {
+        return $model->where('stock', '>', 1000);
+    }
 }
 

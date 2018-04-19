@@ -50,21 +50,6 @@ abstract class AbstractTableController
             $data = $this->repo->sort($this->table->getDefaultSortColumn());
         }
 
-        /**
-         * TODO handle search + filter
-         *
-         * parameter yang digunakan akan mempengaruhi satu sama lain
-         */
-
-        if ($request->input($this->table->getInputField('search')) &&
-            $request->input($this->table->getInputField('bsearch'))
-        ){
-            $search = $request->input($this->table->getInputField('search'));
-            $data = $this->repo->search($this->table->getSearchable(), $search, isset($data) ? $data : null);
-        } else {
-            $search = '';
-        }
-
         $filters = null;
 
         if ($request->input($this->table->getInputField('filter')) &&
@@ -79,6 +64,14 @@ abstract class AbstractTableController
             }
         }
 
+        if ($request->input($this->table->getInputField('search')) &&
+            $request->input($this->table->getInputField('bsearch'))
+        ){
+            $search = $request->input($this->table->getInputField('search'));
+            $data = $this->repo->search($this->table->getSearchable(), $search, isset($data) ? $data : null);
+        } else {
+            $search = '';
+        }
 
         if ($request->input($this->table->getInputField('view'))) {
             $filterValue = $request->input($this->table->getInputField('view'));

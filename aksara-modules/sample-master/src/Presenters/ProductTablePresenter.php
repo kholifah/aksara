@@ -54,11 +54,20 @@ class ProductTablePresenter extends BasicTablePresenter
 
     protected function registerFilters()
     {
-        $this->addFilter('past_expired', __('sample-master::product.labels.past_expired'));
-        $this->addFilter('not_expired', __('sample-master::product.labels.not_expired'));
+        $expiredFilter = [
+            'past_expired' => __('sample-master::product.labels.past_expired'),
+            'not_expired' => __('sample-master::product.labels.not_expired'),
+        ];
 
-        \Eventy::addAction('tableview.form_filter', function ($table) {
-            $this->renderDefaultFilter($table);
+        $stockFilter = [
+            'critical_stock' => __('sample-master::product.labels.critical_stock'),
+            'exceeding_stock' => __('sample-master::product.labels.exceeding_stock'),
+        ];
+
+        \Eventy::addAction('tableview.form_filter', function ($table) use (
+            $expiredFilter, $stockFilter) {
+            $this->renderDefaultFilter($table, $expiredFilter);
+            $this->renderDefaultFilter($table, $stockFilter, 1);
             $this->renderDefaultSearch($table);
         });
     }

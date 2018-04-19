@@ -16,6 +16,8 @@ return [
         'product_list' => 'Daftar Produk',
         'past_expired' => 'Kadaluarsa',
         'not_expired' => 'Belum Kadaluarsa',
+        'critical_stock' => 'Stok Kritis',
+        'exceeding_stock' => 'Stok Penuh',
     ],
     'messages' => [
         'confirm_delete' => 'Apakah anda yakin akan menghapus produk?',

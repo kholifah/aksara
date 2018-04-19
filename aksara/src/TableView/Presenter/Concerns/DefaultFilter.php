@@ -4,11 +4,11 @@ namespace Aksara\TableView\Presenter\Concerns;
 
 trait DefaultFilter
 {
-    private function renderDefaultFilter($table, $filters = null)
+    private function renderDefaultFilter($table, $filters = null, $position = 0)
     {
         $filters = $filters ?? $this->getFilters();
         $options = [];
-        $filtered = @$table['filtered'][0];//first selection index
+        $filtered = @$table['filtered'][$position];
 
         foreach ($filters as $name => $label) {
             $options[] = '<option value="'.$name.'" '.(($filtered == $name) ? 'selected' : '') .'>'.$label.'</option>';
