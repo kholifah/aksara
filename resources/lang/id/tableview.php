@@ -7,6 +7,7 @@ return [
         'confirm_delete' => 'Apakah anda yakin akan menghapus data?',
     ],
     'labels' => [
+        'filter' => 'Filter',
         'search' => 'Cari',
         'items' => 'item|items',
         'update' => 'Ubah',

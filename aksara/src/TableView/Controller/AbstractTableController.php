@@ -52,8 +52,9 @@ abstract class AbstractTableController
 
         $filters = null;
 
-        if ($request->input($this->table->getInputField('filter')) &&
-            $request->input($this->table->getInputField('bsearch'))
+        if ($this->getRequestField($request, 'filter') &&
+            ($this->getRequestField($request, 'bsearch') ||
+            $this->getRequestField($request, 'bfilter'))
         ){
             $filters = $request->input($this->table->getInputField('filter'));
             foreach ($filters as $filterValue) {

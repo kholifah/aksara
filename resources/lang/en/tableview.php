@@ -7,6 +7,7 @@ return [
         'confirm_delete' => 'Are you sure to delete data?',
     ],
     'labels' => [
+        'filter' => 'Filter',
         'search' => 'Search',
         'items' => 'item|items',
         'update' => 'Update',

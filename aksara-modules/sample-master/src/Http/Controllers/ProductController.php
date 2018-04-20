@@ -14,6 +14,7 @@ class ProductController extends Controller
 {
     private $tableController;
     private $productRepo;
+    private $form;
 
     public function __construct(
         ProductRepository $productRepo,

@@ -68,6 +68,7 @@ class ProductTablePresenter extends BasicTablePresenter
             $expiredFilter, $stockFilter) {
             $this->renderDefaultFilter($table, $expiredFilter);
             $this->renderDefaultFilter($table, $stockFilter, 1);
+            $this->renderFilterButton($table);
             $this->renderDefaultSearch($table);
         });
     }

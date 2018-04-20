@@ -28,4 +28,10 @@ trait DefaultFilter
 
         echo $div;
     }
+
+    private function renderFilterButton($table)
+    {
+        echo '<div class="alignleft action filter-box"><input name="'.$table['inputs']['bfilter'].
+            '" type="submit" class="btn btn-secondary" value="'.__('tableview.labels.filter').'"></div>';
+    }
 }
