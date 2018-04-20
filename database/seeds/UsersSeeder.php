@@ -15,7 +15,6 @@ class UsersSeeder extends Seeder
     public function run()
     {
         //admin sample
-        Model::unguard();
         App\User::truncate();
 
         App\User::create([
@@ -24,7 +23,6 @@ class UsersSeeder extends Seeder
             'password' => '123456',
             'active' => true,
         ]);
-        Model::reguard();
     }
 
 }
