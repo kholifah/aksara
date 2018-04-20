@@ -4,10 +4,12 @@ namespace Aksara\TableView\Presenter\Components;
 
 trait DefaultFilter
 {
-    private function renderDefaultFilter($table, $filters, $position = 0)
+    private $position = 0;
+
+    private function renderDefaultFilter($table, $filters)
     {
         $options = [];
-        $filtered = @$table['filtered'][$position];
+        $filtered = @$table['filtered'][$this->position];
 
         foreach ($filters as $name => $label) {
             $options[] = '<option value="'.$name.'" '.(($filtered == $name) ? 'selected' : '') .'>'.$label.'</option>';
@@ -27,6 +29,7 @@ trait DefaultFilter
             </div>';
 
         echo $div;
+        $this->position++;
     }
 
     private function renderFilterButton($table)
