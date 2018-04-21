@@ -59,7 +59,7 @@ class SupplierTablePresenter extends BasicTablePresenter
 
         \Eventy::addAction('tableview.form_filter', function ($table) use (
             $statusFilter) {
-            $this->renderDefaultFilter($table, $statusFilter);
+            $this->renderDropDownFilter($table, $statusFilter);
             $this->renderFilterButton($table);
             $this->renderDefaultSearch($table);
         });

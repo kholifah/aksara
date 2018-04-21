@@ -1,12 +1,12 @@
 <!-- filter links -->
 <ul class="trash-sistem">
   <?php
-    $count = count($table['filter_links']);
+    $count = count($filters);
     $current = 0;
   ?>
-  @foreach($table['filter_links'] as $label => $url)
+  @foreach($filters as $filter => $label)
     <li>
-      <a href={{ $url }}>{{ $label }}</a> {{ $current < $count-1 ? '|' : '' }}
+      <a href={{ route($route_name, [ 'view' => $filter ]) }}>{{ $label }}</a> {{ $current < $count-1 ? '|' : '' }}
     </li>
     <?php $current++ ?>
   @endforeach

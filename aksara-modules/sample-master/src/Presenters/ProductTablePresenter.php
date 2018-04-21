@@ -66,8 +66,8 @@ class ProductTablePresenter extends BasicTablePresenter
 
         \Eventy::addAction('tableview.form_filter', function ($table) use (
             $expiredFilter, $stockFilter) {
-            $this->renderDefaultFilter($table, $expiredFilter);
-            $this->renderDefaultFilter($table, $stockFilter);
+            $this->renderDropDownFilter($table, $expiredFilter);
+            $this->renderDropDownFilter($table, $stockFilter);
             $this->renderFilterButton($table);
             $this->renderDefaultSearch($table);
         });

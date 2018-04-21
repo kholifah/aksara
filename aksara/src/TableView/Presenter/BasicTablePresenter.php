@@ -265,6 +265,7 @@ abstract class BasicTablePresenter implements TablePresenter
                     'bsearch' => $this->getInputField('bsearch'),
                     'apply' => $this->getInputField('apply'),
                     'bapply' => $this->getInputField('bapply'),
+                    'filter' => $this->getInputField('filter'),
                     'bfilter' => $this->getInputField('bfilter'),
                 ],
                 'bulk_actions' => $this->actions,
