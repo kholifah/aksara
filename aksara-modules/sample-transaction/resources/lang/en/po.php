@@ -18,10 +18,10 @@ return [
     ],
     'messages' => [
         'created' => 'Purchase Order created successfully',
-        'failed_create' => 'Failed to create Purchase Order',
+        'create_failed' => 'Failed to create Purchase Order',
         'updated' => 'Purchase Order updated successfully',
-        'failed_update' => 'Failed to update Purchase Order',
+        'update_failed' => 'Failed to update Purchase Order',
         'deleted' => 'Purchase Order deleted successfully',
-        'failed_delete' => 'Failed to delete Purchase Order',
+        'delete_failed' => 'Failed to delete Purchase Order',
     ],
 ];
