@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\Relation;
 
 abstract class EloquentRepository
 {
@@ -101,9 +102,22 @@ abstract class EloquentRepository
         return true;
     }
 
-    public function sort($column, $order = 'ASC')
+    public function sortCallback($callback, $order = 'ASC', $referenceModel = null)
     {
-        return $this->model->orderBy($column, $order);
+        $data = $referenceModel ?? $this->model;
+
+        //TODO handle filter callback
+        if (is_callable($callback)) {
+            return $callback($data, $order);
+        }
+
+        throw new \Exception('Sort callback does not exist');
+    }
+
+    public function sort($column, $order = 'ASC', $referenceModel = null)
+    {
+        $data = $referenceModel ?? $this->model;
+        return $data->orderBy($column, $order);
     }
 
     public function new($attributes = [])

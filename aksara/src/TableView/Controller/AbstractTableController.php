@@ -40,12 +40,15 @@ abstract class AbstractTableController
         $sort = $this->getRequestField($request, 'sort_by');
         $order = '';
 
+        $data = null;
+
         if ($sort) {
             $order = $this->getRequestField($request, 'sort_order');
             if (!$order) {
                 $order = 'ASC';
             }
-            $data = $this->repo->sort($sort, $order);
+            $data = $this->callSort($sort, $order, $data);
+            //$data = $this->repo->sort($sort, $order);
         } else {
             $data = $this->repo->sort($this->table->getDefaultSortColumn());
         }
@@ -90,6 +93,32 @@ abstract class AbstractTableController
         $this->table->setRouteName($request->route()->getName());
 
         return $this->table;
+    }
+
+    private function callSort($column, $order, $referenceModel = null)
+    {
+        //TODO
+        //if callable, use callable to sort data
+        $callback = $this->getColumnSortCallable($column);
+        if ($callback != false) {
+            return $this->repo->sortCallback($callback, $order, $referenceModel);
+        }
+        //if column, use ordinary sort
+        if (is_string($column)) {
+            return $this->repo->sort($column, $order, $referenceModel);
+        }
+        throw new \Exception('Unsupported sort parameter');
+    }
+
+    private function getColumnSortCallable($column)
+    {
+        $sortable = $this->table->getSortable();
+        if (isset($sortable[$column])) {
+            if (is_callable($sortable[$column])) {
+                return $sortable[$column];
+            }
+        }
+        return false;
     }
 
     private function callFilter($filterValue, $referenceModel = null)

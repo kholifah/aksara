@@ -24,7 +24,7 @@ class ProductServiceProvider extends AbstractModuleProvider
             add_admin_sub_menu_route('sample-master', $args);
 
             $productCreate = [
-                'slug' => '/sample-master/create',
+                'slug' => '/sample-product/create',
                 'method' => 'GET',
                 'args' => [
                     'as' => 'sample-product-create',

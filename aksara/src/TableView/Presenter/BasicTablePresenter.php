@@ -86,6 +86,11 @@ abstract class BasicTablePresenter implements TablePresenter
         $this->routeName = $routeName;
     }
 
+    public function getSortable()
+    {
+        return $this->sortable;
+    }
+
     public function setSortable($sortable = [])
     {
         $this->sortable = $sortable;
@@ -109,7 +114,8 @@ abstract class BasicTablePresenter implements TablePresenter
 
     private function getHeader($value, $label)
     {
-        if (in_array($value, $this->sortable)) {
+        $sortable = $this->getSortable();
+        if (in_array($value, $sortable) || array_key_exists($value, $sortable)) {
             $sort = [
                 $this->getInputField('sort_by') => $value,
                 $this->getInputField('sort_order') =>
