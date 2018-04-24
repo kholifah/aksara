@@ -77,6 +77,17 @@ class PurchaseOrderServiceProvider extends AbstractModuleProvider
             ];
 
             \AksaraRoute::addRoute($poDestroy);
+
+            $itemAdd = [
+                'slug' => '/sample-po/{id}/items',
+                'method' => 'POST',
+                'args' => [
+                    'as' => 'sample-po-store-item',
+                    'uses' => '\Plugins\SampleTransaction\Http\Controllers\PurchaseOrderController@storeItem',
+                ],
+            ];
+
+            \AksaraRoute::addRoute($itemAdd);
         });
     }
 }

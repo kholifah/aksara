@@ -15,6 +15,14 @@ return [
         'void' => 'Void',
         'draft' => 'Draft',
         'status' => 'Status',
+        'add_item' => 'Add Item',
+        'items' => 'Line Items',
+        'product' => 'Product',
+        'qty' => 'Quantity',
+        'discount' => 'Discount',
+        'sub_total' => 'Sub Total',
+        'unit_price' => 'Unit Price',
+        'total_amount' => 'Total Amount',
     ],
     'messages' => [
         'created' => 'Purchase Order created successfully',
@@ -23,5 +31,7 @@ return [
         'update_failed' => 'Failed to update Purchase Order',
         'deleted' => 'Purchase Order deleted successfully',
         'delete_failed' => 'Failed to delete Purchase Order',
+        'item_added' => 'Purchase Order item Added',
+        'add_item_failed' => 'Failed to add Purchase Order item',
     ],
 ];

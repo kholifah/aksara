@@ -43,4 +43,11 @@ class PurchaseOrder extends Model
 
         return 'Draft';
     }
+
+    public function updateFields()
+    {
+        $this->total_amount = $this->items->sum(function ($item) {
+            return $item->calculateNettPrice();
+        });
+    }
 }

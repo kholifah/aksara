@@ -28,6 +28,8 @@
                         @include('sample-master::store._form')
                     {!! Form::close() !!}
                 </div>
+            </div>
+            <div class="card-box">
                 <div class="card-box__header">
                     <h2>@lang('sample-master::store.manager.title')</h2>
                 </div>
@@ -40,8 +42,10 @@
                         @include('sample-master::store.manager_form')
                   {!! Form::close() !!}
                 </div>
+            </div>
+            <div class="card-box">
                 <div class="card-box__header">
-                    <h2>@lang('sample-master::store.labels.add_product')</h2>
+                    <h2>@lang('sample-master::product.labels.product_list')</h2>
                 </div>
                 <div class="card-box__body">
                   {!! Form::open(['route' => [ 'sample-store-product-store', $store->id ], 'role' => 'form', 'class' => 'form-horizontal']) !!}
@@ -56,9 +60,6 @@
                     {!! Form::submit(__('sample-master::store.labels.add_product'), ['class'=>'btn btn-md btn-primary alignright']) !!}
                   </div>
                   {!! Form::close() !!}
-                </div>
-                <div class="card-box__header">
-                    <h2>@lang('sample-master::product.labels.product_list')</h2>
                 </div>
                 <div class="card-box__body">
                   {!! $table->render() !!}

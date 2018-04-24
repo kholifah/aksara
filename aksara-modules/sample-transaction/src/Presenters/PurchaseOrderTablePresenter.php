@@ -33,6 +33,7 @@ class PurchaseOrderTablePresenter extends BasicTablePresenter
                     'suppliers', 'suppliers.id', 'purchase_orders.supplier_id')
                     ->orderBy('suppliers.supplier_name', $order);
             },
+            'total_amount',
             'order_date',
             'estimated_delivery_date',
         ];
@@ -48,6 +49,7 @@ class PurchaseOrderTablePresenter extends BasicTablePresenter
                     return $value->supplier_name;
                 },
             ],
+            'total_amount' => __('sample-transaction::po.labels.total_amount'),
             'order_date' => [
                 'label' => __('sample-transaction::po.labels.order_date'),
                 'formatter' => function ($value) {

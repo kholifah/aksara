@@ -8,7 +8,6 @@
     </div>
 </div>
 
-<!-- TODO use Form::select and populate the data from presenter -->
 <div class="form-group form-group--table {!! $errors->has('supplier_id') ? 'error' : '' !!}">
     <label class="col-form-label">@lang('sample-transaction::po.labels.supplier')</label>
     <div class="col-form-input">

@@ -109,6 +109,7 @@ class StoreServiceProvider extends AbstractModuleProvider
                 ],
             ];
 
+            //TODO wth????kok tiba2 nggak kedaftar
             \AksaraRoute::addRoute($productAdd);
 
             $productRemove = [

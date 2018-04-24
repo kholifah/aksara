@@ -15,6 +15,10 @@ class CreatePurchaseOrderItemsTable extends Migration
     {
         Schema::create('purchase_order_items', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('purchase_order_id')->unsigned();
+            $table->foreign('purchase_order_id')
+                ->references('id')
+                ->on('purchase_orders');
             $table->integer('product_id')->unsigned();
             $table->foreign('product_id')
                 ->references('id')
