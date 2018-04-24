@@ -14,5 +14,6 @@ interface TableRepository
      * function (Model $model)
      */
     public function filter($callback, $referenceModel = null);
+    public function filterColumn($columnName, $value, $referenceModel = null);
 }
 

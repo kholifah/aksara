@@ -35,13 +35,6 @@ class ProductStoreTablePresenter extends BasicTablePresenter
     {
         return route('sample-product-edit', $identifier);
     }
-
-    protected function registerFilters()
-    {
-        \Eventy::addAction('tableview.form_filter', function ($table) {
-            $this->renderDefaultSearch($table);
-        });
-    }
 }
 
 

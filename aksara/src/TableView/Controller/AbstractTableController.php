@@ -48,14 +48,13 @@ abstract class AbstractTableController
                 $order = 'ASC';
             }
             $data = $this->callSort($sort, $order, $data);
-            //$data = $this->repo->sort($sort, $order);
         } else {
             $data = $this->repo->sort($this->table->getDefaultSortColumn());
         }
 
-        $filters = null;
+        $filters = [];
 
-        if ($this->getRequestField($request, 'filter') &&
+        if (($this->getRequestField($request, 'filter')) &&
             ($this->getRequestField($request, 'bsearch') ||
             $this->getRequestField($request, 'bfilter'))
         ){
@@ -67,6 +66,36 @@ abstract class AbstractTableController
                 $data = $this->callFilter($filterValue, isset($data) ? $data : null);
             }
         }
+
+        $columnFilterValues = [];
+
+        //format:
+        //[ 'column_name' => 'column_value' ]
+        $columnFilters = $this->table->getColumnFilters();
+        $columnFilterValues = [];
+
+        foreach ($columnFilters as $columnName => $label) {
+            if (($this->getRequestField($request, $columnName.'_filter')) &&
+                ($this->getRequestField($request, 'bsearch') ||
+                $this->getRequestField($request, 'bfilter'))
+            ){
+                $columnFilterValue = $this->getRequestField($request, $columnName.'_filter');
+                $data = $this->repo->filterColumn($columnName, $columnFilterValue, $data);
+                $columnFilterValues[$columnName] = $columnFilterValue;
+            }
+        }
+
+        //if (($this->getRequestField($request, 'column_filter')) &&
+            //($this->getRequestField($request, 'bsearch') ||
+            //$this->getRequestField($request, 'bfilter'))
+        //){
+            //$columnFilters = $request->input($this->table->getInputField('column_filter'));
+            //$columnFilterValues = $request->input($this->table->getInputField('column_filter_value'));
+            ////because the way of html form works, we can only use this 'rambo' method
+            //for ($i = 0; $i < count($columnFilters); $i++) {
+                //$data = $this->repo->filterColumn(@$columnFilters[$i], @$columnFilterValues[$i], $data);
+            //}
+        //}
 
         if ($request->input($this->table->getInputField('search')) &&
             $request->input($this->table->getInputField('bsearch'))
@@ -88,6 +117,7 @@ abstract class AbstractTableController
         $this->table->setData($data);
         $this->table->setSearch($search);
         $this->table->setFiltered($filters);
+        $this->table->setColumnFiltered($columnFilterValues);
         $this->table->setSort($sort, $order);
         $this->table->setParentUrl($request->url());
         $this->table->setRouteName($request->route()->getName());

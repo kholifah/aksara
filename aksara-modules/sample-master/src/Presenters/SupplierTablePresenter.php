@@ -51,27 +51,22 @@ class SupplierTablePresenter extends BasicTablePresenter
      */
     protected function registerFilters()
     {
-        $statusFilter = [
-            'all' => __('sample-master::supplier.labels.all'),
-            'active' => __('sample-master::supplier.labels.active'),
-            'inactive' => __('sample-master::supplier.labels.inactive'),
-        ];
+        \Eventy::addAction($this->getActionFilterName('form_filter'), function ($table) {
+            $statusFilter = [
+                'all' => __('sample-master::supplier.labels.all'),
+                'active' => __('sample-master::supplier.labels.active'),
+                'inactive' => __('sample-master::supplier.labels.inactive'),
+            ];
 
-        \Eventy::addAction('tableview.form_filter', function ($table) use (
-            $statusFilter) {
             $this->renderDropDownFilter($table, $statusFilter);
-            $this->renderFilterButton($table);
-            $this->renderDefaultSearch($table);
         });
 
-        $filterView = [
-            'all' => __('sample-master::supplier.labels.all'),
-            'active' => __('sample-master::supplier.labels.active'),
-        ];
-
-        \Eventy::addAction('tableview.view_filter', function () use (
-            $filterView) {
-            $this->renderDefaultViewFilter($filterView);
+        \Eventy::addAction($this->getActionFilterName('view_filter'), function ($table) {
+            $filterView = [
+                'all' => __('sample-master::supplier.labels.all'),
+                'active' => __('sample-master::supplier.labels.active'),
+            ];
+            $this->renderDefaultViewFilter($table, $filterView);
         });
     }
 

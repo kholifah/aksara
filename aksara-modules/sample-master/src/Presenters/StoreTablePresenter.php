@@ -15,6 +15,7 @@ class StoreTablePresenter extends BasicTablePresenter
 
     protected $searchable = [
         'store_name',
+        'store_phone',
     ];
 
     protected $defaultSortColumn = 'id';
@@ -35,27 +36,21 @@ class StoreTablePresenter extends BasicTablePresenter
 
     protected function registerFilters()
     {
-        $statusFilter = [
-            'all' => __('sample-master::store.labels.all'),
-            'active' => __('sample-master::store.labels.active'),
-            'inactive' => __('sample-master::store.labels.inactive'),
-        ];
-
-        \Eventy::addAction('tableview.form_filter', function ($table) use (
-            $statusFilter) {
+        \Eventy::addAction($this->getActionFilterName('form_filter'), function ($table) {
+            $statusFilter = [
+                'all' => __('sample-master::store.labels.all'),
+                'active' => __('sample-master::store.labels.active'),
+                'inactive' => __('sample-master::store.labels.inactive'),
+            ];
             $this->renderDropDownFilter($table, $statusFilter);
-            $this->renderFilterButton($table);
-            $this->renderDefaultSearch($table);
         });
 
-        $filterView = [
-            'all' => __('sample-master::store.labels.all'),
-            'active' => __('sample-master::store.labels.active'),
-        ];
-
-        \Eventy::addAction('tableview.view_filter', function () use (
-            $filterView) {
-            $this->renderDefaultViewFilter($filterView);
+        \Eventy::addAction($this->getActionFilterName('view_filter'), function ($table) {
+            $filterView = [
+                'all' => __('sample-master::store.labels.all'),
+                'active' => __('sample-master::store.labels.active'),
+            ];
+            $this->renderDefaultViewFilter($table, $filterView);
         });
     }
 

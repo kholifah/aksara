@@ -5,6 +5,7 @@ namespace Plugins\SampleTransaction\Presenters;
 use Aksara\TableView\Presenter\BasicTablePresenter;
 use Aksara\TableView\Presenter\Components\DefaultSearch;
 use Aksara\TableView\Presenter\Components\DefaultFilter;
+use Plugins\SampleMaster\Repositories\SupplierRepository;
 
 class PurchaseOrderTablePresenter extends BasicTablePresenter
 {
@@ -16,6 +17,12 @@ class PurchaseOrderTablePresenter extends BasicTablePresenter
     ];
 
     protected $defaultSortColumn = 'id';
+
+    public function __construct(SupplierRepository $supplierRepo)
+    {
+        $this->supplierRepo = $supplierRepo;
+        parent::__construct();
+    }
 
     public function getSortable()
     {
@@ -69,19 +76,28 @@ class PurchaseOrderTablePresenter extends BasicTablePresenter
 
     protected function registerFilters()
     {
-        $statusFilter = [
-            'draft' => __('sample-transaction::po.labels.draft'),
-            'applied' => __('sample-transaction::po.labels.applied'),
-            'void' => __('sample-transaction::po.labels.void'),
-        ];
+        \Eventy::addFilter($this->getActionFilterName('column_filter'), function () {
+            $suppliers = $this->supplierRepo->all();
+            $supplierFilter = [];
 
-        //TODO supplier filter
+            foreach ($suppliers as $supplier) {
+                $supplierFilter[$supplier->id] = $supplier->supplier_name;
+            }
 
-        \Eventy::addAction('tableview.form_filter', function ($table) use (
-            $statusFilter) {
+            $columnFilters = [
+                'supplier_id' => $supplierFilter,
+            ];
+            return $columnFilters;
+        });
+
+
+        \Eventy::addAction($this->getActionFilterName('form_filter'), function ($table) {
+            $statusFilter = [
+                'draft' => __('sample-transaction::po.labels.draft'),
+                'applied' => __('sample-transaction::po.labels.applied'),
+                'void' => __('sample-transaction::po.labels.void'),
+            ];
             $this->renderDropDownFilter($table, $statusFilter);
-            $this->renderFilterButton($table);
-            $this->renderDefaultSearch($table);
         });
     }
 }

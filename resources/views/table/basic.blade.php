@@ -1,13 +1,13 @@
 <div class="content__body">
   <div class="row">
     <div class="col-md-12">
-      @action('tableview.view_filter')
+      @action('tableview.'.$table['name'].'.view_filter', $table)
       <form class="posts-filter clearfix">
         <div class="tablenav top clearfix">
           @if(!empty($table['bulk_actions']))
             @include('table.components.bulkaction', $table)
           @endif
-          @action('tableview.form_filter', $table)
+          @action('tableview.'.$table['name'].'.form_filter', $table)
           <!-- pagination -->
           <div class="tablenav-pages"><span class="displaying-num">{{ $table['total'] }} {{ trans_choice('tableview.labels.items', $table['total']) }}</span>
             <span class="pagination-links">

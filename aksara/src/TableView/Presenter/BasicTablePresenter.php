@@ -9,6 +9,7 @@ abstract class BasicTablePresenter implements TablePresenter
     private $data;
     private $search;
     private $filtered = [];
+    private $columnFiltered = [];
     protected $identifier = 'id';
     protected $listIdentifier = 'id_list';
     protected $inputPrefix = '';
@@ -28,6 +29,15 @@ abstract class BasicTablePresenter implements TablePresenter
     protected abstract function getColumns();
     protected function getEditUrl($identifier) { return false; }
     protected function getDeleteUrl($identifier) { return false; }
+
+    private $actionRegistered = false;
+    private $filterRegistered = false;
+
+    public function __construct()
+    {
+        $this->baseRegisterActions();
+        $this->baseRegisterFilters();
+    }
 
     public function getIdentifier()
     {
@@ -68,6 +78,11 @@ abstract class BasicTablePresenter implements TablePresenter
     public function setFiltered($filtered = [])
     {
         $this->filtered = $filtered ?? [];
+    }
+
+    public function setColumnFiltered($columnFiltered = [])
+    {
+        $this->columnFiltered = $columnFiltered ?? [];
     }
 
     public function setSort($sort, $order)
@@ -212,6 +227,11 @@ abstract class BasicTablePresenter implements TablePresenter
         return $this->filtered;
     }
 
+    protected function getColumnFiltered()
+    {
+        return $this->columnFiltered;
+    }
+
     protected function getTotal()
     {
         return $this->data->count();
@@ -229,8 +249,10 @@ abstract class BasicTablePresenter implements TablePresenter
 
     private function baseRegisterActions()
     {
+        if ($this->actionRegistered) return;
         $this->addAction('destroy', __('tableview.labels.delete'));
         $this->registerActions();
+        $this->actionRegistered = true;
     }
 
     protected function registerActions() {}
@@ -242,20 +264,63 @@ abstract class BasicTablePresenter implements TablePresenter
 
     private function baseRegisterFilters()
     {
-        //TODO add base filter
-        //hooks can also be registered here
+        if ($this->filterRegistered) return;
+
+        \Eventy::addAction($this->getActionFilterName('form_filter'), function ($table) {
+            if (!method_exists($this, 'renderDropDownColumnFilter')) return;
+
+            $columnFilters = $this->getColumnFilters();
+            if (empty($columnFilters)) return;
+
+            foreach ($columnFilters as $columnFilter => $label) {
+                $this->renderDropDownColumnFilter($table, $columnFilter);
+            }
+        });
+
         $this->registerFilters();
+
+        \Eventy::addAction($this->getActionFilterName('form_filter'), function ($table) {
+            if (!method_exists($this, 'renderFilterButton')) return;
+            $this->renderFilterButton($table);
+        });
+
+        \Eventy::addAction($this->getActionFilterName('form_filter'), function ($table) {
+            if (!method_exists($this, 'renderDefaultSearch')) return;
+            $this->renderDefaultSearch($table);
+        });
+
+        $this->filterRegistered = true;
     }
 
     protected function registerFilters() {}
 
+    public function getColumnFilters()
+    {
+        $name = $this->getName();
+        $filters = \Eventy::filter($this->getActionFilterName("column_filter"));
+        if (empty($filters)) {
+            return [];
+        }
+        return $filters;
+    }
+
+    protected function getName()
+    {
+        $lowerClassName = strtolower(get_class($this));
+        $name = str_replace('\\', '-', $lowerClassName);
+        return $name;
+    }
+
+    protected function getActionFilterName($basename)
+    {
+        return 'tableview.'.$this->getName().'.'.$basename;
+    }
+
     public function render($viewName = 'table.basic', $presenterName = 'table')
     {
-        $this->baseRegisterFilters();
-        $this->baseRegisterActions();
-
         return view($viewName, [
             $presenterName => [
+                'name' => $this->getName(),
                 'searchable' => empty($this->searchable) ? false : true,
                 'rows' => $this->getRows(),
                 'total' => $this->getTotal(),
@@ -264,6 +329,7 @@ abstract class BasicTablePresenter implements TablePresenter
                 'column_headers' => $this->getColumnHeaders(),
                 'search' => $this->getSearch(),
                 'filtered' => $this->getFiltered(),
+                'column_filtered' => $this->getColumnFiltered(),
                 'row_identifier' => $this->identifier,
                 'list_identifier' => $this->listIdentifier,
                 'inputs' => [
@@ -272,7 +338,9 @@ abstract class BasicTablePresenter implements TablePresenter
                     'apply' => $this->getInputField('apply'),
                     'bapply' => $this->getInputField('bapply'),
                     'filter' => $this->getInputField('filter'),
+                    'column_filters' => $this->getColumnFilters(),
                     'bfilter' => $this->getInputField('bfilter'),
+                    'view' => $this->getInputField('view'),
                 ],
                 'bulk_actions' => $this->actions,
             ],

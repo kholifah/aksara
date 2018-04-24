@@ -170,4 +170,15 @@ abstract class EloquentRepository
     {
         return $callback($referenceModel ?? $this->model);
     }
+
+    public function filterColumn($columnName, $value, $referenceModel = null)
+    {
+        $data = $referenceModel ?? $this->model;
+
+        if (empty($value)) {
+            return $data;
+        }
+
+        return $data->where($columnName, '=', $value);
+    }
 }

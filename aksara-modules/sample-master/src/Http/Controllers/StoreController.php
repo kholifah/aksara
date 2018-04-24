@@ -21,12 +21,10 @@ class StoreController extends Controller
     public function __construct(
         StoreRepository $repo,
         StoreTable $tableController,
-        StoreFormPresenter $form,
-        ProductStoreTable $productTableController
+        StoreFormPresenter $form
     ){
         $this->repo = $repo;
         $this->tableController = $tableController;
-        $this->productTableController = $productTableController;
         $this->form = $form;
     }
 

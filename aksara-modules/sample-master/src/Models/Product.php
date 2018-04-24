@@ -29,4 +29,9 @@ class Product extends Model
     {
         return $this->belongsToMany(Store::class);
     }
+
+    public function supplier()
+    {
+        return $this->belongsTo(Supplier::class);
+    }
 }

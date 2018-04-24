@@ -6,7 +6,7 @@
   ?>
   @foreach($filters as $filter => $label)
     <li>
-      <a href={{ route($route_name, [ 'view' => $filter ]) }}>{{ $label }}</a> {{ $current < $count-1 ? '|' : '' }}
+      <a href={{ route($route_name, [ $table['inputs']['view'] => $filter ]) }}>{{ $label }}</a> {{ $current < $count-1 ? '|' : '' }}
     </li>
     <?php $current++ ?>
   @endforeach
