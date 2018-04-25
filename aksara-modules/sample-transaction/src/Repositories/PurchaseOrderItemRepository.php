@@ -13,13 +13,6 @@ class PurchaseOrderItemRepository
     {
         $this->model = $po->items();
     }
-
-    //TODO: fix delete multiple item
-    //public function delete($id)
-    //{
-        //dd($this->model->where('id', $id));
-        //return $this->model->where('id', $id)->delete();
-    //}
 }
 
 

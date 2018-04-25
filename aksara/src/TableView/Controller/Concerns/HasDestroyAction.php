@@ -16,21 +16,13 @@ trait HasDestroyAction
 
     private function deleteMultiple(array $idList)
     {
-        foreach ($idList as $id) {
-            $success = $this->delete($id);
-        }
         $count = count($idList);
-        admin_notice('success', $this->getMultipleDeletedMessage($count));
-    }
-
-    private function delete($id)
-    {
-        $success = $this->repo->delete($id);
+        $success = $this->repo->delete($idList);
         if (!$success) {
             admin_notice('danger', $this->getFailedDeleteMessage());
             return false;
         }
-        return true;
+        admin_notice('success', $this->getMultipleDeletedMessage($count));
     }
 
     protected function getMultipleDeletedMessage($count)

@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Database\Eloquent\Model;
 
 abstract class EloquentRepository
 {
@@ -90,23 +91,27 @@ abstract class EloquentRepository
         return $data;
     }
 
+    /**
+     * @param $id int|array
+     */
     public function delete($id)
     {
-        $data = $this->find($id);
-        if (!$data) {
-            return false;
+        //have to check whether the $model instance is type of Eloquent Model
+        //because it can be Query Builder instance depending on the caller
+        if (!($this->model instanceof Model)) {
+            $model = $this->model->getModel();
+        } else {
+            $model = $this->model;
         }
-        if (!$data->delete()) {
-            return false;
-        }
-        return true;
+        //use destroy method, because we already know the primary key
+        //and the method supports mass delete
+        return $model->destroy($id);
     }
 
     public function sortCallback($callback, $order = 'ASC', $referenceModel = null)
     {
         $data = $referenceModel ?? $this->model;
 
-        //TODO handle filter callback
         if (is_callable($callback)) {
             return $callback($data, $order);
         }
