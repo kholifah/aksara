@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Aksara\TableView\Controller\Concerns;
 use Aksara\TableView\TableRepository;
 use Aksara\TableView\TablePresenter;
+use Carbon\Carbon;
 
 abstract class AbstractTableController
 {
@@ -70,11 +71,11 @@ abstract class AbstractTableController
         $columnFilterValues = [];
 
         //format:
-        //[ 'column_name' => 'column_value' ]
+        //[ 'column_name' => 'label' ]
         $columnFilters = $this->table->getColumnFilters();
         $columnFilterValues = [];
 
-        foreach ($columnFilters as $columnName => $label) {
+        foreach (array_keys($columnFilters) as $columnName) {
             if (($this->getRequestField($request, $columnName.'_filter')) &&
                 ($this->getRequestField($request, 'bsearch') ||
                 $this->getRequestField($request, 'bfilter'))
@@ -83,6 +84,31 @@ abstract class AbstractTableController
                 $data = $this->repo->filterColumn($columnName, $columnFilterValue, $data);
                 $columnFilterValues[$columnName] = $columnFilterValue;
             }
+        }
+
+        $dateRangeFilters = $this->table->getDateRangeFilters();
+        $dateRangeFilterValues = [];
+
+        foreach ($dateRangeFilters as $columnName) {
+            $fromDate = Carbon::minValue();
+
+            if (($this->getRequestField($request, $columnName.'_filter_from')) &&
+                ($this->getRequestField($request, 'bsearch') ||
+                $this->getRequestField($request, 'bfilter'))
+            ){
+                $fromDate = Carbon::parse($this->getRequestField($request, $columnName.'_filter_from'));
+            }
+
+            $toDate = Carbon::maxValue();
+
+            if (($this->getRequestField($request, $columnName.'_filter_to')) &&
+                ($this->getRequestField($request, 'bsearch') ||
+                $this->getRequestField($request, 'bfilter'))
+            ){
+                $toDate = Carbon::parse($this->getRequestField($request, $columnName.'_filter_to'));
+            }
+
+            $data = $this->repo->between($columnName, $fromDate, $toDate, $data);
         }
 
         if ($request->input($this->table->getInputField('search')) &&

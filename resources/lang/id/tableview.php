@@ -16,6 +16,8 @@ return [
         'bulk_action' => 'Aksi Masal',
         'apply' => 'Terapkan',
         'no_filter' => 'Tanpa Filter',
+        'date_range' => 'Jarak Tanggal',
+        'to' => 'sampai',
     ],
 ];
 

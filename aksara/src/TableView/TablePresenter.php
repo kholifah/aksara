@@ -22,4 +22,7 @@ interface TablePresenter
     public function getSearchable();
     public function getDefaultSortColumn();
     public function render($viewName, $presenterName = 'table');
+
+    public function getColumnFilters();
+    public function getDateRangeFilters();
 }

@@ -16,5 +16,7 @@ return [
         'bulk_action' => 'Bulk Action',
         'apply' => 'Apply',
         'no_filter' => 'No Filter',
+        'date_range' => 'Date Range',
+        'to' => 'to',
     ],
 ];

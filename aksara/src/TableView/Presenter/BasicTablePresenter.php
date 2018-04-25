@@ -272,6 +272,7 @@ abstract class BasicTablePresenter implements TablePresenter
     protected function renderFilters($table) {}
 
     public function getColumnFilters() { return []; }
+    public function getDateRangeFilters() { return []; }
 
     protected function getName()
     {
@@ -308,6 +309,7 @@ abstract class BasicTablePresenter implements TablePresenter
                     'bapply' => $this->getInputField('bapply'),
                     'filter' => $this->getInputField('filter'),
                     'column_filters' => $this->getColumnFilters(),
+                    'date_range_filters' => $this->getDateRangeFilters(),
                     'bfilter' => $this->getInputField('bfilter'),
                     'view' => $this->getInputField('view'),
                 ],

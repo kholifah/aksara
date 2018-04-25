@@ -96,6 +96,13 @@ class PurchaseOrderTablePresenter extends BasicTablePresenter
         return $columnFilters;
     }
 
+    public function getDateRangeFilters()
+    {
+        return [
+            'order_date',
+        ];
+    }
+
     protected function renderFilters($table)
     {
         $statusFilter = [
@@ -109,6 +116,10 @@ class PurchaseOrderTablePresenter extends BasicTablePresenter
 
         $this->renderDropDownColumnFilter($table, 'supplier_id',
             __('sample-transaction::po.labels.all_supplier'));
+
+        $this->renderDateRangeFilter($table, 'order_date',
+            __('sample-transaction::po.labels.order_date')
+        );
 
         $this->renderFilterButton($table);
         $this->renderDefaultSearch($table);

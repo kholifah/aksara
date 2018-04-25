@@ -24,4 +24,9 @@ trait DefaultFilter
     {
         echo view('table.components.dropdown_column_filter', compact('table', 'column_name', 'caption'))->render();
     }
+
+    protected function renderDateRangeFilter($table, $column_name, $caption = null)
+    {
+        echo view('table.components.date_range_filter', compact('table', 'column_name', 'caption'))->render();
+    }
 }

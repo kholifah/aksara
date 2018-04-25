@@ -186,4 +186,10 @@ abstract class EloquentRepository
 
         return $data->where($columnName, '=', $value);
     }
+
+    public function between($columnName, $from, $to, $referenceModel = null)
+    {
+        $data = $referenceModel ?? $this->model;
+        return $data->whereBetween($columnName, [ $from, $to ]);
+    }
 }

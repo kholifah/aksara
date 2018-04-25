@@ -1,5 +1,4 @@
 <div class="alignleft action filter-box">
-  <!-- TODO here should be the column name -->
   <?php
     $columnFilters = @$table['inputs']['column_filters'][$column_name] ?? [];
   ?>

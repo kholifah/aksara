@@ -15,5 +15,7 @@ interface TableRepository
      */
     public function filter($callback, $referenceModel = null);
     public function filterColumn($columnName, $value, $referenceModel = null);
+
+    public function between($columnName, $from, $to, $referenceModel = null);
 }
 
