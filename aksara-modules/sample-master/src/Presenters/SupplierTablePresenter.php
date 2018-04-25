@@ -50,7 +50,7 @@ class SupplierTablePresenter extends BasicTablePresenter
         $this->renderDefaultViewFilter($table, $filterView);
     }
 
-    private function getCallbackFilters()
+    protected function renderFilters($table)
     {
         $statusFilter = [
             'all' => __('sample-master::supplier.labels.all'),
@@ -58,18 +58,8 @@ class SupplierTablePresenter extends BasicTablePresenter
             'inactive' => __('sample-master::supplier.labels.inactive'),
         ];
 
-        return [
-            'status_filter' => $statusFilter,
-        ];
-    }
-
-    protected function renderFilters($table)
-    {
-        $callbackFilters = $this->getCallbackFilters();
-
-        foreach ($callbackFilters as $callbackFilter) {
-            $this->renderDropDownFilter($table, $callbackFilter);
-        }
+        $this->renderDropDownFilter($table, $statusFilter,
+            __('sample-master::supplier.labels.all_status'));
 
         $this->renderFilterButton($table);
         $this->renderDefaultSearch($table);

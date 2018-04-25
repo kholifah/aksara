@@ -18,6 +18,9 @@ return [
         'not_expired' => 'Not Expired',
         'critical_stock' => 'Critical Stock',
         'exceeding_stock' => 'Exceeding Stock',
+        'all_expiry_status' => 'All Expiry Status',
+        'all_stock_status' => 'All Stock Status',
+        'all_supplier' => 'All Supplier',
     ],
     'messages' => [
         'confirm_delete' => 'Are you sure to delete product?',

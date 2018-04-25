@@ -43,26 +43,16 @@ class StoreTablePresenter extends BasicTablePresenter
         $this->renderDefaultViewFilter($table, $filterView);
     }
 
-    private function getCallbackFilters()
-    {
-        $statusFilter = [
-            'all' => __('sample-master::supplier.labels.all'),
-            'active' => __('sample-master::supplier.labels.active'),
-            'inactive' => __('sample-master::supplier.labels.inactive'),
-        ];
-
-        return [
-            'status_filter' => $statusFilter,
-        ];
-    }
-
     protected function renderFilters($table)
     {
-        $callbackFilters = $this->getCallbackFilters();
+        $statusFilter = [
+            'all' => __('sample-master::store.labels.all'),
+            'active' => __('sample-master::store.labels.active'),
+            'inactive' => __('sample-master::store.labels.inactive'),
+        ];
 
-        foreach ($callbackFilters as $callbackFilter) {
-            $this->renderDropDownFilter($table, $callbackFilter);
-        }
+        $this->renderDropDownFilter($table, $statusFilter,
+            __('sample-master::store.labels.all_status'));
 
         $this->renderFilterButton($table);
         $this->renderDefaultSearch($table);

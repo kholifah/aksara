@@ -18,6 +18,9 @@ return [
         'not_expired' => 'Belum Kadaluarsa',
         'critical_stock' => 'Stok Kritis',
         'exceeding_stock' => 'Stok Penuh',
+        'all_expiry_status' => 'Semua Status Kadaluarsa',
+        'all_stock_status' => 'Semua Status Stok',
+        'all_supplier' => 'Semua Pemasok',
     ],
     'messages' => [
         'confirm_delete' => 'Apakah anda yakin akan menghapus produk?',

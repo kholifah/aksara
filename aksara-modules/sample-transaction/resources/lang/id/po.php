@@ -13,7 +13,7 @@ return [
         'estimated_delivery_date' => 'Tanggal Perkiraan Pengiriman',
         'applied' => 'Dilaksanakan',
         'void' => 'Dibatalkan',
-        'draft' => 'Konesp',
+        'draft' => 'Konsep',
         'status' => 'Status',
         'add_item' => 'Tambah Item',
         'items' => 'Item',
@@ -23,6 +23,8 @@ return [
         'sub_total' => 'Sub Total',
         'unit_price' => 'Harga Satuan',
         'total_amount' => 'Jumlah Total',
+        'all_status' => 'Semua Status',
+        'all_supplier' => 'Semua Supplier',
     ],
     'messages' => [
         'created' => 'Purchase Order berhasil disimpan',

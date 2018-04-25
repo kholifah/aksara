@@ -73,24 +73,6 @@ class ProductTablePresenter extends BasicTablePresenter
         return route('sample-product-destroy', $identifier);
     }
 
-    private function getCallbackFilters()
-    {
-        $expiredFilter = [
-            'past_expired' => __('sample-master::product.labels.past_expired'),
-            'not_expired' => __('sample-master::product.labels.not_expired'),
-        ];
-
-        $stockFilter = [
-            'critical_stock' => __('sample-master::product.labels.critical_stock'),
-            'exceeding_stock' => __('sample-master::product.labels.exceeding_stock'),
-        ];
-
-        return [
-            'expired_filter' => $expiredFilter,
-            'stock_filter' => $stockFilter,
-        ];
-    }
-
     /**
      * @returns array [ $id => $label ]
      */
@@ -114,17 +96,23 @@ class ProductTablePresenter extends BasicTablePresenter
     //use as callback
     protected function renderFilters($table)
     {
-        $callbackFilters = $this->getCallbackFilters();
+        $expiredFilter = [
+            'past_expired' => __('sample-master::product.labels.past_expired'),
+            'not_expired' => __('sample-master::product.labels.not_expired'),
+        ];
 
-        foreach ($callbackFilters as $callbackFilter) {
-            $this->renderDropDownFilter($table, $callbackFilter);
-        }
+        $stockFilter = [
+            'critical_stock' => __('sample-master::product.labels.critical_stock'),
+            'exceeding_stock' => __('sample-master::product.labels.exceeding_stock'),
+        ];
 
-        $columnFilters = $this->getColumnFilters();
+        $this->renderDropDownFilter($table, $expiredFilter,
+            __('sample-master::product.labels.all_expiry_status'));
+        $this->renderDropDownFilter($table, $stockFilter,
+            __('sample-master::product.labels.all_stock_status'));
 
-        foreach (array_keys($columnFilters) as $columnName) {
-            $this->renderDropDownColumnFilter($table, $columnName);
-        }
+        $this->renderDropDownColumnFilter($table, 'supplier_id',
+            __('sample-master::product.labels.all_supplier'));
 
         $this->renderFilterButton($table);
         $this->renderDefaultSearch($table);

@@ -13,6 +13,7 @@ return [
         'active' => 'Active',
         'inactive' => 'Inactive',
         'all' => 'All',
+        'all_status' => 'Semua Status',
     ],
     'messages' => [
         'confirm_delete' => 'Are you sure to delete supplier?',

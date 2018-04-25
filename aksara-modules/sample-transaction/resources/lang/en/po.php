@@ -23,6 +23,8 @@ return [
         'sub_total' => 'Sub Total',
         'unit_price' => 'Unit Price',
         'total_amount' => 'Total Amount',
+        'all_status' => 'All Status',
+        'all_supplier' => 'All Supplier',
     ],
     'messages' => [
         'created' => 'Purchase Order created successfully',

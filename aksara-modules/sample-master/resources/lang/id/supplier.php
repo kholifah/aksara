@@ -13,6 +13,7 @@ return [
         'active' => 'Aktif',
         'inactive' => 'Nonaktif',
         'all' => 'Semua',
+        'all_status' => 'Semua Status',
     ],
     'messages' => [
         'confirm_delete' => 'Apakah anda yakin akan menghapus data pemasok?',

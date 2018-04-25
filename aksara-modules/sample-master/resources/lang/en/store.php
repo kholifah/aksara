@@ -14,6 +14,7 @@ return [
         'active' => 'Active',
         'inactive' => 'Inactive',
         'all' => 'All',
+        'all_status' => 'All Status',
     ],
     'messages' => [
         'confirm_delete' => 'Are you sure to delete store?',
