@@ -76,7 +76,7 @@ class PurchaseOrderTablePresenter extends BasicTablePresenter
         return route('sample-po-destroy', $identifier);
     }
 
-    protected function getCallbackFilters()
+    private function getCallbackFilters()
     {
         $statusFilter = [
             'draft' => __('sample-transaction::po.labels.draft'),
@@ -88,6 +88,9 @@ class PurchaseOrderTablePresenter extends BasicTablePresenter
         ];
     }
 
+    /**
+     * @returns array [ $id => $label ]
+     */
     public function getColumnFilters()
     {
         $suppliers = $this->supplierRepo->all();
@@ -97,6 +100,7 @@ class PurchaseOrderTablePresenter extends BasicTablePresenter
             $supplierFilter[$supplier->id] = $supplier->supplier_name;
         }
 
+        //format: column_name => filter key value pair
         $columnFilters = [
             'supplier_id' => $supplierFilter,
         ];
@@ -114,8 +118,8 @@ class PurchaseOrderTablePresenter extends BasicTablePresenter
 
         $columnFilters = $this->getColumnFilters();
 
-        foreach ($columnFilters as $columnFilter => $label) {
-            $this->renderDropDownColumnFilter($table, $columnFilter);
+        foreach (array_keys($columnFilters) as $columnName) {
+            $this->renderDropDownColumnFilter($table, $columnName);
         }
 
         $this->renderFilterButton($table);

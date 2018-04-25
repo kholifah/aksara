@@ -106,11 +106,6 @@ abstract class BasicTablePresenter implements TablePresenter
         return $this->sortable;
     }
 
-    public function setSortable($sortable = [])
-    {
-        $this->sortable = $sortable;
-    }
-
     protected function getColumnHeaders()
     {
         $valuesCopy = [];

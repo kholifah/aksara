@@ -50,7 +50,7 @@ class SupplierTablePresenter extends BasicTablePresenter
         $this->renderDefaultViewFilter($table, $filterView);
     }
 
-    protected function getCallbackFilters()
+    private function getCallbackFilters()
     {
         $statusFilter = [
             'all' => __('sample-master::supplier.labels.all'),

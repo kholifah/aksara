@@ -16,7 +16,6 @@ interface TablePresenter
     public function setSort($sort, $order);
     public function setParentUrl($url);
     public function setRouteName($routeName);
-    public function setSortable($sortable = []);
     public function getInputField($fieldName);
     public function getIdentifier();
     public function getListIdentifier();

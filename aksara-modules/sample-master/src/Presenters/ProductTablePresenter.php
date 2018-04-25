@@ -73,7 +73,7 @@ class ProductTablePresenter extends BasicTablePresenter
         return route('sample-product-destroy', $identifier);
     }
 
-    protected function getCallbackFilters()
+    private function getCallbackFilters()
     {
         $expiredFilter = [
             'past_expired' => __('sample-master::product.labels.past_expired'),
@@ -91,6 +91,9 @@ class ProductTablePresenter extends BasicTablePresenter
         ];
     }
 
+    /**
+     * @returns array [ $id => $label ]
+     */
     public function getColumnFilters()
     {
         $suppliers = $this->supplierRepo->all();
@@ -100,6 +103,7 @@ class ProductTablePresenter extends BasicTablePresenter
             $supplierFilter[$supplier->id] = $supplier->supplier_name;
         }
 
+        //format: column_name => filter key value pair
         $columnFilters = [
             'supplier_id' => $supplierFilter,
         ];
@@ -118,8 +122,8 @@ class ProductTablePresenter extends BasicTablePresenter
 
         $columnFilters = $this->getColumnFilters();
 
-        foreach ($columnFilters as $columnFilter => $label) {
-            $this->renderDropDownColumnFilter($table, $columnFilter);
+        foreach (array_keys($columnFilters) as $columnName) {
+            $this->renderDropDownColumnFilter($table, $columnName);
         }
 
         $this->renderFilterButton($table);
