@@ -7,7 +7,13 @@ use Aksara\TableView\Presenter\Components\DefaultSearch;
 
 class PurchaseOrderItemTablePresenter extends BasicTablePresenter
 {
+    use DefaultSearch;
+
     protected $inputPrefix = 'item';
+
+    protected $searchable = [
+        'product_name',
+    ];
 
     protected function getColumns()
     {
@@ -18,6 +24,11 @@ class PurchaseOrderItemTablePresenter extends BasicTablePresenter
             'discount' => __('sample-transaction::po.labels.discount'),
             'sub_total' => __('sample-transaction::po.labels.sub_total'),
         ];
+    }
+
+    protected function renderFilters($table)
+    {
+        $this->renderDefaultSearch($table);
     }
 }
 

@@ -76,31 +76,50 @@ class PurchaseOrderTablePresenter extends BasicTablePresenter
         return route('sample-po-destroy', $identifier);
     }
 
-    protected function registerFilters()
+    protected function getCallbackFilters()
     {
-        \Eventy::addFilter($this->getActionFilterName('column_filter'), function () {
-            $suppliers = $this->supplierRepo->all();
-            $supplierFilter = [];
+        $statusFilter = [
+            'draft' => __('sample-transaction::po.labels.draft'),
+            'applied' => __('sample-transaction::po.labels.applied'),
+            'void' => __('sample-transaction::po.labels.void'),
+        ];
+        return [
+            'status_filter' => $statusFilter,
+        ];
+    }
 
-            foreach ($suppliers as $supplier) {
-                $supplierFilter[$supplier->id] = $supplier->supplier_name;
-            }
+    public function getColumnFilters()
+    {
+        $suppliers = $this->supplierRepo->all();
+        $supplierFilter = [];
 
-            $columnFilters = [
-                'supplier_id' => $supplierFilter,
-            ];
-            return $columnFilters;
-        });
+        foreach ($suppliers as $supplier) {
+            $supplierFilter[$supplier->id] = $supplier->supplier_name;
+        }
 
+        $columnFilters = [
+            'supplier_id' => $supplierFilter,
+        ];
 
-        \Eventy::addAction($this->getActionFilterName('form_filter'), function ($table) {
-            $statusFilter = [
-                'draft' => __('sample-transaction::po.labels.draft'),
-                'applied' => __('sample-transaction::po.labels.applied'),
-                'void' => __('sample-transaction::po.labels.void'),
-            ];
-            $this->renderDropDownFilter($table, $statusFilter);
-        });
+        return $columnFilters;
+    }
+
+    protected function renderFilters($table)
+    {
+        $callbackFilters = $this->getCallbackFilters();
+
+        foreach ($callbackFilters as $callbackFilter) {
+            $this->renderDropDownFilter($table, $callbackFilter);
+        }
+
+        $columnFilters = $this->getColumnFilters();
+
+        foreach ($columnFilters as $columnFilter => $label) {
+            $this->renderDropDownColumnFilter($table, $columnFilter);
+        }
+
+        $this->renderFilterButton($table);
+        $this->renderDefaultSearch($table);
     }
 }
 

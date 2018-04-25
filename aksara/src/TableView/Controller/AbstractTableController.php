@@ -85,18 +85,6 @@ abstract class AbstractTableController
             }
         }
 
-        //if (($this->getRequestField($request, 'column_filter')) &&
-            //($this->getRequestField($request, 'bsearch') ||
-            //$this->getRequestField($request, 'bfilter'))
-        //){
-            //$columnFilters = $request->input($this->table->getInputField('column_filter'));
-            //$columnFilterValues = $request->input($this->table->getInputField('column_filter_value'));
-            ////because the way of html form works, we can only use this 'rambo' method
-            //for ($i = 0; $i < count($columnFilters); $i++) {
-                //$data = $this->repo->filterColumn(@$columnFilters[$i], @$columnFilterValues[$i], $data);
-            //}
-        //}
-
         if ($request->input($this->table->getInputField('search')) &&
             $request->input($this->table->getInputField('bsearch'))
         ){

@@ -34,24 +34,38 @@ class StoreTablePresenter extends BasicTablePresenter
         ];
     }
 
-    protected function registerFilters()
+    protected function renderViewFilters($table)
     {
-        \Eventy::addAction($this->getActionFilterName('form_filter'), function ($table) {
-            $statusFilter = [
-                'all' => __('sample-master::store.labels.all'),
-                'active' => __('sample-master::store.labels.active'),
-                'inactive' => __('sample-master::store.labels.inactive'),
-            ];
-            $this->renderDropDownFilter($table, $statusFilter);
-        });
+        $filterView = [
+            'all' => __('sample-master::store.labels.all'),
+            'active' => __('sample-master::store.labels.active'),
+        ];
+        $this->renderDefaultViewFilter($table, $filterView);
+    }
 
-        \Eventy::addAction($this->getActionFilterName('view_filter'), function ($table) {
-            $filterView = [
-                'all' => __('sample-master::store.labels.all'),
-                'active' => __('sample-master::store.labels.active'),
-            ];
-            $this->renderDefaultViewFilter($table, $filterView);
-        });
+    protected function getCallbackFilters()
+    {
+        $statusFilter = [
+            'all' => __('sample-master::supplier.labels.all'),
+            'active' => __('sample-master::supplier.labels.active'),
+            'inactive' => __('sample-master::supplier.labels.inactive'),
+        ];
+
+        return [
+            'status_filter' => $statusFilter,
+        ];
+    }
+
+    protected function renderFilters($table)
+    {
+        $callbackFilters = $this->getCallbackFilters();
+
+        foreach ($callbackFilters as $callbackFilter) {
+            $this->renderDropDownFilter($table, $callbackFilter);
+        }
+
+        $this->renderFilterButton($table);
+        $this->renderDefaultSearch($table);
     }
 
     protected function getEditUrl($identifier)

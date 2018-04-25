@@ -41,33 +41,38 @@ class SupplierTablePresenter extends BasicTablePresenter
         return route('sample-supplier-destroy', $identifier);
     }
 
-    /**
-     * tambahkan filters di sini
-     *
-     * masing-masing key harus ada korespondensi dengan function filter di
-     * table controller
-     * misal untuk filter `all` maka harus ada method `filterAll`
-     * perhatikan snake case akan diubah ke camel case
-     */
-    protected function registerFilters()
+    protected function renderViewFilters($table)
     {
-        \Eventy::addAction($this->getActionFilterName('form_filter'), function ($table) {
-            $statusFilter = [
-                'all' => __('sample-master::supplier.labels.all'),
-                'active' => __('sample-master::supplier.labels.active'),
-                'inactive' => __('sample-master::supplier.labels.inactive'),
-            ];
+        $filterView = [
+            'all' => __('sample-master::supplier.labels.all'),
+            'active' => __('sample-master::supplier.labels.active'),
+        ];
+        $this->renderDefaultViewFilter($table, $filterView);
+    }
 
-            $this->renderDropDownFilter($table, $statusFilter);
-        });
+    protected function getCallbackFilters()
+    {
+        $statusFilter = [
+            'all' => __('sample-master::supplier.labels.all'),
+            'active' => __('sample-master::supplier.labels.active'),
+            'inactive' => __('sample-master::supplier.labels.inactive'),
+        ];
 
-        \Eventy::addAction($this->getActionFilterName('view_filter'), function ($table) {
-            $filterView = [
-                'all' => __('sample-master::supplier.labels.all'),
-                'active' => __('sample-master::supplier.labels.active'),
-            ];
-            $this->renderDefaultViewFilter($table, $filterView);
-        });
+        return [
+            'status_filter' => $statusFilter,
+        ];
+    }
+
+    protected function renderFilters($table)
+    {
+        $callbackFilters = $this->getCallbackFilters();
+
+        foreach ($callbackFilters as $callbackFilter) {
+            $this->renderDropDownFilter($table, $callbackFilter);
+        }
+
+        $this->renderFilterButton($table);
+        $this->renderDefaultSearch($table);
     }
 
     /**

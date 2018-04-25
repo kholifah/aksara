@@ -31,6 +31,11 @@ class ProductStoreTablePresenter extends BasicTablePresenter
         ];
     }
 
+    protected function renderFilters($table)
+    {
+        $this->renderDefaultSearch($table);
+    }
+
     protected function getEditUrl($identifier)
     {
         return route('sample-product-edit', $identifier);

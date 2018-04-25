@@ -47,8 +47,8 @@ class ProductTablePresenter extends BasicTablePresenter
             'name' => __('sample-master::product.labels.name'),
             'supplier' => [
                 'label' => __('sample-master::product.labels.supplier'),
-                'formatter' => function ($value) {
-                    return $value->supplier_name;
+                'formatter' => function ($supplier) {
+                    return $supplier->supplier_name;
                 },
             ],
             'code' => __('sample-master::product.labels.code'),
@@ -56,8 +56,8 @@ class ProductTablePresenter extends BasicTablePresenter
             'price' => __('sample-master::product.labels.price'),
             'date_expired' => [
                 'label' => __('sample-master::product.labels.date_expired'),
-                'formatter' => function ($value) {
-                    return $value->formatLocalized('%d %B %Y');
+                'formatter' => function ($date_expired) {
+                    return $date_expired->formatLocalized('%d %B %Y');
                 },
             ],
         ];
@@ -73,37 +73,57 @@ class ProductTablePresenter extends BasicTablePresenter
         return route('sample-product-destroy', $identifier);
     }
 
-    protected function registerFilters()
+    protected function getCallbackFilters()
     {
-        \Eventy::addFilter($this->getActionFilterName('column_filter'), function () {
+        $expiredFilter = [
+            'past_expired' => __('sample-master::product.labels.past_expired'),
+            'not_expired' => __('sample-master::product.labels.not_expired'),
+        ];
 
-            $suppliers = $this->supplierRepo->all();
-            $supplierFilter = [];
+        $stockFilter = [
+            'critical_stock' => __('sample-master::product.labels.critical_stock'),
+            'exceeding_stock' => __('sample-master::product.labels.exceeding_stock'),
+        ];
 
-            foreach ($suppliers as $supplier) {
-                $supplierFilter[$supplier->id] = $supplier->supplier_name;
-            }
+        return [
+            'expired_filter' => $expiredFilter,
+            'stock_filter' => $stockFilter,
+        ];
+    }
 
-            $columnFilters = [
-                'supplier_id' => $supplierFilter,
-            ];
+    public function getColumnFilters()
+    {
+        $suppliers = $this->supplierRepo->all();
+        $supplierFilter = [];
 
-            return $columnFilters;
-        });
+        foreach ($suppliers as $supplier) {
+            $supplierFilter[$supplier->id] = $supplier->supplier_name;
+        }
 
-        \Eventy::addAction($this->getActionFilterName('form_filter'), function ($table) {
-            $expiredFilter = [
-                'past_expired' => __('sample-master::product.labels.past_expired'),
-                'not_expired' => __('sample-master::product.labels.not_expired'),
-            ];
+        $columnFilters = [
+            'supplier_id' => $supplierFilter,
+        ];
 
-            $stockFilter = [
-                'critical_stock' => __('sample-master::product.labels.critical_stock'),
-                'exceeding_stock' => __('sample-master::product.labels.exceeding_stock'),
-            ];
-            $this->renderDropDownFilter($table, $expiredFilter);
-            $this->renderDropDownFilter($table, $stockFilter);
-        });
+        return $columnFilters;
+    }
+
+    //use as callback
+    protected function renderFilters($table)
+    {
+        $callbackFilters = $this->getCallbackFilters();
+
+        foreach ($callbackFilters as $callbackFilter) {
+            $this->renderDropDownFilter($table, $callbackFilter);
+        }
+
+        $columnFilters = $this->getColumnFilters();
+
+        foreach ($columnFilters as $columnFilter => $label) {
+            $this->renderDropDownColumnFilter($table, $columnFilter);
+        }
+
+        $this->renderFilterButton($table);
+        $this->renderDefaultSearch($table);
     }
 }
 

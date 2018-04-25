@@ -36,7 +36,7 @@ abstract class BasicTablePresenter implements TablePresenter
     public function __construct()
     {
         $this->baseRegisterActions();
-        $this->baseRegisterFilters();
+        $this->baseRenderFilters();
     }
 
     public function getIdentifier()
@@ -262,47 +262,21 @@ abstract class BasicTablePresenter implements TablePresenter
         $this->actions[$name] = $label;
     }
 
-    private function baseRegisterFilters()
+    private function baseRenderFilters()
     {
-        if ($this->filterRegistered) return;
-
-        \Eventy::addAction($this->getActionFilterName('form_filter'), function ($table) {
-            if (!method_exists($this, 'renderDropDownColumnFilter')) return;
-
-            $columnFilters = $this->getColumnFilters();
-            if (empty($columnFilters)) return;
-
-            foreach ($columnFilters as $columnFilter => $label) {
-                $this->renderDropDownColumnFilter($table, $columnFilter);
-            }
-        });
-
-        $this->registerFilters();
-
-        \Eventy::addAction($this->getActionFilterName('form_filter'), function ($table) {
-            if (!method_exists($this, 'renderFilterButton')) return;
-            $this->renderFilterButton($table);
+        \Eventy::addAction($this->getActionFilterName('view_filter'), function ($table) {
+            $this->renderViewFilters($table);
         });
 
         \Eventy::addAction($this->getActionFilterName('form_filter'), function ($table) {
-            if (!method_exists($this, 'renderDefaultSearch')) return;
-            $this->renderDefaultSearch($table);
+            $this->renderFilters($table);
         });
-
-        $this->filterRegistered = true;
     }
 
-    protected function registerFilters() {}
+    protected function renderViewFilters($table) {}
+    protected function renderFilters($table) {}
 
-    public function getColumnFilters()
-    {
-        $name = $this->getName();
-        $filters = \Eventy::filter($this->getActionFilterName("column_filter"));
-        if (empty($filters)) {
-            return [];
-        }
-        return $filters;
-    }
+    public function getColumnFilters() { return []; }
 
     protected function getName()
     {
