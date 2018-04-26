@@ -26,6 +26,11 @@ class PurchaseOrder extends Model
         'estimated_delivery_date',
     ];
 
+    public function getSupplierPhoneAttribute($v)
+    {
+        return $this->supplier->supplier_phone;
+    }
+
     public function items()
     {
         return $this->hasMany(PurchaseOrderItem::class);
@@ -38,10 +43,10 @@ class PurchaseOrder extends Model
 
     public function getStatusAttribute($value)
     {
-        if ($this->is_void) return 'Void';
-        if ($this->is_applied) return 'Applied';
+        if ($this->is_void) return __('sample-transaction::po.labels.void');
+        if ($this->is_applied) return __('sample-transaction::po.labels.applied');
 
-        return 'Draft';
+        return __('sample-transaction::po.labels.draft');
     }
 
     public function updateFields()

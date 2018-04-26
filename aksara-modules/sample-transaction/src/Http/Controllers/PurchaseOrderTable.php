@@ -15,6 +15,11 @@ class PurchaseOrderTable extends AbstractTableController
         parent::__construct($repo, $table);
     }
 
+    public function filterAll($model)
+    {
+        return $model;
+    }
+
     public function filterDraft($model)
     {
         return $model->where('is_applied', false)->where('is_void', false);
