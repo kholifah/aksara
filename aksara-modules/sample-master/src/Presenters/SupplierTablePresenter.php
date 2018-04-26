@@ -80,6 +80,7 @@ class SupplierTablePresenter extends BasicTablePresenter
          * @param $key
          * @param $label
          */
+        $this->addAction('destroy', __('tableview.labels.delete'));
         $this->addAction('sesuatu_aksi', 'Aksi Tambahan');
     }
 

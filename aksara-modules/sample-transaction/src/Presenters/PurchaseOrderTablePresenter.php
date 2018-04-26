@@ -73,26 +73,6 @@ class PurchaseOrderTablePresenter extends BasicTablePresenter
         return route('sample-po-edit', $identifier);
     }
 
-    /**
-     * @returns array [ $id => $label ]
-     */
-    public function getColumnFilters()
-    {
-        $suppliers = $this->supplierRepo->all();
-        $supplierFilter = [];
-
-        foreach ($suppliers as $supplier) {
-            $supplierFilter[$supplier->id] = $supplier->supplier_name;
-        }
-
-        //format: column_name => filter key value pair
-        $columnFilters = [
-            'supplier_id' => $supplierFilter,
-        ];
-
-        return $columnFilters;
-    }
-
     public function getDateRangeFilters()
     {
         return [
@@ -113,23 +93,10 @@ class PurchaseOrderTablePresenter extends BasicTablePresenter
 
     protected function renderFilters($table)
     {
-        //$statusFilter = [
-            //'draft' => __('sample-transaction::po.labels.draft'),
-            //'applied' => __('sample-transaction::po.labels.applied'),
-            //'void' => __('sample-transaction::po.labels.void'),
-        //];
-
-        //$this->renderDropDownFilter($table, $statusFilter,
-            //__('sample-transaction::po.labels.all_status'));
-
-        //$this->renderDropDownColumnFilter($table, 'supplier_id',
-            //__('sample-transaction::po.labels.all_supplier'));
-
         $this->renderDateRangeFilter($table, 'order_date',
             __('sample-transaction::po.labels.order_date')
         );
 
-        //$this->renderFilterButton($table);
         $this->renderDefaultSearch($table);
     }
 }

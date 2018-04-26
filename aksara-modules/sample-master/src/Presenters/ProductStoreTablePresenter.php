@@ -40,6 +40,11 @@ class ProductStoreTablePresenter extends BasicTablePresenter
     {
         return route('sample-product-edit', $identifier);
     }
+
+    protected function registerActions()
+    {
+        $this->addAction('destroy', __('tableview.labels.delete'));
+    }
 }
 
 

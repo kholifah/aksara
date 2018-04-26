@@ -30,12 +30,9 @@ abstract class BasicTablePresenter implements TablePresenter
     protected function getEditUrl($identifier) { return false; }
     protected function getDeleteUrl($identifier) { return false; }
 
-    private $actionRegistered = false;
-    private $filterRegistered = false;
-
     public function __construct()
     {
-        $this->baseRegisterActions();
+        $this->registerActions();
         $this->baseRenderFilters();
     }
 
@@ -241,14 +238,6 @@ abstract class BasicTablePresenter implements TablePresenter
     }
 
     private $actions = [];
-
-    private function baseRegisterActions()
-    {
-        if ($this->actionRegistered) return;
-        $this->addAction('destroy', __('tableview.labels.delete'));
-        $this->registerActions();
-        $this->actionRegistered = true;
-    }
 
     protected function registerActions() {}
 

@@ -117,5 +117,10 @@ class ProductTablePresenter extends BasicTablePresenter
         $this->renderFilterButton($table);
         $this->renderDefaultSearch($table);
     }
+
+    protected function registerActions()
+    {
+        $this->addAction('destroy', __('tableview.labels.delete'));
+    }
 }
 

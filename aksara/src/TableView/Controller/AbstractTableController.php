@@ -3,15 +3,12 @@
 namespace Aksara\TableView\Controller;
 
 use Illuminate\Http\Request;
-use Aksara\TableView\Controller\Concerns;
 use Aksara\TableView\TableRepository;
 use Aksara\TableView\TablePresenter;
 use Carbon\Carbon;
 
 abstract class AbstractTableController
 {
-    use Concerns\HasDestroyAction;
-
     protected $repo;
     protected $defaultSortColumn = 'id';
     private $requestPrefix = '';

@@ -67,5 +67,10 @@ class StoreTablePresenter extends BasicTablePresenter
     {
         return route('sample-store-destroy', $identifier);
     }
+
+    protected function registerActions()
+    {
+        $this->addAction('destroy', __('tableview.labels.delete'));
+    }
 }
 

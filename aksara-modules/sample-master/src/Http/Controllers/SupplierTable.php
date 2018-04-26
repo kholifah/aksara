@@ -3,11 +3,14 @@
 namespace Plugins\SampleMaster\Http\Controllers;
 
 use Aksara\TableView\Controller\AbstractTableController;
+use Aksara\TableView\Controller\Concerns\HasDestroyAction;
 use Plugins\SampleMaster\Repositories\SupplierRepository;
 use Plugins\SampleMaster\Presenters\SupplierTablePresenter;
 
 class SupplierTable extends AbstractTableController
 {
+    use HasDestroyAction;
+
     public function __construct(
         SupplierRepository $repo,
         SupplierTablePresenter $table
