@@ -6,8 +6,18 @@ use Aksara\Providers\AbstractModuleProvider;
 
 class SampleTransactionServiceProvider extends AbstractModuleProvider
 {
+    public function safeRegister()
+    {
+        $this->app->singleton('price_calc', \Plugins\SampleTransaction\ProductPriceCalculator::class);
+    }
+
     public function safeBoot()
     {
+        \Eventy::addAction('aksara.init', function () {
+            aksara_admin_enqueue_script(url('assets/modules-v2/sample-transaction/js/jquery.min.js'),'jquery',10,false);
+            aksara_admin_enqueue_script(url('assets/modules-v2/sample-transaction/js/script.js'),'sample-po-script',11,false);
+        });
+
         \Eventy::addAction('aksara.init-completed', function () {
 
             $args = [

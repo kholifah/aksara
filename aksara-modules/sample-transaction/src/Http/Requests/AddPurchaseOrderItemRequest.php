@@ -26,7 +26,7 @@ class AddPurchaseOrderItemRequest extends FormRequest
         return [
             'product_id' => 'required|exists:products,id',
             'qty' => 'required|integer|min:1',
-            'discount' => 'nullable|numeric',
+            'discount' => 'nullable|numeric|min:0|max:100',
         ];
     }
 }

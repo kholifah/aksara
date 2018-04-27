@@ -11,5 +11,9 @@ return [
         'Plugins\\SampleTransaction\\Providers\\PurchaseOrderServiceProvider',
     ],
 
+    'aliases' => [
+        'ProductPriceCalculator' => 'Plugins\\SampleTransaction\\Facades\\ProductPriceCalculatorFacade',
+    ],
+
 ];
 

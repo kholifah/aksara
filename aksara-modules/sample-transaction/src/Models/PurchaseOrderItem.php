@@ -13,6 +13,15 @@ class PurchaseOrderItem extends Model
         'discount',
     ];
 
+    public function setDiscountAttribute($v)
+    {
+        //default 0 when null
+        if (is_null($v)) {
+            $v = 0;
+        }
+        $this->attributes['discount'] = $v;
+    }
+
     public function purchase_order()
     {
         return $this->belongsTo(PurchaseOrder::class);
@@ -25,8 +34,18 @@ class PurchaseOrderItem extends Model
 
     public function calculateNettPrice()
     {
-        $grossTotal = $this->qty * $this->product->price;
-        $discount = $grossTotal * ($this->discount / 100);
+        $price = \ProductPriceCalculator::calculate(
+            $this->product_id,
+            $this->qty,
+            $this->discount
+        );
+        return $price[ 'sub_total' ];
+    }
+
+    private function nettPrice($qty, $price, $discount)
+    {
+        $grossTotal = $qty * $price;
+        $discount = $grossTotal * ($discount / 100);
         return $grossTotal - $discount;
     }
 

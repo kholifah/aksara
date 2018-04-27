@@ -88,6 +88,17 @@ class PurchaseOrderServiceProvider extends AbstractModuleProvider
             ];
 
             \AksaraRoute::addRoute($itemAdd);
+
+            $getPrice = [
+                'slug' => '/po-product-price',
+                'method' => 'GET',
+                'args' => [
+                    'as' => 'po-get-product-price',
+                    'uses' => '\Plugins\SampleTransaction\Http\Controllers\PurchaseOrderRestController@getPriceInfo',
+                ],
+            ];
+
+            \AksaraRoute::addRoute($getPrice);
         });
     }
 }
