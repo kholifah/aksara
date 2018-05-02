@@ -8,6 +8,7 @@ use Illuminate\Routing\Controller;
 use Plugins\SampleMaster\Models\Supplier;
 use Plugins\SampleMaster\Repositories\SupplierRepository;
 use Plugins\SampleMaster\Http\Requests\CreateSupplierRequest;
+use Plugins\SampleMaster\Http\Requests\UpdateSupplierRequest;
 
 class SupplierController extends Controller
 {
@@ -96,7 +97,7 @@ class SupplierController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(CreateSupplierRequest $request, $id)
+    public function update(UpdateSupplierRequest $request, $id)
     {
         $success = $this->repo->update($id, $request);
         if (!$success) {

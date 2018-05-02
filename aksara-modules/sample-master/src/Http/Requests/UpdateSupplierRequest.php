@@ -4,7 +4,7 @@ namespace Plugins\SampleMaster\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CreateSupplierRequest extends FormRequest
+class UpdateSupplierRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -13,7 +13,7 @@ class CreateSupplierRequest extends FormRequest
      */
     public function authorize()
     {
-        return \UserCapability::hasCapability('add-master-supplier');
+        return \UserCapability::hasCapability('edit-master-supplier');
     }
 
     /**
