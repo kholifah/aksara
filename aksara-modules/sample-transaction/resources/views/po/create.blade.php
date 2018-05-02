@@ -19,9 +19,6 @@
     <div class="row">
         <div class="col-lg-6 col-md-8">
             <div class="card-box">
-                <div class="card-box__header">
-                    <h2>@lang('sample-transaction::po.labels.add_po')</h2>
-                </div>
                 <div class="card-box__body">
                     {!! Form::open(['route' => 'sample-po-store', 'role' => 'form', 'class' => 'form-horizontal'])!!}
                         @include('sample-transaction::po._form')

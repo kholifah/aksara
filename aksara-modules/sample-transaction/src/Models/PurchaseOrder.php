@@ -12,8 +12,7 @@ class PurchaseOrder extends Model
         'supplier_id',
         'order_date',
         'estimated_delivery_date',
-        'is_applied',
-        'is_void',
+        'status',
     ];
 
     protected $casts = [
@@ -39,6 +38,16 @@ class PurchaseOrder extends Model
     public function supplier()
     {
         return $this->belongsTo(Supplier::class);
+    }
+
+    public function setStatusAttribute($value)
+    {
+        $lower = strtolower($value);
+
+        switch ($lower) {
+        case 'applied': $this->is_applied = true; break;
+        case 'void': $this->is_void = true; break;
+        }
     }
 
     public function getStatusAttribute($value)

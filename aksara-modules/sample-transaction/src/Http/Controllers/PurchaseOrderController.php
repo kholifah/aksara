@@ -69,7 +69,7 @@ class PurchaseOrderController extends Controller
         } else {
             admin_notice('success', __('sample-transaction::po.messages.updated'));
         }
-        return redirect()->route('sample-po');
+        return redirect()->back();
     }
 
     public function destroy($id)

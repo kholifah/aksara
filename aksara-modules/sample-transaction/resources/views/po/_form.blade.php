@@ -32,24 +32,8 @@
     </div>
 </div>
 
-<div class="form-group form-group--table {!! $errors->has('is_applied') ? 'error' : '' !!}">
-  <label class="col-form-label">@lang('sample-transaction::po.labels.applied')</label>
-  <div class="col-form-input">
-    {!! Form::hidden('is_applied', 0) !!}
-    {!! Form::checkbox('is_applied', true, $po->is_applied) !!}
-    {!! $errors->first('is_applied', '<p class="help-block">:message</p>') !!}
-  </div>
-</div>
-
-<div class="form-group form-group--table {!! $errors->has('is_void') ? 'error' : '' !!}">
-  <label class="col-form-label">@lang('sample-transaction::po.labels.void')</label>
-  <div class="col-form-input">
-    {!! Form::hidden('is_void', 0) !!}
-    {!! Form::checkbox('is_void', true, $po->is_void) !!}
-    {!! $errors->first('is_void', '<p class="help-block">:message</p>') !!}
-  </div>
-</div>
-
 <div class="submit-row clearfix">
-  {!! Form::submit($po->exists ? __('sample-transaction::global.update') : __('sample-transaction::global.create'), ['class'=>'btn btn-md btn-primary alignright']) !!}
+  @if (!$po->exists)
+    {!! Form::submit(__('sample-transaction::global.create'), ['class'=>'btn btn-md btn-primary alignright']) !!}
+  @endif
 </div>
