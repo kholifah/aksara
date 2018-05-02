@@ -9,6 +9,7 @@ return [
         'all_suppliers' => 'Semua Pemasok',
         'add_supplier' => 'Tambah Pemasok',
         'edit_supplier' => 'Ubah Pemasok',
+        'delete_supplier' => 'Hapus Pemasok',
         'supplier_list' => 'Daftar Pemasok',
         'active' => 'Aktif',
         'inactive' => 'Nonaktif',

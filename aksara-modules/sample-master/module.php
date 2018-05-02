@@ -5,6 +5,8 @@ return [
     'title' => 'Aksara Sample Master',
     'description' => 'Sample Master Table Template',
 
+    'dependencies' => [ 'user' ],
+
     'providers' => [
         'Plugins\\SampleMaster\\Providers\\SampleMasterServiceProvider',
         'Plugins\\SampleMaster\\Providers\\SupplierServiceProvider',

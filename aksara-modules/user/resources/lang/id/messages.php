@@ -12,6 +12,9 @@ return [
     'success_update_user' => 'Data Pengguna berhasil diubah',
     'success_delete_user' => 'Data Pengguna berhasil dihapus',
 
+    'add_role_success' => 'Peran pengguna berhasil ditambahkan',
+    'add_role_failed' => 'Peran pengguna gagal dihapus',
+
     'error' => [
         'role_not_deleted' => 'Gagal menghapus data Peran',
         'role_not_found' => 'Data Peran tidak ditemukan',

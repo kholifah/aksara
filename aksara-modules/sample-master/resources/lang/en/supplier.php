@@ -9,6 +9,7 @@ return [
         'all_suppliers' => 'All Suppliers',
         'add_supplier' => 'Add Supplier',
         'edit_supplier' => 'Edit Supplier',
+        'delete_supplier' => 'Delete Supplier',
         'supplier_list' => 'Supplier List',
         'active' => 'Active',
         'inactive' => 'Inactive',

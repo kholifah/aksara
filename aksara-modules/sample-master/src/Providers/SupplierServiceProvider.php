@@ -77,6 +77,36 @@ class SupplierServiceProvider extends AbstractModuleProvider
             ];
 
             \AksaraRoute::addRoute($supplierDestroy);
+
+        });
+
+        /**
+         * add-capabilities
+         */
+        \Eventy::addAction('aksara.init-completed', function () {
+
+            add_capability(
+                __('sample-master::supplier.title'),
+                'master-supplier'
+            );
+
+            add_capability(
+                __('sample-master::supplier.labels.add_supplier'),
+                'add-master-supplier',
+                'master-supplier'
+            );
+
+            add_capability(
+                __('sample-master::supplier.labels.edit_supplier'),
+                'edit-master-supplier',
+                'master-supplier'
+            );
+
+            add_capability(
+                __('sample-master::supplier.labels.delete_supplier'),
+                'delete-master-supplier',
+                'master-supplier'
+            );
         });
     }
 }

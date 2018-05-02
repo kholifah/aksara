@@ -3,17 +3,22 @@
 namespace Plugins\User\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Http\RedirectResponse;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\User;
-use Plugins\User\Models\Role;
+use App\Role;
 use Auth;
+use Plugins\User\Presenters\UserForm;
+use Plugins\User\Http\Requests\AddRoleUserRequest;
+use Plugins\User\Repository\UserRepository;
 
 class UserController extends Controller
 {
-    public function __construct()
+    public function __construct(UserRepository $repo, UserForm $form)
     {
-        //   $this->authorize('user');
+        $this->repo = $repo;
+        $this->form = $form;
     }
 
     /**
@@ -86,7 +91,7 @@ class UserController extends Controller
         $user->active = $data['active'];
         $user->save();
         admin_notice('success', __('user::messages.success_add_user'));
-        return redirect()->route('aksara-user');
+        return redirect()->route('aksara-user-edit', $user->id);
     }
 
     /**
@@ -106,11 +111,16 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($id, Request $request)
     {
-        $user = User::find($id);
-        $user_role = Role::orderBy('name')->get()->pluck('name', 'name');
-        return view('user::user.edit', compact('user', 'user_role'));
+        $viewData = $this->form->edit($id, $request);
+        if (!$viewData) {
+            abort(404, 'Not found');
+        }
+        if ($viewData instanceof RedirectResponse) {
+            return $viewData;
+        }
+        return view('user::user.edit', $viewData);
     }
 
     /**
@@ -188,7 +198,7 @@ class UserController extends Controller
                 return redirect()->route('aksara.user.edit-profile');
         }
 
-        return redirect()->route('aksara-user');
+        return redirect()->route('aksara-user-edit', $id);
     }
 
     /**
@@ -213,5 +223,17 @@ class UserController extends Controller
         }
         admin_notice('success', count($id).' data berhasil dihapus. ');
         return redirect()->route('aksara-user');
+    }
+
+    public function addRole($id, AddRoleUserRequest $request)
+    {
+        $roleId = $request->input('role_id');
+        $success = $this->repo->attachOnce($id, 'roles', $roleId);
+        if (!$success) {
+            admin_notice('danger', __('user::messages.add_role_failed'));
+        } else {
+            admin_notice('success', __('user::messages.add_role_success'));
+        }
+        return redirect()->route('aksara-user-edit', $id);
     }
 }

@@ -163,6 +163,16 @@ class RouteServiceProvider extends AbstractModuleProvider
             ];
             \AksaraRoute::addRoute($userDestroy);
 
+            $addRoleUser = [
+                'slug' => '/aksara-user/{id}/roles',
+                'method' => 'POST',
+                'args' => [
+                    'as' => 'aksara-user-add-role',
+                    'uses' => '\Plugins\User\Http\Controllers\UserController@addRole',
+                ],
+            ];
+            \AksaraRoute::addRoute($addRoleUser);
+
             add_capability('User');
             add_capability('Add User', 'add-user', 'user');
             add_capability('Edit User', 'edit-user', 'user');

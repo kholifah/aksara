@@ -1,6 +1,6 @@
 <?php
 
-namespace Plugins\User\Models;
+namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use App\User;
@@ -142,4 +142,13 @@ class Role extends Model
         }
     }
 
+    public function role_users()
+    {
+        return $this->hasMany(RoleUser::class);
+    }
+
+    public function users()
+    {
+        return $this->belongsToMany(User::class);
+    }
 }

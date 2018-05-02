@@ -12,6 +12,9 @@ return [
     'success_update_user' => 'User updated successfully',
     'success_delete_user' => 'User deleted successfully',
 
+    'add_role_success' => 'User role added successfully',
+    'add_role_failed' => 'Failed to add User role',
+
     'error' => [
         'role_not_deleted' => 'Failed to delete role',
         'role_not_found' => 'Role not found',

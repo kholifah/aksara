@@ -66,4 +66,10 @@ class User extends Authenticatable
     {
         $this->notify(new ResetPassword($token));
     }
+
+    public function roles()
+    {
+        $roles = $this->belongsToMany(Role::class);
+        return $roles;
+    }
 }
