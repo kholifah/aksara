@@ -20,7 +20,7 @@
           <table class="datatable-responsive table noborder-top display nowrap" cellspacing="0" width="100%">
             <thead>
               <tr>
-                <th class="no-sort check-column" width="20">
+                <th class="no-sort check-column" width="20" {!! empty($table['bulk_actions']) ? 'style="display:none;"' : '' !!}>
                   <div class="checkbox checkbox-single checkall">
                     <input type="checkbox">
                     <label></label>
@@ -36,7 +36,7 @@
               @if(!empty($table['rows']))
                 @foreach($table['rows'] as $row)
                   <tr>
-                    <td class="check-column">
+                    <td class="check-column" {!! empty($table['bulk_actions']) ? 'style="display:none;"' : '' !!}>
                       <div class="checkbox checkbox-single">
                         <input name={{ $table['list_identifier']."[]" }} type="checkbox" value="{{ $row[$table['row_identifier']] }}">
                         <label></label>
