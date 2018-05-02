@@ -4,5 +4,6 @@ namespace Plugins\User\UserCapability;
 
 interface UserCapabilityInterface
 {
-    public function hasCapability($id, $parent = false);
+    public function userHasCapability($userId, $capabilityId);
+    public function hasCapability($capabilityId);
 }

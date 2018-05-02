@@ -21,6 +21,16 @@ class UserServiceProvider extends AbstractModuleProvider
             'rolecapability',
             \Plugins\User\RoleCapability\RoleCapabilityInterface::class
         );
+
+        $this->app->singleton(
+            \Plugins\User\UserCapability\UserCapabilityInterface::class,
+            \Plugins\User\UserCapability\Interactor::class
+        );
+
+        $this->app->bind(
+            'usercapability',
+            \Plugins\User\UserCapability\UserCapabilityInterface::class
+        );
     }
 }
 

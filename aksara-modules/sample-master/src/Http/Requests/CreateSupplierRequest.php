@@ -13,7 +13,7 @@ class CreateSupplierRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        return \UserCapability::hasCapability('add-master-supplier');
     }
 
     /**

@@ -2,10 +2,34 @@
 
 namespace Plugins\User\UserCapability;
 
+use App\User;
+
 class Interactor implements UserCapabilityInterface
 {
-    public function hasCapability($id, $parent = false)
+    private $user;
+
+    public function __construct(User $user)
     {
-        //check role table, check user has capability
+        $this->user = $user;
+    }
+
+    public function userHasCapability($userId, $capabilityId)
+    {
+        $user = $this->user->find($userId);
+
+        foreach ($user->roles as $role) {
+            $permissions = $role->permissions;
+            $hasPermission = in_array($capabilityId, $permissions);
+            if ($hasPermission) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public function hasCapability($capabilityId)
+    {
+        $userId = \Auth::user()->id;
+        return $this->userHasCapability($userId, $capabilityId);
     }
 }

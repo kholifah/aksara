@@ -13,6 +13,7 @@ return [
     //Laravel Facade aliases defined in plugin
     'aliases' => [
         'RoleCapability' => 'Plugins\\User\\Facades\\RoleCapabilityFacade',
+        'UserCapability' => 'Plugins\\User\\Facades\\UserCapabilityFacade',
     ],
 
     'type' => 'plugin',
