@@ -33,6 +33,8 @@ class ProductController extends Controller
      */
     public function index(Request $request)
     {
+        authorize('all-master-product');
+
         $response = $this->tableController->handle($request);
         if ($response instanceof RedirectResponse) {
             return $response;
@@ -47,6 +49,8 @@ class ProductController extends Controller
      */
     public function create()
     {
+        authorize('add-master-product');
+
         $product = $this->productRepo->new();
         $viewData = $this->form->create($product);
         return view('sample-master::product.create', $viewData);
@@ -60,6 +64,8 @@ class ProductController extends Controller
      */
     public function edit($id)
     {
+        authorize('edit-master-product');
+
         $product = $this->productRepo->find($id);
         $viewData = $this->form->create($product);
         return view('sample-master::product.edit', $viewData);
@@ -73,6 +79,8 @@ class ProductController extends Controller
      */
     public function store(CreateProductRequest $request)
     {
+        authorize('add-master-product');
+
         $success = $this->productRepo->store($request);
         if (!$success) {
             admin_notice('danger', __('sample-master::product.messages.create_failed'));
@@ -102,6 +110,8 @@ class ProductController extends Controller
      */
     public function update(CreateProductRequest $request, $id)
     {
+        authorize('edit-master-product');
+
         $success = $this->productRepo->update($id, $request);
         if (!$success) {
             admin_notice('danger', __('sample-master::product.messages.update_failed'));
@@ -119,6 +129,8 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
+        authorize('delete-master-product');
+
         $success = $this->productRepo->delete($id);
         if (!$success) {
             admin_notice('danger', __('sample-master::product.messages.delete_failed'));

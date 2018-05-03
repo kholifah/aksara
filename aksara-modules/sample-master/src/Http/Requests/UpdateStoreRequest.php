@@ -13,7 +13,7 @@ class UpdateStoreRequest extends FormRequest
      */
     public function authorize()
     {
-        return \UserCapability::hasCapability('edit-master-store');
+        return true;
     }
 
     /**

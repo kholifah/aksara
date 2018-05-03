@@ -37,10 +37,7 @@ class StoreController extends Controller
      */
     public function index(Request $request)
     {
-        //TODO move to annotation if possible
-        if (!\UserCapability::hasCapability('master-store')) {
-            abort(403, 'Does not have right to access store');
-        }
+        authorize('all-master-store');
 
         $response = $this->tableController->handle($request);
         if ($response instanceof RedirectResponse) {
@@ -56,6 +53,8 @@ class StoreController extends Controller
      */
     public function create()
     {
+        authorize('add-master-store');
+
         $viewData = $this->form->create();
         return view('sample-master::store.create', $viewData);
     }
@@ -68,6 +67,8 @@ class StoreController extends Controller
      */
     public function edit($id, Request $request)
     {
+        authorize('edit-master-store');
+
         $viewData = $this->form->edit($id, $request);
         if (!$viewData) {
             abort(404, 'Not found');
@@ -86,13 +87,15 @@ class StoreController extends Controller
      */
     public function store(CreateStoreRequest $request)
     {
+        authorize('add-master-store');
+
         $data = $this->repo->store($request);
         if (!$data) {
             admin_notice('danger', __('sample-master::store.messages.create_failed'));
         } else {
             admin_notice('success', __('sample-master::store.messages.created'));
         }
-        return redirect()->route('sample-store-edit', $data->id);
+        return redirect()->route('sample-store');
     }
 
     /**
@@ -115,6 +118,8 @@ class StoreController extends Controller
      */
     public function update(UpdateStoreRequest $request, $id)
     {
+        authorize('edit-master-store');
+
         $success = $this->repo->update($id, $request);
         if (!$success) {
             admin_notice('danger', __('sample-master::store.messages.update_failed'));
@@ -132,10 +137,7 @@ class StoreController extends Controller
      */
     public function destroy($id)
     {
-        //TODO move to annotation if possible
-        if (!\UserCapability::hasCapability('delete-master-store')) {
-            abort(403, 'Does not have right to delete store');
-        }
+        authorize('delete-master-store');
 
         $success = $this->repo->delete($id);
         if (!$success) {
@@ -148,6 +150,8 @@ class StoreController extends Controller
 
     public function storeManager($store_id, CreateManagerRequest $request)
     {
+        authorize('edit-master-store');
+
         $success = $this->repo->storeRelation($store_id, 'manager', $request);
         if (!$success) {
             admin_notice('danger', __('sample-master::store.manager.messages.create_failed'));
@@ -159,6 +163,8 @@ class StoreController extends Controller
 
     public function updateManager($store_id, $id, UpdateManagerRequest $request)
     {
+        authorize('edit-master-store');
+
         $success = $this->repo->storeRelation($store_id, 'manager', $request);
         if (!$success) {
             admin_notice('danger', __('sample-master::store.manager.messages.update_failed'));
@@ -170,6 +176,8 @@ class StoreController extends Controller
 
     public function addProduct($store_id, AddProductStoreRequest $request)
     {
+        authorize('edit-master-store');
+
         $productId = $request->input('product_id');
         $success = $this->repo->attachOnce($store_id, 'products', $productId);
         if (!$success) {
@@ -182,10 +190,7 @@ class StoreController extends Controller
 
     public function removeProduct($store_id, $product_id)
     {
-        //TODO move to annotation if possible
-        if (!\UserCapability::hasCapability('edit-master-store')) {
-            abort(403, 'Does not have right to edit store');
-        }
+        authorize('delete-master-store');
 
         $success = $this->repo->detach($store_id, 'products', $product_id);
         if (!$success) {

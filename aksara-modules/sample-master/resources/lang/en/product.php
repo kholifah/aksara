@@ -13,6 +13,7 @@ return [
         'all_products' => 'All Products',
         'add_product' => 'Add Product',
         'edit_product' => 'Edit Product',
+        'delete_product' => 'Delete Product',
         'product_list' => 'Product List',
         'past_expired' => 'Past Expired',
         'not_expired' => 'Not Expired',

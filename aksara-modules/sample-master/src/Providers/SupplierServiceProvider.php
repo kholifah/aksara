@@ -19,6 +19,12 @@ class SupplierServiceProvider extends AbstractModuleProvider
             );
 
             add_capability(
+                __('sample-master::supplier.labels.supplier_list'),
+                'all-master-supplier',
+                'master-supplier'
+            );
+
+            add_capability(
                 __('sample-master::supplier.labels.add_supplier'),
                 'add-master-supplier',
                 'master-supplier'
@@ -41,7 +47,7 @@ class SupplierServiceProvider extends AbstractModuleProvider
             $args = [
                 'page_title' => __('sample-master::supplier.title'),
                 'menu_title' => __('sample-master::supplier.title'),
-                'capability' => [ 'master-supplier' ],
+                'capability' => [ 'all-master-supplier' ],
                 'route' => [
                     'slug' => '/sample-supplier',
                     'args' => [

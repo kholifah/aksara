@@ -8,11 +8,46 @@ class ProductServiceProvider extends AbstractModuleProvider
 {
     public function safeBoot()
     {
+        /**
+         * add-capabilities
+         */
+        \Eventy::addAction('aksara.init', function () {
+
+            add_capability(
+                __('sample-master::product.title'),
+                'master-product'
+            );
+
+            add_capability(
+                __('sample-master::product.labels.product_list'),
+                'all-master-product',
+                'master-product'
+            );
+
+            add_capability(
+                __('sample-master::product.labels.add_product'),
+                'add-master-product',
+                'master-product'
+            );
+
+            add_capability(
+                __('sample-master::product.labels.edit_product'),
+                'edit-master-product',
+                'master-product'
+            );
+
+            add_capability(
+                __('sample-master::product.labels.delete_product'),
+                'delete-master-product',
+                'master-product'
+            );
+        });
+
         \Eventy::addAction('aksara.init-completed', function () {
             $args = [
                 'page_title' => __('sample-master::product.title'),
                 'menu_title' => __('sample-master::product.title'),
-                'capability' => '',
+                'capability' => [ 'all-master-product' ],
                 'route' => [
                     'slug' => '/sample-product',
                     'args' => [

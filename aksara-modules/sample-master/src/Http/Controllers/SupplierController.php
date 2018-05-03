@@ -9,6 +9,7 @@ use Plugins\SampleMaster\Models\Supplier;
 use Plugins\SampleMaster\Repositories\SupplierRepository;
 use Plugins\SampleMaster\Http\Requests\CreateSupplierRequest;
 use Plugins\SampleMaster\Http\Requests\UpdateSupplierRequest;
+use Plugins\User\Annotations;
 
 class SupplierController extends Controller
 {
@@ -30,10 +31,7 @@ class SupplierController extends Controller
      */
     public function index(Request $request)
     {
-        //TODO move to annotation if possible
-        if (!\UserCapability::hasCapability('master-supplier')) {
-            abort(403, 'Does not have right to access supplier');
-        }
+        authorize('all-master-supplier');
 
         $response = $this->tableController->handle($request);
         if ($response instanceof RedirectResponse) {
@@ -49,6 +47,8 @@ class SupplierController extends Controller
      */
     public function create()
     {
+        authorize('add-master-supplier');
+
         $supplier = $this->repo->new();
         $viewName = 'sample-master::supplier.create';
         return view($viewName, compact('supplier'));
@@ -62,6 +62,8 @@ class SupplierController extends Controller
      */
     public function edit($id)
     {
+        authorize('edit-master-supplier');
+
         $supplier = $this->repo->find($id);
         $viewName = 'sample-master::supplier.edit';
         return view($viewName, compact('supplier'));
@@ -75,6 +77,8 @@ class SupplierController extends Controller
      */
     public function store(CreateSupplierRequest $request)
     {
+        authorize('add-master-supplier');
+
         $success = $this->repo->store($request);
         if (!$success) {
             admin_notice('danger', __('sample-master::supplier.messages.create_failed'));
@@ -104,6 +108,8 @@ class SupplierController extends Controller
      */
     public function update(UpdateSupplierRequest $request, $id)
     {
+        authorize('edit-master-supplier');
+
         $success = $this->repo->update($id, $request);
         if (!$success) {
             admin_notice('danger', __('sample-master::supplier.messages.update_failed'));
@@ -121,10 +127,7 @@ class SupplierController extends Controller
      */
     public function destroy($id)
     {
-        //TODO move to annotation if possible
-        if (!\UserCapability::hasCapability('delete-master-supplier')) {
-            abort(403, 'Does not have right to delete supplier');
-        }
+        authorize('delete-master-supplier');
 
         $success = $this->repo->delete($id);
         if (!$success) {

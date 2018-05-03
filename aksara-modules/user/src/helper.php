@@ -39,3 +39,15 @@ function get_capabilities()
 {
     return RoleCapability::all();
 }
+
+function has_capability($capability)
+{
+    return \UserCapability::hasCapability($capability);
+}
+
+function authorize($capability)
+{
+    if (!has_capability($capability)) {
+        abort(403, "Does not have $capability access");
+    }
+}

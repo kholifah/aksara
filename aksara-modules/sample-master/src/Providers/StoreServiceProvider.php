@@ -19,6 +19,12 @@ class StoreServiceProvider extends AbstractModuleProvider
             );
 
             add_capability(
+                __('sample-master::store.labels.store_list'),
+                'all-master-store',
+                'master-store'
+            );
+
+            add_capability(
                 __('sample-master::store.labels.add_store'),
                 'add-master-store',
                 'master-store'
@@ -41,7 +47,7 @@ class StoreServiceProvider extends AbstractModuleProvider
             $args = [
                 'page_title' => __('sample-master::store.title'),
                 'menu_title' => __('sample-master::store.title'),
-                'capability' => [ 'master-store' ],
+                'capability' => [ 'all-master-store' ],
                 'route' => [
                     'slug' => '/sample-store',
                     'args' => [

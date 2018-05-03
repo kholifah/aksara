@@ -13,6 +13,7 @@ return [
         'all_products' => 'Semua Produk',
         'add_product' => 'Tambah Produk',
         'edit_product' => 'Ubah Produk',
+        'delete_product' => 'Hapus Produk',
         'product_list' => 'Daftar Produk',
         'past_expired' => 'Kadaluarsa',
         'not_expired' => 'Belum Kadaluarsa',

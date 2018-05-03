@@ -13,7 +13,7 @@ class UpdateSupplierRequest extends FormRequest
      */
     public function authorize()
     {
-        return \UserCapability::hasCapability('edit-master-supplier');
+        return true;
     }
 
     /**
