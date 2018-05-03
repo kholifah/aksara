@@ -8,11 +8,40 @@ class SupplierServiceProvider extends AbstractModuleProvider
 {
     public function safeBoot()
     {
-        \Eventy::addAction('aksara.init-completed', function () {
+        /**
+         * add-capabilities
+         */
+        \Eventy::addAction('aksara.init', function () {
+
+            add_capability(
+                __('sample-master::supplier.title'),
+                'master-supplier'
+            );
+
+            add_capability(
+                __('sample-master::supplier.labels.add_supplier'),
+                'add-master-supplier',
+                'master-supplier'
+            );
+
+            add_capability(
+                __('sample-master::supplier.labels.edit_supplier'),
+                'edit-master-supplier',
+                'master-supplier'
+            );
+
+            add_capability(
+                __('sample-master::supplier.labels.delete_supplier'),
+                'delete-master-supplier',
+                'master-supplier'
+            );
+        });
+
+        \Eventy::addAction('aksara.init', function () {
             $args = [
                 'page_title' => __('sample-master::supplier.title'),
                 'menu_title' => __('sample-master::supplier.title'),
-                'capability' => '',
+                'capability' => [ 'master-supplier' ],
                 'route' => [
                     'slug' => '/sample-supplier',
                     'args' => [
@@ -80,34 +109,6 @@ class SupplierServiceProvider extends AbstractModuleProvider
 
         });
 
-        /**
-         * add-capabilities
-         */
-        \Eventy::addAction('aksara.init-completed', function () {
-
-            add_capability(
-                __('sample-master::supplier.title'),
-                'master-supplier'
-            );
-
-            add_capability(
-                __('sample-master::supplier.labels.add_supplier'),
-                'add-master-supplier',
-                'master-supplier'
-            );
-
-            add_capability(
-                __('sample-master::supplier.labels.edit_supplier'),
-                'edit-master-supplier',
-                'master-supplier'
-            );
-
-            add_capability(
-                __('sample-master::supplier.labels.delete_supplier'),
-                'delete-master-supplier',
-                'master-supplier'
-            );
-        });
     }
 }
 

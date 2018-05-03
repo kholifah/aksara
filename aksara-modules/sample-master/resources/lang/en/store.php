@@ -9,6 +9,7 @@ return [
         'all_stores' => 'All Stores',
         'add_store' => 'Add Store',
         'edit_store' => 'Edit Store',
+        'delete_store' => 'Delete Store',
         'store_list' => 'Store List',
         'add_product' => 'Add Product',
         'active' => 'Active',

@@ -9,6 +9,7 @@ return [
         'all_stores' => 'Semua Toko',
         'add_store' => 'Tambah Toko',
         'edit_store' => 'Ubah Toko',
+        'delete_store' => 'Hapus Toko',
         'store_list' => 'Daftar Toko',
         'add_product' => 'Tambah Produk',
         'active' => 'Aktif',

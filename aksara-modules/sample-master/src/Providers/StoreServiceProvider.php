@@ -8,11 +8,40 @@ class StoreServiceProvider extends AbstractModuleProvider
 {
     public function safeBoot()
     {
+        /**
+         * add-capabilities
+         */
+        \Eventy::addAction('aksara.init', function () {
+
+            add_capability(
+                __('sample-master::store.title'),
+                'master-store'
+            );
+
+            add_capability(
+                __('sample-master::store.labels.add_store'),
+                'add-master-store',
+                'master-store'
+            );
+
+            add_capability(
+                __('sample-master::store.labels.edit_store'),
+                'edit-master-store',
+                'master-store'
+            );
+
+            add_capability(
+                __('sample-master::store.labels.delete_store'),
+                'delete-master-store',
+                'master-store'
+            );
+        });
+
         \Eventy::addAction('aksara.init-completed', function () {
             $args = [
                 'page_title' => __('sample-master::store.title'),
                 'menu_title' => __('sample-master::store.title'),
-                'capability' => '',
+                'capability' => [ 'master-store' ],
                 'route' => [
                     'slug' => '/sample-store',
                     'args' => [

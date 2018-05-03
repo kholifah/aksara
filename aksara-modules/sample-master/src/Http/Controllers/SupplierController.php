@@ -30,6 +30,11 @@ class SupplierController extends Controller
      */
     public function index(Request $request)
     {
+        //TODO move to annotation if possible
+        if (!\UserCapability::hasCapability('master-supplier')) {
+            abort(403, 'Does not have right to access supplier');
+        }
+
         $response = $this->tableController->handle($request);
         if ($response instanceof RedirectResponse) {
             return $response;
@@ -116,6 +121,11 @@ class SupplierController extends Controller
      */
     public function destroy($id)
     {
+        //TODO move to annotation if possible
+        if (!\UserCapability::hasCapability('delete-master-supplier')) {
+            abort(403, 'Does not have right to delete supplier');
+        }
+
         $success = $this->repo->delete($id);
         if (!$success) {
             admin_notice('danger', __('sample-master::supplier.messages.delete_failed'));

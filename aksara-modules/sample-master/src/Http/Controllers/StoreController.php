@@ -8,7 +8,9 @@ use Illuminate\Routing\Controller;
 use Plugins\SampleMaster\Models\Store;
 use Plugins\SampleMaster\Repositories\StoreRepository;
 use Plugins\SampleMaster\Http\Requests\CreateStoreRequest;
+use Plugins\SampleMaster\Http\Requests\UpdateStoreRequest;
 use Plugins\SampleMaster\Http\Requests\CreateManagerRequest;
+use Plugins\SampleMaster\Http\Requests\UpdateManagerRequest;
 use Plugins\SampleMaster\Http\Requests\AddProductStoreRequest;
 use Plugins\SampleMaster\Presenters\StoreFormPresenter;
 
@@ -35,6 +37,11 @@ class StoreController extends Controller
      */
     public function index(Request $request)
     {
+        //TODO move to annotation if possible
+        if (!\UserCapability::hasCapability('master-store')) {
+            abort(403, 'Does not have right to access store');
+        }
+
         $response = $this->tableController->handle($request);
         if ($response instanceof RedirectResponse) {
             return $response;
@@ -106,7 +113,7 @@ class StoreController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(CreateStoreRequest $request, $id)
+    public function update(UpdateStoreRequest $request, $id)
     {
         $success = $this->repo->update($id, $request);
         if (!$success) {
@@ -125,6 +132,11 @@ class StoreController extends Controller
      */
     public function destroy($id)
     {
+        //TODO move to annotation if possible
+        if (!\UserCapability::hasCapability('delete-master-store')) {
+            abort(403, 'Does not have right to delete store');
+        }
+
         $success = $this->repo->delete($id);
         if (!$success) {
             admin_notice('danger', __('sample-master::store.messages.delete_failed'));
@@ -145,7 +157,7 @@ class StoreController extends Controller
         return redirect()->route('sample-store-edit', $store_id);
     }
 
-    public function updateManager($store_id, $id, CreateManagerRequest $request)
+    public function updateManager($store_id, $id, UpdateManagerRequest $request)
     {
         $success = $this->repo->storeRelation($store_id, 'manager', $request);
         if (!$success) {
@@ -170,6 +182,11 @@ class StoreController extends Controller
 
     public function removeProduct($store_id, $product_id)
     {
+        //TODO move to annotation if possible
+        if (!\UserCapability::hasCapability('edit-master-store')) {
+            abort(403, 'Does not have right to edit store');
+        }
+
         $success = $this->repo->detach($store_id, 'products', $product_id);
         if (!$success) {
             admin_notice('danger', __('sample-master::store.product.messages.add_failed'));

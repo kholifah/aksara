@@ -13,7 +13,7 @@ class CreateManagerRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        return \UserCapability::hasCapability('edit-master-store');
     }
 
     /**
@@ -29,5 +29,4 @@ class CreateManagerRequest extends FormRequest
         ];
     }
 }
-
 

@@ -4,7 +4,7 @@ namespace Plugins\SampleMaster\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class AddProductStoreRequest extends FormRequest
+class UpdateManagerRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,7 +24,8 @@ class AddProductStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'product_id' => 'required|integer|exists:products,id',
+            'manager_name' => 'required|string',
+            'manager_phone' => 'required|string',
         ];
     }
 }
