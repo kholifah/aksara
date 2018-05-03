@@ -28,12 +28,25 @@ abstract class BasicTablePresenter implements TablePresenter
      * format [ 'column_name' => 'Column Label' ]
      */
     protected abstract function getColumns();
+
+    private function baseGetEditUrl($identifier)
+    {
+        if (!$this->canEdit()) return false;
+        return $this->getEditUrl($identifier);
+    }
+
+    private function baseGetDeleteUrl($identifier)
+    {
+        if (!$this->canDelete()) return false;
+        return $this->getDeleteUrl($identifier);
+    }
+
     protected function getEditUrl($identifier) { return false; }
     protected function getDeleteUrl($identifier) { return false; }
 
     public function __construct()
     {
-        $this->registerActions();
+        $this->baseRegisterActions();
         $this->baseRenderFilters();
     }
 
@@ -196,8 +209,8 @@ abstract class BasicTablePresenter implements TablePresenter
                 $rowItem['fields'][$key] = $this->formatColumn($key, $item->$key);
             }
 
-            $rowItem['url']['edit'] = $this->getEditUrl($item->{$this->identifier});
-            $rowItem['url']['delete'] = $this->getDeleteUrl($item->{$this->identifier});
+            $rowItem['url']['edit'] = $this->baseGetEditUrl($item->{$this->identifier});
+            $rowItem['url']['delete'] = $this->baseGetDeleteUrl($item->{$this->identifier});
 
             $rows[] = $rowItem;
         }
@@ -245,11 +258,23 @@ abstract class BasicTablePresenter implements TablePresenter
 
     private $actions = [];
 
-    protected function registerActions() {}
+    /**
+     * @param $action array
+     */
+    protected function registerActions(&$actions) {}
 
-    protected function addAction($name, $label)
+    private function baseRegisterActions()
     {
-        $this->actions[$name] = $label;
+        \Eventy::addFilter($this->getActionFilterName('bulk_actions'), function ($actions) {
+            $this->registerActions($actions);
+            return $actions;
+        });
+    }
+
+    private function getBulkActions()
+    {
+        return \Eventy::filter(
+            $this->getActionFilterName('bulk_actions'), $this->actions);
     }
 
     private function baseRenderFilters()
@@ -281,6 +306,23 @@ abstract class BasicTablePresenter implements TablePresenter
         return 'tableview.'.$this->getName().'.'.$basename;
     }
 
+    protected function canDelete() { return true; }
+    protected function canEdit() { return true; }
+
+    public function authorizeDelete()
+    {
+        if (!$this->canDelete()) {
+            abort(403, 'Cannot delete table item');
+        }
+    }
+
+    public function authorizeEdit()
+    {
+        if (!$this->canEdit()) {
+            abort(403, 'Cannot edit table item');
+        }
+    }
+
     public function render($viewName = 'table.basic', $presenterName = 'table')
     {
         return view($viewName, [
@@ -309,7 +351,7 @@ abstract class BasicTablePresenter implements TablePresenter
                     'bfilter' => $this->getInputField('bfilter'),
                     'view' => $this->getInputField('view'),
                 ],
-                'bulk_actions' => $this->actions,
+                'bulk_actions' => $this->getBulkActions(),
             ],
         ])
         ->render();

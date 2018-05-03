@@ -6,11 +6,13 @@ use Aksara\TableView\Presenter\BasicTablePresenter;
 use Aksara\TableView\Presenter\Components\DefaultSearch;
 use Aksara\TableView\Presenter\Components\DefaultFilter;
 use Plugins\SampleMaster\Repositories\SupplierRepository;
+use Aksara\TableView\Presenter\Components\DestroyBulkAction;
 
 class ProductTablePresenter extends BasicTablePresenter
 {
     use DefaultSearch;
     use DefaultFilter;
+    use DestroyBulkAction;
 
     public function __construct(SupplierRepository $supplierRepo)
     {
@@ -65,14 +67,22 @@ class ProductTablePresenter extends BasicTablePresenter
 
     protected function getEditUrl($identifier)
     {
-        if (!has_capability('edit-master-product')) return false;
         return route('sample-product-edit', $identifier);
     }
 
     protected function getDeleteUrl($identifier)
     {
-        if (!has_capability('delete-master-product')) return false;
         return route('sample-product-destroy', $identifier);
+    }
+
+    protected function canDelete()
+    {
+        return has_capability('delete-master-product');
+    }
+
+    protected function canEdit()
+    {
+        return has_capability('edit-master-product');
     }
 
     /**
@@ -120,9 +130,9 @@ class ProductTablePresenter extends BasicTablePresenter
         $this->renderDefaultSearch($table);
     }
 
-    protected function registerActions()
+    protected function registerActions(&$actions)
     {
-        $this->addAction('destroy', __('tableview.labels.delete'));
+        $this->registerDeleteAction($actions);
     }
 }
 

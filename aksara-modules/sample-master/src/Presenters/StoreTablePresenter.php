@@ -6,12 +6,14 @@ use Aksara\TableView\Presenter\BasicTablePresenter;
 use Aksara\TableView\Presenter\Components\DefaultSearch;
 use Aksara\TableView\Presenter\Components\DefaultFilter;
 use Aksara\TableView\Presenter\Components\DefaultViewFilter;
+use Aksara\TableView\Presenter\Components\DestroyBulkAction;
 
 class StoreTablePresenter extends BasicTablePresenter
 {
     use DefaultSearch;
     use DefaultFilter;
     use DefaultViewFilter;
+    use DestroyBulkAction;
 
     protected $searchable = [
         'store_name',
@@ -59,7 +61,6 @@ class StoreTablePresenter extends BasicTablePresenter
 
     protected function getEditUrl($identifier)
     {
-        if (!has_capability('edit-master-store')) return false;
         return route('sample-store-edit', $identifier);
     }
 
@@ -68,9 +69,19 @@ class StoreTablePresenter extends BasicTablePresenter
         return route('sample-store-destroy', $identifier);
     }
 
-    protected function registerActions()
+    protected function canDelete()
     {
-        $this->addAction('destroy', __('tableview.labels.delete'));
+        return has_capability('delete-master-store');
+    }
+
+    protected function canEdit()
+    {
+        return has_capability('edit-master-store');
+    }
+
+    protected function registerActions(&$actions)
+    {
+        $this->registerDeleteAction($actions);
     }
 }
 

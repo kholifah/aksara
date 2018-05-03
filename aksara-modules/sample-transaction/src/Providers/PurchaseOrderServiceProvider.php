@@ -8,11 +8,41 @@ class PurchaseOrderServiceProvider extends AbstractModuleProvider
 {
     public function safeBoot()
     {
+        /**
+         * add-capabilities
+         */
+        \Eventy::addAction('aksara.init', function () {
+
+            add_capability(
+                __('sample-transaction::po.title'),
+                'transaction-po'
+            );
+
+            add_capability(
+                __('sample-transaction::po.labels.po_list'),
+                'all-transaction-po',
+                'transaction-po'
+            );
+
+            add_capability(
+                __('sample-transaction::po.labels.add_po'),
+                'add-transaction-po',
+                'transaction-po'
+            );
+
+            add_capability(
+                    __('sample-transaction::po.labels.edit_po'),
+                'edit-transaction-po',
+                'transaction-po'
+            );
+
+        });
+
         \Eventy::addAction('aksara.init-completed', function () {
             $args = [
                 'page_title' => __('sample-transaction::po.title'),
                 'menu_title' => __('sample-transaction::po.title'),
-                'capability' => '',
+                'capability' => [ 'all-transaction-po' ],
                 'route' => [
                     'slug' => '/sample-po',
                     'args' => [

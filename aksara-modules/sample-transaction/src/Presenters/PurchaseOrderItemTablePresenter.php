@@ -3,9 +3,12 @@
 namespace Plugins\SampleTransaction\Presenters;
 
 use Aksara\TableView\Presenter\BasicTablePresenter;
+use Aksara\TableView\Presenter\Components\DestroyBulkAction;
 
 class PurchaseOrderItemTablePresenter extends BasicTablePresenter
 {
+    use DestroyBulkAction;
+
     protected $inputPrefix = 'item';
 
     protected function getColumns()
@@ -34,9 +37,9 @@ class PurchaseOrderItemTablePresenter extends BasicTablePresenter
         ];
     }
 
-    protected function registerActions()
+    protected function registerActions(&$actions)
     {
-        $this->addAction('destroy', __('tableview.labels.delete'));
+        $this->registerDeleteAction($actions);
     }
 }
 

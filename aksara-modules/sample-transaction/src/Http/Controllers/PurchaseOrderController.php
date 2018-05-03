@@ -28,6 +28,8 @@ class PurchaseOrderController extends Controller
 
     public function index(Request $request)
     {
+        authorize('all-transaction-po');
+
         $response = $this->poTable->handle($request);
         if ($response instanceof RedirectResponse) {
             return $response;
@@ -37,23 +39,32 @@ class PurchaseOrderController extends Controller
 
     public function create()
     {
+        authorize('add-transaction-po');
+
         $viewData = $this->form->create();
         return view('sample-transaction::po.create', $viewData);
     }
 
     public function store(CreatePurchaseOrderRequest $request)
     {
+        authorize('add-transaction-po');
+
         $data = $this->repo->store($request);
         if (!$data) {
             admin_notice('danger', __('sample-transaction::po.messages.create_failed'));
         } else {
             admin_notice('success', __('sample-transaction::po.messages.created'));
         }
-        return redirect()->route('sample-po-edit', $data->id);
+        if (has_capability('edit-transaction-po')) {
+            return redirect()->route('sample-po-edit', $data->id);
+        }
+        return redirect()->route('sample-po');
     }
 
     public function edit($id, Request $request)
     {
+        authorize('edit-transaction-po');
+
         $viewData = $this->form->edit($id, $request);
         if ($viewData instanceof RedirectResponse) {
             return $viewData;
@@ -63,6 +74,8 @@ class PurchaseOrderController extends Controller
 
     public function update(CreatePurchaseOrderRequest $request, $id)
     {
+        authorize('edit-transaction-po');
+
         $success = $this->repo->update($id, $request);
         if (!$success) {
             admin_notice('danger', __('sample-transaction::po.messages.update_failed'));
@@ -72,19 +85,10 @@ class PurchaseOrderController extends Controller
         return redirect()->back();
     }
 
-    public function destroy($id)
-    {
-        $success = $this->repo->delete($id);
-        if (!$success) {
-            admin_notice('danger', __('sample-transaction::po.messages.delete_failed'));
-        } else {
-            admin_notice('success', __('sample-transaction::po.messages.deleted'));
-        }
-        return redirect()->route('sample-po');
-    }
-
     public function storeItem($id, AddPurchaseOrderItemRequest $request)
     {
+        authorize('edit-transaction-po');
+
         $po = $this->repo->find($id);
         $success = $po->items()->create($request->input());
         if (!$success) {

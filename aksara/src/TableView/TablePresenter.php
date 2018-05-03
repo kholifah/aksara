@@ -25,4 +25,7 @@ interface TablePresenter
 
     public function getColumnFilters();
     public function getDateRangeFilters();
+
+    public function authorizeDelete();
+    public function authorizeEdit();
 }

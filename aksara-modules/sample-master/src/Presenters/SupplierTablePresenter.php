@@ -6,12 +6,14 @@ use Aksara\TableView\Presenter\BasicTablePresenter;
 use Aksara\TableView\Presenter\Components\DefaultSearch;
 use Aksara\TableView\Presenter\Components\DefaultFilter;
 use Aksara\TableView\Presenter\Components\DefaultViewFilter;
+use Aksara\TableView\Presenter\Components\DestroyBulkAction;
 
 class SupplierTablePresenter extends BasicTablePresenter
 {
     use DefaultSearch;
     use DefaultFilter;
     use DefaultViewFilter;
+    use DestroyBulkAction;
 
     protected $searchable = [
         'supplier_name',
@@ -39,6 +41,16 @@ class SupplierTablePresenter extends BasicTablePresenter
     protected function getDeleteUrl($identifier)
     {
         return route('sample-supplier-destroy', $identifier);
+    }
+
+    protected function canDelete()
+    {
+        return has_capability('delete-master-supplier');
+    }
+
+    protected function canEdit()
+    {
+        return has_capability('edit-master-supplier');
     }
 
     protected function renderViewFilters($table)
@@ -71,16 +83,10 @@ class SupplierTablePresenter extends BasicTablePresenter
      * misal untuk action `sesuatu_aksi` maka harus ada method `actionSesuatuAksi`
      * perhatikan snake case akan diubah ke camel case
      */
-    protected function registerActions()
+    protected function registerActions(&$actions)
     {
-        /**
-         * function addAction
-         *
-         * @param $key
-         * @param $label
-         */
-        $this->addAction('destroy', __('tableview.labels.delete'));
-        $this->addAction('sesuatu_aksi', 'Aksi Tambahan');
+        $this->registerDeleteAction($actions);
+        $actions['sesuatu_aksi'] = 'Aksi Tambahan';
     }
 
 }
