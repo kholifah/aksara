@@ -241,6 +241,7 @@ return [
         'Arrays' => Aksara\Facades\ArraysFacade::class,
         'AssetRenderer' => Aksara\Facades\AssetRendererFacade::class,
         'AssetQueue' => Aksara\Facades\AssetQueueFacade::class,
+        'AssetQueueFactory' => Aksara\Facades\AssetQueueFactoryFacade::class,
         'PluginRequiredBy' => Aksara\Facades\PluginRequiredByFacade::class,
         'AdminMenu' => Aksara\Facades\AdminMenuFacade::class,
         'AksaraRoute' => Aksara\Facades\AksaraRouteFacade::class,

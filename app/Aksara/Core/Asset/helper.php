@@ -2,7 +2,7 @@
 
 function aksara_enqueue_script($url, $id=false, $priority=20, $footer = false)
 {
-    \AssetQueue::frontend()
+    \AssetQueueFactory::frontend()
         ->script()
         ->url($url)
         ->id($id)
@@ -13,7 +13,7 @@ function aksara_enqueue_script($url, $id=false, $priority=20, $footer = false)
 
 function aksara_enqueue_style($url, $id =false, $priority=20)
 {
-    \AssetQueue::frontend()
+    \AssetQueueFactory::frontend()
         ->style()
         ->url($url)
         ->id($id)
@@ -23,7 +23,7 @@ function aksara_enqueue_style($url, $id =false, $priority=20)
 
 function aksara_admin_enqueue_script($url, $id=false, $priority=20, $footer = false)
 {
-    \AssetQueue::admin()
+    \AssetQueueFactory::admin()
         ->script()
         ->url($url)
         ->id($id)
@@ -34,7 +34,7 @@ function aksara_admin_enqueue_script($url, $id=false, $priority=20, $footer = fa
 
 function aksara_admin_enqueue_style($url, $id=false, $priority=20)
 {
-    \AssetQueue::admin()
+    \AssetQueueFactory::admin()
         ->style()
         ->url($url)
         ->id($id)
@@ -44,7 +44,7 @@ function aksara_admin_enqueue_style($url, $id=false, $priority=20)
 
 function aksara_enqueue_module_script($module, $assetPath, $id=false, $priority=20, $footer = false)
 {
-    \AssetQueue::frontend()
+    \AssetQueueFactory::frontend()
         ->script()
         ->module($module)
         ->assetPath($assetPath)
@@ -56,7 +56,7 @@ function aksara_enqueue_module_script($module, $assetPath, $id=false, $priority=
 
 function aksara_enqueue_module_style($module, $assetPath, $url, $id =false, $priority=20)
 {
-    \AssetQueue::frontend()
+    \AssetQueueFactory::frontend()
         ->style()
         ->module($module)
         ->assetPath($assetPath)
@@ -67,7 +67,7 @@ function aksara_enqueue_module_style($module, $assetPath, $url, $id =false, $pri
 
 function aksara_admin_enqueue_module_script($module, $assetPath, $id=false, $priority=20, $footer = false)
 {
-    \AssetQueue::admin()
+    \AssetQueueFactory::admin()
         ->script()
         ->module($module)
         ->assetPath($assetPath)
@@ -80,7 +80,7 @@ function aksara_admin_enqueue_module_script($module, $assetPath, $id=false, $pri
 
 function aksara_admin_enqueue_module_style($module, $assetPath, $id = false, $priority = 20)
 {
-    \AssetQueue::admin()
+    \AssetQueueFactory::admin()
         ->style()
         ->module($module)
         ->assetPath($assetPath)

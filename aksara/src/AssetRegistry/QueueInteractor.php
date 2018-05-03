@@ -37,6 +37,29 @@ class QueueInteractor implements AssetQueueInterface
         \Config::set('aksara.assets', $config);
     }
 
+    public function enqueueInlineScript(
+        string $location, $script,
+        $id, $priority = 20, $footer = false
+    ){
+        if (!in_array($location, AssetLocation::allValues())) {
+            return false;
+        }
+
+        if ($footer == true) {
+            $location = $location.'-footer';
+        }
+
+        $config = \Config::get('aksara.assets', []);
+
+        if (!isset($config[$location]['inline-script'][$priority])) {
+            $config[$location]['inline-script'][$priority] = [];
+        }
+
+        array_push($config[$location]['inline-script'][$priority], $script);
+
+        \Config::set('aksara.assets', $config);
+    }
+
     public function enqueueModuleAsset(
         string $location, string $type, $module, $assetPath, $id = false, $priority = 20, $footer = false
     ){

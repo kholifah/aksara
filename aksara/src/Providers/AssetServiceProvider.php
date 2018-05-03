@@ -25,6 +25,10 @@ class AssetServiceProvider extends ServiceProvider
         );
 
         $this->app->bind('asset_queue',
+            \Aksara\AssetRegistry\AssetQueueInterface::class
+        );
+
+        $this->app->bind('asset_queue_factory',
             \Aksara\AssetRegistry\QueueFactory::class
         );
 
@@ -66,9 +70,11 @@ class AssetServiceProvider extends ServiceProvider
         });
         \Eventy::addAction('aksara.admin.head', function () {
             \AssetRenderer::renderScript('admin');
+            \AssetRenderer::renderInlineScript('admin');
         });
         \Eventy::addAction('aksara.admin.footer', function () {
             \AssetRenderer::renderScript('admin-footer');
+            \AssetRenderer::renderInlineScript('admin-footer');
         });
         \Eventy::addAction('aksara.front-end.head', function () {
             \AssetRenderer::renderStyle('front-end');

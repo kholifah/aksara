@@ -5,6 +5,21 @@ namespace Aksara\AssetRegistry;
 //convert facade to injection for better testability
 class RenderInteractor implements AssetRendererIntereface
 {
+    public function renderInlineScript($location)
+    {
+        $config = \Config::get('aksara.assets', []);
+        $enqueueScripts = $config[$location]['inline-script'];
+
+        // sort from priority
+        ksort($enqueueScripts);
+
+        foreach ($enqueueScripts as $position => $scripts) {
+            foreach ($scripts as $script) {
+                echo '<script type="text/javascript">'.$script.'</script>'."\n";
+            }
+        }
+    }
+
     public function renderScript($location)
     {
         $config = \Config::get('aksara.assets', []);
