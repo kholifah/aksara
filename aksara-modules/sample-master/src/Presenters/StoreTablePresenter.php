@@ -59,6 +59,7 @@ class StoreTablePresenter extends BasicTablePresenter
 
     protected function getEditUrl($identifier)
     {
+        if (!has_capability('edit-master-store')) return false;
         return route('sample-store-edit', $identifier);
     }
 

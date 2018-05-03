@@ -9,7 +9,9 @@
 @section('content')
   <div class="content__head">
     <h2 class="page-title">@lang('sample-master::supplier.labels.supplier_list')
-      <a href="{{ route('sample-supplier-create') }}" class="page-title-action">@lang('sample-master::supplier.labels.add_supplier')</a></h2>
+      @if(has_capability('add-master-supplier'))
+        <a href="{{ route('sample-supplier-create') }}" class="page-title-action">@lang('sample-master::supplier.labels.add_supplier')</a></h2>
+      @endif
   </div>
   <!-- /.content__head -->
 

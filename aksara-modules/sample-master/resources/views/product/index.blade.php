@@ -9,7 +9,9 @@
 @section('content')
   <div class="content__head">
     <h2 class="page-title">@lang('sample-master::product.labels.product_list')
-      <a href="{{ route('sample-product-create') }}" class="page-title-action">@lang('sample-master::product.labels.add_product')</a></h2>
+      @if(has_capability('add-master-product'))
+        <a href="{{ route('sample-product-create') }}" class="page-title-action">@lang('sample-master::product.labels.add_product')</a></h2>
+      @endif
   </div>
   <!-- /.content__head -->
 

@@ -65,11 +65,13 @@ class ProductTablePresenter extends BasicTablePresenter
 
     protected function getEditUrl($identifier)
     {
+        if (!has_capability('edit-master-product')) return false;
         return route('sample-product-edit', $identifier);
     }
 
     protected function getDeleteUrl($identifier)
     {
+        if (!has_capability('delete-master-product')) return false;
         return route('sample-product-destroy', $identifier);
     }
 
