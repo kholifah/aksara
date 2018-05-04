@@ -16,7 +16,7 @@ class Interactor implements PostInterface
 
     private function enqueueAsset()
     {
-        \AssetQueue::admin()
+        \AssetQueueFactory::admin()
             ->script()
             ->url(url('assets/modules-v2/post-type/js/post-type.js'))
             ->id('aksara-post-type')
