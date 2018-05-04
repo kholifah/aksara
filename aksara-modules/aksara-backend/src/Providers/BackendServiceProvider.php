@@ -9,9 +9,12 @@ class BackendServiceProvider extends AbstractModuleProvider
     protected function safeBoot()
     {
         \Eventy::addAction('aksara.init', function () {
+
             // Load Jquery on Top
             aksara_admin_enqueue_script(url('assets/modules-v2/aksara-backend/js/jquery.min.js'),'jquery',10,false);
             aksara_admin_enqueue_script(url('assets/modules-v2/aksara-backend/js/bootstrap.min.js'),'jquery',10,false);
+
+            aksara_admin_enqueue_script(url('assets/modules-v2/aksara-backend/js/jquery-ui.min.js'),'jquery',10,false);
 
             // Code Miror
             aksara_admin_enqueue_script(url('assets/modules-v2/aksara-backend/lib/codemirror/js/codemirror.js'),'codemirror',10,true);
@@ -25,6 +28,7 @@ class BackendServiceProvider extends AbstractModuleProvider
             aksara_admin_enqueue_style(url('assets/modules-v2/aksara-backend/css/style.css'));
 
             //jquery dataTable
+            aksara_admin_enqueue_style(url('assets/modules-v2/aksara-backend/css/jquery-ui.min.css'));
             aksara_admin_enqueue_style(url('assets/plugins/datatables/jquery.dataTables.min.css'));
             aksara_admin_enqueue_style(url('assets/plugins/datatables/responsive.bootstrap.min.css'));
         });

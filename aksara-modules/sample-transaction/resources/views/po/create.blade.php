@@ -20,7 +20,7 @@
         <div class="col-lg-6 col-md-8">
             <div class="card-box">
                 <div class="card-box__body">
-                    {!! Form::open(['route' => 'sample-po-store', 'role' => 'form', 'class' => 'form-horizontal'])!!}
+                    {!! Form::model($po, ['route' => 'sample-po-store', 'role' => 'form', 'class' => 'form-horizontal'])!!}
                         @include('sample-transaction::po._form')
                     {!! Form::close() !!}
                 </div>

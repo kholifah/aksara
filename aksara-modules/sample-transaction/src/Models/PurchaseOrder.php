@@ -4,9 +4,13 @@ namespace Plugins\SampleTransaction\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Plugins\SampleMaster\Models\Supplier;
+use Collective\Html\Eloquent\FormAccessible;
+use Carbon\Carbon;
 
 class PurchaseOrder extends Model
 {
+    use FormAccessible;
+
     protected $fillable = [
         'document_number',
         'supplier_id',
@@ -24,6 +28,18 @@ class PurchaseOrder extends Model
         'order_date',
         'estimated_delivery_date',
     ];
+
+    public function formOrderDateAttribute($value)
+    {
+        $formatted = Carbon::parse($value)->format('Y-m-d');
+        return $formatted;
+    }
+
+    public function formEstimatedDeliveryDateAttribute($value)
+    {
+        $formatted = Carbon::parse($value)->format('Y-m-d');
+        return $formatted;
+    }
 
     public function getSupplierPhoneAttribute($v)
     {
