@@ -28,6 +28,8 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
+        authorize('list-user');
+
         $users = User::orderBy('name');
         if ($request->get('bapply')) {
             if ($request->input('apply')) {
@@ -59,6 +61,8 @@ class UserController extends Controller
      */
     public function create()
     {
+        authorize('add-user');
+
         $user = new User();
         $user_role = Role::orderBy('name')->get()->pluck('name', 'name');
         return view('user::user.create', compact('user', 'user_role'));
@@ -72,6 +76,8 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
+        authorize('add-user');
+
         $user = new User();
 
         $validator = $user->validate($request->all(), false);
@@ -113,6 +119,8 @@ class UserController extends Controller
      */
     public function edit($id, Request $request)
     {
+        authorize('edit-user');
+
         $viewData = $this->form->edit($id, $request);
         if (!$viewData) {
             abort(404, 'Not found');
@@ -145,6 +153,10 @@ class UserController extends Controller
      */
     public function update(Request $request, $id = false)
     {
+        if ($id !== false) {
+            authorize('edit-user');
+        }
+
         $id === false ? $id = \Auth::user()->id : $id;
 
         $user = User::find($id);
@@ -209,6 +221,8 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
+        authorize('delete-user');
+
         if(!is_array($id)){
             $id = [$id];
         }
@@ -227,6 +241,8 @@ class UserController extends Controller
 
     public function addRole($id, AddRoleUserRequest $request)
     {
+        authorize('add-user-role');
+
         $roleId = $request->input('role_id');
         $success = $this->repo->attachOnce($id, 'roles', $roleId);
         if (!$success) {

@@ -5,6 +5,7 @@ return [
     'user_list' => 'User List',
     'add_user' => 'Add User',
     'edit_user' => 'Edit User',
+    'delete_user' => 'Delete User',
     'edit_profile' => 'Edit Profile',
     'search' => 'Search',
     'user_name' => 'Name',
@@ -20,11 +21,14 @@ return [
     'password' => 'Password',
     'password_confirmation' => 'Confirm Password',
     'cancel' => 'Cancel',
+    'add_user_role' => 'Add User Role',
+    'remove_user_role' => 'Remove User Role',
 
     'role_list' => 'Role List',
     'all_roles' => 'All Roles',
     'add_role' => 'Add Role',
     'edit_role' => 'Edit Role',
+    'delete_role' => 'Delete Role',
     'update_role' => 'Update Role',
     'role_name' => 'Role Name',
 ];

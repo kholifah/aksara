@@ -21,6 +21,8 @@ class RoleController extends Controller
      */
     public function index(Request $request)
     {
+        authorize('list-role');
+
         $roles = Role::orderBy('name');
         if ($request->get('bapply')) {
             if ($request->input('apply')) {
@@ -55,6 +57,8 @@ class RoleController extends Controller
      */
     public function create()
     {
+        authorize('add-role');
+
         $role = new Role();
         $role->permissions = [];
         $capabilities = \RoleCapability::all();
@@ -69,6 +73,8 @@ class RoleController extends Controller
      */
     public function store(Request $request)
     {
+        authorize('add-role');
+
         $role = new Role();
 
         $validator = $role->validate($request->all(), false);
@@ -108,6 +114,8 @@ class RoleController extends Controller
      */
     public function edit($id)
     {
+        authorize('edit-role');
+
         $role = Role::find($id);
         $capabilities = \RoleCapability::all();
         return view('user::role.edit', compact('role', 'capabilities'));
@@ -122,6 +130,8 @@ class RoleController extends Controller
      */
     public function update(Request $request, $id)
     {
+        authorize('edit-role');
+
         $role = Role::find($id);
         $validator = $role->validate($request->all(), false);
 
@@ -149,6 +159,8 @@ class RoleController extends Controller
      */
     public function destroy($id)
     {
+        authorize('delete-role');
+
         $role = Role::find($id);
         if (!$role) {
             admin_notice('danger', __('user::messages.error.role_not_found'));

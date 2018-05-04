@@ -6,8 +6,8 @@ return [
 
     //Laravel service Providers defined in plugin
     'providers' => [
-        'Plugins\\User\\Providers\\RouteServiceProvider',
         'Plugins\\User\\Providers\\UserServiceProvider',
+        'Plugins\\User\\Providers\\RoleServiceProvider',
         'Plugins\\User\\Providers\\CapabilityServiceProvider',
     ],
 

@@ -38,6 +38,11 @@ class CapabilityServiceProvider extends AbstractModuleProvider
             \Plugins\User\RoleCapability\RoleCapabilityInterface::class
         );
 
+        $this->app->bind(
+            \Plugins\User\RoleCapability\ConfigRepository::class,
+            \Plugins\User\Repository\LaravelConfig::class
+        );
+
         $this->app->singleton(
             \Plugins\User\UserCapability\UserCapabilityInterface::class,
             \Plugins\User\UserCapability\Interactor::class

@@ -4,7 +4,7 @@ namespace Aksara\TableView\Controller\Concerns;
 
 trait HasDestroyAction
 {
-    private function actionDestroy($request)
+    protected function actionDestroy($request)
     {
         $this->table->authorizeDelete();
 

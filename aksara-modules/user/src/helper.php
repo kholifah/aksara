@@ -42,7 +42,7 @@ function get_capabilities()
 
 function has_capability($capability)
 {
-    return \UserCapability::hasCapability($capability);
+    return \UserCapability::hasAny($capability);
 }
 
 function authorize($capability)

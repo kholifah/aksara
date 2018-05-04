@@ -29,29 +29,31 @@
             {!! Form::close() !!}
           </div>
         </div>
-        <div class="card-box">
-          <div class="card-box__header">
-            <h2>@lang('user::labels.add_role')</h2>
-          </div>
-          <div class="card-box__body">
-            {!! Form::open([
-              'route' => [ 'aksara-user-add-role', $user->id ],
-              'role' => 'form',
-              'class' => 'form-horizontal'
-            ]) !!}
-            <div class="form-group form-group--table {!! $errors->has('role_id') ? 'error' : '' !!}">
-              <label class="col-form-label">@lang('user::labels.role_name')</label>
-              <div class="col-form-input">
-                {!! Form::select('role_id', $select_role, null, ['class'=>'form-control']) !!}
-                {!! $errors->first('role_id', '<p class="help-block">:message</p>') !!}
+        @if(has_capability('add-user-role'))
+          <div class="card-box">
+            <div class="card-box__header">
+              <h2>@lang('user::labels.add_user_role')</h2>
+            </div>
+            <div class="card-box__body">
+              {!! Form::open([
+                'route' => [ 'aksara-user-add-role', $user->id ],
+                'role' => 'form',
+                'class' => 'form-horizontal'
+              ]) !!}
+              <div class="form-group form-group--table {!! $errors->has('role_id') ? 'error' : '' !!}">
+                <label class="col-form-label">@lang('user::labels.role_name')</label>
+                <div class="col-form-input">
+                  {!! Form::select('role_id', $select_role, null, ['class'=>'form-control']) !!}
+                  {!! $errors->first('role_id', '<p class="help-block">:message</p>') !!}
+                </div>
               </div>
+              <div class="submit-row clearfix">
+                {!! Form::submit(__('user::labels.add_user_role'), ['class'=>'btn btn-md btn-primary alignright']) !!}
+              </div>
+              {!! Form::close() !!}
             </div>
-            <div class="submit-row clearfix">
-              {!! Form::submit(__('user::labels.add_role'), ['class'=>'btn btn-md btn-primary alignright']) !!}
-            </div>
-            {!! Form::close() !!}
           </div>
-        </div>
+        @endif
         <div class="card-box">
           <div class="card-box__header">
             <h2>@lang('user::labels.role_list')</h2>
