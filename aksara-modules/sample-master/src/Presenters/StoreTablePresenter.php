@@ -46,7 +46,6 @@ class StoreTablePresenter extends BasicTablePresenter
     protected function renderFilters($table)
     {
         $statusFilter = [
-            'all' => __('sample-master::store.labels.all'),
             'active' => __('sample-master::store.labels.active'),
             'inactive' => __('sample-master::store.labels.inactive'),
         ];

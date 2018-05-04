@@ -53,7 +53,6 @@ class SupplierTablePresenter extends BasicTablePresenter
     protected function renderFilters($table)
     {
         $statusFilter = [
-            'all' => __('sample-master::supplier.labels.all'),
             'active' => __('sample-master::supplier.labels.active'),
             'inactive' => __('sample-master::supplier.labels.inactive'),
         ];
