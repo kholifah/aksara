@@ -68,8 +68,10 @@ class MakeSeedRunCommand extends Command
         $module = $this->getPluginV2($typeArray[0]);
 
         $class = $this->argument('name');
-        spl_autoload_register(function ($class) use ($module) {
-            include $module->getModulePath()->seed()."/$class.php";
+        $includeFile = $module->getModulePath()->seed()."/$class.php";
+
+        spl_autoload_register(function ($class) use ($includeFile) {
+            include $includeFile;
         });
 
         $seeder = new $class();
