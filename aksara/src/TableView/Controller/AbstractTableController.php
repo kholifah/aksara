@@ -84,7 +84,7 @@ abstract class AbstractTableController
         }
 
         $dateRangeFilters = $this->table->getDateRangeFilters();
-        $dateRangeFilterValues = [];
+        $dateRangeFiltered = [];
 
         foreach ($dateRangeFilters as $columnName) {
             $fromDate = Carbon::minValue();
@@ -95,6 +95,7 @@ abstract class AbstractTableController
             ){
                 $fromDate = Carbon::parse($this->getRequestField($request, $columnName.'_filter_from'));
             }
+            $dateRangeFiltered[$columnName.'_from'] = $fromDate == Carbon::minValue() ? null : $fromDate;
 
             $toDate = Carbon::maxValue();
 
@@ -104,6 +105,7 @@ abstract class AbstractTableController
             ){
                 $toDate = Carbon::parse($this->getRequestField($request, $columnName.'_filter_to'));
             }
+            $dateRangeFiltered[$columnName.'_to'] = $toDate == Carbon::maxValue() ? null : $toDate;
 
             $data = $this->repo->between($columnName, $fromDate, $toDate, $data);
         }
@@ -129,6 +131,7 @@ abstract class AbstractTableController
         $this->table->setSearch($search);
         $this->table->setFiltered($filters);
         $this->table->setColumnFiltered($columnFilterValues);
+        $this->table->setDateRangeFiltered($dateRangeFiltered);
         $this->table->setSort($sort, $order);
         $this->table->setParentUrl($request->url());
         $this->table->setRouteName($request->route()->getName());

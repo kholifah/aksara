@@ -10,6 +10,7 @@ abstract class BasicTablePresenter implements TablePresenter
     private $search;
     private $filtered = [];
     private $columnFiltered = [];
+    private $dateRangeFiltered = [];
     protected $identifier = 'id';
     protected $listIdentifier = 'id_list';
     protected $inputPrefix = '';
@@ -80,6 +81,11 @@ abstract class BasicTablePresenter implements TablePresenter
     public function setColumnFiltered($columnFiltered = [])
     {
         $this->columnFiltered = $columnFiltered ?? [];
+    }
+
+    public function setDateRangeFiltered($dateRangeFiltered)
+    {
+        $this->dateRangeFiltered = $dateRangeFiltered;
     }
 
     public function setSort($sort, $order)
@@ -289,6 +295,7 @@ abstract class BasicTablePresenter implements TablePresenter
                 'search' => $this->getSearch(),
                 'filtered' => $this->getFiltered(),
                 'column_filtered' => $this->getColumnFiltered(),
+                'date_range_filtered' => $this->dateRangeFiltered,
                 'row_identifier' => $this->identifier,
                 'list_identifier' => $this->listIdentifier,
                 'inputs' => [

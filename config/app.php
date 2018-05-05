@@ -182,6 +182,7 @@ return [
         App\Providers\ModuleServiceProvider::class,
         'App\Providers\AksaraServiceProvider',
         Aksara\Providers\AssetServiceProvider::class,
+        Aksara\Providers\HtmlServiceProvider::class,
     ],
 
     /*
@@ -245,6 +246,7 @@ return [
         'PluginRequiredBy' => Aksara\Facades\PluginRequiredByFacade::class,
         'AdminMenu' => Aksara\Facades\AdminMenuFacade::class,
         'AksaraRoute' => Aksara\Facades\AksaraRouteFacade::class,
+        'HtmlField' => Aksara\Facades\HtmlFieldFacade::class,
     ],
 
 ];

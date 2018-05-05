@@ -8,28 +8,6 @@ class PurchaseOrderServiceProvider extends AbstractModuleProvider
 {
     public function safeBoot()
     {
-        \Eventy::addAction('aksara.init', function () {
-
-            $script = '$(document).ready(function() {
-                $("#order-date-picker").datepicker({
-                    dateFormat: "dd M yy",
-                    altField: "#order-date-field",
-                    altFormat: "yy-mm-dd"
-                });
-                $("#estimated-delivery-date-picker").datepicker({
-                    dateFormat: "dd M yy",
-                    altField: "#estimated-delivery-date-field",
-                    altFormat: "yy-mm-dd"
-                });
-            });';
-            \AssetQueue::enqueueInlineScript(
-                'admin',
-                $script,
-                'sample-po-pre-script',
-                10
-            );
-
-        });
         \Eventy::addAction('aksara.init-completed', function () {
             $args = [
                 'page_title' => __('sample-transaction::po.title'),
