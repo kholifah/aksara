@@ -174,21 +174,23 @@ class AdminMenu
 
     public function render()
     {
-        $defaultAdminMenu = \Config::get('aksara.admin-menu.admin-menu');
-        $defaultAdminSubMenu = \Config::get('aksara.admin-menu.admin-sub-menu');
+        $adminMenu = \Config::get('aksara.admin-menu.admin-menu');
+        $adminSubMenu = \Config::get('aksara.admin-menu.admin-sub-menu');
+
+        $adminMenu = \Eventy::filter('aksara.menu.admin-menu', $adminMenu);
+        $adminSubMenu = \Eventy::filter('aksara.menu.admin-sub-menu', $adminSubMenu);
 
         // sort array
-        ksort($defaultAdminMenu);
+        ksort($adminMenu);
 
-        foreach ($defaultAdminMenu as $position => $menus) {
+        foreach ($adminMenu as $position => $menus) {
             foreach ($menus as $priority => $menu) {
-                if( $menu['render'] == false && !isset($defaultAdminSubMenu[$menu['routeName']]) )
-                    unset($defaultAdminMenu[$position][$priority]);
+                if($menu['render'] == false && empty(@$adminSubMenu[$menu['routeName']]))
+                {
+                    unset($adminMenu[$position][$priority]);
+                }
             }
         }
-
-        $adminMenu = \Eventy::filter('aksara.menu.admin-menu', $defaultAdminMenu);
-        $adminSubMenu = \Eventy::filter('aksara.menu.admin-sub-menu', $defaultAdminSubMenu);
 
         echo backend_view('partials.admin-menu',
             compact('adminMenu', 'adminSubMenu'))->render();

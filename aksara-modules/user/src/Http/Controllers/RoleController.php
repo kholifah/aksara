@@ -145,7 +145,7 @@ class RoleController extends Controller
         }
         $data = $request->all();
         $role->name = $data['name'];
-        $role->permissions = $data['permissions'];
+        $role->permissions = @$data['permissions'] ?? [];
         $role->save();
         admin_notice('success', __('user::messages.success_update_role'));
         return redirect()->route('aksara-role');
