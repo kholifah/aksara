@@ -19,7 +19,7 @@
 <div class="form-group form-group--table {!! $errors->has('order_date') ? 'error' : '' !!}">
   <label class="col-form-label">@lang('sample-transaction::po.labels.order_date')</label>
   <div class="col-form-input">
-    {!! HtmlField::date('order_date', $po->order_date, [ 'class' => 'form-control' ]) !!}
+    {!! HtmlInput::date('order_date', $po->order_date, [ 'class' => 'form-control' ]) !!}
     {!! $errors->first('order_date', '<p class="help-block">:message</p>') !!}
   </div>
 </div>
@@ -27,7 +27,7 @@
 <div class="form-group form-group--table {!! $errors->has('estimated_delivery_date') ? 'error' : '' !!}">
   <label class="col-form-label">@lang('sample-transaction::po.labels.estimated_delivery_date')</label>
   <div class="col-form-input">
-    {!! HtmlField::date('estimated_delivery_date', $po->estimated_delivery_date, [ 'class' => 'form-control' ]) !!}
+    {!! HtmlInput::date('estimated_delivery_date', $po->estimated_delivery_date, [ 'class' => 'form-control' ]) !!}
     {!! $errors->first('estimated_delivery_date', '<p class="help-block">:message</p>') !!}
   </div>
 </div>

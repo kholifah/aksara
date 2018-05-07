@@ -246,7 +246,7 @@ return [
         'PluginRequiredBy' => Aksara\Facades\PluginRequiredByFacade::class,
         'AdminMenu' => Aksara\Facades\AdminMenuFacade::class,
         'AksaraRoute' => Aksara\Facades\AksaraRouteFacade::class,
-        'HtmlField' => Aksara\Facades\HtmlFieldFacade::class,
+        'HtmlInput' => Aksara\Facades\HtmlInputFacade::class,
     ],
 
 ];

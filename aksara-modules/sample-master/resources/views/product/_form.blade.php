@@ -42,7 +42,7 @@
 <div class="form-group form-group--table {!! $errors->has('date_product') ? 'error' : '' !!}">
   <label class="col-form-label">@lang('sample-master::product.labels.date_product')</label>
   <div class="col-form-input">
-    {!! HtmlField::date('date_product', $product->date_product ?? Carbon\Carbon::now(), ['class'=>'form-control']) !!}
+    {!! HtmlInput::date('date_product', $product->date_product ?? Carbon\Carbon::now(), ['class'=>'form-control']) !!}
     {!! $errors->first('date_product', '<p class="help-block">:message</p>') !!}
   </div>
 </div>
@@ -50,7 +50,7 @@
 <div class="form-group form-group--table {!! $errors->has('date_expired') ? 'error' : '' !!}">
   <label class="col-form-label">@lang('sample-master::product.labels.date_expired')</label>
   <div class="col-form-input">
-    {!! HtmlField::date('date_expired', $product->date_expired ?? Carbon\Carbon::now(), ['class'=>'form-control']) !!}
+    {!! HtmlInput::date('date_expired', $product->date_expired ?? Carbon\Carbon::now(), ['class'=>'form-control']) !!}
     {!! $errors->first('date_expired', '<p class="help-block">:message</p>') !!}
   </div>
 </div>

@@ -3,11 +3,11 @@ namespace Aksara\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
-class HtmlFieldFacade extends Facade
+class HtmlInputFacade extends Facade
 {
     protected static function getFacadeAccessor()
     {
-        return 'field_factory';
+        return 'html_input_factory';
     }
 }
 

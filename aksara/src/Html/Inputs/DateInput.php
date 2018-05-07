@@ -1,8 +1,8 @@
 <?php
 
-namespace Aksara\Html\Fields;
+namespace Aksara\Html\Inputs;
 
-class DateField
+class DateInput
 {
     private $attributes = [];
 

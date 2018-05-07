@@ -2,7 +2,7 @@
 namespace Aksara\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use Aksara\Http\FieldFactory;
+use Aksara\Http\InputFactory;
 
 class HtmlServiceProvider extends ServiceProvider
 {
@@ -13,8 +13,8 @@ class HtmlServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->bind('field_factory',
-            \Aksara\Html\FieldFactory::class
+        $this->app->bind('html_input_factory',
+            \Aksara\Html\InputFactory::class
         );
     }
 }
