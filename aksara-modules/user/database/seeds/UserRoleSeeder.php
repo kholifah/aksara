@@ -40,6 +40,9 @@ class UserRoleSeeder extends Seeder
 
         $user = App\User::where('email', $adminEmail)->first();
         if (!$user) {
+            $user = App\User::first();
+        }
+        if (!$user) {
             throw new \Exception("Admin user not found with email $adminEmail");
         }
 
@@ -47,5 +50,8 @@ class UserRoleSeeder extends Seeder
 
         Model::reguard();
         DB::statement('SET FOREIGN_KEY_CHECKS = 1');
+
+        echo 'Set admin role for user ='.$user->email.'\n';
+
     }
 }
