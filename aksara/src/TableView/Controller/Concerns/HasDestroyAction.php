@@ -6,9 +6,9 @@ trait HasDestroyAction
 {
     protected function actionDestroy($request)
     {
+        $this->table->authorizeDelete();
         if ($request->input($this->table->getListIdentifier())) {
             $id = $request->input($this->table->getListIdentifier());
-            $this->table->authorizeDelete($id);
             $this->deleteMultiple($id);
         }
     }

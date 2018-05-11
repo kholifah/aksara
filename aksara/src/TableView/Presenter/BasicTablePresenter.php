@@ -309,14 +309,14 @@ abstract class BasicTablePresenter implements TablePresenter
     protected function canDelete($identifier = null) { return true; }
     protected function canEdit($identifier = null) { return true; }
 
-    public function authorizeDelete($identifier)
+    public function authorizeDelete($identifier = null)
     {
         if (!$this->canDelete($identifier)) {
             abort(403, 'Cannot delete table item');
         }
     }
 
-    public function authorizeEdit($identifier)
+    public function authorizeEdit($identifier = null)
     {
         if (!$this->canEdit($identifier)) {
             abort(403, 'Cannot edit table item');
