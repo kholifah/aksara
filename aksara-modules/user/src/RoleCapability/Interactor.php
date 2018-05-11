@@ -22,7 +22,7 @@ class Interactor implements RoleCapabilityInterface
         $this->arrayHelper = $arrayHelper;
     }
 
-    public function add($name, $id = false, $parent = false)
+    public function add($name, $id = false, $parent = false, $callback = null)
     {
         if (!$name) {
             throw new \Exception('capability name not set');
@@ -47,7 +47,8 @@ class Interactor implements RoleCapabilityInterface
                 throw new \Exception('Parrent '.$parent.' is not defined');
             }
 
-            $capabilities[$parent]['capabilities'][$id] = [ 'name' => $name ];
+            $capabilities[$parent]['capabilities'][$id]['name'] = $name;
+            $capabilities[$parent]['capabilities'][$id]['callback'] = $callback;
         } else {
             if (isset($capabilities[$id])) {
                 throw new \Exception('capability '.$id.' is already defined');
@@ -55,6 +56,7 @@ class Interactor implements RoleCapabilityInterface
 
             $capabilities[$id] = [
                     'name' => $name,
+                    'callback' => $callback,
                     'capabilities' => []
                 ];
         }

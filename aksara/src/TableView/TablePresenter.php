@@ -26,6 +26,6 @@ interface TablePresenter
     public function getColumnFilters();
     public function getDateRangeFilters();
 
-    public function authorizeDelete();
-    public function authorizeEdit();
+    public function authorizeDelete($identifier);
+    public function authorizeEdit($identifier);
 }

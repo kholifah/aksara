@@ -93,7 +93,7 @@ class Interactor implements MetaboxRegistryInterface
                         continue;
                     }
 
-                    $callback = get_calback($metaboxArg['callbackSave']);
+                    $callback = get_callback($metaboxArg['callbackSave']);
                     call_user_func_array($callback, [$post,$request]);
                 }
             }
@@ -125,7 +125,7 @@ class Interactor implements MetaboxRegistryInterface
                     continue;
                 }
 
-                $callback = get_calback($metaboxArg['callbackRender']);
+                $callback = get_callback($metaboxArg['callbackRender']);
 
                 echo '<div id="'.$metaboxArg['id'].'" class="metabox">';
                 call_user_func_array($callback, [$post]);

@@ -33,12 +33,36 @@ class SupplierServiceProvider extends AbstractModuleProvider
             add_capability(
                 __('sample-master::supplier.labels.edit_supplier'),
                 'edit-master-supplier',
+                'master-supplier',
+                //Callback must have user id as first parameter
+                //TODO: move callback to another class to enable injection
+                function ($userId, $supplierId) {
+                    //dd("Hello $userId: $supplierId");
+                    return false;
+                }
+            );
+
+            add_capability(
+                __('sample-master::supplier.labels.edit_suppliers'),
+                'edit-master-suppliers',
                 'master-supplier'
             );
 
             add_capability(
                 __('sample-master::supplier.labels.delete_supplier'),
                 'delete-master-supplier',
+                'master-supplier',
+                //Callback must have user id as first parameter
+                //TODO: move callback to another class to enable injection
+                function ($userId, $supplierId) {
+                    //dd("Hello $userId: $supplierId");
+                    return false;
+                }
+            );
+
+            add_capability(
+                __('sample-master::supplier.labels.delete_suppliers'),
+                'delete-master-suppliers',
                 'master-supplier'
             );
         });

@@ -31,13 +31,13 @@ abstract class BasicTablePresenter implements TablePresenter
 
     private function baseGetEditUrl($identifier)
     {
-        if (!$this->canEdit()) return false;
+        if (!$this->canEdit($identifier)) return false;
         return $this->getEditUrl($identifier);
     }
 
     private function baseGetDeleteUrl($identifier)
     {
-        if (!$this->canDelete()) return false;
+        if (!$this->canDelete($identifier)) return false;
         return $this->getDeleteUrl($identifier);
     }
 
@@ -306,19 +306,19 @@ abstract class BasicTablePresenter implements TablePresenter
         return 'tableview.'.$this->getName().'.'.$basename;
     }
 
-    protected function canDelete() { return true; }
-    protected function canEdit() { return true; }
+    protected function canDelete($identifier = null) { return true; }
+    protected function canEdit($identifier = null) { return true; }
 
-    public function authorizeDelete()
+    public function authorizeDelete($identifier)
     {
-        if (!$this->canDelete()) {
+        if (!$this->canDelete($identifier)) {
             abort(403, 'Cannot delete table item');
         }
     }
 
-    public function authorizeEdit()
+    public function authorizeEdit($identifier)
     {
-        if (!$this->canEdit()) {
+        if (!$this->canEdit($identifier)) {
             abort(403, 'Cannot edit table item');
         }
     }

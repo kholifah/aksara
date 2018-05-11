@@ -1,6 +1,6 @@
 <?php
 
-function get_calback($callback)
+function get_callback($callback)
 {
     if (is_string($callback) && strpos($callback, '@'))
     {

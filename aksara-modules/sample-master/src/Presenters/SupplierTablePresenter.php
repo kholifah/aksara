@@ -43,14 +43,30 @@ class SupplierTablePresenter extends BasicTablePresenter
         return route('sample-supplier-destroy', $identifier);
     }
 
-    protected function canDelete()
+    protected function canDelete($identifier = null)
     {
-        return has_capability('delete-master-supplier');
+        if (!is_null($identifier)) {
+            return has_capability([
+                'delete-master-suppliers',
+                'delete-master-supplier' => [
+                    $identifier
+                ]
+            ]);
+        }
+        return has_capability('delete-master-suppliers');
     }
 
-    protected function canEdit()
+    protected function canEdit($identifier = null)
     {
-        return has_capability('edit-master-supplier');
+        if (!is_null($identifier)) {
+            return has_capability([
+                'edit-master-suppliers',
+                'edit-master-supplier' => [
+                    $identifier
+                ]
+            ]);
+        }
+        return has_capability('edit-master-suppliers');
     }
 
     protected function renderViewFilters($table)

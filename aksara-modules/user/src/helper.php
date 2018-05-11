@@ -25,9 +25,9 @@ function set_user_meta($userID = false, $key = false, $value = false, $serialize
     return $user_meta;
 }
 
-function add_capability($name, $id = false, $parent = false)
+function add_capability($name, $id = false, $parent = false, $callback = null)
 {
-    return RoleCapability::add($name, $id, $parent);
+    return RoleCapability::add($name, $id, $parent, $callback);
 }
 
 function get_capability($id = false)

@@ -23,7 +23,7 @@ class Action extends Event
                                 $parameters[] = $args[$i];
                             }
                         }
-                        call_user_func_array(get_calback($arguments['callback']), $parameters);
+                        call_user_func_array(get_callback($arguments['callback']), $parameters);
                     }
                 }
             }
