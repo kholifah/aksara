@@ -73,13 +73,13 @@ class PurchaseOrderTablePresenter extends BasicTablePresenter
         return route('sample-po-edit', $identifier);
     }
 
-    protected function canDelete()
+    protected function canDelete($identifier = null)
     {
         //purchase order cannot be deleted
         return false;
     }
 
-    protected function canEdit()
+    protected function canEdit($identifier = null)
     {
         return has_capability('edit-transaction-po');
     }

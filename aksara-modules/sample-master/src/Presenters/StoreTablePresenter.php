@@ -69,12 +69,12 @@ class StoreTablePresenter extends BasicTablePresenter
         return route('sample-store-destroy', $identifier);
     }
 
-    protected function canDelete()
+    protected function canDelete($identifier = null)
     {
         return has_capability('delete-master-store');
     }
 
-    protected function canEdit()
+    protected function canEdit($identifier = null)
     {
         return has_capability('edit-master-store');
     }

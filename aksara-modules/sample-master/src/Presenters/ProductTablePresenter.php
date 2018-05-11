@@ -75,12 +75,12 @@ class ProductTablePresenter extends BasicTablePresenter
         return route('sample-product-destroy', $identifier);
     }
 
-    protected function canDelete()
+    protected function canDelete($identifier = null)
     {
         return has_capability('delete-master-product');
     }
 
-    protected function canEdit()
+    protected function canEdit($identifier = null)
     {
         return has_capability('edit-master-product');
     }
