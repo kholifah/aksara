@@ -3,14 +3,19 @@
 namespace Plugins\User\UserCapability;
 
 use App\User;
+use Plugins\User\RoleCapability\RoleCapabilityInterface;
 
 class Interactor implements UserCapabilityInterface
 {
     private $user;
+    private $roleCapability;
 
-    public function __construct(User $user)
-    {
+    public function __construct(
+        User $user,
+        RoleCapabilityInterface $roleCapability
+    ){
         $this->user = $user;
+        $this->roleCapability = $roleCapability;
     }
 
     public function userHasCapability($userId, $capabilityId, $args = [])
@@ -21,7 +26,7 @@ class Interactor implements UserCapabilityInterface
             $permissions = $role->permissions;
             $hasPermission = in_array($capabilityId, $permissions);
             if ($hasPermission) {
-                $capability = \RoleCapability::get($capabilityId);
+                $capability = $this->roleCapability->get($capabilityId);
                 if ($capability['callback']) {
                     $callback = get_callback($capability['callback']);
                     return call_user_func_array($callback, $args);
@@ -31,14 +36,6 @@ class Interactor implements UserCapabilityInterface
         }
         return false;
     }
-
-    private function isAssoc($arr)
-    {
-        if (!is_array($arr)) return false;
-        if (array() === $arr) return false;
-        return array_keys($arr) !== range(0, count($arr) - 1);
-    }
-
 
     //will only return false if:
     //capabilities is not empty
@@ -50,7 +47,7 @@ class Interactor implements UserCapabilityInterface
         if (empty($capabilities)) {
             $capabilities = [];
         }
-        if (!is_array($capabilities) && !$this->isAssoc($capabilities)) {
+        if (!is_array($capabilities) && !is_assoc_array($capabilities)) {
             $capabilities =  [ $capabilities ];
         }
         //default true when $capabilities is empty

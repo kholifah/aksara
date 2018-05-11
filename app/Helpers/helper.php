@@ -75,6 +75,13 @@ function array_delete_recursive(array $array, callable $callback)
     return \Arrays::deleteRecursive($array, $callback);
 }
 
+function is_assoc_array($arr)
+{
+    if (!is_array($arr)) return false;
+    if (array() === $arr) return false;
+    return array_keys($arr) !== range(0, count($arr) - 1);
+}
+
 function get_country_code()
 {
     $countries = file_get_contents(app_path().'/Aksara/Lib/locale_lang_flag.json');
