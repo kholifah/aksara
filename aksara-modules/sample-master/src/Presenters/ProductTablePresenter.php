@@ -77,12 +77,28 @@ class ProductTablePresenter extends BasicTablePresenter
 
     protected function canDelete($identifier = null)
     {
-        return has_capability('delete-master-product');
+        if (!is_null($identifier)) {
+            return has_capability([
+                'delete-master-products',
+                'delete-master-product' => [
+                    $identifier
+                ]
+            ]);
+        }
+        return has_capability('delete-master-products');
     }
 
     protected function canEdit($identifier = null)
     {
-        return has_capability('edit-master-product');
+        if (!is_null($identifier)) {
+            return has_capability([
+                'edit-master-products',
+                'edit-master-product' => [
+                    $identifier
+                ]
+            ]);
+        }
+        return has_capability('edit-master-products');
     }
 
     /**

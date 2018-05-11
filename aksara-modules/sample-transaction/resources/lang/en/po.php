@@ -7,6 +7,7 @@ return [
         'all_po' => 'All Purchase Orders',
         'add_po' => 'Add Purchase Order',
         'edit_po' => 'Edit Purchase Order',
+        'edit_pos' => 'Edit Purchase Orders',
         'document_number' => 'Document Number',
         'supplier' => 'Supplier',
         'supplier_phone' => 'Phone',

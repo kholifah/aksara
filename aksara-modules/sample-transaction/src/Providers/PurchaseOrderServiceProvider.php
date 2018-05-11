@@ -33,6 +33,13 @@ class PurchaseOrderServiceProvider extends AbstractModuleProvider
             add_capability(
                     __('sample-transaction::po.labels.edit_po'),
                 'edit-transaction-po',
+                'transaction-po',
+                '\Plugins\SampleTransaction\Capabilities\EditPurchaseOrder@can'
+            );
+
+            add_capability(
+                    __('sample-transaction::po.labels.edit_pos'),
+                'edit-transaction-pos',
                 'transaction-po'
             );
 

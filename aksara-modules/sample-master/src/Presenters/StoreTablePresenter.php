@@ -71,12 +71,28 @@ class StoreTablePresenter extends BasicTablePresenter
 
     protected function canDelete($identifier = null)
     {
-        return has_capability('delete-master-store');
+        if (!is_null($identifier)) {
+            return has_capability([
+                'delete-master-stores',
+                'delete-master-store' => [
+                    $identifier
+                ]
+            ]);
+        }
+        return has_capability('delete-master-stores');
     }
 
     protected function canEdit($identifier = null)
     {
-        return has_capability('edit-master-store');
+        if (!is_null($identifier)) {
+            return has_capability([
+                'edit-master-stores',
+                'edit-master-store' => [
+                    $identifier
+                ]
+            ]);
+        }
+        return has_capability('edit-master-stores');
     }
 
     protected function registerActions(&$actions)

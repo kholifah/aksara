@@ -33,12 +33,26 @@ class ProductServiceProvider extends AbstractModuleProvider
             add_capability(
                 __('sample-master::product.labels.edit_product'),
                 'edit-master-product',
+                'master-product',
+                '\Plugins\SampleMaster\Capabilities\EditProduct@can'
+            );
+
+            add_capability(
+                __('sample-master::product.labels.edit_products'),
+                'edit-master-products',
                 'master-product'
             );
 
             add_capability(
                 __('sample-master::product.labels.delete_product'),
                 'delete-master-product',
+                'master-product',
+                '\Plugins\SampleMaster\Capabilities\DeleteProduct@can'
+            );
+
+            add_capability(
+                __('sample-master::product.labels.delete_products'),
+                'delete-master-products',
                 'master-product'
             );
         });

@@ -67,7 +67,12 @@ class StoreController extends Controller
      */
     public function edit($id, Request $request)
     {
-        authorize('edit-master-store');
+        authorize([
+            'edit-master-stores',
+            'edit-master-store' => [
+                $id
+            ]
+        ]);
 
         $viewData = $this->form->edit($id, $request);
         if (!$viewData) {
@@ -118,7 +123,12 @@ class StoreController extends Controller
      */
     public function update(UpdateStoreRequest $request, $id)
     {
-        authorize('edit-master-store');
+        authorize([
+            'edit-master-stores',
+            'edit-master-store' => [
+                $id
+            ]
+        ]);
 
         $success = $this->repo->update($id, $request);
         if (!$success) {
@@ -137,7 +147,12 @@ class StoreController extends Controller
      */
     public function destroy($id)
     {
-        authorize('delete-master-store');
+        authorize([
+            'delete-master-stores',
+            'delete-master-store' => [
+                $id
+            ]
+        ]);
 
         $success = $this->repo->delete($id);
         if (!$success) {
@@ -150,7 +165,12 @@ class StoreController extends Controller
 
     public function storeManager($store_id, CreateManagerRequest $request)
     {
-        authorize('edit-master-store');
+        authorize([
+            'edit-master-stores',
+            'edit-master-store' => [
+                $store_id
+            ]
+        ]);
 
         $success = $this->repo->storeRelation($store_id, 'manager', $request);
         if (!$success) {
@@ -163,7 +183,12 @@ class StoreController extends Controller
 
     public function updateManager($store_id, $id, UpdateManagerRequest $request)
     {
-        authorize('edit-master-store');
+        authorize([
+            'edit-master-stores',
+            'edit-master-store' => [
+                $store_id
+            ]
+        ]);
 
         $success = $this->repo->storeRelation($store_id, 'manager', $request);
         if (!$success) {
@@ -176,7 +201,12 @@ class StoreController extends Controller
 
     public function addProduct($store_id, AddProductStoreRequest $request)
     {
-        authorize('edit-master-store');
+        authorize([
+            'edit-master-stores',
+            'edit-master-store' => [
+                $store_id
+            ]
+        ]);
 
         $productId = $request->input('product_id');
         $success = $this->repo->attachOnce($store_id, 'products', $productId);
@@ -190,7 +220,12 @@ class StoreController extends Controller
 
     public function removeProduct($store_id, $product_id)
     {
-        authorize('delete-master-store');
+        authorize([
+            'edit-master-stores',
+            'edit-master-store' => [
+                $store_id
+            ]
+        ]);
 
         $success = $this->repo->detach($store_id, 'products', $product_id);
         if (!$success) {

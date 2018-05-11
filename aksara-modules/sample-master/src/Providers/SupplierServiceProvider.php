@@ -34,12 +34,7 @@ class SupplierServiceProvider extends AbstractModuleProvider
                 __('sample-master::supplier.labels.edit_supplier'),
                 'edit-master-supplier',
                 'master-supplier',
-                //Callback must have user id as first parameter
-                //TODO: move callback to another class to enable injection
-                function ($userId, $supplierId) {
-                    //dd("Hello $userId: $supplierId");
-                    return false;
-                }
+                '\Plugins\SampleMaster\Capabilities\EditSupplier@can'
             );
 
             add_capability(
@@ -52,12 +47,7 @@ class SupplierServiceProvider extends AbstractModuleProvider
                 __('sample-master::supplier.labels.delete_supplier'),
                 'delete-master-supplier',
                 'master-supplier',
-                //Callback must have user id as first parameter
-                //TODO: move callback to another class to enable injection
-                function ($userId, $supplierId) {
-                    //dd("Hello $userId: $supplierId");
-                    return false;
-                }
+                '\Plugins\SampleMaster\Capabilities\DeleteSupplier@can'
             );
 
             add_capability(

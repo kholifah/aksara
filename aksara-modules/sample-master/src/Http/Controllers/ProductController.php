@@ -64,7 +64,12 @@ class ProductController extends Controller
      */
     public function edit($id)
     {
-        authorize('edit-master-product');
+        authorize([
+            'edit-master-products',
+            'edit-master-product' => [
+                $id
+            ]
+        ]);
 
         $product = $this->productRepo->find($id);
         $viewData = $this->form->create($product);
@@ -110,7 +115,12 @@ class ProductController extends Controller
      */
     public function update(CreateProductRequest $request, $id)
     {
-        authorize('edit-master-product');
+        authorize([
+            'edit-master-products',
+            'edit-master-product' => [
+                $id
+            ]
+        ]);
 
         $success = $this->productRepo->update($id, $request);
         if (!$success) {
@@ -129,7 +139,12 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
-        authorize('delete-master-product');
+        authorize([
+            'delete-master-products',
+            'delete-master-product' => [
+                $id
+            ]
+        ]);
 
         $success = $this->productRepo->delete($id);
         if (!$success) {

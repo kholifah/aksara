@@ -34,4 +34,12 @@ class Product extends Model
     {
         return $this->belongsTo(Supplier::class);
     }
+
+    public static function boot()
+    {
+        static::creating(function (Product $model) {
+            $user = \Auth::user();
+            $model->created_by = $user->id;
+        });
+    }
 }

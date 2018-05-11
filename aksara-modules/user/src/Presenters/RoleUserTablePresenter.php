@@ -28,7 +28,7 @@ class RoleUserTablePresenter extends BasicTablePresenter
         ];
     }
 
-    protected function canDelete()
+    protected function canDelete($identifier = null)
     {
         return has_capability('remove-user-role');
     }

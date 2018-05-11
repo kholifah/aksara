@@ -26,5 +26,13 @@ class Store extends Model
     {
         return $this->belongsToMany(Product::class);
     }
+
+    public static function boot()
+    {
+        static::creating(function (Store $model) {
+            $user = \Auth::user();
+            $model->created_by = $user->id;
+        });
+    }
 }
 

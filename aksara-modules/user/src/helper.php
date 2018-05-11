@@ -40,14 +40,28 @@ function get_capabilities()
     return RoleCapability::all();
 }
 
-function has_capability($capability)
+function has_capability($capabilities)
 {
-    return \UserCapability::hasAny($capability);
+    return \UserCapability::hasAny($capabilities);
 }
 
-function authorize($capability)
+function authorize($capabilities)
 {
-    if (!has_capability($capability)) {
-        abort(403, "Does not have $capability access");
+    $capabilityStr = '';
+    if (!has_capability($capabilities)) {
+        if (is_array($capabilities)) {
+            $capabilityStrs = [];
+            foreach ($capabilities as $key => $capability) {
+                if (is_array($capability)) {
+                    $capabilityStrs[] = $key;
+                } else {
+                    $capabilityStrs[] = $capability;
+                }
+            }
+            $capabilityStr = implode('/', $capabilityStrs);
+        } else {
+            $capabilityStr = $capabilities;
+        }
+        abort(403, "Does not have any $capabilityStr access");
     }
 }

@@ -55,7 +55,13 @@ class PurchaseOrderController extends Controller
         } else {
             admin_notice('success', __('sample-transaction::po.messages.created'));
         }
-        if (has_capability('edit-transaction-po')) {
+        if (has_capability([
+                'edit-transaction-pos',
+                'edit-transaction-po' => [
+                    $data->id
+                ]
+            ])
+        ){
             return redirect()->route('sample-po-edit', $data->id);
         }
         return redirect()->route('sample-po');
@@ -63,7 +69,12 @@ class PurchaseOrderController extends Controller
 
     public function edit($id, Request $request)
     {
-        authorize('edit-transaction-po');
+        authorize([
+            'edit-transaction-pos',
+            'edit-transaction-po' => [
+                $id
+            ]
+        ]);
 
         $viewData = $this->form->edit($id, $request);
         if ($viewData instanceof RedirectResponse) {
@@ -74,7 +85,12 @@ class PurchaseOrderController extends Controller
 
     public function update(CreatePurchaseOrderRequest $request, $id)
     {
-        authorize('edit-transaction-po');
+        authorize([
+            'edit-transaction-pos',
+            'edit-transaction-po' => [
+                $id
+            ]
+        ]);
 
         $success = $this->repo->update($id, $request);
         if (!$success) {
@@ -87,7 +103,12 @@ class PurchaseOrderController extends Controller
 
     public function storeItem($id, AddPurchaseOrderItemRequest $request)
     {
-        authorize('edit-transaction-po');
+        authorize([
+            'edit-transaction-pos',
+            'edit-transaction-po' => [
+                $id
+            ]
+        ]);
 
         $po = $this->repo->find($id);
         $success = $po->items()->create($request->input());

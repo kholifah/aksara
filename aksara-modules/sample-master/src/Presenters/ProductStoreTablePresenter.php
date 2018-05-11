@@ -38,23 +38,6 @@ class ProductStoreTablePresenter extends BasicTablePresenter
         $this->renderDefaultSearch($table);
     }
 
-    protected function getEditUrl($identifier)
-    {
-        return route('sample-product-edit', $identifier);
-    }
-
-    protected function canDelete($identifier = null)
-    {
-        //removing product from store requires edit store access
-        return has_capability('edit-master-store');
-    }
-
-    protected function canEdit($identifier = null)
-    {
-        //direct link to product master, should have edit product access
-        return has_capability('edit-master-product');
-    }
-
     protected function registerActions(&$actions)
     {
         $this->registerDeleteAction($actions);

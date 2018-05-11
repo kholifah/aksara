@@ -16,5 +16,13 @@ class Supplier extends Model
     protected $casts = [
         'is_active' => 'boolean',
     ];
+
+    public static function boot()
+    {
+        static::creating(function (Supplier $model) {
+            $user = \Auth::user();
+            $model->created_by = $user->id;
+        });
+    }
 }
 

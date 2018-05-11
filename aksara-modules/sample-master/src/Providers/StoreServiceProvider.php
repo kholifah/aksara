@@ -33,12 +33,26 @@ class StoreServiceProvider extends AbstractModuleProvider
             add_capability(
                 __('sample-master::store.labels.edit_store'),
                 'edit-master-store',
+                'master-store',
+                '\Plugins\SampleMaster\Capabilities\EditStore@can'
+            );
+
+            add_capability(
+                __('sample-master::store.labels.edit_stores'),
+                'edit-master-stores',
                 'master-store'
             );
 
             add_capability(
                 __('sample-master::store.labels.delete_store'),
                 'delete-master-store',
+                'master-store',
+                '\Plugins\SampleMaster\Capabilities\DeleteStore@can'
+            );
+
+            add_capability(
+                __('sample-master::store.labels.delete_stores'),
+                'delete-master-stores',
                 'master-store'
             );
         });

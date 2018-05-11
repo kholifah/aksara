@@ -81,7 +81,15 @@ class PurchaseOrderTablePresenter extends BasicTablePresenter
 
     protected function canEdit($identifier = null)
     {
-        return has_capability('edit-transaction-po');
+        if (!is_null($identifier)) {
+            return has_capability([
+                'edit-transaction-pos',
+                'edit-transaction-po' => [
+                    $identifier
+                ]
+            ]);
+        }
+        return has_capability('edit-transaction-pos');
     }
 
     public function getDateRangeFilters()

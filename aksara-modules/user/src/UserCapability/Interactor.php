@@ -24,9 +24,7 @@ class Interactor implements UserCapabilityInterface
                 $capability = \RoleCapability::get($capabilityId);
                 if ($capability['callback']) {
                     $callback = get_callback($capability['callback']);
-                    //Callback must have user id as first parameter
-                    return call_user_func_array($callback,
-                        array_merge([ $userId ], $args));
+                    return call_user_func_array($callback, $args);
                 }
                 return true;
             }

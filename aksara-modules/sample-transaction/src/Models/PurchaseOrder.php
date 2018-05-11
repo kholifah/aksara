@@ -80,4 +80,12 @@ class PurchaseOrder extends Model
             return $item->calculateNettPrice();
         });
     }
+
+    public static function boot()
+    {
+        static::creating(function (PurchaseOrder $model) {
+            $user = \Auth::user();
+            $model->created_by = $user->id;
+        });
+    }
 }

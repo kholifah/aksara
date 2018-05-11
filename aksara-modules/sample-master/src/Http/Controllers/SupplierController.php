@@ -62,7 +62,12 @@ class SupplierController extends Controller
      */
     public function edit($id)
     {
-        authorize('edit-master-supplier');
+        authorize([
+            'edit-master-suppliers',
+            'edit-master-supplier' => [
+                $id
+            ]
+        ]);
 
         $supplier = $this->repo->find($id);
         $viewName = 'sample-master::supplier.edit';
@@ -108,7 +113,12 @@ class SupplierController extends Controller
      */
     public function update(UpdateSupplierRequest $request, $id)
     {
-        authorize('edit-master-supplier');
+        authorize([
+            'edit-master-suppliers',
+            'edit-master-supplier' => [
+                $id
+            ]
+        ]);
 
         $success = $this->repo->update($id, $request);
         if (!$success) {
@@ -127,7 +137,12 @@ class SupplierController extends Controller
      */
     public function destroy($id)
     {
-        authorize('delete-master-supplier');
+        authorize([
+            'delete-master-suppliers',
+            'delete-master-supplier' => [
+                $id
+            ]
+        ]);
 
         $success = $this->repo->delete($id);
         if (!$success) {
