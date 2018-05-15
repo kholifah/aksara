@@ -4,6 +4,7 @@ namespace App\Aksara\Core\ModuleManager\Http;
 use Aksara\MigrationInfo;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Filesystem\Filesystem;
 use App\Aksara\Core\Module;
 use Aksara\ModuleActivationCheckInfo;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -20,19 +21,22 @@ class ModuleManagerController extends Controller
     private $pluginRequiredBy;
     private $updateModuleStatus;
     private $moduleRegistry;
+    private $filesystem;
 
     public function __construct(
         Module $module,
         ModuleStatus $moduleStatus,
         PluginRequiredBy $pluginRequiredBy,
         UpdateModuleStatusHandler $updateModuleStatus,
-        ModuleRegistryHandler $moduleRegistry
+        ModuleRegistryHandler $moduleRegistry,
+        Filesystem $filesystem
     ){
         $this->module = $module;
         $this->moduleStatus = $moduleStatus;
         $this->pluginRequiredBy = $pluginRequiredBy;
         $this->updateModuleStatus = $updateModuleStatus;
         $this->moduleRegistry = $moduleRegistry;
+        $this->filesystem = $filesystem;
     }
 
     private function getModulesMerged()
@@ -93,17 +97,41 @@ class ModuleManagerController extends Controller
 
         //TODO: refactor to separate migration resolver
         $migrations = $this->getPendingMigrations(
-            $type, $slug, $dependenciesInfo, isset($module['version']) ? $module['version'] : 1
+            $type, $slug, $dependenciesInfo, @$module['version'] ?? 1
         );
+
+        $seeds = $this->getSeedInfo($type, $slug, @$module['version'] ?? 1);
 
         $data = new ModuleActivationCheckInfo(
             $type,
             $slug,
             $dependenciesInfo,
-            $migrations
+            $migrations,
+            $seeds
         );
 
         return view('core:module-manager::activation-check', $data->toArray());
+    }
+
+    private function getSeedInfo($type, $slug, $version = 1)
+    {
+        $module = $this->getModule($type, $slug);
+        $seedPath = $version == 1 ? $module['modulePath'].'/seeds' :
+            $module['module_path']['seed'];
+
+        $commands = [];
+
+        if (is_dir($seedPath)) {
+            $name = $version == 1 ? $type.'/'.$slug : $slug;
+            foreach ($this->filesystem->files($seedPath) as $file) {
+                $basename = $file->getBasename();
+                $seedName = pathinfo($basename, PATHINFO_FILENAME);
+
+                $command = "php artisan aksara:db:seed $name $seedName";
+                $commands[] = $command;
+            }
+        }
+        return $commands;
     }
 
     private function getPendingMigrations(
@@ -135,7 +163,7 @@ class ModuleManagerController extends Controller
                 $dependencyInfo->getType(),
                 $dependencyInfo->getModuleName(),
                 $paths,
-                isset($dep['version']) ? $dep['version'] : 1
+                @$dep['version'] ?? 1
             );
             $depsMigrations = array_merge($depsMigrations, $depsMigration);
         }

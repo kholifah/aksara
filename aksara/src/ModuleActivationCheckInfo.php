@@ -9,17 +9,20 @@ class ModuleActivationCheckInfo implements Arrayable, ModuleIdentifier
     private $moduleName;
     private $dependencies;
     private $migrations;
+    private $seeds;
 
     public function __construct(
         string $type,
         string $moduleName,
         array $dependencies = [],
-        array $migrations = []
+        array $migrations = [],
+        array $seeds = []
     ){
         $this->type = strtolower($type);
         $this->moduleName = $moduleName;
         $this->dependencies = $dependencies;
         $this->migrations = $migrations;
+        $this->seeds = $seeds;
     }
 
     public function getType() : string
@@ -42,13 +45,18 @@ class ModuleActivationCheckInfo implements Arrayable, ModuleIdentifier
         return $this->migrations;
     }
 
+    public function getSeeds() : array
+    {
+        return $this->seeds;
+    }
+
     public function allowActivation() : bool
     {
         //no pending migrations
         if (count($this->migrations) > 0) {
             return false;
         }
-        //no unregistered
+        //no unregistered dependencies
         foreach ($this->dependencies as $dependency) {
             if (!$dependency->getIsRegistered()) {
                 return false;
@@ -72,6 +80,7 @@ class ModuleActivationCheckInfo implements Arrayable, ModuleIdentifier
                 return $item->getPath();
             }, $this->migrations),
             'allow_activation' => $this->allowActivation(),
+            'seed_commands' => $this->seeds,
         ];
         return $array;
     }

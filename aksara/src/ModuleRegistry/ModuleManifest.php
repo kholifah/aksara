@@ -103,7 +103,7 @@ class ModuleManifest
         return [
             $this->name => [
                 'description' => $this->description,
-                'plugin_path' => $this->modulePath->toArray(),
+                'module_path' => $this->modulePath->toArray(),
                 'dependencies' => $this->dependencies,
                 'providers' => $this->providers,
                 'aliases' => $this->aliases,

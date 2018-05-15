@@ -10,6 +10,8 @@ return [
     'pending-migrations' => 'Migrasi Tertinggal',
     'pending-migrations-path' => 'Migrasi berikut masih tertinggal',
     'pending-migrations-command' => 'Harap eksekusi perintah migrasi berikut',
+    'no-pending-migrations' => 'Tidak ada migrasi tertinggal',
+    'seed-commands' => 'Lakukan seed apabila belum',
     'cannot-deactivate-module-message' => 'Tidak bisa menonaktifkan :moduleType - :moduleName karena digunakan plugin lain',
     'fail-activate-module-message' => 'Gagal mengaktifkan :moduleType - :moduleName karena :error',
     'fail-deactivate-module-message' => 'Gagal menonaktifkan :moduleType - :moduleName karena :error',

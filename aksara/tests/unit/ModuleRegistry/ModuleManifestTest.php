@@ -55,9 +55,9 @@ class ModuleManifestTest extends PHPUnit\Framework\TestCase
             $manifest->getDependencies());
         $this->assertEquals($array[$name]['providers'], $manifest->getProviders());
         $this->assertEquals($array[$name]['aliases'], $manifest->getAliases());
-        $this->assertEquals($array[$name]['plugin_path']['migration'],
+        $this->assertEquals($array[$name]['module_path']['migration'],
             $pluginMigration);
-        $this->assertEquals($array[$name]['plugin_path']['view'],
+        $this->assertEquals($array[$name]['module_path']['view'],
             $pluginView);
 
         //test setter

@@ -28,19 +28,33 @@
     <div class="col-md-6">
       <div class="row">
         <h3><i class="fa fa-exclamation-circle yellow-icon" style="margin-right: 5px;"></i>{{ __('core:module-manager::message.pending-migrations') }}</h3>
-        <div class="jumbo-bubble warning">
-          <p>{{ __('core:module-manager::message.pending-migrations-path') }}:</p>
-          @foreach($migration_paths as $path)
-            <br><code>{{ $path }}</code>
-          @endforeach
-        </div>
-        <div class="jumbo-bubble warning">
-          <p>{{ __('core:module-manager::message.pending-migrations-command') }}:</p>
+        @if(@$migration_paths)
+          <div class="jumbo-bubble warning">
+            <p>{{ __('core:module-manager::message.pending-migrations-path') }}:</p>
+            @foreach($migration_paths as $path)
+              <br><code>{{ $path }}</code>
+            @endforeach
+          </div>
+          <div class="jumbo-bubble warning">
+            <p>{{ __('core:module-manager::message.pending-migrations-command') }}:</p>
             <!-- migration pending -->
             @foreach($migrations as $migration)
               <br><code>{{ $migration }}</code>
             @endforeach
-        </div>
+          </div>
+        @else
+          <div class="jumbo-bubble success">
+            <p>{{ __('core:module-manager::message.no-pending-migrations') }}</p>
+          </div>
+            @if(@$seed_commands)
+              <div class="jumbo-bubble warning">
+                <p>{{ __('core:module-manager::message.seed-commands') }}:</p>
+                @foreach($seed_commands as $seed)
+                  <br><code>{{ $seed }}</code>
+                @endforeach
+              </div>
+            @endif
+        @endif
       </div>
       <div class="row">
         <div class="col-md-12 text-right">

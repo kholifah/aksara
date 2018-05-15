@@ -62,6 +62,7 @@ class ModulePath
         return [
             'migration' => $this->migration(),
             'view' => $this->view(),
+            'seed' => $this->seed(),
         ];
     }
 }
