@@ -51,7 +51,7 @@ class UserRoleSeeder extends Seeder
         Model::reguard();
         DB::statement('SET FOREIGN_KEY_CHECKS = 1');
 
-        echo 'Set admin role for user ='.$user->email.'\n';
+        echo "Set admin role for user =".$user->email."\n";
 
     }
 }
